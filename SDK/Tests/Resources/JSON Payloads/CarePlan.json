@@ -1,0 +1,99 @@
+{
+    "resourceType": "CarePlan",
+    "id": "0.6914666413205235",
+    "status": "active",
+    "intent": "plan",
+    "subject": { "reference": "#0.35453017115765006" },
+    "author": [{ "reference": "#0.267848209845277" }],
+    "activity": [{
+        "reference": {
+            "reference": "#0.4944173091188415"
+        }
+    }],
+    "contained": [
+        {
+            "resourceType": "Patient",
+            "id": "0.35453017115765006",
+            "name": [{
+                "family": "Smoak",
+                "given": [ "Felicity" ]
+            }]
+        },
+        
+        {
+            "resourceType": "Practitioner",
+            "id": "0.267848209845277",
+            "name": [{
+                "text": "Dr. Bruce Banner, Praxis fuer Allgemeinmedizin"
+            }]
+        },
+        
+        {
+            "resourceType": "Medication",
+            "id": "0.2379258591719151",
+            "code": {
+                "coding": [{
+                    "display": "Ibuprofen-ratiopharm"
+                }]
+            },
+            "ingredient": [{
+                "itemReference": { "reference": "#0.7466593614222727" },
+                "amount": {
+                    "numerator": {
+                        "value": 400,
+                        "system": "mg"
+                    }
+                }
+            }],
+            "form": {
+                "coding": [{ "display": "tablets" }]
+            }
+        },
+        
+        {
+            "resourceType": "Substance",
+            "id": "0.7466593614222727",
+            "code": {
+                "coding": [{ "display": "Ibuprofen" }]
+            }
+        },
+        
+        {
+            "resourceType": "MedicationRequest",
+            "id": "0.4944173091188415",
+            "intent": "plan",
+            "subject": { "reference": "#0.35453017115765006" },
+            "dosageInstruction": [
+                {
+                    "timing": {
+                        "repeat": {
+                            "when": ["morning"]
+                        }
+                    },
+                    "doseQuantity": {
+                        "value": 2,
+                        "unit": "Stueck"
+                    }
+                },
+                {
+                    "timing": {
+                        "repeat": {
+                            "when": ["evening"]
+                        }
+                    },
+                    "doseQuantity": {
+                        "value": 2,
+                        "unit": "Stueck"
+                    }
+                }
+            ],
+            "note": [{ "text": "zur Oralen Einnahme" }],
+            "reasonCode": [{
+                "coding": [{
+                    "display": "Erkaeltungsbeschwerden bekaempfen"
+                }]
+            }],
+            "medicationReference": { "reference": "#0.2379258591719151" }
+        }
+    ]
+}

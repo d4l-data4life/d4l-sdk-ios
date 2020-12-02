@@ -1,0 +1,56 @@
+// Settings:
+:doctype: book
+:toc: left
+:toclevels: 4
+:icons: font
+:source-highlighter: prettify
+//:numbered:
+:stylesdir: styles/
+:imagesdir: images/
+:linkcss:
+// Variables:
+:icons: font
+:compname-short: D4L
+:compname-legal: D4L data4life gGmbH
+:compname: data4life
+:email-contact: contact@data4life.care
+:email-docs: docs@data4life.care
+:url-company: https://www.data4life.care
+:url-docs: https://d4l.io
+:prod-name: data4life
+:app-name: data4life
+:app-plat: iOS
+:phdp-plat: Personal Health Data Platform
+:page-platform: iOS
+:sw-name: {compname} {prod-name}
+:sw-version: {project-version}
+:pub-type: Internal
+:pub-version: 1.00
+:pub-status: draft
+:pub-title: {software-name} {pub-type}
+:copyright-year: 2019
+:copyright-statement: (C) {copyright-year} {compname-legal}. All rights reserved.
+
+
+= PHDP SDK reference documentation
+{copyright-statement}
+:revnumber: {sw-version}
+:description: PHDP SDK Reference documentation
+:keywords: SDK iOS Swift FHIR
+
+This document covers the {app-plat} SDK project for the {phdp-plat}.
+
+include::./01_sdk_setup.adoc[]
+
+include::./02_sdk_concepts.adoc[]
+
+include::./03_sdk_models.adoc[]
+
+include::./04_sdk_api.adoc[]
+
+[appendix]
+== Copyright and license
+
+----
+include::../LICENSE[]
+----

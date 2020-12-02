@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BUILD_DIR=build
+CONFIGURATION=Release
+PROJECT_NAME=HCSDK
+OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}
+
+cd ..
+mkdir -p "${OUTPUTFOLDER}"
+xcodebuild -target "${PROJECT_NAME}" ONLY_ACTIVE_ARCH=NO ENABLE_BITCODE=YES BITCODE_GENERATION_MODE=bitcode -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
+cp -R "${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework" "${OUTPUTFOLDER}/"
+rm -r "${BUILD_DIR}/${PROJECT_NAME}.build"
+rm -r "${BUILD_DIR}/Release"

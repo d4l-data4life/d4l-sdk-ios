@@ -1,0 +1,221 @@
+:toc: left
+:icons: font
+:source-highlighter: prettify
+//:numbered:
+:stylesdir: styles/
+:imagesdir: images/
+:linkcss:
+
+// Variables:
+:icons: font
+:compname-short: D4L
+:compname-legal: D4L data4life gGmbH
+:compname: data4life
+:email-contact: me@data4life.care
+:email-docs: docs@data4life.care
+:url-company: https://www.data4life.care
+:url-docs: https://d4l.io
+:prod-name: data4life
+:app-name: data4life
+:app-plat: iOS
+:phdp-plat: Personal Health Data Platform
+:sw-name: {compname} {prod-name}
+:sw-version: {project-version}
+:pub-type: Internal
+:pub-version: 1.00
+:pub-status: draft
+:pub-title: {software-name} {pub-type}
+:copyright-year: 2019
+:copyright-statement: (C) {copyright-year} {compname-legal}. All rights reserved.
+
+
+== Using the {app-plat} SDK
+
+As part of our integration efforts with our partners, {compname} provides SDKs for the following platforms:
+
+* iOS (Swift)
+* Android (Java)
+* Web (JavaScript)
+
+The {compname} SDKs encapsulate different aspects of communication with the backend servers of the {compname} {phdp-plat}.
+The SDKs let integration partners store sensitive health data on our secure platform.
+The SDKs also enable sharing the data with authorized parties and other applications in an easy and secure way.
+
+==== Updating and validating versions
+
+Data4Life can deprecate or unsupport old SDK versions that aren't anymore secure or stay occassioning bugs. In that case the user will get notifications from the SDK:
+
+- If the current version is *deprecated*, the user will get a notification in the console asking to update to a more recent version from the SDK. The SDK will still be able to be runned and used.
+
+- If the current version is *unsupported*, the user will get an error by using the SDK and will need to update to a new version in order to continue using the SDK.
+
+- If for some reason the version validation can't happen, the user will get a notification in the console warning that the current version validation is *unknown*. The SDK will still work, but it might crash.
+
+
+=== Software requirements
+The {app-plat} SDK has the following software requirements:
+
+* Xcode 12 or later
+* iOS 12.0 or later
+* Swift 5.3 or later
+
+=== Installing dependency managers
+
+This section describes how you get the SDK up and running.
+Use the following for dependency management for the {app-plat} SDK:
+
+* *Carthage* is a dependency manager written in Swift.
+It builds your dependencies and provides you with binary frameworks while you retain control over your project structure and setup.
+
+* *CocoaPods* is a dependency manager for Swift and Objective-C Cocoa projects.
+The file with the specification that describes the dependencies of the targets of one or more Xcode projects is called `Podfile`.
+
+==== Carthage
+
+To install Carthage, use the following:
+
+----
+github "d4l-data4life/d4l-sdk-ios"
+----
+
+[NOTE]
+====
+The SDK has a few <<Dependencies of the SDK, dependencies>>.
+You must add them and link them manually with icon:external-link[] https://github.com/Carthage/Carthage#nested-dependencies[your project].
+====
+
+
+==== CocoaPods
+
+To add a private CocoaPods specs repository to the `Podfile`, use the following:
+
+[source, ruby]
+----
+source 'https://github.com/d4l-data4life/d4l-cocoapods-specs.git'
+----
+
+To add the framework to the `Podfile`, use the following:
+
+[source, ruby]
+----
+pod 'Data4LifeSDK'
+----
+
+For more info, see icon:eye[] the https://github.com/d4l-data4life/d4l-cocoapods-specs/blob/master/README.md[CocoaPods specs repository] readme file.
+
+==== Dependencies of the SDK
+
+The {app-plat} SDK has the following dependencies:
+
+* https://github.com/Alamofire/Alamofire[Alamofire] icon:external-link[] – HTTP networking library written in Swift
+* https://github.com/krzyzanowskim/CryptoSwift[CryptoSwift] icon:external-link[] – collection of cryptographic algorithms implemented in Swift
+* https://github.com/freshOS/then[then] icon:external-link[] – Promises library for Swift
+* https://github.com/openid/AppAuth-iOS[AppAuth] icon:external-link[] – iOS and macOS SDK for communicating with OAuth 2.0 and OpenID Connect providers
+* https://github.com/SVProgressHUD/SVProgressHUD[SVProgressHUD] icon:external-link[] – progress head-up display (HUD) to display the progress of an ongoing task
+* https://github.com/d4l-data4life/d4l-fhir-ios[Data4LifeFHIR] icon:external-link[] – {compname} minimal FHIR standard models and data types for iOS
+* https://github.com/d4l-data4life/d4l-utils-ios[Data4LifeSDKUtils] icon:external-link[] – {compname} Set of private utils used in data4Life Frameworks
+
+=== Setting up the SDK
+
+To set up the {app-plat} SDK, follow these steps:
+
+. Configure the client information
+. Handle the OAuth 2.0 redirect URL
+. Display the login screen
+
+This section describes the steps in more detail.
+
+[start=1]
+. Prepare the SDK for use by configuring the client information.
+This must be the first SDK call or the client crashes.
++
+[source,swift]
+----
+import UIKit
+import Data4LifeSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+
+    let clientId = "client-id#ios"
+    let secret = "secret"
+    let redirectURLString = "app://oauth"
+    let environment = .staging
+    Data4LifeClient.configureWith(clientId: clientId,
+                                  clientSecret: secret,
+                                  redirectURLString: redirectURLString,
+                                  environment: environment)
+
+    return true
+  }
+}
+----
++
+. Handle the OAuth 2.0 redirect URL in the `AppDelegate` class.
++
+[source, swift]
+----
+import UIKit
+import Data4LifeSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+
+    Data4LifeClient.default.handle(url: url)
+
+    return true
+  }
+}
+----
++
+. Display the login screen.
+Afterwards, you can use it throughout the app with the default client by providing a view controller to present.
++
+[source,swift]
+----
+let viewController = UIApplication.shared.keyWindow?.rootViewController
+Data4LifeClient.default.presentLogin(on: viewController, animated: true) { result in
+    switch result {
+    case .success:
+        // Handle success
+    case .failure(let error):
+        // Handle error
+    }
+}
+----
++
+. Optional: To use the SDK inside extensions, provide the `keychainGroupId` identifier when you configure the SDK and enable the `KeychainSharing` capability in the Xcode project.
+The SDK also requires the `AppGroups` capability with the same setup.
++
+[source,swift]
+----
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+
+    let clientId = "client-id#ios"
+    let secret = "secret"
+    let redirectURLString = "app://oauth"
+    let environment = .staging
+    let teamId = "TEAMDID"
+    let groupId = "Group1"
+    let keychainGroupId = "\(teamId).\(groupId)"
+    let appGroupId= "group.unique.id"
+
+    Data4LifeClient.configureWith(clientId: clientId,
+                              clientSecret: secret,
+                              redirectURLString: redirectURLString,
+                              environment: .staging,
+                              keychainGroupId: keychainGroupId,
+                              appGroupId: appGroupId,
+                              environment: environment)
+
+    return true
+  }
+----

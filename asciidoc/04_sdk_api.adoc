@@ -1,0 +1,500 @@
+// Settings:
+:doctype: book
+:toc: left
+:toclevels: 4
+:icons: font
+:source-highlighter: prettify
+//:numbered:
+:stylesdir: styles/
+:imagesdir: images/
+:linkcss:
+// Variables:
+:icons: font
+:compname-short: D4L
+:compname-legal: D4L data4life gGmbH
+:compname: data4life
+:email-contact: me@data4life.care
+:email-docs: docs@data4life.care
+:url-company: https://www.data4life.care
+:url-docs: https://d4l.io
+:prod-name: data4life
+:app-name: data4life
+:app-plat: iOS
+:phdp-plat: Personal Health Data Platform
+:page-platform: iOS
+:sw-name: {compname} {prod-name}
+:sw-version: {project-version}
+:pub-type: Internal
+:pub-version: 1.00
+:pub-status: draft
+:pub-title: {software-name} {pub-type}
+:copyright-year: 2019
+:copyright-statement: (C) {copyright-year} {compname-legal}. All rights reserved.
+
+== About the {compname} API
+
+This section gives you an overview of the {compname} API.
+The SDK handles all communication with the backend servers.
+This abstracts away much of the know-how needed to communicate with the servers and exposes a number of lean custom models.
+Integration partners and developers can rely on these models and the exposed methods to interact with the {compname} {phdp-plat}.
+
+Only logged-in users can run queries and perform actions.
+When a request is made without a valid access token and a refresh token, the SDK throws an `unauthorized` exception.
+
+=== Authentication and authorization
+
+This section covers the authorization project features of the SDK.
+
+- *Authentication* is the process of verifying who users are.
+- *Authorization* is the process of verifying what users have access to.
+
+The SDK automatically handles all authentication and user management tasks. The user login is managed by the {compname} auth app to ensure the safety of the user’s credentials. When the `login` functionality is invoked, the SDK opens a web view with the necessary pages. Or redirects in the case of a web-based app.
+
+==== Displaying the login screen
+
+To display the login screen to users.
+
+[source,swift]
+----
+Data4LifeClient.default.presentLogin(on: self, animated: true) { result in
+    switch result {
+    case .success:
+        // Handle result
+    case .failure(let error):
+        // Handle error
+    }
+}
+----
+
+==== Displaying the login screen with custom OAuth 2.0 scopes
+
+Scopes are a mechanism in the OAuth 2.0 protocol to limit an application's access to a user account.
+The scope information is displayed to the user in the login screen.
+
+To display the login screen with additional scopes to users, use the `presentLogin` method.
+
+[source, swift]
+----
+let scopes = ["example", "scope"]
+Data4LifeClient.default.presentLogin(on: self, animated: true, scopes: scopes) { result in
+    switch result {
+    case .success:
+        // Handle result
+    case .failure(let error):
+        // Handle error
+    }
+}
+----
+
+==== Using additional parameters for the login
+
+To display the login screen with additional parameters, for example, with the `loginCompletion` callback, use the following example:
+
+[source,swift]
+----
+func presentLogin(on viewController: UIViewController, animated: Bool, scopes: [String]? = nil, presentationCompletion: (() -> Void)? = nil, loginCompletion: @escaping DefaultResultBlock)
+----
+
+==== Logging out users
+
+To log the currently logged-in user out of the current session, use the `logout` method.
+
+[source,swift]
+----
+func logout(completion: @escaping DefaultResultBlock)
+----
+
+
+==== Checking if a user is logged in
+
+To check if a user is logged in, use the `userLoggedIn` method:
+
+[source,swift]
+----
+func userLoggedIn(_ completion: @escaping DefaultResultBlock)
+----
+
+==== Receiving updates about the session state
+
+To receive updates about the session state, use the `sessionStateDidChange` method.
+
+[source,swift]
+----
+func sessionStateDidChange(completion: @escaping (Bool) -> Void)
+----
+
+=== Using debug logging
+
+The SDK supports logging to console for debug configurations.
+It is disabled by default. To enable it, set the `isLoggingEnabled` flag on the client to `true`.
+However, release configuration is always silent.
+
+[source, swift]
+----
+Data4LifeClient.default.isLoggingEnabled = true
+----
+
+=== Handling response threads
+
+All SDK calls accept `DispatchQueue` as a parameter.
+The defined queue is used to return results, the `main` queue is the default.
+
+[source, swift]
+----
+let queue = DispatchQueue.global(qos: .background)
+Data4LifeClient.default.creteRecord(document, queue: queue) { result in
+    // Handle result
+}
+----
+
+=== Managing records
+
+The following sections describe how you perform queries and other actions for documents and records.
+
+===== Use of annotations
+
+The `create`, `update`, `search` and `count` methods can optionally use `annotations` as a parameter. This parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the `search` and `count` methods.
+
+==== Creating a new record
+
+To create a new record, use the `createFhirStu3Record` method.
+
+[source,swift]
+----
+func createFhirStu3Record<R: FhirStu3Resource>(_ resource: R,
+    annotations: [String]? = nil,
+    completion: @escaping ResultBlock<Record<R>>)
+----
+
+==== Creating new FHIR records
+
+To create several new records, use the `createFhirStu3Records` method. The annotations will be added to all the created records.
+
+[source,swift]
+----
+func createFhirStu3Records<R: FhirStu3Resource>(_ resources: [R], annotations: [String] = [], completion: @escaping ResultBlock<BatchResult<Record<R>, R>>)
+----
+
+==== Fetching a FHIR record by its ID
+
+To fetch records for the given ID, use the `fetchFhirStu3Record` method with the `identifier` parameter of the record.
+
+[source,swift]
+----
+func fetchFhirStu3Record<R: FhirStu3Resource>(withId identifier: String, of type: R.Type = R.self, completion: @escaping ResultBlock<Record<R>>)
+----
+
+==== Fetching multiple FHIR records with IDs
+
+To fetch one or more records for the given IDs, use the `fetchFhirStu3Records` method with the `identifiers` parameters of the records.
+
+[source,swift]
+----
+func fetchFhirStu3Records<R: FhirStu3Resource>(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock<BatchResult<Record<R>, String>>)
+----
+
+==== Updating a FHIRrecord
+
+To update a record, use the `updateFhirStu3Record` method.
+If annotations are set to nil, existing annotations won't change, otherwise they will override existing ones. If you only need to append new annotations, pass them as a parameter including the old ones in order to maintain them.
+
+[source,swift]
+----
+public func updateFhirStu3Record<R: FhirStu3Resource>(_ resource: R,
+    annotations: [String]? = nil,
+    queue: DispatchQueue = responseQueue, completion: @escaping
+    ResultBlock<Record<R>>)
+----
+
+==== Updating several FHIR records
+
+To update several records, use the `updateFhirStu3Records` method. If annotations are set to nil, existing annotations won't change, otherwise they will override existing ones for all updated records.
+
+[source,swift]
+----
+func updateFhirStu3Records<R: FhirStu3Resource>(_ resources: [R], annotations: [String]? = nil, completion: @escaping ResultBlock<BatchResult<Record<R>, R>>)
+----
+
+==== Deleting a FHIR record by its ID
+
+To delete a record with its given ID, use the `deleteFhirStu3Record` method with the `identifier` parameter of the record.
+
+[source,swift]
+----
+func deleteFhirStu3Record(withId identifier: String, completion: @escaping ResultBlock<Void>)
+----
+
+==== Deleting multiple FHIR records by their IDs
+
+To delete multiple records with their given IDs, use the `deleteFhirStu3Records` method with the `identifiers` parameters of the records.
+
+[source,swift]
+----
+func deleteFhirStu3Records(withIds identifiers: [String], completion: @escaping ResultBlock<BatchResult<String, String>>)
+----
+
+==== Counting FHIR records
+
+To count the stored records per record type, use the `countFHIRRecords` method with the given `type` parameter.
+If you don't provide a record type, the client returns the count of all available records.
+
+[source,swift]
+----
+func countFhirStu3Records<R: FhirStu3Resource>(of type: R.Type?,
+    annotations: [String] = [],
+    completion: @escaping ResultBlock<Int>)
+----
+
+==== Creating a new AppData record
+
+To create a new AppData record, use the `createAppDataRecord` method or the `createCodableAppDataRecord` method. The annotations parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the `search` and `count` methods.
+
+[source,swift]
+----
+func createAppDataRecord(_ data: Data,
+                         annotations: [String] = []],
+                         queue: DispatchQueue = responseQueue,
+                         completion: @escaping ResultBlock<AppDataRecord>)
+
+func createCodableAppDataRecord<D: Codable>(_ codable: D,
+                                            annotations: [String] = [],
+                                            queue: DispatchQueue = responseQueue,
+                                            completion: @escaping ResultBlock<AppDataRecord>)
+----
+
+If the codable version of the create is used, the `AppDataRecord` has a convenient function to get the resource back:
+
+[source,swift]
+----
+extension AppDataRecord {
+    func getDecodableResource<D: Decodable>(of type: D.Type = D.self) throws -> D
+}
+----
+
+==== Fetching an AppData record by its ID
+
+To fetch AppData records for the given ID, use the `fetchAppDataRecord` method with the `identifier` parameter of the record.
+
+[source,swift]
+----
+func fetchAppDataRecord(withId identifier: String,
+                        queue: DispatchQueue = responseQueue,
+                        completion: @escaping ResultBlock<AppDataRecord>)
+----
+
+==== Updating an AppData record
+
+To update an AppData record, use the `updateAppDataRecord` method or the `updateCodableAppDataRecord` method.
+If annotations are set to nil, existing annotations won't change, otherwise they will override existing ones. If you only need to append new annotations, pass them as a parameter including the old ones in order to maintain them.
+
+[source,swift]
+----
+func updateAppDataRecord(_ data: Data,
+                         recordId: String,
+                         annotations: [String]? = nil,
+                         queue: DispatchQueue = responseQueue,
+                         completion: @escaping ResultBlock<AppDataRecord>)
+
+func updateCodableAppDataRecord<D: Codable>(_ codable: D,
+                                            recordId: String,
+                                            annotations: [String]? = nil,
+                                            queue: DispatchQueue = responseQueue,
+                                            completion: @escaping ResultBlock<AppDataRecord>)
+
+----
+
+==== Deleting an AppData record by its ID
+
+To delete an AppData record with its given ID, use the `deleteAppDataRecord` method with the `identifier` parameter of the record.
+
+[source,swift]
+----
+public func deleteAppDataRecord(withId identifier: String,
+                                queue: DispatchQueue = responseQueue,
+                                completion: @escaping ResultBlock<Void>)
+----
+
+==== Counting AppData records
+
+To count the stored AppData records, use the `countAppDataRecords` method.
+
+[source,swift]
+----
+func countAppDataRecords(annotations: [String] = [],
+                         queue: DispatchQueue = responseQueue,
+                         completion: @escaping ResultBlock<Int>)
+----
+
+=== Managing resources with attachments
+
+In FHIR, some resources can index a document, clinical note, and other binary objects to make them available to a healthcare system. At the moment attachment which can contain attachment are:
+- `DocumentReference`
+- `DiagnosticReport`
+- `Medication`
+- `Practitioner`
+- `Patient`
+- `Observation` (including its component attachments)
+- `Questionnaire` (including its nested items attachments)
+- `QuestionnaireResponse` (including its nested items and answers attachments)
+
+==== Downloading all resource's attachments with their data payloads
+
+If you want a record to be downloaded with its given ID and its attachments, use the `downloadStu3Record` method and the `identifier` parameter of the record.
+
+[source,swift]
+----
+func downloadStu3Record<R: FhirStu3Resource>(withId identifier: String, completion: @escaping ResultBlock<Record<R>>)
+----
+
+==== Downloading multiple resource records and all their attachments with their data payloads
+
+If you want one or more records to be downloaded with their given IDs and their attachments, use the `downloadStu3Records` method and the `identifiers` parameters of the records.
+
+[source,swift]
+----
+func downloadStu3Records<R: FhirStu3Resource>(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock<BatchResult<Record<R>, String>>)
+----
+
+=== Handling attachments
+
+==== Downloading attachment data
+
+If a `FhirStu3Resource` with attachments is fetched using the `fetchFhirStu3Record` method, all of the attachments only have metadata (for example, `title` and `contentType`) but no data payload. To download an attachment including the data payload, use the `downloadStu3Attachment` method or the `downloadStu3Attachments` method.
+
+[source,swift]
+----
+Data4LifeClient.default.downloadStu3Record(withId: "identifier", of: DocumentReference.self) { result in
+    guard let document = result.value?.resource else {
+        return
+    }
+
+    guard let attachments = document.getAttachments() else {
+        return
+    }
+
+    let data = attachments.first?.getData()
+}
+
+----
+
+==== Using different size versions
+
+When you implement downloading attachments, and if different options are available, you can specify which version of the attachment to download.
+When downloading a medium-size or small-size image, the downloaded attachment ID is a composed identifier of the original attachment and the thumbnail ID, separated by the `#` character.
+When the `downloadType` parameter is not specified or is unavailable, the original-size attachment (full-size version) is downloaded.
+The SDK automatically generates the medium-size and the small-size versions of attachments during attachment creation for resizable attachments. The following file formats support resizable attachments: PNG, TIFF, and JPEG.
+
+[source,swift]
+----
+public enum DownloadType {
+    case full, medium, small
+}
+----
+
+==== Cancelling the request in progress
+
+The downloading attachments methods `downloadStu3Attachment` and `downloadStu3Attachments` return an object to cancel the request in progress:
+
+----
+let cancellableRequest = Data4LifeClient.default.downloadStu3Attachments(withIds: identifiers, recordId: documentId) { [weak self] result in
+    ...
+}
+
+cancellableRequest?.cancel()
+----
+
+==== Observing the download progress
+
+To get a https://developer.apple.com/documentation/foundation/progress[Progress] object, which you can use, for example, for a progress bar, include the `onProgressUpdated` closure.
+
+----
+ let cancellableRequest = Data4LifeClient.default.downloadStu3Attachments(withIds: identifiers, recordId: documentId,
+ onProgressUpdated: { progress in
+    DispatchQueue.main.async {
+        self.progressView.setProgress(Float(progress.fractionCompleted),
+        animated: true)
+    }
+ }, completion: { [weak self] result in
+    ...
+ })
+----
+
+
+==== Downloading a single attachment with data payload
+
+If you want an attachment to be downloaded including the data payload, use the `downloadStu3Attachment` method with the parameter of the attachment ID.
+
+[source,swift]
+----
+func downloadStu3Attachment(withId identifier: String,
+    recordId: String,
+    downloadType: DownloadType = .full,
+    onProgressUpdated: ((Progress) -> Void)? = nil,
+    completion: @escaping ResultBlock<Attachment>)
+-> Cancellable
+----
+
+==== Downloading a list of attachments with data payloads
+
+If you want one or more attachments to be downloaded including their data payloads with their given IDs, use the `downloadStu3Attachments` method with the parameters of the attachment ID.
+
+[source,swift]
+----
+func downloadStu3Attachments(withIds identifiers: [String],
+    recordId: String,
+    downloadType: DownloadType = .full,
+    onProgressUpdated: ((Progress) -> Void)? = nil,
+    completion: @escaping ResultBlock<[Attachment]>)
+-> Cancellable
+----
+
+=== Storing custom identifiers
+
+Most of the FHIR resources support adding custom identifiers per client.
+The following resources are supported:
+
+- `DocumentReference`
+- `Observation`
+- `DiagnosticReport`
+- `CarePlan`
+- `Organization`
+- `Practitioner`
+- `Patient`
+- `Questionnaire`
+
+You can use these helper functions on all supported resources.
+
+[source,swift]
+----
+func addAdditionalId(_ id: String)
+func setAdditionalIds(_ ids: [String])
+func getAdditionalIds() -> [String]?
+----
+
+To add and fetch a custom identifier, use the following.
+
+[source,swift]
+----
+let document = DocumentReference(...)
+document.addAdditionalId("some-custom-identifier")
+
+guard let ids = document.getAdditionalIds() else { return }
+let storedIdentifier = ids.first
+----
+
+To overwrite custom identifiers with new values, use the following.
+
+[source,swift]
+----
+let document = DocumentReference(...)
+let identifiers = ["some-custom-identifier-one", "some-custom-identifier-two"]
+document.setAdditionalIds(identifiers)
+----
+
+To delete all of the custom identifiers, use the following.
+
+[source,swift]
+----
+let document = DocumentReference(...)
+document.setAdditionalIds([])
+----

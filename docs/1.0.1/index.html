@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="description" content="PHDP SDK Reference documentation">
+<meta name="keywords" content="SDK iOS Swift FHIR">
+<meta name="author" content="Copyright (c) 2019, HPS Gesundheitscloud gGmbH">
+<title>PHDP SDK Reference Documentation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="styles/asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>PHDP SDK Reference Documentation</h1>
+<div class="details">
+<span id="author" class="author">Copyright (c) 2019, HPS Gesundheitscloud gGmbH</span><br>
+<span id="revnumber">version 1.0.1</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_usage">1. Usage</a>
+<ul class="sectlevel2">
+<li><a href="#_requirements">1.1. Requirements</a></li>
+<li><a href="#_instalation">1.2. Instalation</a></li>
+<li><a href="#_setup">1.3. Setup</a></li>
+</ul>
+</li>
+<li><a href="#_concepts">2. Concepts</a>
+<ul class="sectlevel2">
+<li><a href="#_encryption_and_decryption">2.1. Encryption and decryption</a></li>
+<li><a href="#_local_storage">2.2. Local storage</a></li>
+<li><a href="#_current_limitations">2.3. Current limitations</a></li>
+</ul>
+</li>
+<li><a href="#_models">3. Models</a>
+<ul class="sectlevel2">
+<li><a href="#_record">3.1. Record</a></li>
+<li><a href="#_metadata">3.2. Metadata</a></li>
+</ul>
+</li>
+<li><a href="#_api">4. API</a>
+<ul class="sectlevel2">
+<li><a href="#_authentication_and_authorization">4.1. Authentication and Authorization</a></li>
+<li><a href="#_response_thread_handling">4.2. Response thread handling</a></li>
+<li><a href="#_queries_and_actions">4.3. Queries and actions</a></li>
+</ul>
+</li>
+<li><a href="#_fhir_helpers">5. FHIR Helpers</a>
+<ul class="sectlevel2">
+<li><a href="#_patient">5.1. Patient</a></li>
+<li><a href="#_practitioner">5.2. Practitioner</a></li>
+<li><a href="#_medication">5.3. Medication</a></li>
+<li><a href="#_dosage">5.4. Dosage</a></li>
+<li><a href="#_medicationrequest">5.5. MedicationRequest</a></li>
+<li><a href="#_careplan">5.6. CarePlan</a></li>
+<li><a href="#_observation">5.7. Observation</a></li>
+<li><a href="#_observationreferencerange">5.8. ObservationReferenceRange</a></li>
+<li><a href="#_diagnosticreport">5.9. DiagnosticReport</a></li>
+<li><a href="#_documentreference">5.10. DocumentReference</a></li>
+<li><a href="#_attachment">5.11. Attachment</a></li>
+<li><a href="#_organization">5.12. Organization</a></li>
+</ul>
+</li>
+<li><a href="#_fhir_examples">6. FHIR Examples</a>
+<ul class="sectlevel2">
+<li><a href="#_documentreference_example">6.1. DocumentReference example</a></li>
+<li><a href="#_careplan_example">6.2. CarePlan example</a></li>
+<li><a href="#_storing_custom_identifiers_example">6.3. Storing custom identifiers example</a></li>
+</ul>
+</li>
+<li><a href="#_copyright_and_license">Appendix A: Copyright and License</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document covers iOS SDK project.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage">1. Usage</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_requirements">1.1. Requirements</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Xcode 10.2+</p>
+</li>
+<li>
+<p>iOS 11.0+</p>
+</li>
+<li>
+<p>Swift 5.0+</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_instalation">1.2. Instalation</h3>
+<div class="sect3">
+<h4 id="_carthage">1.2.1. Carthage</h4>
+<div class="listingblock">
+<div class="content">
+<pre>github "gesundheitscloud/hc-sdk-ios"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: The SDK has a few <a href="#_dependencies">dependencies</a>. You <a href="https://github.com/Carthage/Carthage#nested-dependencies">must add and link them manually with your project.</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cocoapods">1.2.2. CocoaPods</h4>
+<div class="paragraph">
+<p>Add private CocoaPods specs repository to the <code>Podfile</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-ruby" data-lang="ruby">source 'git@github.com:gesundheitscloud/cocoapods-specs.git'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add framework to the <code>Podfile</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-ruby" data-lang="ruby">pod 'HCSDK'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: For more info check <a href="https://github.com/gesundheitscloud/cocoapods-specs/blob/master/README.md">README</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dependencies">1.2.3. Dependencies</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/Alamofire/Alamofire">Alamofire</a></p>
+</li>
+<li>
+<p><a href="https://github.com/krzyzanowskim/CryptoSwift">CryptoSwift</a></p>
+</li>
+<li>
+<p><a href="https://github.com/freshOS/then">then</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openid/AppAuth-iOS">AppAuth</a></p>
+</li>
+<li>
+<p><a href="https://github.com/gesundheitscloud/hc-fhir-ios">HCFHIR</a></p>
+</li>
+<li>
+<p><a href="https://github.com/gesundheitscloud/hc-sdk-ios/tree/master/Crypto">HCCrypto</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: <code>HCCrypto</code> is part of the SDK project as a separate framework</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setup">1.3. Setup</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure the SDK by adding the provided <code>HCSDK-Info.plist</code> to your project.</p>
+</li>
+<li>
+<p>Handle the OAuth2 redirect URL in the AppDelegate:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">import UIKit
+import HCSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -&gt; Bool {
+
+    HCSDKClient.default.handle(url: url)
+
+    return true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set proper environment if necessary (<code>production</code> is default one)</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">import UIKit
+import HCSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -&gt; Bool {
+
+    HCSDKClient.environment = .development
+
+    return true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Present login screen, it can be than used throughout the app with the default client by providing view controller to present</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let viewController = UIApplication.shared.keyWindow?.rootViewController
+HCSDKClient.default.presentLogin(on: viewController, animated: true) { result in
+    switch result {
+    case .success:
+        // handle success
+    case .failure(let error):
+        // handle error
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_concepts">2. Concepts</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_encryption_and_decryption">2.1. Encryption and decryption</h3>
+<div class="paragraph">
+<p>HCSDK automatically handles zero-knowledge encryption. You have access to data that your application send to our backend.
+<strong>Note</strong>: Client-side encryption lays in your hands, please use a proper <a href="#_local_storage">storage</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_local_storage">2.2. Local storage</h3>
+<div class="paragraph">
+<p>Right now we do not offer any client-side storage solution. We recommend <a href="http://realm.io">Realm</a> as an encrypted database and <a href="https://github.com/krzyzanowskim/CryptoSwift">CryptoSwift</a> for general purpose encryption. The keys should be saved to the phone&#8217;s keychain.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_current_limitations">2.3. Current limitations</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>No encrypted client-side storage</p>
+</li>
+<li>
+<p>No proper ObjC support</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_models">3. Models</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_record">3.1. Record</h3>
+<div class="paragraph">
+<p>Holds resource and addition metadata. <code>FHIRResource</code> is typealias of <code>HCFHIR.DomainResource</code> type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">struct Record&lt;R: FHIRResource&gt; {
+    public var id: String
+    public var resource: R
+    public var metadata: Metadata
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: <code>Record.id`</code> is mapped to <code>FHIRResource.id</code> for easier interaction with the SDK when working with resources. <code>FHIRResource.id</code> property should not be used in any way (check <a href="#_storing_custom_identifiers_example">how to store custom identifiers</a> for more information).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadata">3.2. Metadata</h3>
+<div class="paragraph">
+<p>Holds read-only information about record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">struct Metadata {
+    var updatedDate: Date
+    var createdDate: Date
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api">4. API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_authentication_and_authorization">4.1. Authentication and Authorization</h3>
+<div class="sect3">
+<h4 id="_present_login_screen">4.1.1. Present login screen</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">HCSDKClient.default.presentLogin(on: self, animated: true) { result in
+    switch result {
+    case .success:
+        // handle result
+    case .failure(let error):
+        // handle error
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_present_login_screen_with_custom_oauth2_scopes">4.1.2. Present login screen with custom OAuth2 scopes</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let scopes = ["example", "scope"]
+HCSDKClient.default.presentLogin(on: self, animated: true, scopes: scopes) { result in
+    switch result {
+    case .success:
+        // handle result
+    case .failure(let error):
+        // handle error
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_login_call_has_additional_convenience_parameters">4.1.3. Login call has additional convenience parameters</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func presentLogin(on viewController: UIViewController, animated: Bool, scopes: [String]? = nil, presentationCompletion: (() -&gt; Void)? = nil, loginCompletion: @escaping DefaultResultBlock)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_logout">4.1.4. Logout</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func logout(completion: @escaping DefaultResultBlock)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_check_is_the_user_is_logged_in">4.1.5. Check is the user is logged in</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func userLoggedIn(_ completion: @escaping DefaultResultBlock)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_recieve_updates_about_session_state">4.1.6. Recieve updates about session state</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func sessionStateDidChange(completion: @escaping (Bool) -&gt; Void)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_thread_handling">4.2. Response thread handling</h3>
+<div class="paragraph">
+<p>All of the SDK calls accept <code>DispatchQueue</code> as parameter, this queue will be used to return result. Default queue is main.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let queue = DispatchQueue.global(qos: .background)
+HCSDKClient.default.creteRecord(document, queue: queue) { result in
+    // handle result
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_queries_and_actions">4.3. Queries and actions</h3>
+<div class="sect3">
+<h4 id="_create_a_new_record">4.3.1. Create a new record</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func createRecord&lt;R: FHIRResource&gt;(_ resource: R, completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_new_records">4.3.2. Create new records</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func createRecords&lt;R: FHIRResource&gt;(_ resources: [R], completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetch_record_with_id">4.3.3. Fetch record with ID</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func fetchRecord&lt;R: FHIRResource&gt;(withId identifier: String, completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetch_records_with_ids">4.3.4. Fetch records with IDs</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func fetchRecords&lt;R: FHIRResource&gt;(withIds identifiers: [String], completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, String&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_update_a_record">4.3.5. Update a record</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">public func updateRecord&lt;R: FHIRResource&gt;(_ resource: R, queue: DispatchQueue = responseQueue, completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_update_records">4.3.6. Update records</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func updateRecords&lt;R: FHIRResource&gt;(_ resources: [R], completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_recor_with_id">4.3.7. Delete recor with ID</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func deleteRecord(withId identifier: String, completion: @escaping ResultBlock&lt;Void&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_records_with_ids">4.3.8. Delete records with IDs</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func deleteRecords(withIds identifiers: [String], completion: @escaping ResultBlock&lt;BatchResult&lt;String, String&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_count_records">4.3.9. Count records</h4>
+<div class="paragraph">
+<p>In case no type is provided, client will return count of all available records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func countRecords&lt;R: FHIRResource&gt;(withType type: R.Type?, completion: @escaping ResultBlock&lt;Int&gt;)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fhir_helpers">5. FHIR Helpers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FHIR models are meant to be used with generic methods for creating resources, each of the supported model has helper functions for easier creating and fetching data.</p>
+</div>
+<div class="sect2">
+<h3 id="_patient">5.1. Patient</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="http://hl7.org/fhir/STU3/patient.html">Patient</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating patient with first and last name</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(firstname: String, lastname: String) -&gt; Patient</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Patient</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getFirstName() -&gt; String?
+func getLastName() -&gt; String?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_practitioner">5.2. Practitioner</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/practitioner.html">Practitioner</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating patient with first and last name</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(firstname: String, lastname: String) -&gt; Practitioner</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for creating practitioner in case there is additional information that needs to be stored and there is not approapriate property</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(text: String) -&gt; Practitioner</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Practitioner</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getFirstname() -&gt; String?
+func getLastname() -&gt; String?
+func getPrefix() -&gt; String?
+func getSuffix() -&gt; String?
+func getStreet() -&gt; String?
+func getPostalCode() -&gt; String?
+func getCity() -&gt; String?
+func getTelephone() -&gt; String?
+func getWebsite() -&gt; String?
+func getText() -&gt; String?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_medication">5.3. Medication</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/medication.html">Medication</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating medications</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(productName: String, form: String) -&gt; Medication</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for adding inggredients to a medication</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func addIngredient(name: String, value: Float, unit: String) throws</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Medication</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getProductName() -&gt; String?
+func getForm() -&gt; String?
+func getIngredients() -&gt; [(name: String, value: Float, unit: String)]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dosage">5.4. Dosage</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://hl7.org/fhir/dosage.html">Dosage</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating medication dosage</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(value: Float, unit: String, when: String) -&gt; Dosage</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Dosage</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getValue() -&gt; Float?
+func getUnit() -&gt; String?
+func getWhen() -&gt; String?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_medicationrequest">5.5. MedicationRequest</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/medicationrequest.html">MedicationRequest</a></p>
+</div>
+<div class="paragraph">
+<p>Used for storing information about patient and medication long with the dosage and other optional information</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(patient: Patient, medication: Medication, dosage: [Dosage]?, note: String?, reason: String?) throws -&gt; MedicationRequest</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>MedicationRequest</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getReason() -&gt; String?
+func getNote() -&gt; String?
+func getPatient() -&gt; Patient?
+func getMedication() -&gt; Medication?
+func getDosage() -&gt; [Dosage]?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_careplan">5.6. CarePlan</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/careplan.html">CarePlan</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating care plan with information about patient, practitioner and medications</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(patient: Patient, author: Practitioner, medications: [MedicationRequest]) throws -&gt; CarePlan</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>CarePlan</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getAuthor() -&gt; Practitioner?
+func getPatient() -&gt; Patient?
+func getMedicationRequests() -&gt; [MedicationRequest]?
+func getMedications() -&gt; [Medication]?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_observation">5.7. Observation</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/observation.html">Observation</a></p>
+</div>
+<div class="paragraph">
+<p>Used for storing observational information</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(type: CodeableConcept, text: String, status: ObservationStatus, issuedDate: Instant, effectiveDate: DateTime? = nil, referenceRange: ObservationReferenceRange? = nil, category: CodeableConcept? = nil) -&gt; Observation
+static func with(type: CodeableConcept, observationValue: Float, observationUnit: String, status: ObservationStatus, issuedDate: Instant, effectiveDate: DateTime? = nil, referenceRange: ObservationReferenceRange? = nil, category: CodeableConcept? = nil) -&gt; Observation
+static func with(type: CodeableConcept, quantity: HCFHIR.Quantity, status: ObservationStatus, issuedDate: Instant, effectiveDate: DateTime? = nil, referenceRange: ObservationReferenceRange? = nil, category: CodeableConcept? = nil) -&gt; Observation</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Observation</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getIssuedDate() -&gt; Instant?
+func getEffectiveDate() -&gt; DateTime?
+func getType() -&gt; CodeableConcept
+func getObservationValue() -&gt; Float?
+func getObservationUnit() -&gt; String?
+func getObservationText() -&gt; String?
+func getCategory() -&gt; CodeableConcept?
+func getStatus() -&gt; ObservationStatus?
+func getQuantity() -&gt; Quantity?
+func getType() -&gt; CodeableConcept?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_observationreferencerange">5.8. ObservationReferenceRange</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/observation.html">ObservationReferenceRange</a></p>
+</div>
+<div class="paragraph">
+<p>Used for storing observation reference range information</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(type: CodeableConcept, lowValue: Float?, highValue: Float?, unit: String) -&gt; ObservationReferenceRange
+static func with(type: CodeableConcept, lowQuantity: HCFHIR.Quantity?, highQuantity: HCFHIR.Quantity?) -&gt; ObservationReferenceRange</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>ObservationReferenceRange</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getHighQuantity() -&gt; Quantity?
+func getLowQuantity() -&gt; Quantity?
+func getLowValue() -&gt; Float?
+func getHighValue() -&gt; Float?
+func getUnit() -&gt; String?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagnosticreport">5.9. DiagnosticReport</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/diagnosticreport.html">DiagnosticReport</a></p>
+</div>
+<div class="paragraph">
+<p>Used for linking multiple observations into a single report</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(code: CodeableConcept, status: DiagnosticReportStatus, laboratoryName: String, issued: Instant, observations: [HCFHIR.Observation]) throws -&gt; DiagnosticReport</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>DiagnosticReport</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getStatus() -&gt; DiagnosticReportStatus?
+func getCode() -&gt; CodeableConcept?
+func getLaboratoryName() -&gt; String?
+func getObservations() -&gt; [Observation]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_documentreference">5.10. DocumentReference</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/documentreference.html">DocumentReference</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating documents with attachments and author</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(title: String, indexed: Instant, status: DocumentReferenceStatus, attachments: [HCFHIR.Attachment], type: CodeableConcept, author: HCFHIR.Practitioner, practiceSpeciality: CodeableConcept? = nil) -&gt; DocumentReference
+static func with(title: String, indexed: Instant, status: DocumentReferenceStatus, attachments: [HCFHIR.Attachment], type: CodeableConcept, author: HCFHIR.Organization, practiceSpeciality: CodeableConcept? = nil) -&gt; DocumentReference</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>DocumentReference</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getTitle() -&gt; String?
+func getAttachments() -&gt; [Attachment]?
+func getAdditionalIds() -&gt; [String]?
+func getPracticeSpeciality() -&gt; CodeableConcept?
+func getOrganization() -&gt; Organization?
+func getPractitioner() -&gt; Practitioner?
+func getIndexedDate() -&gt; Instant?
+func getStatus() -&gt; DocumentReferenceStatus?
+func getType() -&gt; CodeableConcept?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_attachment">5.11. Attachment</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/datatypes.html#Attachment">Attachment</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating an <code>Attachment</code> element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(title: String, creationDate: DateTime, contentType: String, data: Data) throws -&gt; HCFHIR.Attachment</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Additionaly SDK provides helpers for detecting data MIME types, if no MIME type is found data is invalid for upload.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">guard let contentType = MIMEType.of(imageData)?.rawValue else { fatalError("Invalid MIME type") }
+let attachment = Attachment.with(title: title, creationDate: date, contentType: mimeTypeString, data: data)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Attachment</code> element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getTitle() -&gt; String?
+func getCreationDate() -&gt; DateTime?
+func getContentType() -&gt; String?
+func getData() -&gt; Data?</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_organization">5.12. Organization</h3>
+<div class="paragraph">
+<p>FHIR reference: <a href="https://www.hl7.org/fhir/organization.html">Organization</a></p>
+</div>
+<div class="paragraph">
+<p>Used for creating a <code>Organization</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">static func with(type: CodeableConcept, name: String, street: String? = nil, postalCode: String? = nil, city: String? = nil, telephone: String? = nil, website: String? = nil) -&gt; Organization</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Used for easier access of stored data in <code>Organization</code> resource</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func getName() -&gt; String?
+func getType() -&gt; CodeableConcept?
+func getStreet() -&gt; String?
+func getPostalCode() -&gt; String?
+func getCity() -&gt; String?
+func getTelephone() -&gt; String?
+func getWebsite() -&gt; String?</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fhir_examples">6. FHIR Examples</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentreference_example">6.1. DocumentReference example</h3>
+<div class="paragraph">
+<p>Creating document with attachments provided by some author.</p>
+</div>
+<div class="sect3">
+<h4 id="_create_attachment">6.1.1. Create attachment</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let attachment = try Attachment.with(title: "Image", creationDate: .now, contentType: "image/png", data: image.pngData())</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_author_practitioner_or_organization">6.1.2. Create author (<code>Practitioner</code> or <code>Organization</code>)</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let practitioner = Practitioner.with(firstname: "John", lastname: "Doe")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let organizationType = CodeableConcept(code: "dept", display: "Hospital Department", system: "https://www.hl7.org/fhir/valueset-organization-type.html")
+let organization = Organization.with(type: organizationType, name: "123 Hospital")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_document_with_attachment_author_and_other_information">6.1.3. Create document with attachment, author and other information.</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let practiceSpeciality = CodeableConcept(code: "394612005", display: "Urologie", system: "http://loinc.org")
+let documentType = CodeableConcept(code: "18782-3", display: "Radiology Study observation (findings)", system: "http://loinc.org")
+let document = try DocumentReference.with(title: "Scan",
+                                          indexed: .now,
+                                          status: .current,
+                                          attachments: [attachment],
+                                          type: documentType,
+                                          author: practitioner,
+                                          practiceSpeciality: practiceSpeciality)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_upload_document_using_sdk_generic_resource_method">6.1.4. Upload document using SDK generic resource method</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">HCSDKClient.default.createRecord(document) { result in
+    // handle result
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetch_and_read_information_from_document">6.1.5. Fetch and read information from document</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">HCSDKClient.default.createRecord(document) { result in
+    guard let document = result.value?.resource as? DocumentReference else {
+        return
+    }
+
+    let attachments = document.getAttachments()
+    let author = document.getPractitioner()
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_download_attachment_data">6.1.6. Download attachment data</h4>
+<div class="paragraph">
+<p>If <code>DocumentReference</code> is fetched using <code>fetchResource</code>, all of the attachments will only have metadata (e.g. <code>title</code>, <code>contentType</code>) but no data payload, to download document data there is another method provided by the SDK:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">HCSDKClient.default.downloadRecord(withId: "identifier") { result in
+    guard let document = result.value?.resource as? DocumentReference else {
+        return
+    }
+
+    guard let attachments = document.getAttachments() else {
+        return
+    }
+
+    let data = attachments.first?.getData()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_careplan_example">6.2. CarePlan example</h3>
+<div class="paragraph">
+<p>Creating CarePlan for Patient by some Practitioner that includes Medication and info about the Dosage.</p>
+</div>
+<div class="sect3">
+<h4 id="_create_patient_and_author">6.2.1. Create patient and author</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let patient = Patient.with(firstname: "John", lastname: "Doe")
+let doctor = Practitioner.with(text: "Dr. Bruce Banner, Practice for general medicine")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_a_medication_and_add_ingredients_if_necessary">6.2.2. Create a medication and add ingredients if necessary</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let medication = Medication.with(productName: "Ibuprofen-ratiopharm", form: "tablets")
+medication.addIngredient(name: "Ibuprofen", value: 40, unit: "mg")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_medication_request_with_patient_medication_dosage_and_optional_information">6.2.3. Create medication request with patient, medication, dosage and optional information</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let morningDosage = Dosage.with(value: 2, unit: "Piece", when: "morning")
+let eveningDosage = Dosage.with(value: 2, unit: "Piece", when: "evening")
+
+let medicationRequest = try MedicationRequest.with(patient: patient,
+                                                   medication: medication,
+                                                   dosage: [morningDosage, eveningDosage],
+                                                   note: "For oral ingestion",
+                                                   reason: "Combat cystitis")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_care_plan_using_previously_defined_resources">6.2.4. Create care plan using previously defined resources</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let carePlan = try CarePlan.with(patient: patient, author: doctor, medications: [medicationRequest])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_upload_care_plan_using_sdk_generic_resource_method">6.2.5. Upload care plan using SDK generic resource method</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">HCSDKClient.default.createRecord(carePlan) { result in
+    // handle result
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetch_and_read_information_from_care_plan">6.2.6. Fetch and read information from care plan</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">HCSDKClient.default.fetchRecord(withId: "some-uuid") { result in
+    guard let carePlan = result.value?.resource as? CarePlan else {
+        return
+    }
+
+    let author = carePlan.getAuthor()
+    let patient = carePlan.getPatient()
+    let requests = carePlan.getMedicationRequests()
+    let medications = carePlan.getMedications()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_storing_custom_identifiers_example">6.3. Storing custom identifiers example</h3>
+<div class="paragraph">
+<p>Most of the FHIR resources support adding custom identifiers per client.
+Currently supported resources are: <code>DocumentReference</code>, <code>Observation</code>, <code>DiagnosticReport</code>, <code>CarePlan</code>, <code>Organization</code>, <code>Practitioner</code> and <code>Patient</code>.</p>
+</div>
+<div class="paragraph">
+<p>Helper functions that can be used on all of the supported resources:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">func addAdditionalId(_ id: String)
+func setAdditionalIds(_ ids: [String])
+func getAdditionalIds() -&gt; [String]?</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Adding and fetching custom identifier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let document = DocumentReference(...)
+document.addAdditionalId("some-custom-identifier")
+
+guard let ids = document.getAdditionalIds() else { return }
+let storedIdentifier = ids.first</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Overwrite custom identifiers with new values</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let document = DocumentReference(...)
+let identifiers = ["some-custom-identifier-one", "some-custom-identifier-two"]
+document.setAdditionalIds(identifiers)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Delete all of the custom identifiers</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-swift" data-lang="swift">let document = DocumentReference(...)
+document.setAdditionalIds([])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_license">Appendix A: Copyright and License</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre>BSD 3-Clause License
+
+Copyright (c) 2019, HPS Gesundheitscloud gGmbH
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0.1<br>
+Last updated 2019-04-09 14:12:26 +0200
+</div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script>prettyPrint()</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "32406-1",
+                "display": "1 minute Apgar Color"
+            },
+            {
+                "system": "http://snomed.info/sct",
+                "code": "249227004",
+                "display": "Apgar color score"
+            }
+        ],
+        "text": "Apgar color score"
+    },
+    "valueCodeableConcept": {
+        "coding": [
+            {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/iso21090-CO-value",
+                        "valueDecimal": 0
+                    }
+                ],
+                "system": "http://loinc.org/la",
+                "code": "LA6722-8",
+                "display": "The baby's whole body is completely bluish-gray or pale"
+            },
+            {
+                "system": "http:/acme.ped/apgarcolor",
+                "code": "0"
+            }
+        ],
+        "text": "0. The baby's whole body is completely bluish-gray or pale"
+    }
+}

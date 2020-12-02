@@ -1,0 +1,16 @@
+{
+  "record_id": "26b82b66-6eb0-4f69-9cc4-75cd6d2a94f8",
+  "date": "2019-03-05",
+  "user_id": "7a835ae4-ba3c-45b9-bde4-1c2a1ac2cfb6",
+  "encrypted_body": "KGSn8+W7IU7dqFUBcZqDuxJd0RQ/DMWGVaQlcujES3pNd4X2XD9PXcpWpWNNNufoKLQS2+VJl/D8/VI7wRA3i6huLpb9X0m9Q6wc6J4+mxpLTWHp7LNTZIO5qdCP9CZnviq6Hv5caGekZxrtr90KBN81UvQA4rQl++qV8fpMc4h00hpqI8Ohfa2vubf/ALjrgg1BY0Ev350Bg8EgVYKUO3Z6bzk4rgorNuEyO3ehQBExm5Y/FNTBa/JgqrEj3PQd",
+  "encrypted_tags": [
+    "AOLXCbcyUiF98DSCFdi/HkWZ0dJ0y8x0EIJsm/Ors5w=",
+    "phJkPqjlsS583A89nICrFcnGfm5Ym4uP7KPA0ucHe8AcQIR3Aac7Jk6BdPpHoRMN0AIG6Z7gzGgyxzcNQYVfxw==",
+    "M4BhYvXiYQIo/nCUY1oKphaDEOIYpTF4Jg02po/9fXpuRrQ546YYFPTuPd7Eh82coW8UmaZXJ9o7XnU6LOee/g=="
+  ],
+  "encrypted_key": "uauoAHyJYqcqX388egFjsnwGhi5ZYaAC4Uf+CBQtSGKOe7cmWehsZg80af/Z4+MPKggF5FGX+swCHs1wXLm5uU9gBLalt3FmBp6/sg+x5z9fK9gNR770fwsTwQhB6DrE2fA=",
+  "version": 1,
+  "status": "Active",
+  "model_version": 1,
+  "createdAt": "2019-03-05T12:32:11.220"
+}

@@ -1,0 +1,88 @@
+// Settings:
+:doctype: book
+:toc: left
+:toclevels: 4
+:icons: font
+:source-highlighter: prettify
+//:numbered:
+:stylesdir: styles/
+:imagesdir: images/
+:linkcss:
+// Variables
+:icons: font
+:compname-short: D4L
+:compname-legal: D4L data4life gGmbH
+:compname: data4life
+:email-contact: contact@data4life.care
+:email-docs: docs@data4life.care
+:url-company: https://www.data4life.care
+:url-docs: https://d4l.io
+:prod-name: data4life
+:app-name: data4life
+:app-plat: iOS
+:page-platform: iOS
+:phdp-plat: Personal Health Data Platform
+:sw-name: {compname} {prod-name}
+:sw-version: {project-version}
+:pub-type: Internal
+:pub-version: 1.00
+:pub-status: draft
+:pub-title: {software-name} {pub-type}
+:copyright-year: 2019
+:copyright-statement: (C) {copyright-year} {compname-legal}. All rights reserved.
+
+== About data models
+
+This section gives you an overview of data models used by the {app-plat} SDK.
+The smallest unit of data that can be stored and referenced by the {compname} platform is called a _record_. A record contains the following:
+
+* *Payload* of either medical data in the form of an encrypted FHIR resource (Fast Healthcare Interoperability Resources) or generic data
+
+* *Metadata* that's needed to properly associate a record with a user
+
+* *Annotations* Custom tags saved as strings that the user can use in order to filter or identify the existing resources.
+
+A record can contain:
+1) anything that can be modeled by a FHIR resource. From a single vital sign measurement, such as body temperature, to a complex document linking to or containing multiple attachments and measuring many megabytes in size.
+2) Generic Data
+
+For these two cases we have two types of _records_:
+
+=== The FHIRRecord data model
+
+The `FhirRecord` data model holds resource, metadata and additional metadata. `FhirStu3Resource` is typealias of the `Data4LifeFHIR.DomainResource` type.
+
+[source,swift]
+----
+struct FhirRecord<R: FhirStu3Resource> {
+    public var id: String
+    public var fhirResource: R
+    public var metadata: Metadata
+    public var annotations: [String]
+}
+----
+
+=== The AppDataRecord data model
+
+The `AppDataRecord` data model like the FHIR one holds resource, metadata and additional metadata.
+
+[source,swift]
+----
+struct AppDataRecord {
+    public var id: String
+    public var data: Data
+    public var metadata: Metadata
+    public var annotations: [String]
+}
+----
+
+=== The Metadata data model
+
+The `Metadata` data model holds read-only information about records.
+[source,swift]
+----
+struct Metadata {
+    var updatedDate: Date
+    var createdDate: Date
+}
+----

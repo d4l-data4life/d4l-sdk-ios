@@ -1,0 +1,16 @@
+{
+    "config": {
+        "version_ranges": [
+            {
+                "from_version": "0.0.1",
+                "to_version": "0.5.1",
+                "status": "unsupported"
+            },
+            {
+                "from_version": "1.0.0",
+                "to_version": "1.4.1",
+                "status": "deprecated"
+            }
+        ]
+    }
+}

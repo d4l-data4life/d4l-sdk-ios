@@ -1,0 +1,55 @@
+// Settings:
+:doctype: book
+:toc: left
+:toclevels: 4
+:icons: font
+:source-highlighter: prettify
+//:numbered:
+:stylesdir: styles/
+:imagesdir: images/
+:linkcss:
+// Variables:
+:icons: font
+:compname-short: D4L
+:compname-legal: D4L data4life gGmbH
+:compname: data4life
+:email-contact: me@data4life.care
+:email-docs: docs@data4life.care
+:url-company: https://www.data4life.care
+:url-docs: https://d4l.io
+:prod-name: data4life
+:app-name: data4life
+:app-plat: iOS
+:page-platform: iOS
+:phdp-plat: Personal Health Data Platform
+:sw-name: {compname} {prod-name}
+:sw-version: {project-version}
+:pub-type: Internal 
+:pub-version: 1.00
+:pub-status: draft
+:pub-title: {software-name} {pub-type}
+:copyright-year: 2019
+:copyright-statement: (C) {copyright-year} {compname-legal}. All rights reserved.
+
+
+
+== The {app-plat} SDK and the {phdp-plat}
+
+This section gives an overview of how you manage data with the {compname} {phdp-plat} (PHDP).
+
+=== Encrypting and decrypting your data
+
+The {compname} SDK automatically handles data encryption. 
+The {compname} {phdp-plat} uses a privacy by design approach, optimizing for the strictest possible privacy-preserving settings. 
+As an integrator, only you have access to the data that your application sends to the platform. 
+
+IMPORTANT: Client-side encryption lays in the hands of the integrator application, so you are responsible for providing a proper <<Providing local data storage, storage>>.
+
+=== Providing local data storage and encryption
+
+{compname} doesn't offer any client-side data storage solution. You can use the following: 
+
+* icon:external-link[] http://realm.io[Realm]  as an encrypted database
+* icon:external-link[] https://github.com/krzyzanowskim/CryptoSwift[CryptoSwift] for general-purpose encryption 
+
+Save the cryptographic keys to the Keychain on the phone of the user.

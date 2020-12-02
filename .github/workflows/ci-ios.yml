@@ -1,0 +1,42 @@
+name: D4L SDK CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: [self-hosted, macos]
+
+    env:
+      D4L_EXAMPLE_CONFIG: ${{ secrets.D4L_EXAMPLE_CONFIG }}
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gem-
+    - uses: actions/cache@v1
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-carthage-
+    - name: Display runner context
+      run: hostname -s
+    - run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+    - name: Generate iOS Config JSON
+      run: printf '%s\n' "$D4L_EXAMPLE_CONFIG" > d4l-example-app-config.json
+    - name: lint
+      run: bundle exec fastlane lint
+    - name: test
+      run: bundle exec fastlane test

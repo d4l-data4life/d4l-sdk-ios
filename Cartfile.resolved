@@ -1,0 +1,7 @@
+github "Alamofire/Alamofire" "4.9.1"
+github "SVProgressHUD/SVProgressHUD" "2.2.5"
+github "d4l-data4life/d4l-fhir-ios" "0.17.0"
+github "d4l-data4life/d4l-utils-ios" "0.3.0"
+github "freshOS/then" "5.1.1"
+github "krzyzanowskim/CryptoSwift" "1.3.7"
+github "openid/AppAuth-iOS" "1.0.0"
