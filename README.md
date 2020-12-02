@@ -57,7 +57,7 @@ You can use [Swift Package Manager](https://swift.org/package-manager/) and spec
 .package(url: "https://github.com/d4l-data4life/d4l-sdk-ios.git", .upToNextMinor(from: "1.12.0"))
 ```
 
-Notice: Swift Package Manager uses debug configuration for debug Xcode build, that may result in significant (up to x10000) worse performance when encrypting data. Release build is much faster.
+Notice: Swift Package Manager uses a fixed debug configuration for debug Xcode builds, which may result in significantly worse performance when encrypting data. Release build is however optimized.
 
 ## Building
 
