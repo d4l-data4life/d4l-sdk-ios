@@ -182,7 +182,7 @@
 		CD10926F225B901E00325389 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921B225B901E00325389 /* Dictionary+Extensions.swift */; };
 		CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921C225B901E00325389 /* Date+CustomFormatter.swift */; };
 		CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109221225B901E00325389 /* Data4LifeClient.swift */; };
-		CD109275225B901E00325389 /* Data4LifeClient+FHIRResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109223225B901E00325389 /* Data4LifeClient+FHIRResource.swift */; };
+		CD109275225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109223225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift */; };
 		CD109277225B901E00325389 /* RecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109227225B901E00325389 /* RecordService.swift */; };
 		CD109278225B901E00325389 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109228225B901E00325389 /* UserService.swift */; };
 		CD109279225B901E00325389 /* OAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109229225B901E00325389 /* OAuthService.swift */; };
@@ -554,7 +554,7 @@
 		CD10921B225B901E00325389 /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		CD10921C225B901E00325389 /* Date+CustomFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+CustomFormatter.swift"; sourceTree = "<group>"; };
 		CD109221225B901E00325389 /* Data4LifeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeClient.swift; sourceTree = "<group>"; };
-		CD109223225B901E00325389 /* Data4LifeClient+FHIRResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FHIRResource.swift"; sourceTree = "<group>"; };
+		CD109223225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FHIRStu3Resource.swift"; sourceTree = "<group>"; };
 		CD109224225B901E00325389 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD109227225B901E00325389 /* RecordService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordService.swift; sourceTree = "<group>"; };
 		CD109228225B901E00325389 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -1313,7 +1313,7 @@
 			isa = PBXGroup;
 			children = (
 				CD109221225B901E00325389 /* Data4LifeClient.swift */,
-				CD109223225B901E00325389 /* Data4LifeClient+FHIRResource.swift */,
+				CD109223225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift */,
 				3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */,
 				CDE0336A22A7B2AA00002282 /* Data4LifeClient+Attachment.swift */,
 			);
@@ -1410,27 +1410,27 @@
 		CD841DB3225CBE80002656D5 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				0AF4C09822E205C300C5CD67 /* ImageResizerMock.swift */,
-				CD841DB4225CBE80002656D5 /* AuthStateMock.swift */,
-				CD841DB5225CBE80002656D5 /* SessionAdapterMock.swift */,
-				CD841DB6225CBE80002656D5 /* Data4LifeClientMock.swift */,
-				CD841DB7225CBE80002656D5 /* ReachabilityMock.swift */,
-				CD841DB8225CBE80002656D5 /* UserServiceMock.swift */,
-				CD841DB9225CBE80002656D5 /* FHIRServiceMock.swift */,
 				3634699D24ED693D001EEE66 /* AppDataServiceMock.swift */,
-				CD841DBA225CBE80002656D5 /* CryptoServiceMock.swift */,
-				0AC728D823A2779500A8E453 /* CommonKeyServiceMock.swift */,
-				CD841DBC225CBE80002656D5 /* OAuthServiceMock.swift */,
 				CD841DBD225CBE80002656D5 /* AttachmentServiceMock.swift */,
-				CD841DBE225CBE80002656D5 /* TaggingServiceMock.swift */,
+				CD841DB4225CBE80002656D5 /* AuthStateMock.swift */,
+				0AC728D823A2779500A8E453 /* CommonKeyServiceMock.swift */,
+				CD841DBA225CBE80002656D5 /* CryptoServiceMock.swift */,
+				CD841DB6225CBE80002656D5 /* Data4LifeClientMock.swift */,
+				CDE39AE522E727F600ABE043 /* DocumentServiceMock.swift */,
+				CD841DB9225CBE80002656D5 /* FHIRServiceMock.swift */,
+				0AF4C09822E205C300C5CD67 /* ImageResizerMock.swift */,
+				0AA455982417A21B008B788C /* InfoServiceMock.swift */,
 				CD841DC0225CBE80002656D5 /* KeychainServiceMock.swift */,
-				CD841DC1225CBE80002656D5 /* RecordServiceMock.swift */,
 				CDCE7DCC22A0183A00A1D277 /* OAuthExternalUserAgentMock.swift */,
 				CD2574EF22B91D340029791B /* OAuthExternalUserAgentSessionMock.swift */,
-				CDE39AE522E727F600ABE043 /* DocumentServiceMock.swift */,
-				0AD36C94240798D200584D9B /* SDKVersionValidatorMock.swift */,
+				CD841DBC225CBE80002656D5 /* OAuthServiceMock.swift */,
+				CD841DB7225CBE80002656D5 /* ReachabilityMock.swift */,
+				CD841DC1225CBE80002656D5 /* RecordServiceMock.swift */,
 				0AA4559624167197008B788C /* SDKFileManagerMock.swift */,
-				0AA455982417A21B008B788C /* InfoServiceMock.swift */,
+				0AD36C94240798D200584D9B /* SDKVersionValidatorMock.swift */,
+				CD841DB5225CBE80002656D5 /* SessionAdapterMock.swift */,
+				CD841DBE225CBE80002656D5 /* TaggingServiceMock.swift */,
+				CD841DB8225CBE80002656D5 /* UserServiceMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -2098,7 +2098,7 @@
 				0ADB117B2554409D00E8129C /* String+Extensions.swift in Sources */,
 				CD109283225B901E00325389 /* SessionService.swift in Sources */,
 				36080C35237DB05900085476 /* DIError.swift in Sources */,
-				CD109275225B901E00325389 /* Data4LifeClient+FHIRResource.swift in Sources */,
+				CD109275225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift in Sources */,
 				CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */,
 				CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */,
 				CD109243225B901E00325389 /* DecryptedRecord.swift in Sources */,

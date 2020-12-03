@@ -17,18 +17,16 @@ import Foundation
 import Then
 
 protocol FhirServiceBatchOperations {
-    func createFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(_ resources: [R],
-                                                                    annotations: [String],
-                                                                    decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<R>, R>> where DR.Resource == R
-    func updateFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(_ resources: [R],
-                                                                    annotations: [String]?,
-                                                                    decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<R>, R>> where DR.Resource == R
-    func fetchFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                   of type: R.Type,
-                                                                   decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<R>, String>> where DR.Resource == R
-    func downloadFhirRecordsWithAttachments<R: FhirSDKResource, DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                                     of type: R.Type,
-                                                                                     decryptedRecordType: DR.Type,
-                                                                                     parentProgress: Progress) -> Promise<BatchResult<FhirRecord<R>, String>> where DR.Resource == R
+    func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
+                                                annotations: [String],
+                                                decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource
+    func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
+                                                annotations: [String]?,
+                                                decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource
+    func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
+                                               decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource
+    func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
+                                                                 decryptedRecordType: DR.Type,
+                                                                 parentProgress: Progress) -> Promise<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource
     func deleteFhirRecords(withIds identifiers: [String]) -> Promise<BatchResult<String, String>>
 }

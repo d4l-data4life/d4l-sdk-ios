@@ -26,17 +26,15 @@ protocol HasRecordOperationsDependencies {
 protocol HasMainRecordOperations {
     func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int>
     func deleteRecord(withId identifier: String) -> Promise<Void>
-    func fetchRecord<R, DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
-                                                                of type: R.Type,
-                                                                decryptedRecordType: DR.Type) -> Promise<Record> where Record.Resource == R, DR.Resource == R
-    func fetchRecords<R: SDKResource, DR: DecryptedRecord, Record: SDKRecord>(of type: R.Type,
-                                                                              decryptedRecordType: DR.Type,
-                                                                              recordType: Record.Type,
-                                                                              annotations: [String],
-                                                                              from startDate: Date?,
-                                                                              to endDate: Date?,
-                                                                              pageSize: Int?,
-                                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource
+    func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
+                                                             decryptedRecordType: DR.Type) -> Promise<Record> where Record.Resource == DR.Resource
+    func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
+                                                              recordType: Record.Type,
+                                                              annotations: [String],
+                                                              from startDate: Date?,
+                                                              to endDate: Date?,
+                                                              pageSize: Int?,
+                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource
 }
 
 extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
@@ -54,24 +52,22 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
         }
     }
 
-    func fetchRecord<R, DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
-                                                                of type: R.Type,
-                                                                decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == R, DR.Resource == R {
+    func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
+                                                             decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == DR.Resource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
-            let decryptedRecord: DR = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, of: type))
+            let decryptedRecord: DR = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, of: DR.Resource.self))
             return Record(decryptedRecord: decryptedRecord)
         }
     }
 
-    func fetchRecords<R: SDKResource, DR: DecryptedRecord, Record: SDKRecord>(of type: R.Type,
-                                                                              decryptedRecordType: DR.Type,
-                                                                              recordType: Record.Type,
-                                                                              annotations: [String],
-                                                                              from startDate: Date?,
-                                                                              to endDate: Date?,
-                                                                              pageSize: Int?,
-                                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
+    func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
+                                                              recordType: Record.Type,
+                                                              annotations: [String],
+                                                              from startDate: Date?,
+                                                              to endDate: Date?,
+                                                              pageSize: Int?,
+                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
             let decryptedRecords: [DR] = try await(self.recordService.searchRecords(for: userId,
@@ -80,7 +76,7 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
                                                                                     pageSize: pageSize,
                                                                                     offset: offset,
                                                                                     annotations: annotations,
-                                                                                    resourceType: type,
+                                                                                    resourceType: DR.Resource.self,
                                                                                     decryptedRecordType: decryptedRecordType))
             return decryptedRecords.compactMap { Record.init(decryptedRecord: $0)}
         }

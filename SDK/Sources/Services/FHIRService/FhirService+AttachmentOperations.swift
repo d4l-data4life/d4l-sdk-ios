@@ -20,13 +20,12 @@ import struct Data4LifeCrypto.Key
 
 extension FhirService {
 
-    func downloadFhirRecordWithAttachments<R: FhirSDKResource, DR: DecryptedRecord>(withId identifier: String,
-                                                                                    of type: R.Type = R.self,
-                                                                                    decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<R>> where DR.Resource == R {
+    func downloadFhirRecordWithAttachments<DR: DecryptedRecord>(withId identifier: String,
+                                                                decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
-            let decryptedRecord = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, of: type, decryptedRecordType: decryptedRecordType))
-            let record = FhirRecord<R>(decryptedRecord: decryptedRecord)
+            let decryptedRecord = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, of: DR.Resource.self, decryptedRecordType: decryptedRecordType))
+            let record = FhirRecord<DR.Resource>(decryptedRecord: decryptedRecord)
             guard let attachmentKey = decryptedRecord.attachmentKey else { return record }
 
             if let resourceWithAttachments = record.fhirResource as? HasAttachments {
@@ -74,7 +73,8 @@ extension FhirService {
         }
     }
 
-    func uploadAttachments<R: FhirSDKResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type = DR.self) -> Promise<(resource: R,  key: Key?)> {
+    func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource,
+                                                decryptedRecordType: DR.Type = DR.self) -> Promise<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
@@ -85,7 +85,7 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, of: R.self, decryptedRecordType: decryptedRecordType))
+            let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, of: DR.Resource.self, decryptedRecordType: decryptedRecordType))
             //Gets all Attachments without data
             let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments as? [Attachment] ?? []
             let newKey = try await(self.cryptoService.generateGCKey(.attachment))

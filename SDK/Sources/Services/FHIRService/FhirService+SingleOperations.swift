@@ -19,10 +19,10 @@ import Data4LifeFHIR
 import struct Data4LifeCrypto.Key
 
 extension FhirService {
-    func createFhirRecord<R: FhirSDKResource, DR: DecryptedRecord>(_ resource: R,
-                                                                   annotations: [String] = [],
-                                                                   decryptedRecordType: DR.Type = DR.self) ->
-    Promise<FhirRecord<R>> where DR.Resource == R {
+    func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,
+                                               annotations: [String] = [],
+                                               decryptedRecordType: DR.Type = DR.self) ->
+    Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
             let resourceWithKey = try await(self.uploadAttachments(creating: resource))
@@ -35,9 +35,9 @@ extension FhirService {
         }
     }
 
-    func updateFhirRecord<R: FhirSDKResource, DR: DecryptedRecord>(_ resource: R,
-                                                                   annotations: [String]? = nil,
-                                                                   decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<R>> where DR.Resource == R {
+    func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,
+                                               annotations: [String]? = nil,
+                                               decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }

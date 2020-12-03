@@ -17,12 +17,12 @@ import Foundation
 import Then
 
 extension FhirService {
-    func createFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(_ resources: [R],
-                                                                    annotations: [String] = [],
-                                                                    decryptedRecordType: DR.Type = DR.self) -> Promise<BatchResult<FhirRecord<R>, R>> where DR.Resource == R {
+    func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
+                                                annotations: [String] = [],
+                                                decryptedRecordType: DR.Type = DR.self) -> Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            var success: [FhirRecord<R>] = []
-            var failed: [(R, Error)] = []
+            var success: [FhirRecord<DR.Resource>] = []
+            var failed: [(DR.Resource, Error)] = []
             try resources.forEach { (resource) in
                 try await(self.createFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
                             .then { success.append($0) }
@@ -34,12 +34,12 @@ extension FhirService {
         }
     }
 
-    func updateFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(_ resources: [R],
-                                                                    annotations: [String]? = nil,
-                                                                    decryptedRecordType: DR.Type = DR.self) -> Promise<BatchResult<FhirRecord<R>, R>> where DR.Resource == R {
+    func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
+                                                annotations: [String]? = nil,
+                                                decryptedRecordType: DR.Type = DR.self) -> Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            var success: [FhirRecord<R>] = []
-            var failed: [(R, Error)] = []
+            var success: [FhirRecord<DR.Resource>] = []
+            var failed: [(DR.Resource, Error)] = []
             try resources.forEach { resource in
                 try await(self.updateFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
                             .then { success.append($0) }
@@ -51,11 +51,10 @@ extension FhirService {
         }
     }
 
-    func fetchFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                   of type: R.Type = R.self,
-                                                                   decryptedRecordType: DR.Type = DR.self) -> Promise<BatchResult<FhirRecord<R>, String>>  where DR.Resource == R {
+    func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
+                                               decryptedRecordType: DR.Type = DR.self) -> Promise<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         return async {
-            var success: [FhirRecord<R>] = []
+            var success: [FhirRecord<DR.Resource>] = []
             var failed: [(String, Error)] = []
             try identifiers.forEach { recordId in
                 try await(self.fetchFhirRecord(withId: recordId, decryptedRecordType: decryptedRecordType)
@@ -67,19 +66,18 @@ extension FhirService {
         }
     }
 
-    func downloadFhirRecordsWithAttachments<R: FhirSDKResource, DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                                     of type: R.Type = R.self,
-                                                                                     decryptedRecordType: DR.Type = DR.self,
-                                                                                     parentProgress: Progress)
-    -> Promise<BatchResult<FhirRecord<R>, String>> where DR.Resource == R {
+    func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
+                                                                 decryptedRecordType: DR.Type = DR.self,
+                                                                 parentProgress: Progress)
+    -> Promise<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         return async {
-            var success: [FhirRecord<R>] = []
+            var success: [FhirRecord<DR.Resource>] = []
             var fail: [(String, Error)] = []
             identifiers.forEach { identifier in
                 do {
                     let downloadProgress = Progress(totalUnitCount: 1, parent: parentProgress, pendingUnitCount: 1)
                     downloadProgress.becomeCurrent(withPendingUnitCount: 1)
-                    let record: FhirRecord<R> = try await(self.downloadFhirRecordWithAttachments(withId: identifier, of: type, decryptedRecordType: decryptedRecordType))
+                    let record: FhirRecord<DR.Resource> = try await(self.downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: decryptedRecordType))
                     success.append(record)
                     downloadProgress.resignCurrent()
                 } catch {

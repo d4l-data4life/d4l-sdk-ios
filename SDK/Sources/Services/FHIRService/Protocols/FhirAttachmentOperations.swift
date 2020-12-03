@@ -36,11 +36,10 @@ protocol FhirAttachmentOperations {
                                                                      recordId: String,
                                                                      downloadType: DownloadType,
                                                                      parentProgress: Progress) -> Promise<[A]>
-    func downloadFhirRecordWithAttachments<R: FhirSDKResource, DR: DecryptedRecord>(withId identifier: String,
-                                                                                    of type: R.Type,
-                                                                                    decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R
+    func downloadFhirRecordWithAttachments<DR: DecryptedRecord>(withId identifier: String,
+                                                                decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
     func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: Key?)>
-    func uploadAttachments<R: FhirSDKResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type) -> Promise<(resource: R,  key: Key?)>
+    func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource, decryptedRecordType: DR.Type) -> Promise<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource
 }
 
 extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependencies & HasRecordOperationsDependencies {

@@ -19,7 +19,7 @@ import Then
 import Data4LifeFHIR
 import Data4LifeCrypto
 
-class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperationsDependencies, HasMainRecordOperations, FhirServiceType where MDR.Resource: AnyFhirResource {
+class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperationsDependencies, HasMainRecordOperations, FhirServiceType where MDR.Resource: FhirSDKResource {
 
     var attachmentService: AttachmentServiceType = AttachmentServiceMock<Attachment>()
     var recordService: RecordServiceType = RecordServiceMock<MDR.Resource,MDR>()
@@ -27,11 +27,11 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
     var cryptoService: CryptoServiceType = CryptoServiceMock()
 
     // MARK: Main Operations Properties
-    var fetchRecordsCalledWith: (MDR.Resource.Type, Date?, Date?, [String]?, Int?, Int?)?
+    var fetchRecordsCalledWith: (MDR.Type, Date?, Date?, [String]?, Int?, Int?)?
     var fetchRecordsResult: Async<[FhirRecord<MDR.Resource>]>?
     var countRecordsCalledWith: (MDR.Resource.Type, [String]?)?
     var countRecordsResult: Async<Int>?
-    var fetchRecordWithIdCalledWith: (String, MDR.Resource.Type)?
+    var fetchRecordWithIdCalledWith: (String, MDR.Type)?
     var fetchRecordWithIdResult: Async<FhirRecord<MDR.Resource>>?
     var deleteRecordCalledWith: (String)?
     var deleteRecordResult: Async<Void>?
@@ -45,7 +45,7 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
     // MARK: Batch Operations Properties
     var createFhirRecordsCalledWith: ([MDR.Resource], [String])?
     var createFhirRecordsResult: Promise<BatchResult<FhirRecord<MDR.Resource>, MDR.Resource>>?
-    var fetchFhirRecordsWithIdsCalledWith: ([String], MDR.Resource.Type)?
+    var fetchFhirRecordsWithIdsCalledWith: ([String], MDR.Type)?
     var fetchFhirRecordsWithIdsResult: Promise<BatchResult<FhirRecord<MDR.Resource>, String>>?
     var updateFhirRecordsCalledWith: ([MDR.Resource], [String]?)?
     var updateFhirRecordsResult: Promise<BatchResult<FhirRecord<MDR.Resource>, MDR.Resource>>?
@@ -55,7 +55,7 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
     var downloadFhirRecordsResult: Promise<BatchResult<FhirRecord<MDR.Resource>, String>>?
 
     // MARK: Attachment Operations Properties
-    var downloadRecordCalledWith: (String, MDR.Resource.Type)?
+    var downloadRecordCalledWith: (String, MDR.Type)?
     var downloadGenericRecordResult: Promise<FhirRecord<FhirStu3Resource>>?
     var downloadSpecificRecordResult: Promise<FhirRecord<DocumentReference>>?
     var uploadAttachmentsCreatingCalledWith: (MDR.Resource)?
@@ -75,22 +75,20 @@ extension FhirServiceMock {
         return countRecordsResult ?? Async.reject()
     }
 
-    func fetchRecords<R: SDKResource, DR: DecryptedRecord, Record: SDKRecord>(of type: R.Type,
-                                                                              decryptedRecordType: DR.Type,
-                                                                              recordType: Record.Type,
-                                                                              annotations: [String] = [],
-                                                                              from startDate: Date?,
-                                                                              to endDate: Date?,
-                                                                              pageSize: Int?,
-                                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
-        fetchRecordsCalledWith = (type as! MDR.Resource.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
+    func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
+                                                              recordType: Record.Type,
+                                                              annotations: [String] = [],
+                                                              from startDate: Date?,
+                                                              to endDate: Date?,
+                                                              pageSize: Int?,
+                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
+        fetchRecordsCalledWith = (decryptedRecordType as! MDR.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
         return fetchRecordsResult as? Async<[Record]> ?? Async.reject()
     }
 
-    func fetchRecord<R, DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
-                                                                of type: R.Type,
-                                                                decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == R, DR.Resource == R {
-        fetchRecordWithIdCalledWith = (identifier, type as! MDR.Resource.Type) // swiftlint:disable:this force_cast
+    func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
+                                                             decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == DR.Resource {
+        fetchRecordWithIdCalledWith = (identifier, decryptedRecordType as! MDR.Type) // swiftlint:disable:this force_cast
         return fetchRecordWithIdResult as? Async<Record> ?? Async.reject()
     }
 
@@ -102,31 +100,30 @@ extension FhirServiceMock {
 
 // MARK: - Single Operations
 extension FhirServiceMock {
-    func createFhirRecord<R: AnyFhirResource, DR: DecryptedRecord>(_ resource: R,
-                                                                   annotations: [String] = [],
-                                                                   decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R {
+    func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,
+                                               annotations: [String] = [],
+                                               decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         createFhirRecordCalledWith = (resource as? MDR.Resource, annotations)
-        return createFhirRecordResult as? Async<FhirRecord<R>> ?? Async.reject()
+        return createFhirRecordResult as? Async<FhirRecord<DR.Resource>> ?? Async.reject()
     }
 
-    func updateFhirRecord<R: AnyFhirResource, DR: DecryptedRecord>(_ resource: R, annotations: [String]?, decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R {
+    func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String]?, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         updateFhirRecordCalledWith = (resource as? MDR.Resource, annotations)
-        return updateFhirRecordResult as? Async<FhirRecord<R>> ?? Async.reject()
+        return updateFhirRecordResult as? Async<FhirRecord<DR.Resource>> ?? Async.reject()
     }
 }
 
 // MARK: - Attachment Operations
 extension FhirServiceMock {
 
-    func downloadFhirRecordWithAttachments<R: AnyFhirResource, DR: DecryptedRecord>(withId identifier: String,
-                                                                                    of type: R.Type,
-                                                                                    decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R {
-        downloadRecordCalledWith = (identifier, type as! MDR.Resource.Type) // swiftlint:disable:this force_cast
+    func downloadFhirRecordWithAttachments<DR: DecryptedRecord>(withId identifier: String,
+                                                                decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource : FhirSDKResource {
+        downloadRecordCalledWith = (identifier, decryptedRecordType as! MDR.Type) // swiftlint:disable:this force_cast
 
         if let downloadGenericRecordResult = downloadGenericRecordResult {
-            return downloadGenericRecordResult as! Promise<FhirRecord<R>> // swiftlint:disable:this force_cast
+            return downloadGenericRecordResult as! Promise<FhirRecord<DR.Resource>> // swiftlint:disable:this force_cast
         } else if let downloadSpecificRecordResult = downloadSpecificRecordResult {
-            return downloadSpecificRecordResult as! Promise<FhirRecord<R>> // swiftlint:disable:this force_cast
+            return downloadSpecificRecordResult as! Promise<FhirRecord<DR.Resource>> // swiftlint:disable:this force_cast
         } else {
             return Async.reject()
         }
@@ -166,25 +163,24 @@ extension FhirServiceMock {
 // MARK: Batch Operations
 extension FhirServiceMock {
 
-    func createFhirRecords<R: AnyFhirResource, DR: DecryptedRecord>(_ resources: [R],
-                                                                    annotations: [String] = [],
-                                                                    decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<R>, R>> where DR.Resource == R {
+    func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
+                                                annotations: [String] = [],
+                                                decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         createFhirRecordsCalledWith = (resources as! [MDR.Resource], annotations) // swiftlint:disable:this force_cast
-        return  createFhirRecordsResult as? Promise<BatchResult<FhirRecord<R>, R>> ?? Async.reject()
+        return  createFhirRecordsResult as? Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> ?? Async.reject()
     }
 
-    func updateFhirRecords<R: AnyFhirResource, DR: DecryptedRecord>(_ resources: [R],
-                                                                    annotations: [String]? = nil,
-                                                                    decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<R>, R>> where DR.Resource == R {
+    func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
+                                                annotations: [String]? = nil,
+                                                decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         updateFhirRecordsCalledWith = (resources as! [MDR.Resource], annotations) // swiftlint:disable:this force_cast
-        return  updateFhirRecordsResult as? Promise<(success: [FhirRecord<R>], failed: [(object: R, error: Error)])> ?? Async.reject()
+        return  updateFhirRecordsResult as? Promise<(success: [FhirRecord<DR.Resource>], failed: [(object: DR.Resource, error: Error)])> ?? Async.reject()
     }
 
-    func fetchFhirRecords<R: AnyFhirResource, DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                   of type: R.Type,
-                                                                   decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<R>, String>>  where DR.Resource == R {
-        fetchFhirRecordsWithIdsCalledWith = (identifiers, type as! MDR.Resource.Type) // swiftlint:disable:this force_cast
-        return fetchFhirRecordsWithIdsResult as? Promise<BatchResult<FhirRecord<R>, String>> ?? Async.reject()
+    func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
+                                               decryptedRecordType: DR.Type) -> Promise<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
+        fetchFhirRecordsWithIdsCalledWith = (identifiers, decryptedRecordType as! MDR.Type) // swiftlint:disable:this force_cast
+        return fetchFhirRecordsWithIdsResult as? Promise<BatchResult<FhirRecord<DR.Resource>, String>> ?? Async.reject()
     }
 
     func deleteFhirRecords(withIds identifiers: [String]) -> Promise<BatchResult<String, String>> {
@@ -192,11 +188,10 @@ extension FhirServiceMock {
         return deleteFhirRecordsWithIdsResult ?? Async.reject()
     }
 
-    func downloadFhirRecordsWithAttachments<R: AnyFhirResource, DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                                     of type: R.Type,
-                                                                                     decryptedRecordType: DR.Type,
-                                                                                     parentProgress: Progress) -> Promise<BatchResult<FhirRecord<R>, String>> where DR.Resource == R {
+    func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
+                                                                 decryptedRecordType: DR.Type,
+                                                                 parentProgress: Progress) -> Promise<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
             downloadFhirRecordsCalledWith = (identifiers, parentProgress)
-            return downloadFhirRecordsResult as? Promise<BatchResult<FhirRecord<R>, String>> ?? Async.reject()
+            return downloadFhirRecordsResult as? Promise<BatchResult<FhirRecord<DR.Resource>, String>> ?? Async.reject()
     }
 }
