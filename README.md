@@ -32,16 +32,19 @@ Current documentation can be found on [GitHub Pages](https://d4l-data4life.githu
 
 #### CocoaPods
 
-You can use [CocoaPods](https://cocoapods.org/).
+To install with [CocoaPods](https://cocoapods.org/) add the following line to the podfile.
 
 ```ruby
+source 'https://github.com/d4l-data4life/d4l-cocoapods-specs.git'
+
 pod 'Data4LifeSDK', '~> 1.12.0'
 ```
 
+**Note**: For more info check [README](https://github.com/d4l-data4life/d4l-cocoapods-specs/blob/master/README.md).
+
 #### Carthage
 
-You can use [Carthage](https://github.com/Carthage/Carthage).
-Specify in Cartfile:
+To install with [Carthage](https://github.com/Carthage/Carthage) add the following line to the Cartfile:
 
 ```ruby
 github "d4l-data4life/d4l-sdk-ios"
@@ -49,31 +52,8 @@ github "d4l-data4life/d4l-sdk-ios"
 
 Run `carthage` to build the framework and drag the built Data4LifeSDK.framework into your Xcode project. Follow [build instructions](https://github.com/Carthage/Carthage#getting-started).
 
-#### Swift Package Manager
-
-You can use [Swift Package Manager](https://swift.org/package-manager/) and specify dependency in `Package.swift` by adding this:
-
-```swift
-.package(url: "https://github.com/d4l-data4life/d4l-sdk-ios.git", .upToNextMinor(from: "1.12.0"))
-```
-
-Notice: Swift Package Manager uses a fixed debug configuration for debug Xcode builds, which may result in significantly worse performance when encrypting data. Release build is however optimized.
-
 ## Building
 
-#### Install Carthage
-
-```sh
-brew install carthage
-```
-*Note*: For other installation methods check [README](https://github.com/Carthage/Carthage#installing-carthage).
-
-#### Build frameworks
-
-*Note*: Since from XCode 12 Carthage packaging does not work anymore, please use the script [README](https://github.com/Carthage/Carthage#installing-carthage).
-```sh
-./wcarthage.sh bootstrap --use-ssh --platform iOS
-```
 ### Building Requirements
 
 === Config files
@@ -114,6 +94,20 @@ The configuration file has the following structure:
 
 In order for the example app to choose which environment to use, you need to change the build setting `D4L_CONFIGURATION` on the Example target, and set any of the following values:
 DEVELOPMENT, SANDBOX, STAGING, PRODUCTION
+
+#### Install Carthage
+
+```sh
+brew install carthage
+```
+*Note*: For other installation methods check [README](https://github.com/Carthage/Carthage#installing-carthage).
+
+#### Build frameworks
+
+*Note*: Since from XCode 12 Carthage packaging does not work anymore, please use the script [README](https://github.com/Carthage/Carthage#installing-carthage).
+```sh
+./wcarthage.sh bootstrap --use-ssh --platform iOS
+```
 
 ### Example application
 Open `HCSDK.xcodeproj` and run the `Example` target.
