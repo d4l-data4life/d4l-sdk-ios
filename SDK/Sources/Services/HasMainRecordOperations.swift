@@ -56,7 +56,7 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
                                                              decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == DR.Resource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
-            let decryptedRecord: DR = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, of: DR.Resource.self))
+            let decryptedRecord: DR = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId))
             return Record(decryptedRecord: decryptedRecord)
         }
     }
@@ -76,7 +76,6 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
                                                                                     pageSize: pageSize,
                                                                                     offset: offset,
                                                                                     annotations: annotations,
-                                                                                    resourceType: DR.Resource.self,
                                                                                     decryptedRecordType: decryptedRecordType))
             return decryptedRecords.compactMap { Record.init(decryptedRecord: $0)}
         }

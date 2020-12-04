@@ -393,7 +393,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         stub("GET", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should return a record")
-        recordService.fetchRecord(recordId: record.id, userId: userId, of: DocumentReference.self, decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
+        recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
             .then { record in
                 defer { asyncExpectation.fulfill() }
 
@@ -448,7 +448,6 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
                                     pageSize: 10,
                                     offset: 0,
                                     annotations: annotations,
-                                    resourceType: DocumentReference.self,
                                     decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -478,7 +477,6 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
                                     to: endDate,
                                     pageSize: 10,
                                     offset: 0,
-                                    resourceType: DocumentReference.self,
                                     decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -560,7 +558,6 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
                                     to: Date(),
                                     pageSize: 10,
                                     offset: 0,
-                                    resourceType: DocumentReference.self,
                                     decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
             .then { _ in
                 XCTFail("Should return an error")
@@ -637,7 +634,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should return a record")
-        recordService.fetchRecord(recordId: record.id, userId: userId, of: type(of: record.resource), decryptedRecordType: type(of: record))
+        recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: type(of: record))
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in

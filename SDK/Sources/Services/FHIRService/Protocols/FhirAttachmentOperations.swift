@@ -80,7 +80,6 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
             let userId = try await(self.keychainService.get(.userId))
             let record = try await(self.recordService.fetchRecord(recordId: recordId,
                                                                   userId: userId,
-                                                                  of: DR.Resource.self,
                                                                   decryptedRecordType: DR.self))
 
             guard
