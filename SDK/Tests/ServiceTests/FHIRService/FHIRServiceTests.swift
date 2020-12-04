@@ -62,8 +62,7 @@ final class FhirStu3ServiceTests: XCTestCase {
         recordService.searchRecordsResult = Async.resolve([record])
 
         let asyncExpectation = expectation(description: "should return resources")
-        fhirService.fetchRecords(of: type(of: fhirResource),
-                                 decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self,
+        fhirService.fetchRecords(decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self,
                                  recordType: FhirRecord<CarePlan>.self,
                                  annotations: [],
                                  from: from,

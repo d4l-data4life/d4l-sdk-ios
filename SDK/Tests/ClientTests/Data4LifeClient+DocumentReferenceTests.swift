@@ -22,13 +22,12 @@ extension Data4LifeClientTests {
 
     func testCreateDocumentReferenceResource() {
         let resource = FhirFactory.createDocumentReferenceResource()
-        let unknownResource: FhirStu3Resource = resource
-        let record = RecordFactory.create(unknownResource)
+        let record = RecordFactory.create(resource)
 
         fhirService.createFhirRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.createFhirStu3Record(unknownResource) { result in
+        clientForDocumentReferences.createFhirStu3Record(resource) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -48,12 +47,11 @@ extension Data4LifeClientTests {
 
         let records = [firstRecord, secondRecord]
         let resources = [firstResource, secondResource]
-        let unknownResources: [FhirStu3Resource] = resources
 
-        fhirService.createFhirRecordsResult = Promise.resolve((records, [])).transformRecords(to: FhirResource.self)
+        fhirService.createFhirRecordsResult = Promise.resolve((records, []))
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.createFhirStu3Records(unknownResources) { result in
+        clientForDocumentReferences.createFhirStu3Records(resources) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -69,13 +67,12 @@ extension Data4LifeClientTests {
         let resourceId = UUID().uuidString
         let updateResource = FhirFactory.createDocumentReferenceResource()
         updateResource.id = resourceId
-        let unknownResource: FhirStu3Resource = updateResource
-        let record = RecordFactory.create(unknownResource)
+        let record = RecordFactory.create(updateResource)
 
         fhirService.updateFhirRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.updateFhirStu3Record(unknownResource) { result in
+        clientForDocumentReferences.updateFhirStu3Record(updateResource) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -101,12 +98,11 @@ extension Data4LifeClientTests {
 
         let records: [FhirRecord<DocumentReference>] = [firstRecord, secondRecord]
         let resources: [DocumentReference]  = [firstResource, secondResource]
-        let unknownResources: [FhirStu3Resource] = resources
 
-        fhirService.updateFhirRecordsResult = Promise.resolve((records, [])).transformRecords(to: FhirStu3Resource.self)
+        fhirService.updateFhirRecordsResult = Promise.resolve((records, []))
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.updateFhirStu3Records(unknownResources) { result in
+        clientForDocumentReferences.updateFhirStu3Records(resources) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -114,7 +110,7 @@ extension Data4LifeClientTests {
             XCTAssertEqual(result.value?.success.last?.fhirResource, secondResource)
             XCTAssertEqual(result.value?.success.first?.id, firstId)
             XCTAssertEqual(result.value?.success.last?.id, secondId)
-            XCTAssertEqual(self.fhirService.updateFhirRecordsCalledWith?.0, unknownResources)
+            XCTAssertEqual(self.fhirService.updateFhirRecordsCalledWith?.0, resources)
         }
 
         waitForExpectations(timeout: 5)
@@ -129,7 +125,7 @@ extension Data4LifeClientTests {
         fhirService.downloadSpecificRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.downloadStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        clientForDocumentReferences.downloadStu3Record(withId: resourceId, of: DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -143,63 +139,5 @@ extension Data4LifeClientTests {
         }
 
         waitForExpectations(timeout: 90)
-    }
-
-    func testDownloadDocumentReferenceResourcesUnspecifyingType() {
-        let firstResourceId = UUID().uuidString
-        let firstResource = FhirFactory.createDocumentReferenceResource()
-        firstResource.id = firstResourceId
-        let firstFixture: FhirStu3Resource = firstResource
-
-        let firstRecord = RecordFactory.create(firstFixture)
-
-        let secondResourceId = UUID().uuidString
-        let secondResource = FhirFactory.createDocumentReferenceResource()
-        secondResource.id = secondResourceId
-        let secondFixture: FhirStu3Resource = secondResource
-        let secondRecord = RecordFactory.create(secondFixture)
-
-        fhirService.downloadFhirRecordsResult = Promise.resolve(([firstRecord, secondRecord], []))
-
-        let asyncExpectation = expectation(description: "Should return success result")
-        client.downloadStu3Records(withIds: [firstResourceId, secondResourceId]) { result in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-            XCTAssertEqual(result.value?.success.first?.fhirResource, firstFixture)
-            XCTAssertEqual((result.value?.success.first?.fhirResource as? DocumentReference), firstResource)
-
-            XCTAssertEqual(result.value?.success.last?.fhirResource, secondFixture)
-            XCTAssertEqual((result.value?.success.last?.fhirResource as? DocumentReference), secondResource)
-            XCTAssertEqual(self.fhirService.downloadFhirRecordsCalledWith?.0, [firstResourceId, secondResourceId])
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testCreateMixedResources() {
-        let attachment = FhirFactory.createAttachmentElement()
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment]) as FhirStu3Resource
-        let documentRecord = RecordFactory.create(document)
-
-        let carePlan = FhirFactory.createCarePlanResource() as FhirStu3Resource
-        let carePlanRecord = RecordFactory.create(carePlan)
-
-        let resources: [FhirStu3Resource] = [document, carePlan]
-        let records: [FhirRecord<FhirStu3Resource>] = [documentRecord, carePlanRecord]
-
-        fhirService.createFhirRecordsResult = Promise.resolve((records, []))
-
-        let asyncExpectation = expectation(description: "Should return success result")
-        client.createFhirStu3Records(resources) { result in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-            XCTAssertEqual(result.value?.success.first?.fhirResource, document)
-            XCTAssertEqual(result.value?.success.last?.fhirResource, carePlan)
-            XCTAssertEqual(self.fhirService.createFhirRecordsCalledWith?.0, resources)
-        }
-
-        waitForExpectations(timeout: 5)
     }
 }

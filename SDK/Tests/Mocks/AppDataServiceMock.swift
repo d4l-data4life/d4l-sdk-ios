@@ -26,11 +26,11 @@ class AppDataServiceMock: HasRecordOperationsDependencies, HasMainRecordOperatio
     var cryptoService: CryptoServiceType = CryptoServiceMock()
 
     // MARK: Main Operations Properties
-    var fetchRecordsCalledWith: (Data.Type, Date?, Date?, [String]?, Int?, Int?)?
+    var fetchRecordsCalledWith: (DecryptedAppDataRecord.Type, Date?, Date?, [String]?, Int?, Int?)?
     var fetchRecordsResult: Async<[AppDataRecord]>?
     var countRecordsCalledWith: (Data.Type?, [String]?)?
     var countRecordsResult: Async<Int>?
-    var fetchRecordWithIdCalledWith: (String, Data.Type)?
+    var fetchRecordWithIdCalledWith: (String, DecryptedAppDataRecord.Type)?
     var fetchRecordWithIdResult: Async<AppDataRecord>?
     var deleteRecordCalledWith: (String)?
     var deleteRecordResult: Async<Void>?
@@ -49,22 +49,20 @@ extension AppDataServiceMock {
         return countRecordsResult ?? Async.reject()
     }
 
-    func fetchRecords<R: SDKResource, DR: DecryptedRecord, Record: SDKRecord>(of type: R.Type,
-                                                                              decryptedRecordType: DR.Type,
-                                                                              recordType: Record.Type,
-                                                                              annotations: [String],
-                                                                              from startDate: Date?,
-                                                                              to endDate: Date?,
-                                                                              pageSize: Int?,
-                                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
-        fetchRecordsCalledWith = (type as! Data.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
+    func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
+                                                              recordType: Record.Type,
+                                                              annotations: [String],
+                                                              from startDate: Date?,
+                                                              to endDate: Date?,
+                                                              pageSize: Int?,
+                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
+        fetchRecordsCalledWith = (decryptedRecordType as! DecryptedAppDataRecord.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
         return fetchRecordsResult as? Async<[Record]> ?? Async.reject()
     }
 
-    func fetchRecord<R, DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
-                                                                of type: R.Type,
-                                                                decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == R, DR.Resource == R {
-        fetchRecordWithIdCalledWith = (identifier, type as! Data.Type) // swiftlint:disable:this force_cast
+    func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
+                                                             decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == DR.Resource {
+        fetchRecordWithIdCalledWith = (identifier, decryptedRecordType as! DecryptedAppDataRecord.Type) // swiftlint:disable:this force_cast
         return fetchRecordWithIdResult as? Async<Record> ?? Async.reject()
     }
 

@@ -28,7 +28,7 @@ extension Data4LifeClientTests {
         appDataService.createAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.createAppDataRecord(resource, annotations: annotations) { result in
+        clientForDocumentReferences.createAppDataRecord(resource, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -48,7 +48,7 @@ extension Data4LifeClientTests {
         appDataService.createAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.createAppDataRecord(resource, annotations: annotations) { result in
+        clientForDocumentReferences.createAppDataRecord(resource, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -67,7 +67,7 @@ extension Data4LifeClientTests {
         appDataService.updateAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.updateAppDataRecord(updateResource, recordId: record.id) { result in
+        clientForDocumentReferences.updateAppDataRecord(updateResource, recordId: record.id) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -86,7 +86,7 @@ extension Data4LifeClientTests {
         appDataService.updateAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.updateCodableAppDataRecord(updateResource, recordId: record.id) { result in
+        clientForDocumentReferences.updateCodableAppDataRecord(updateResource, recordId: record.id) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -106,7 +106,7 @@ extension Data4LifeClientTests {
         appDataService.fetchRecordWithIdResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.fetchAppDataRecord(withId: resourceId) { result in
+        clientForDocumentReferences.fetchAppDataRecord(withId: resourceId) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -123,7 +123,7 @@ extension Data4LifeClientTests {
         appDataService.deleteRecordResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.deleteAppDataRecord(withId: resourceId) { result in
+        clientForDocumentReferences.deleteAppDataRecord(withId: resourceId) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -141,14 +141,14 @@ extension Data4LifeClientTests {
         appDataService.fetchRecordsResult = Async.resolve(records)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.fetchAppDataRecords { result in
+        clientForDocumentReferences.fetchAppDataRecords { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
             XCTAssertEqual(result.value?.first?.data, records.first?.data)
             XCTAssertEqual(result.value?.last?.data, records.last?.data)
-            XCTAssertTrue(self.appDataService.fetchRecordsCalledWith?.0 == Data.self)
+            XCTAssertTrue(self.appDataService.fetchRecordsCalledWith?.0 == DecryptedAppDataRecord.self)
         }
 
         waitForExpectations(timeout: 5)
@@ -159,7 +159,7 @@ extension Data4LifeClientTests {
         appDataService.countRecordsResult = Async.resolve(resourceCount)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.countAppDataRecords { result in
+        clientForDocumentReferences.countAppDataRecords { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

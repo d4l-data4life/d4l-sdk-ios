@@ -17,42 +17,40 @@ import Foundation
 import Then
 
 protocol FhirSingleOperations {
-    func fetchFhirRecord<R: FhirSDKResource, DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R
-    func fetchFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(of type: R.Type,
-                                                                   from: Date?,
-                                                                   to: Date?,
-                                                                   pageSize: Int?,
-                                                                   offset: Int?,
-                                                                   annotations: [String],
-                                                                   decryptedRecordType: DR.Type) -> Promise<[FhirRecord<R>]> where DR.Resource == R
+    func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
+    func fetchFhirRecords<DR: DecryptedRecord>(from: Date?,
+                                               to: Date?,
+                                               pageSize: Int?,
+                                               offset: Int?,
+                                               annotations: [String],
+                                               decryptedRecordType: DR.Type) -> Promise<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource
     func deleteFhirRecord(withId identifier: String) -> Promise<Void>
     func countFhirRecords<R: FhirSDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int>
-    func createFhirRecord<R: FhirSDKResource, DR: DecryptedRecord>(_ resource: R, annotations: [String], decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R
-    func updateFhirRecord<R: FhirSDKResource, DR: DecryptedRecord>(_ resource: R, annotations: [String]?, decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R
+    func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String], decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
+    func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String]?, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
 }
 
 extension FhirSingleOperations where Self: HasMainRecordOperations {
 
-    func fetchFhirRecord<R: FhirSDKResource, DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<R>> where DR.Resource == R {
-        return fetchRecord(withId: identifier, of: R.self, decryptedRecordType: decryptedRecordType)
+    func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
+        return fetchRecord(withId: identifier, decryptedRecordType: decryptedRecordType)
     }
 
-    func fetchFhirRecords<R: FhirSDKResource, DR: DecryptedRecord>(of type: R.Type,
-                                                                   from: Date?,
-                                                                   to: Date?,
-                                                                   pageSize: Int?,
-                                                                   offset: Int?,
-                                                                   annotations: [String],
-                                                                   decryptedRecordType: DR.Type) -> Promise<[FhirRecord<R>]> where DR.Resource == R {
-        fetchRecords(of: R.self,
-                     decryptedRecordType: decryptedRecordType,
-                     recordType: FhirRecord<R>.self,
+    func fetchFhirRecords<DR: DecryptedRecord>(from: Date?,
+                                               to: Date?,
+                                               pageSize: Int?,
+                                               offset: Int?,
+                                               annotations: [String],
+                                               decryptedRecordType: DR.Type) -> Promise<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource {
+        fetchRecords(decryptedRecordType: decryptedRecordType,
+                     recordType: FhirRecord<DR.Resource>.self,
                      annotations: annotations,
                      from: from,
                      to: to,
                      pageSize: pageSize,
                      offset: offset)
     }
+
     func deleteFhirRecord(withId identifier: String) -> Promise<Void> {
         return deleteRecord(withId: identifier)
     }

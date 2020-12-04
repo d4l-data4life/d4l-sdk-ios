@@ -154,7 +154,7 @@ extension Data4LifeClient {
                                                           queue: DispatchQueue = responseQueue,
                                                           completion: @escaping ResultBlock<BatchResult<FhirRecord<R>, String>>) {
         fhirService
-            .fetchFhirRecords(withIds: identifiers, of: type, decryptedRecordType: DecryptedFhirStu3Record<R>.self)
+            .fetchFhirRecords(withIds: identifiers, decryptedRecordType: DecryptedFhirStu3Record<R>.self)
             .complete(queue: queue, completion)
     }
 
@@ -180,8 +180,7 @@ extension Data4LifeClient {
                                                           queue: DispatchQueue = responseQueue,
                                                           completion: @escaping ResultBlock<[FhirRecord<R>]>) {
         let offset = (page - 1) * size
-        fhirService.fetchFhirRecords(of: type,
-                                     from: from,
+        fhirService.fetchFhirRecords(from: from,
                                      to: to,
                                      pageSize: size,
                                      offset: offset,

@@ -26,7 +26,7 @@ protocol AppDataServiceSingleOperations {
 
 extension AppDataServiceSingleOperations where Self: HasMainRecordOperations {
     func fetchAppDataRecord(withId identifier: String) -> Promise<AppDataRecord> {
-        return fetchRecord(withId: identifier, of: Data.self, decryptedRecordType: DecryptedAppDataRecord.self)
+        return fetchRecord(withId: identifier, decryptedRecordType: DecryptedAppDataRecord.self)
     }
 
     func deleteAppDataRecord(withId identifier: String) -> Promise<Void> {
@@ -38,8 +38,7 @@ extension AppDataServiceSingleOperations where Self: HasMainRecordOperations {
     }
 
     func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String] = []) -> Promise<[AppDataRecord]> {
-        return fetchRecords(of: Data.self,
-                            decryptedRecordType: DecryptedAppDataRecord.self,
+        return fetchRecords(decryptedRecordType: DecryptedAppDataRecord.self,
                             recordType: AppDataRecord.self,
                             annotations: annotations,
                             from: from,

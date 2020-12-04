@@ -31,7 +31,7 @@ extension Data4LifeClient {
                                                         queue: DispatchQueue = responseQueue,
                                                         completion: @escaping ResultBlock<FhirRecord<R>>) {
         fhirService
-            .downloadFhirRecordWithAttachments(withId: identifier, of: type, decryptedRecordType: DecryptedFhirStu3Record<R>.self)
+            .downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: DecryptedFhirStu3Record<R>.self)
             .complete(queue: queue, completion)
     }
 
@@ -49,7 +49,7 @@ extension Data4LifeClient {
                                                          completion: @escaping ResultBlock<BatchResult<FhirRecord<R>, String>>) {
         let totalProgress = Progress(totalUnitCount: Int64(identifiers.count))
         fhirService
-            .downloadFhirRecordsWithAttachments(withIds: identifiers, of: type, decryptedRecordType: DecryptedFhirStu3Record<R>.self, parentProgress: totalProgress)
+            .downloadFhirRecordsWithAttachments(withIds: identifiers, decryptedRecordType: DecryptedFhirStu3Record<R>.self, parentProgress: totalProgress)
             .complete(queue: queue, completion)
     }
 
