@@ -24,7 +24,7 @@ extension FhirService {
                                                                 decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
-            let decryptedRecord = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, of: DR.Resource.self, decryptedRecordType: decryptedRecordType))
+            let decryptedRecord = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, decryptedRecordType: decryptedRecordType))
             let record = FhirRecord<DR.Resource>(decryptedRecord: decryptedRecord)
             guard let attachmentKey = decryptedRecord.attachmentKey else { return record }
 
@@ -85,7 +85,7 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, of: DR.Resource.self, decryptedRecordType: decryptedRecordType))
+            let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
             //Gets all Attachments without data
             let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments as? [Attachment] ?? []
             let newKey = try await(self.cryptoService.generateGCKey(.attachment))

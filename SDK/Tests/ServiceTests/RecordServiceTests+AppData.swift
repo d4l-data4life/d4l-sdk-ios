@@ -106,7 +106,7 @@ extension RecordServiceTests {
         stub("GET", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should return a record")
-        recordService.fetchRecord(recordId: record.id, userId: userId, of: Data.self, decryptedRecordType: DecryptedAppDataRecord.self)
+        recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: DecryptedAppDataRecord.self)
             .then { record in
                 defer { asyncExpectation.fulfill() }
 
@@ -231,8 +231,7 @@ extension RecordServiceTests {
                                                                                          from: startDate,
                                                                                          to: endDate,
                                                                                          pageSize: 10,
-                                                                                         offset: 0,
-                                                                                         resourceType: Data.self)
+                                                                                         offset: 0)
          searchRecords.then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1)
@@ -258,7 +257,6 @@ extension RecordServiceTests {
                                     to: endDate,
                                     pageSize: 10,
                                     offset: 0,
-                                    resourceType: Data.self,
                                     decryptedRecordType: DecryptedAppDataRecord.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -323,7 +321,6 @@ extension RecordServiceTests {
                                     to: Date(),
                                     pageSize: 10,
                                     offset: 0,
-                                    resourceType: Data.self,
                                     decryptedRecordType: DecryptedAppDataRecord.self)
             .then { _ in
                 XCTFail("Should return an error")
@@ -402,7 +399,7 @@ extension RecordServiceTests {
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should return a record")
-        recordService.fetchRecord(recordId: record.id, userId: userId, of: type(of: record.resource), decryptedRecordType: type(of: record))
+        recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: type(of: record))
             .then { _ in
                 XCTFail("Should return an error")
         }.onError { error in

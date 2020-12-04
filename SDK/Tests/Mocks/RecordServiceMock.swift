@@ -23,12 +23,12 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
     // MARK: Single Operations
     var updateRecordCalledWith: (AnySDKResource<MockR>, [String]?, String, String, Key?)?
     var updateRecordResult: Async<MockDR>?
-    func updateRecord<R, DR>(forResource resource: R,
-                             annotations: [String]?,
-                             userId: String,
-                             recordId: String,
-                             attachmentKey: Key?,
-                             decryptedRecordType: DR.Type) -> Async<DR> where R : SDKResource, DR : DecryptedRecord {
+    func updateRecord<DR>(forResource resource: DR.Resource,
+                          annotations: [String]?,
+                          userId: String,
+                          recordId: String,
+                          attachmentKey: Key?,
+                          decryptedRecordType: DR.Type) -> Async<DR> where DR : DecryptedRecord {
         guard let resource = resource as? MockR else {
             fatalError()
         }
@@ -38,11 +38,11 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
 
     var createRecordCalledWith: (AnySDKResource<MockR>, [String]?, String, Key?)?
     var createRecordResult: Async<MockDR>?
-    func createRecord<R: SDKResource, DR: DecryptedRecord>(forResource resource: R,
-                                                           annotations: [String],
-                                                           userId: String,
-                                                           attachmentKey: Key?,
-                                                           decryptedRecordType: DR.Type) -> Async<DR> {
+    func createRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
+                                           annotations: [String],
+                                           userId: String,
+                                           attachmentKey: Key?,
+                                           decryptedRecordType: DR.Type) -> Async<DR> {
         guard let resource = resource as? MockR else {
             fatalError()
         }
@@ -50,11 +50,11 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
         return createRecordResult as? Promise<DR> ?? Async.reject()
     }
 
-    var fetchRecordCalledWith: (String, String, SDKResource.Type)?
+    var fetchRecordCalledWith: (String, String)?
     var fetchRecordResult: Async<MockDR>?
     var fetchRecordResults: [Async<MockDR>]?
-    func fetchRecord<R, DR>(recordId: String, userId: String, of type: R.Type, decryptedRecordType: DR.Type) -> Async<DR> where R : SDKResource, DR : DecryptedRecord {
-        fetchRecordCalledWith = (recordId, userId, type)
+    func fetchRecord<DR>(recordId: String, userId: String, decryptedRecordType: DR.Type) -> Async<DR> where DR : DecryptedRecord {
+        fetchRecordCalledWith = (recordId, userId)
         if let results = fetchRecordResults, let first = results.first {
             fetchRecordResults = Array(results.dropFirst())
             return first as? Promise<DR> ?? Async.reject()
@@ -70,17 +70,16 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
     }
 
     // MARK: Shared operations
-    var searchRecordsCalledWith: (Date?, Date?, Int?, Int?, [String]?, SDKResource.Type)?
+    var searchRecordsCalledWith: (Date?, Date?, Int?, Int?, [String]?)?
     var searchRecordsResult: Async<[MockDR]>?
-    func searchRecords<R, DR>(for userId: String,
-                              from startDate: Date?,
-                              to endDate: Date?,
-                              pageSize: Int?,
-                              offset: Int?,
-                              annotations: [String],
-                              resourceType: R.Type,
-                              decryptedRecordType: DR.Type) -> Async<[DR]> where R : SDKResource, DR : DecryptedRecord {
-        searchRecordsCalledWith = (startDate, endDate, pageSize, offset, annotations, resourceType)
+    func searchRecords<DR>(for userId: String,
+                           from startDate: Date?,
+                           to endDate: Date?,
+                           pageSize: Int?,
+                           offset: Int?,
+                           annotations: [String],
+                           decryptedRecordType: DR.Type) -> Async<[DR]> where DR : DecryptedRecord {
+        searchRecordsCalledWith = (startDate, endDate, pageSize, offset, annotations)
         return searchRecordsResult as? Promise<[DR]> ?? Async.reject()
     }
 
