@@ -35,5 +35,4 @@ extension SDKRecord {
 
 protocol SDKResource: ModelVersionInformation, Codable {
     static var searchTags: [String: String] { get }
-    var resourceTags: [String: String] { get }
 }

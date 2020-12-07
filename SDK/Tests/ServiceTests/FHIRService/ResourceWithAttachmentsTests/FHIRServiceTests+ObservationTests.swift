@@ -75,7 +75,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
 
-        expectedObservation.allAttachments?.forEach { $0.attachmentData = nil }
+        expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let createdRecord = DecryptedRecordFactory.create(expectedObservation)
         expectedObservation.id = createdRecord.id
@@ -115,7 +115,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let observationComponentAttachment1 = FhirFactory.createAttachmentElement()
         let observationComponentAttachment2 = FhirFactory.createAttachmentElement()
 
-        XCTAssertEqual(observationAttachment.attachmentData, observationComponentAttachment2.attachmentData)
+        XCTAssertEqual(observationAttachment.attachmentDataString, observationComponentAttachment2.attachmentDataString)
         XCTAssertNotEqual(observationAttachment, observationComponentAttachment2)
 
         let observationComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: observationComponentAttachment1)
@@ -139,7 +139,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
 
-        //expectedObservation.allAttachments?.forEach { $0.attachmentData = nil }
+        //expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let expectedRecord = DecryptedRecordFactory.create(expectedObservation)
         expectedObservation.id = expectedRecord.id
@@ -202,7 +202,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
 
-        expectedObservation.allAttachments?.forEach { $0.attachmentData = nil }
+        expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let createdRecord = DecryptedRecordFactory.create(expectedObservation)
         expectedObservation.id = createdRecord.id
@@ -267,8 +267,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fhirResource = FhirFactory.createObservationResource()
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
-        attachment.attachmentData = (currentData + blankData).base64EncodedString()
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
+        attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         fhirResource.valueAttachment = attachment
         let record = DecryptedRecordFactory.create(fhirResource)
 
@@ -296,7 +296,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let attachment = FhirFactory.createAttachmentElement()
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
-        attachment.attachmentData = Data([0x00]).base64EncodedString()
+        attachment.attachmentDataString = Data([0x00]).base64EncodedString()
 
         keychainService[.userId] = userId
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
@@ -327,7 +327,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let additionalIds = [String]()
         let record = DecryptedRecordFactory.create(fhirResource)
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
-        updatedResource.allAttachments?.forEach { $0.attachmentData = nil }
+        updatedResource.allAttachments?.forEach { $0.attachmentDataString = nil }
         let updatedRecord = record.copy(with: updatedResource)
 
         keychainService[.userId] = userId
@@ -348,7 +348,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.3, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertNotNil(self.recordService.updateRecordCalledWith?.4, "A param in the method doesn't match the expectation")
 
-                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentData, "Data in the attachment is expected to be nil")
+                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
 
                 XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, attachment, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
@@ -385,7 +385,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
     func testFailUpdateObservationInvalidContentType() {
         let userId = UUID().uuidString
         let attachment = FhirFactory.createAttachmentElement()
-        attachment.attachmentData = Data([0x00]).base64EncodedString()
+        attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
@@ -414,8 +414,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
-        attachment.attachmentData = (currentData + blankData).base64EncodedString()
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
+        attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
@@ -459,7 +459,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
-        updatedAttachment!.attachmentData = newData.base64EncodedString()
+        updatedAttachment!.attachmentDataString = newData.base64EncodedString()
         updatedAttachment!.attachmentHash = newData.sha1Hash
         updatedAttachment!.attachmentSize = newData.byteCount
 
@@ -534,7 +534,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
-        updatedAttachment?.attachmentData = newData.base64EncodedString()
+        updatedAttachment?.attachmentDataString = newData.base64EncodedString()
         updatedAttachment?.attachmentHash = newData.sha1Hash
         updatedAttachment?.attachmentSize = newData.byteCount
 
@@ -606,7 +606,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
-        updatedAttachment!.attachmentData = newData.base64EncodedString()
+        updatedAttachment!.attachmentDataString = newData.base64EncodedString()
         let newAttachment = FhirFactory.createAttachmentElement()
         newAttachment.hash = "brokenHash"
         let newAttachmentWithId = FhirFactory.createAttachmentElement()
@@ -661,7 +661,7 @@ extension FhirStu3ServiceObservationTests {
 
         let expectedResource = fixtureResource.copy() as! Observation // swiftlint:disable:this force_cast
         expectedResource.setAdditionalIds(expectedAdditionalId)
-        expectedResource.allAttachments?.forEach { $0.attachmentData = nil }
+        expectedResource.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let createdRecord = DecryptedRecordFactory.create(expectedResource)
         fixtureResource.id = createdRecord.id

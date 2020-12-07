@@ -33,7 +33,7 @@ extension AttachmentType {
         //All attachments created after Mar. 13th 2020 will be validated
         let startingValidationDate = Date(timeIntervalSince1970: 1584144000.0)
         if creationDate.compare(startingValidationDate) == .some(.orderedDescending) {
-            return self.getData()?.sha1Hash == hash ? .valid : .notValid
+            return attachmentData?.sha1Hash == hash ? .valid : .notValid
         } else {
             return .unknown
         }
@@ -49,7 +49,7 @@ extension AttachmentType {
     }
 
     func validatePayloadType(using validator: DataValidator = DataValidator.d4lSDK) throws {
-        guard let data = getData() else {
+        guard let data = attachmentData else {
             return
         }
 
@@ -58,7 +58,7 @@ extension AttachmentType {
     }
 
     func validatePayloadSize(using validator: DataValidator = DataValidator.d4lSDK) throws {
-        guard let data = getData(), let upperFilesizeLimit = validator.upperFilesizeLimitInBytes else {
+        guard let data = attachmentData, let upperFilesizeLimit = validator.upperFilesizeLimitInBytes else {
             return
         }
 

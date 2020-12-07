@@ -36,9 +36,7 @@ extension Data: SDKResource {
         return tags
     }
 
-    public var resourceTags: [String : String] {
-        Data.searchTags
-    }
+    static var modelVersion: Int { 1 }
 }
 
 extension AppDataRecord: SDKRecord {

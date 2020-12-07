@@ -86,6 +86,7 @@
 		368AFB0C23744D56004AE88F /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0B23744D56004AE88F /* LoggerService.swift */; };
 		368AFB0E23744DF5004AE88F /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */; };
 		368AFB1023747853004AE88F /* LoggerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0F23747853004AE88F /* LoggerServiceTests.swift */; };
+		36AE9503257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */; };
 		36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */; };
 		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
 		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
@@ -182,7 +183,7 @@
 		CD10926F225B901E00325389 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921B225B901E00325389 /* Dictionary+Extensions.swift */; };
 		CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921C225B901E00325389 /* Date+CustomFormatter.swift */; };
 		CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109221225B901E00325389 /* Data4LifeClient.swift */; };
-		CD109275225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109223225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift */; };
+		CD109275225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */; };
 		CD109277225B901E00325389 /* RecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109227225B901E00325389 /* RecordService.swift */; };
 		CD109278225B901E00325389 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109228225B901E00325389 /* UserService.swift */; };
 		CD109279225B901E00325389 /* OAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109229225B901E00325389 /* OAuthService.swift */; };
@@ -451,6 +452,7 @@
 		368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		368AFB0F23747853004AE88F /* LoggerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerServiceTests.swift; sourceTree = "<group>"; };
 		369583B5255EC4E800F9C80C /* Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Resource.swift"; sourceTree = "<group>"; };
 		36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data4LifeConfiguration.swift; sourceTree = "<group>"; };
 		36D96135256FF8DA004D69CA /* d4l-example.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "d4l-example.xcconfig"; path = "generated/d4l-example.xcconfig"; sourceTree = SOURCE_ROOT; };
 		36DD7A5A255ED0D600FA6EB7 /* Encodable+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Data.swift"; sourceTree = "<group>"; };
@@ -554,7 +556,7 @@
 		CD10921B225B901E00325389 /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		CD10921C225B901E00325389 /* Date+CustomFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+CustomFormatter.swift"; sourceTree = "<group>"; };
 		CD109221225B901E00325389 /* Data4LifeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeClient.swift; sourceTree = "<group>"; };
-		CD109223225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FHIRStu3Resource.swift"; sourceTree = "<group>"; };
+		CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3Resource.swift"; sourceTree = "<group>"; };
 		CD109224225B901E00325389 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD109227225B901E00325389 /* RecordService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordService.swift; sourceTree = "<group>"; };
 		CD109228225B901E00325389 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -1313,7 +1315,8 @@
 			isa = PBXGroup;
 			children = (
 				CD109221225B901E00325389 /* Data4LifeClient.swift */,
-				CD109223225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift */,
+				CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */,
+				36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */,
 				3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */,
 				CDE0336A22A7B2AA00002282 /* Data4LifeClient+Attachment.swift */,
 			);
@@ -2098,7 +2101,7 @@
 				0ADB117B2554409D00E8129C /* String+Extensions.swift in Sources */,
 				CD109283225B901E00325389 /* SessionService.swift in Sources */,
 				36080C35237DB05900085476 /* DIError.swift in Sources */,
-				CD109275225B901E00325389 /* Data4LifeClient+FHIRStu3Resource.swift in Sources */,
+				CD109275225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift in Sources */,
 				CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */,
 				CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */,
 				CD109243225B901E00325389 /* DecryptedRecord.swift in Sources */,
@@ -2120,6 +2123,7 @@
 				CD10926C225B901E00325389 /* Async+ResultBlock.swift in Sources */,
 				3689D7F824EABA34004295D9 /* SDKRecord.swift in Sources */,
 				CDE39AE822E7467800ABE043 /* DocumentResponse.swift in Sources */,
+				36AE9503257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift in Sources */,
 				3689D80424EAC39D004295D9 /* FHIRResource+SDKResource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

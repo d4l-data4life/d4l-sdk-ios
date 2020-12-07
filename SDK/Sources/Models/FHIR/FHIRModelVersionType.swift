@@ -18,25 +18,43 @@ import Foundation
 protocol FhirVersionInformation {
     static var fhirVersion: String { get }
 }
-extension FhirVersionInformation {
-    public static var fhirVersion: String {
-        return "3.0.1"
-    }
-}
 
 protocol ModelVersionInformation {
     static var modelVersion: Int { get }
 }
-extension ModelVersionInformation {
-    public static var modelVersion: Int {
+
+extension FhirStu3Element: FhirVersionInformation, ModelVersionInformation {
+    static var fhirVersion: String {
+        return "3.0.1"
+    }
+    static var modelVersion: Int {
         return 1
     }
 }
 
-extension FhirElement: FhirVersionInformation, ModelVersionInformation {}
-extension FhirStu3Resource: FhirVersionInformation, ModelVersionInformation {}
+extension FhirStu3Resource: FhirVersionInformation, ModelVersionInformation {
+    static var fhirVersion: String {
+        return "3.0.1"
+    }
+    static var modelVersion: Int {
+        return 1
+    }
+}
+
 extension FhirR4Resource: FhirVersionInformation, ModelVersionInformation {
-    public static var fhirVersion: String {
+    static var fhirVersion: String {
         return "4.0.1"
+    }
+    static var modelVersion: Int {
+        return 1
+    }
+}
+
+extension FhirR4Element: FhirVersionInformation, ModelVersionInformation {
+    static var fhirVersion: String {
+        return "4.0.1"
+    }
+    static var modelVersion: Int {
+        return 1
     }
 }

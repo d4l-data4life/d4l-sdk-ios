@@ -47,7 +47,7 @@ final class AttachmentService: AttachmentServiceType {
                                               key: Key) -> Promise<[(attachment: A, thumbnailIds: [String])]> {
         return async {
             let documentsWithAdditionalIds = try attachments.map { attachment -> (A, [String]) in
-                guard let base64EncodedString = attachment.attachmentData, let data = Data(base64Encoded: base64EncodedString) else {
+                guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
                     throw Data4LifeSDKError.invalidAttachmentMissingData
                 }
                 do { try attachment.validatePayloadType() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadType }
@@ -99,7 +99,7 @@ final class AttachmentService: AttachmentServiceType {
                 let data = try await(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
 
                 let attachmentCopy = attachment.copy() as! A // swiftlint:disable:this force_cast
-                attachmentCopy.attachmentData = data.base64EncodedString()
+                attachmentCopy.attachmentDataString = data.base64EncodedString()
 
                 do { try attachmentCopy.validatePayloadType() } catch {
                     throw Data4LifeSDKError.invalidAttachmentPayloadType

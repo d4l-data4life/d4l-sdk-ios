@@ -131,10 +131,7 @@ final class AnySDKResource<T: SDKResource>: SDKResource, Equatable {
         return [:]
     }
 
-    var resourceTags: [String : String] {
-        resource?.resourceTags ?? [:]
-    }
-
+    static var modelVersion: Int { 1 }
     static func == (lhs: AnySDKResource, rhs: AnySDKResource) -> Bool {
         let encoder = JSONEncoder()
         let lhsJson = try? encoder.encode(lhs.resource)

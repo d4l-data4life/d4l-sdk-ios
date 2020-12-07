@@ -117,7 +117,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         }
 
         let expectedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
-        expectedQuestionnaire.allAttachments?.forEach({$0.attachmentData = nil})
+        expectedQuestionnaire.allAttachments?.forEach({$0.attachmentDataString = nil})
 
         let newAttachment0Id = UUID().uuidString
         let newAttachment1Id = UUID().uuidString
@@ -134,7 +134,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(newAttachment2Id)
         let uploadedAttachment3 = newAttachment3.copyWithId(newAttachment3Id)
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
-        unmatchableAttachment.attachmentData = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
+        unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.hash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
         attachmentService.uploadAttachmentsResult = Async.resolve([(uploadedAttachment0, []),
                                                                    (uploadedAttachment1, []),
@@ -179,8 +179,8 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         questionnaire.id = resourceId
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
-        attachment.attachmentData = (currentData + blankData).base64EncodedString()
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
+        attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
@@ -211,7 +211,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let questionnaire = FhirFactory.createQuestionnaire()
         questionnaire.id = resourceId
         let attachment = FhirFactory.createAttachmentElement()
-        attachment.attachmentData = Data([0x00]).base64EncodedString()
+        attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
@@ -263,7 +263,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         }
 
         let expectedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
-        expectedQuestionnaire.allAttachments?.forEach({$0.attachmentData = nil})
+        expectedQuestionnaire.allAttachments?.forEach({$0.attachmentDataString = nil})
 
         let newAttachment0Id = UUID().uuidString
         let newAttachment1Id = UUID().uuidString
@@ -289,7 +289,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(newAttachment2Id)
         let uploadedAttachment3 = newAttachment3.copyWithId(newAttachment3Id)
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
-        unmatchableAttachment.attachmentData = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
+        unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.hash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
         attachmentService.uploadAttachmentsResult = Async.resolve([(uploadedAttachment0, expected0AdditionalId),
                                                                    (uploadedAttachment1, expected1AdditionalId),
@@ -352,7 +352,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.0.resource, updatedQuestionnaire, "The updated record differs from the expected resource")
                  XCTAssertEqual(self.recordService.updateRecordCalledWith?.3, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertNil(self.recordService.updateRecordCalledWith?.4, "A param in the method doesn't match the expectation")
-                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentData, "Data in the attachment is expected to be nil")
+                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
                 XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
                 XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
         }.onError { error in
@@ -370,7 +370,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         questionnaire.id = resourceId
         let existingAttachment =  FhirFactory.createSampleImageAttachment()
         existingAttachment.id = UUID().uuidString
-        existingAttachment.attachmentData = nil
+        existingAttachment.attachmentDataString = nil
         let questionnaireItem1 = FhirFactory.createQuestionnaireItem(id: "existing-answer", initial: existingAttachment)
         questionnaire.item = [questionnaireItem1]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
@@ -392,7 +392,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let uploadedNewAttachmentId1 = UUID().uuidString
         let uploadedNewAttachmentId2 = UUID().uuidString
         let uploadedNewAttachmentId3 = UUID().uuidString
-        expectedQuestionnaire.allAttachments?.forEach({$0.attachmentData = nil})
+        expectedQuestionnaire.allAttachments?.forEach({$0.attachmentDataString = nil})
 
         expectedQuestionnaire.item?[1].initialAttachment?.id = uploadedNewAttachmentId1
         expectedQuestionnaire.item?.first?.item?.first?.initialAttachment?.id = uploadedNewAttachmentId2
@@ -418,7 +418,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.0.resource, updatedQuestionnaire, "The updated record differs from the expected resource")
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.3, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertNotNil(self.recordService.updateRecordCalledWith?.4, "A param in the method doesn't match the expectation")
-                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentData, "Data in the attachment is expected to be nil")
+                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
                 XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0,
                                [newAttachment2, newAttachment3, newAttachment1], "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
@@ -440,8 +440,8 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         questionnaire.id = resourceId
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
-        attachment.attachmentData = (currentData + blankData).base64EncodedString()
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
+        attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaire)
@@ -473,7 +473,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let questionnaire = FhirFactory.createQuestionnaire()
         questionnaire.id = resourceId
         let attachment = FhirFactory.createAttachmentElement()
-        attachment.attachmentData = Data([0x00]).base64EncodedString()
+        attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaire)

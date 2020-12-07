@@ -22,9 +22,6 @@ public typealias FhirR4Resource = ModelsR4.DomainResource
 
 public protocol AnyFhirResource: AnyObject {}
 
-extension FhirStu3Resource: AnyFhirResource {}
-extension FhirR4Resource: AnyFhirResource {}
-
 extension AnyFhirResource {
     func map<R: AnyFhirResource>(to type: R.Type) throws -> R {
         guard let mapped = self as? R else {

@@ -125,7 +125,7 @@ extension FhirAttachmentOperations {
                     new.append(attachment)
                     continue
                 }
-                if remoteAttachment.attachmentHash == attachment.getData()?.sha1Hash || attachment.getData() == nil {
+                if remoteAttachment.attachmentHash == attachment.attachmentData?.sha1Hash || attachment.attachmentData == nil {
                     unmodified.append(attachment)
                 } else {
                     modified.append(attachment)
@@ -139,8 +139,8 @@ extension FhirAttachmentOperations {
     func updateDataFields(in attachments: [AttachmentType]) -> [AttachmentType] {
         let preparedAttachments = attachments.map { attachment -> AttachmentType in
             let copy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-            copy.attachmentHash = attachment.getData()?.sha1Hash
-            copy.attachmentSize = attachment.getData()?.count
+            copy.attachmentHash = attachment.attachmentData?.sha1Hash
+            copy.attachmentSize = attachment.attachmentData?.count
             return copy
         }
 

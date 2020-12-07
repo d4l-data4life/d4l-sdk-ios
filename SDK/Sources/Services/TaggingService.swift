@@ -60,12 +60,12 @@ struct TaggingService: TaggingServiceType {
     enum Keys: String {
         case client
         case partner
-        case updatedByClient
-        case updatedByPartner
-        case resourceType
-        case fhirVersion
-        case flag
-        case custom
+        case updatedByClient = "updatedbyclient"
+        case updatedByPartner = "updatedbypartner"
+        case resourceType = "resourcetype"
+        case fhirVersion = "fhirversion"
+        case flag = "flag"
+        case custom = "custom"
     }
 
     enum FlagKey: String {
@@ -102,7 +102,7 @@ struct TaggingService: TaggingServiceType {
     // MARK: Private API
     private func makeTags<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> TagGroup {
         var tags = makeCommonTags(fromOldTags: oldTags)
-        tags.merge(resource.resourceTags) { (tagsValue, _) -> String in
+        tags.merge(R.searchTags) { (tagsValue, _) -> String in
             return tagsValue
         }
         tags.lowercased()

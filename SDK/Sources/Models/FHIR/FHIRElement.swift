@@ -14,5 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Data4LifeFHIR
+import ModelsR4
 
-public typealias FhirElement = Data4LifeFHIR.Element
+public typealias FhirStu3Element = Data4LifeFHIR.Element
+public typealias FhirR4Element = ModelsR4.Element

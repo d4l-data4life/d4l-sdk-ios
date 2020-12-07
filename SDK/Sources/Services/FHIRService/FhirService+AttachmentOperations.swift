@@ -62,7 +62,7 @@ extension FhirService {
 
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &uploadedAttachments)
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
-            resourceWithAttachments.allAttachments?.forEach { $0.attachmentData = nil }
+            resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? HasIdentifiableAttachments {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
@@ -103,7 +103,7 @@ extension FhirService {
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
 
             // We don't wanna upload base64 encoded data (in case of old downloaded attachments)
-            resourceWithAttachments.allAttachments?.forEach { $0.attachmentData = nil }
+            resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? HasIdentifiableAttachments {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) })
