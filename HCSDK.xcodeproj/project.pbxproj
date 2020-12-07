@@ -166,7 +166,7 @@
 		CD109245225B901E00325389 /* FHIRRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E2225B901E00325389 /* FHIRRecord.swift */; };
 		CD109246225B901E00325389 /* Data4LifeSDKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E3225B901E00325389 /* Data4LifeSDKError.swift */; };
 		CD109247225B901E00325389 /* FHIRElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E5225B901E00325389 /* FHIRElement.swift */; };
-		CD109248225B901E00325389 /* FHIRResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E6225B901E00325389 /* FHIRResource.swift */; };
+		CD109248225B901E00325389 /* AnyFhirResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E6225B901E00325389 /* AnyFhirResource.swift */; };
 		CD109249225B901E00325389 /* FHIRModelVersionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E7225B901E00325389 /* FHIRModelVersionType.swift */; };
 		CD10924C225B901E00325389 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091EB225B901E00325389 /* Resource.swift */; };
 		CD10924F225B901E00325389 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091EF225B901E00325389 /* LoginViewController.swift */; };
@@ -538,7 +538,7 @@
 		CD1091E2225B901E00325389 /* FHIRRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRRecord.swift; sourceTree = "<group>"; };
 		CD1091E3225B901E00325389 /* Data4LifeSDKError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeSDKError.swift; sourceTree = "<group>"; };
 		CD1091E5225B901E00325389 /* FHIRElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRElement.swift; sourceTree = "<group>"; };
-		CD1091E6225B901E00325389 /* FHIRResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRResource.swift; sourceTree = "<group>"; };
+		CD1091E6225B901E00325389 /* AnyFhirResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyFhirResource.swift; sourceTree = "<group>"; };
 		CD1091E7225B901E00325389 /* FHIRModelVersionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRModelVersionType.swift; sourceTree = "<group>"; };
 		CD1091EB225B901E00325389 /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		CD1091EF225B901E00325389 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -1216,7 +1216,7 @@
 			isa = PBXGroup;
 			children = (
 				CD1091E5225B901E00325389 /* FHIRElement.swift */,
-				CD1091E6225B901E00325389 /* FHIRResource.swift */,
+				CD1091E6225B901E00325389 /* AnyFhirResource.swift */,
 				CD1091E7225B901E00325389 /* FHIRModelVersionType.swift */,
 			);
 			path = FHIR;
@@ -2077,7 +2077,7 @@
 				0AF4C09322DDD18900C5CD67 /* ImageResizer.swift in Sources */,
 				CD109279225B901E00325389 /* OAuthService.swift in Sources */,
 				0A4EB42623EA850D00D0A4AA /* HasIdentifiableAttachments.swift in Sources */,
-				CD109248225B901E00325389 /* FHIRResource.swift in Sources */,
+				CD109248225B901E00325389 /* AnyFhirResource.swift in Sources */,
 				CD109241225B901E00325389 /* ClientConfiguration.swift in Sources */,
 				CDCB9DE0225F5309004A565F /* CryptoService.swift in Sources */,
 				3607BCD1237AAFA5004C45F3 /* Data4LifeDIContainer.swift in Sources */,

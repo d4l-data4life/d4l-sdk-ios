@@ -22,8 +22,11 @@ public typealias FhirR4Resource = ModelsR4.DomainResource
 
 public protocol AnyFhirResource: AnyObject {}
 
-extension AnyFhirResource {
-    func map<R: AnyFhirResource>(to type: R.Type) throws -> R {
+extension FhirStu3Resource: AnyFhirResource {}
+extension FhirR4Resource: AnyFhirResource {}
+
+extension FhirSDKResource {
+    func map<R: FhirSDKResource>(to type: R.Type) throws -> R {
         guard let mapped = self as? R else {
             throw Data4LifeSDKError.invalidResourceCouldNotConvertToType(String(describing: type))
         }
@@ -31,8 +34,8 @@ extension AnyFhirResource {
     }
 }
 
-extension Optional where Wrapped == AnyFhirResource {
-    func map<R: AnyFhirResource>(to type: R.Type) throws -> R {
+extension Optional where Wrapped == FhirSDKResource {
+    func map<R: FhirSDKResource>(to type: R.Type) throws -> R {
         guard let resource = self else { throw Data4LifeSDKError.invalidRecordMissingResource }
         return try resource.map(to: R.self)
     }

@@ -129,12 +129,12 @@ extension FhirServiceMock {
         }
     }
 
-    func uploadAttachments<R: AnyFhirResource>(creating resource: R) -> Promise<(resource: R,  key: Key?)> {
+    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: Key?)> {
         uploadAttachmentsCreatingCalledWith = resource as? MDR.Resource
         return uploadAttachmentsCreatingResult as? Async<(resource: R, key: Key?)> ?? Async.reject()
     }
 
-    func uploadAttachments<R: AnyFhirResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type) -> Promise<(resource: R,  key: Key?)> {
+    func uploadAttachments<R: FhirSDKResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type) -> Promise<(resource: R,  key: Key?)> {
         uploadAttachmentsUpdatingCalledWith = resource as? MDR.Resource
         return uploadAttachmentsUpdatingResult as? Async<(resource: R, key: Key?)> ?? Async.reject()
     }
