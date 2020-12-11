@@ -22,17 +22,17 @@ protocol FilePickerDelegate: class {
 }
 
 class FilePickerViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @IBOutlet var collectionView:UICollectionView!
-    @IBOutlet var doneButton:UIBarButtonItem!
+    
+    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var doneButton: UIBarButtonItem!
     weak var delegate: FilePickerDelegate?
-    var files:[FileData] = []
+    var files: [FileData] = []
 
     @IBAction func openImagePickerButtonTapped(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = false
-
         present(imagePicker, animated: true)
     }
 

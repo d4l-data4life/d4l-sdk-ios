@@ -72,7 +72,7 @@ class SessionService: SessionManager {
             .logged
             .validate()
             .response(completionHandler: { [weak self] response in
-                self?.log(response)
+                //self?.log(response)
                 self?.handler(response)
             })
     }
@@ -88,7 +88,7 @@ class SessionService: SessionManager {
             .logged
             .validate()
             .response(completionHandler: {  [weak self] response in
-                self?.log(response)
+                //self?.log(response)
                 self?.handler(response)
             })
     }
@@ -105,7 +105,7 @@ class SessionService: SessionManager {
         return upload(data, with: route)
             .logged
             .response(completionHandler: { [weak self] response in
-                self?.log(response)
+                //self?.log(response)
                 self?.handler(response)
             })
     }
@@ -160,7 +160,7 @@ private extension SessionService {
 
 private extension DataRequest {
     var logged: DataRequest {
-        logDebug("Request cURL: \(self.debugDescription)")
+        //logDebug("Request cURL: \(self.debugDescription)")
         return self
     }
 }

@@ -87,6 +87,10 @@
 		368AFB0E23744DF5004AE88F /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */; };
 		368AFB1023747853004AE88F /* LoggerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0F23747853004AE88F /* LoggerServiceTests.swift */; };
 		36AE9503257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */; };
+		36AE9514257E3F7400B1A2D7 /* DocumentSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9513257E3F7400B1A2D7 /* DocumentSectionHeader.swift */; };
+		36AE9526257F8CE000B1A2D7 /* DocumentListSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */; };
+		36AE95322583790400B1A2D7 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE95312583790400B1A2D7 /* Attachment.swift */; };
+		36AE953C2583791200B1A2D7 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE953B2583791200B1A2D7 /* Document.swift */; };
 		36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */; };
 		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
 		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
@@ -453,6 +457,10 @@
 		368AFB0F23747853004AE88F /* LoggerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerServiceTests.swift; sourceTree = "<group>"; };
 		369583B5255EC4E800F9C80C /* Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Resource.swift"; sourceTree = "<group>"; };
+		36AE9513257E3F7400B1A2D7 /* DocumentSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentSectionHeader.swift; sourceTree = "<group>"; };
+		36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListSchema.swift; sourceTree = "<group>"; };
+		36AE95312583790400B1A2D7 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		36AE953B2583791200B1A2D7 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data4LifeConfiguration.swift; sourceTree = "<group>"; };
 		36D96135256FF8DA004D69CA /* d4l-example.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "d4l-example.xcconfig"; path = "generated/d4l-example.xcconfig"; sourceTree = SOURCE_ROOT; };
 		36DD7A5A255ED0D600FA6EB7 /* Encodable+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Data.swift"; sourceTree = "<group>"; };
@@ -889,6 +897,40 @@
 			path = FHIRRecord;
 			sourceTree = "<group>";
 		};
+		36AE9524257F8CCF00B1A2D7 /* DocumentList */ = {
+			isa = PBXGroup;
+			children = (
+				CD1091B8225B8FC300325389 /* DocumentListTableViewController.swift */,
+				36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */,
+			);
+			path = DocumentList;
+			sourceTree = "<group>";
+		};
+		36AE952E258378A100B1A2D7 /* DocumentDetail */ = {
+			isa = PBXGroup;
+			children = (
+				CD1091B9225B8FC300325389 /* DocumentDetailViewController.swift */,
+			);
+			path = DocumentDetail;
+			sourceTree = "<group>";
+		};
+		36AE952F258378DF00B1A2D7 /* FilePicker */ = {
+			isa = PBXGroup;
+			children = (
+				CD1091BA225B8FC300325389 /* FilePickerViewController.swift */,
+			);
+			path = FilePicker;
+			sourceTree = "<group>";
+		};
+		36AE9530258378EC00B1A2D7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				36AE95312583790400B1A2D7 /* Attachment.swift */,
+				36AE953B2583791200B1A2D7 /* Document.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		8374639C1E854E7500AB500F = {
 			isa = PBXGroup;
 			children = (
@@ -930,6 +972,7 @@
 		839E813A1E86DE5300C42094 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				36AE9530258378EC00B1A2D7 /* Model */,
 				CD1091B5225B8FBA00325389 /* AppDelegate.swift */,
 				CD1091BC225B8FC300325389 /* Cells */,
 				CD1091B7225B8FC300325389 /* Controllers */,
@@ -1095,9 +1138,9 @@
 		CD1091B7225B8FC300325389 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				CD1091B8225B8FC300325389 /* DocumentListTableViewController.swift */,
-				CD1091B9225B8FC300325389 /* DocumentDetailViewController.swift */,
-				CD1091BA225B8FC300325389 /* FilePickerViewController.swift */,
+				36AE952F258378DF00B1A2D7 /* FilePicker */,
+				36AE952E258378A100B1A2D7 /* DocumentDetail */,
+				36AE9524257F8CCF00B1A2D7 /* DocumentList */,
 				CD1091BB225B8FC300325389 /* FiltersViewContoller.swift */,
 			);
 			path = Controllers;
@@ -1110,6 +1153,7 @@
 				CD1091BE225B8FC300325389 /* DateCell.swift */,
 				CD1091BF225B8FC300325389 /* DatePickerCell.swift */,
 				CD1091C0225B8FC300325389 /* LoadingCell.swift */,
+				36AE9513257E3F7400B1A2D7 /* DocumentSectionHeader.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2225,15 +2269,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD1091C3225B8FC400325389 /* DocumentListTableViewController.swift in Sources */,
+				36AE9514257E3F7400B1A2D7 /* DocumentSectionHeader.swift in Sources */,
 				CD1091B6225B8FBA00325389 /* AppDelegate.swift in Sources */,
 				CD1091CB225B8FC400325389 /* UIViewController+Alerts.swift in Sources */,
+				36AE95322583790400B1A2D7 /* Attachment.swift in Sources */,
 				365486F623E2EEC700846255 /* DocumentReference.swift in Sources */,
 				36D96130256FF759004D69CA /* Data4LifeConfiguration.swift in Sources */,
 				CD1091C8225B8FC400325389 /* DateCell.swift in Sources */,
+				36AE953C2583791200B1A2D7 /* Document.swift in Sources */,
 				CD1091C9225B8FC400325389 /* DatePickerCell.swift in Sources */,
 				CD1091C5225B8FC400325389 /* FilePickerViewController.swift in Sources */,
 				CD1091C7225B8FC400325389 /* FileCell.swift in Sources */,
 				CD1091CA225B8FC400325389 /* LoadingCell.swift in Sources */,
+				36AE9526257F8CE000B1A2D7 /* DocumentListSchema.swift in Sources */,
 				CD1091C4225B8FC400325389 /* DocumentDetailViewController.swift in Sources */,
 				CD1091C6225B8FC400325389 /* FiltersViewContoller.swift in Sources */,
 			);
@@ -2587,7 +2635,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2617,7 +2665,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";

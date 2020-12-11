@@ -16,7 +16,7 @@
 import Foundation
 import Then
 import Data4LifeFHIR
-
+import ModelsR4
 extension Data4LifeClient {
     /**
      Downloads record with FHIR resource and all of the attachments data if available
@@ -71,7 +71,7 @@ extension Data4LifeClient {
                                        downloadType: DownloadType = .full,
                                        queue: DispatchQueue = responseQueue,
                                        onProgressUpdated: ((Progress) -> Void)? = nil,
-                                       completion: @escaping ResultBlock<Attachment>) -> Cancellable {
+                                       completion: @escaping ResultBlock<Data4LifeFHIR.Attachment>) -> Cancellable {
         let task = makeProgressTask(fileCount: 1, onProgressUpdated)
         fhirService
             .downloadAttachment(of: Attachment.self,
@@ -102,12 +102,44 @@ extension Data4LifeClient {
                                         downloadType: DownloadType = .full,
                                         queue: DispatchQueue = responseQueue,
                                         onProgressUpdated: ((Progress) -> Void)? = nil,
-                                        completion: @escaping ResultBlock<[Attachment]>) -> Cancellable {
+                                        completion: @escaping ResultBlock<[Data4LifeFHIR.Attachment]>) -> Cancellable {
 
         let task = makeProgressTask(fileCount: identifiers.count, onProgressUpdated)
         fhirService
             .downloadAttachments(of: Attachment.self,
                                  decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+                                 withIds: identifiers,
+                                 recordId: recordId,
+                                 downloadType: downloadType,
+                                 parentProgress: task.progress)
+            .complete(queue: queue, completion)
+        return task
+    }
+
+    /**
+     Downloads multiple attachments with data
+
+     - parameter identifiers: IDs of existing attachments
+     - parameter recordId: ID of existing record
+     - parameter downloadType: type of the attachment if available
+     - parameter queue: Dispatch queue that will be used for returning the response
+     - parameter onProgressUpdated: Closure called when progress is updated
+     - parameter completion: Completion that returns downloaded attachments
+
+     - Returns: Discardable object to cancel the download request
+     */
+    @discardableResult
+    public func downloadR4Attachments(withIds identifiers: [String],
+                                      recordId: String,
+                                      downloadType: DownloadType = .full,
+                                      queue: DispatchQueue = responseQueue,
+                                      onProgressUpdated: ((Progress) -> Void)? = nil,
+                                      completion: @escaping ResultBlock<[ModelsR4.Attachment]>) -> Cancellable {
+
+        let task = makeProgressTask(fileCount: identifiers.count, onProgressUpdated)
+        fhirService
+            .downloadAttachments(of: ModelsR4.Attachment.self,
+                                 decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                  withIds: identifiers,
                                  recordId: recordId,
                                  downloadType: downloadType,
