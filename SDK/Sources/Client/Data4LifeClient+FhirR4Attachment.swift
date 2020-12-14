@@ -15,67 +15,67 @@
 
 import Foundation
 import Then
-import Data4LifeFHIR
 import ModelsR4
+
 extension Data4LifeClient {
     /**
      Downloads record with FHIR resource and all of the attachments data if available
-     
+
      - parameter identifier: ID of existing resource
      - parameter type: Type of FHIR Resource that is being downloaded
      - parameter queue: Dispatch queue that will be used for returning the response
      - parameter completion: Completion that returns downloaded record for a resource
      */
-    public func downloadStu3Record<R: FhirStu3Resource>(withId identifier: String,
+    public func downloadFhirR4Record<R: FhirR4Resource>(withId identifier: String,
                                                         of type: R.Type = R.self,
                                                         queue: DispatchQueue = responseQueue,
                                                         completion: @escaping ResultBlock<FhirRecord<R>>) {
         fhirService
-            .downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: DecryptedFhirStu3Record<R>.self)
+            .downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: DecryptedFhirR4Record<R>.self)
             .complete(queue: queue, completion)
     }
 
     /**
      Downloads records with FHIR resources and all of the attachments data if available
-     
+
      - parameter identifiers: IDs of existing resources
      - parameter type: Type of FHIR Resources that is being downloaded
      - parameter queue: Dispatch queue that will be used for returning the response
      - parameter completion: Completion that returns downloaded records for a resource
      */
-    public func downloadStu3Records<R: FhirStu3Resource>(withIds identifiers: [String],
+    public func downloadFhirR4Records<R: FhirR4Resource>(withIds identifiers: [String],
                                                          of type: R.Type = R.self,
                                                          queue: DispatchQueue = responseQueue,
                                                          completion: @escaping ResultBlock<BatchResult<FhirRecord<R>, String>>) {
         let totalProgress = Progress(totalUnitCount: Int64(identifiers.count))
         fhirService
-            .downloadFhirRecordsWithAttachments(withIds: identifiers, decryptedRecordType: DecryptedFhirStu3Record<R>.self, parentProgress: totalProgress)
+            .downloadFhirRecordsWithAttachments(withIds: identifiers, decryptedRecordType: DecryptedFhirR4Record<R>.self, parentProgress: totalProgress)
             .complete(queue: queue, completion)
     }
 
     /**
      Downloads single attachment with data
-     
+
      - parameter identifier: ID of existing attachment
      - parameter recordId: ID of existing record
      - parameter downloadType: type of the attachment if available
      - parameter queue: Dispatch queue that will be used for returning the response
      - parameter onProgressUpdated: Closure called when progress is updated
      - parameter completion: Completion that returns downloaded attachment
-     
+
      - Returns: Discardable object to cancel the download request
      */
     @discardableResult
-    public func downloadStu3Attachment(withId identifier: String,
-                                       recordId: String,
-                                       downloadType: DownloadType = .full,
-                                       queue: DispatchQueue = responseQueue,
-                                       onProgressUpdated: ((Progress) -> Void)? = nil,
-                                       completion: @escaping ResultBlock<Data4LifeFHIR.Attachment>) -> Cancellable {
+    public func downloadFhirR4Attachment(withId identifier: String,
+                                         recordId: String,
+                                         downloadType: DownloadType = .full,
+                                         queue: DispatchQueue = responseQueue,
+                                         onProgressUpdated: ((Progress) -> Void)? = nil,
+                                         completion: @escaping ResultBlock<ModelsR4.Attachment>) -> Cancellable {
         let task = makeProgressTask(fileCount: 1, onProgressUpdated)
         fhirService
-            .downloadAttachment(of: Attachment.self,
-                                decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+            .downloadAttachment(of: ModelsR4.Attachment.self,
+                                decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                 withId: identifier,
                                 recordId: recordId,
                                 downloadType: downloadType,
@@ -86,38 +86,6 @@ extension Data4LifeClient {
 
     /**
      Downloads multiple attachments with data
-     
-     - parameter identifiers: IDs of existing attachments
-     - parameter recordId: ID of existing record
-     - parameter downloadType: type of the attachment if available
-     - parameter queue: Dispatch queue that will be used for returning the response
-     - parameter onProgressUpdated: Closure called when progress is updated
-     - parameter completion: Completion that returns downloaded attachments
-     
-     - Returns: Discardable object to cancel the download request
-     */
-    @discardableResult
-    public func downloadStu3Attachments(withIds identifiers: [String],
-                                        recordId: String,
-                                        downloadType: DownloadType = .full,
-                                        queue: DispatchQueue = responseQueue,
-                                        onProgressUpdated: ((Progress) -> Void)? = nil,
-                                        completion: @escaping ResultBlock<[Data4LifeFHIR.Attachment]>) -> Cancellable {
-
-        let task = makeProgressTask(fileCount: identifiers.count, onProgressUpdated)
-        fhirService
-            .downloadAttachments(of: Attachment.self,
-                                 decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
-                                 withIds: identifiers,
-                                 recordId: recordId,
-                                 downloadType: downloadType,
-                                 parentProgress: task.progress)
-            .complete(queue: queue, completion)
-        return task
-    }
-
-    /**
-     Downloads multiple attachments with data
 
      - parameter identifiers: IDs of existing attachments
      - parameter recordId: ID of existing record
@@ -129,12 +97,12 @@ extension Data4LifeClient {
      - Returns: Discardable object to cancel the download request
      */
     @discardableResult
-    public func downloadR4Attachments(withIds identifiers: [String],
-                                      recordId: String,
-                                      downloadType: DownloadType = .full,
-                                      queue: DispatchQueue = responseQueue,
-                                      onProgressUpdated: ((Progress) -> Void)? = nil,
-                                      completion: @escaping ResultBlock<[ModelsR4.Attachment]>) -> Cancellable {
+    public func downloadFhirR4Attachments(withIds identifiers: [String],
+                                          recordId: String,
+                                          downloadType: DownloadType = .full,
+                                          queue: DispatchQueue = responseQueue,
+                                          onProgressUpdated: ((Progress) -> Void)? = nil,
+                                          completion: @escaping ResultBlock<[ModelsR4.Attachment]>) -> Cancellable {
 
         let task = makeProgressTask(fileCount: identifiers.count, onProgressUpdated)
         fhirService
@@ -145,17 +113,6 @@ extension Data4LifeClient {
                                  downloadType: downloadType,
                                  parentProgress: task.progress)
             .complete(queue: queue, completion)
-        return task
-    }
-}
-
-extension Data4LifeClient {
-    private func makeProgressTask(fileCount: Int, _ onProgressUpdated: ((Progress) -> Void)? = nil) -> Task {
-        let progress = Progress(totalUnitCount: Int64(fileCount))
-        let task = Task(progress)
-        if let onProgressUpdated = onProgressUpdated {
-            task.observeFractionCompleted(onProgressUpdated)
-        }
         return task
     }
 }

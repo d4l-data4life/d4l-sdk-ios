@@ -55,8 +55,9 @@ extension FhirService {
             }
 
             let generatedKey = try await(self.cryptoService.generateGCKey(.attachment))
-            let uploadedAttachmentsWithIds: [(AttachmentType, [String])]  = try await(self.attachmentService.uploadAttachments(validatedAttachments,
-                                                                                                                                         key: generatedKey))
+            let uploadedAttachmentsWithIds: [(AttachmentType, [String])] =
+                try await(self.attachmentService.uploadAttachments(validatedAttachments,
+                                                                   key: generatedKey))
             var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 } as [AttachmentType]
 
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &uploadedAttachments)
@@ -66,9 +67,10 @@ extension FhirService {
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
+                return (resourceWithIdentifier as! R, generatedKey)
+            } else {
+                return (resource, generatedKey)
             }
-
-            return (resource, generatedKey)
         }
     }
 

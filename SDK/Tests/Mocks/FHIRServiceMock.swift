@@ -21,7 +21,7 @@ import Data4LifeCrypto
 
 class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperationsDependencies, HasMainRecordOperations, FhirServiceType where MDR.Resource: FhirSDKResource {
 
-    var attachmentService: AttachmentServiceType = AttachmentServiceMock<Attachment>()
+    var attachmentService: AttachmentServiceType = AttachmentServiceMock()
     var recordService: RecordServiceType = RecordServiceMock<MDR.Resource,MDR>()
     var keychainService: KeychainServiceType = KeychainServiceMock()
     var cryptoService: CryptoServiceType = CryptoServiceMock()

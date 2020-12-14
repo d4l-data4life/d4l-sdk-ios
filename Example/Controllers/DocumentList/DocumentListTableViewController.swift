@@ -346,6 +346,7 @@ extension DocumentListTableViewController {
             cell.textLabel?.text = text
             return cell
         case .loading:
+            // swiftlint:disable force_cast
             let loadingCell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath) as! LoadingCell
             loadingCell.selectionStyle = .none
             loadingCell.startLoading()
@@ -410,6 +411,7 @@ extension DocumentListTableViewController {
         return true
     }
 
+    // swiftlint:disable cyclomatic_complexity
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {
             return

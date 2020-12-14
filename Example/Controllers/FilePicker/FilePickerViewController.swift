@@ -22,7 +22,7 @@ protocol FilePickerDelegate: class {
 }
 
 class FilePickerViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+
     @IBOutlet private var collectionView: UICollectionView!
     @IBOutlet private var doneButton: UIBarButtonItem!
     weak var delegate: FilePickerDelegate?

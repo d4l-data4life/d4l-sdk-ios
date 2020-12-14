@@ -47,7 +47,7 @@ extension Data4LifeDITestContainer {
         }.register(scope: .containerInstance) { (_) -> TaggingServiceType in
             TaggingServiceMock()
         }.register(scope: .containerInstance) { (_) -> AttachmentServiceType in
-            AttachmentServiceMock<Attachment>()
+            AttachmentServiceMock()
         }.register(scope: .containerInstance) { (_) -> Bundle in
             Bundle(for: Data4LifeDITestContainer.self)
         }.register(scope: .containerInstance) { (_) -> Resizable in

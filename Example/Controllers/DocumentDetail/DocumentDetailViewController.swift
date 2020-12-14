@@ -108,7 +108,7 @@ class DocumentDetailViewController: UIViewController {
                 uiCompletion()
             })
         case .r4:
-            cancellableRequest = Data4LifeClient.default.downloadR4Attachments(withIds: document.attachmentIdentifiers, recordId: documentId, onProgressUpdated: { [weak self] progress in
+            cancellableRequest = Data4LifeClient.default.downloadFhirR4Attachments(withIds: document.attachmentIdentifiers, recordId: documentId, onProgressUpdated: { [weak self] progress in
                 DispatchQueue.main.async {
                     self?.progressView.setProgress(Float(progress.fractionCompleted), animated: true)
                 }

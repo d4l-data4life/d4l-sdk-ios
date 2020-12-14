@@ -54,26 +54,9 @@ extension AttachmentType {
 }
 
 extension Data4LifeFHIR.Attachment: AttachmentType {
-    public static func with(title: String, creationDate: Date, contentType: String, data: Data) throws -> Data4LifeFHIR.Attachment {
+    static func with(title: String, creationDate: Date, contentType: String, data: Data) throws -> Data4LifeFHIR.Attachment {
         try Attachment.with(title: title, creationDate: creationDate.fhir_asDateTime(), contentType: contentType, data: data)
     }
-
-//    extension Attachment {
-//        public static func with(title: String,
-//                                creationDate: DateTime,
-//                                contentType: String,
-//                                data: Data) throws -> Data4LifeFHIR.Attachment {
-//
-//            let attachment = Attachment()
-//            attachment.title = title
-//            attachment.creation = creationDate
-//            attachment.contentType = contentType
-//            attachment.data_fhir = data.base64EncodedString()
-//            attachment.size = data.count
-//            attachment.hash = data.sha1Hash
-//            return attachment
-//        }
-//    }
 
     var creationDate: Date? {
         get {
@@ -220,6 +203,7 @@ extension ModelsR4.Attachment: AttachmentType {
         }
         set {
             guard let newValue = newValue else {
+                data = nil
                 return
             }
 

@@ -135,7 +135,8 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
         expectedResource.setAdditionalIds(expectedAdditionalId)
 
-        let resultResource = try! ThumbnailsIdFactory.cleanObsoleteAdditionalIdentifiers(fhirResource)
+        let resultResource = try! fhirResource.cleanObsoleteAdditionalIdentifiers(resourceId: fhirResource.id,
+                                                                                  attachmentIds: [attachmentId] )
 
         XCTAssertEqual(expectedResource, resultResource)
     }
@@ -157,7 +158,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         fhirResource.setAdditionalIds(invalidAdditionalId)
 
         do {
-            _ = try ThumbnailsIdFactory.cleanObsoleteAdditionalIdentifiers(fhirResource)
+            _ = try fhirResource.cleanObsoleteAdditionalIdentifiers(resourceId: fhirResourceId, attachmentIds: [attachmentId])
             XCTFail("Should throw an error")
         } catch {
             guard let sdkError = error as? Data4LifeSDKError else { XCTFail("Expecting SDK error"); return }

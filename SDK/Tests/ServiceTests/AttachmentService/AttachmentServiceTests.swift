@@ -49,8 +49,7 @@ class AttachmentServiceTests: XCTestCase {
         documentService.fetchDocumentResult = Promise.resolve(payload)
 
         let asyncExpectation = expectation(description: "should fetch attachment")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachment.attachmentId!],
                                            downloadType: .full,
                                            key: attachmentKey,
@@ -84,8 +83,7 @@ class AttachmentServiceTests: XCTestCase {
         documentService.fetchDocumentResult = Async.resolve(payload)
 
         let asyncExpectation = expectation(description: "should fetch attachment")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: resource,
+        attachmentService.fetchAttachments(for: resource,
                                            attachmentIds: [originalAttachmentId],
                                            downloadType: .small,
                                            key: attachmentKey,
@@ -329,8 +327,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadType
         let asyncExpectation = expectation(description: "should throw error invalid payload")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachmentId],
                                            downloadType: .full,
                                            key: attachmentKey,
@@ -363,8 +360,7 @@ class AttachmentServiceTests: XCTestCase {
         documentService.fetchDocumentResult = Promise.resolve(payload)
 
         let asyncExpectation = expectation(description: "shoould return an empty array of attachments")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachmentId],
                                            downloadType: .full,
                                            key: attachmentKey,
@@ -396,8 +392,7 @@ class AttachmentServiceTests: XCTestCase {
         let expectedError = Data4LifeSDKError.invalidAttachmentAdditionalId("Attachment Id: \(attachment.attachmentId!)")
         let asyncExpectation = expectation(description: "should throw error invalid thumbnails format")
 
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachment.attachmentId!],
                                            downloadType: .small,
                                            key: attachmentKey,
@@ -476,8 +471,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadHash
         let asyncExpectation = expectation(description: "should throw error invalid payload")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachmentId],
                                            downloadType: .full,
                                            key: attachmentKey, parentProgress: progress)

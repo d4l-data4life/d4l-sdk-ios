@@ -74,6 +74,7 @@
 		36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E97253D842300DAB5FD /* FhirBatchOperations.swift */; };
 		36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */; };
 		36647AC223D1A42D00DCA962 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
+		366A445B2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -297,7 +298,7 @@
 		CDCB9DE3225F563E004A565F /* SecKey+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1090AD225B893A00325389 /* SecKey+Data.swift */; };
 		CDCB9DE4225F5647004A565F /* SecKey+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1090AD225B893A00325389 /* SecKey+Data.swift */; };
 		CDCE7DCD22A0183A00A1D277 /* OAuthExternalUserAgentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE7DCC22A0183A00A1D277 /* OAuthExternalUserAgentMock.swift */; };
-		CDE0336C22A7B2AE00002282 /* Data4LifeClient+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0336A22A7B2AA00002282 /* Data4LifeClient+Attachment.swift */; };
+		CDE0336C22A7B2AE00002282 /* Data4LifeClient+FhirStu3Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0336A22A7B2AA00002282 /* Data4LifeClient+FhirStu3Attachment.swift */; };
 		CDE0336E22A7B39300002282 /* FhirService+AttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0336D22A7B39300002282 /* FhirService+AttachmentOperations.swift */; };
 		CDE0337022A7EA7500002282 /* Data4LifeClient+AttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0336F22A7EA7500002282 /* Data4LifeClient+AttachmentTests.swift */; };
 		CDE0337222A7ED2C00002282 /* FHIRServiceTests+AttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0337122A7ED2C00002282 /* FHIRServiceTests+AttachmentOperations.swift */; };
@@ -438,6 +439,7 @@
 		36635E97253D842300DAB5FD /* FhirBatchOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirBatchOperations.swift; sourceTree = "<group>"; };
 		36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirAttachmentOperations.swift; sourceTree = "<group>"; };
 		36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Data4LifeSDKUtils.framework; path = Carthage/Build/iOS/Data4LifeSDKUtils.framework; sourceTree = "<group>"; };
+		366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Attachment.swift"; sourceTree = "<group>"; };
 		367B87E823F2F09300A6155E /* QuestionnaireResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuestionnaireResponse.json; sourceTree = "<group>"; };
 		367B87EA23F2F36500A6155E /* FHIRServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FHIRServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
 		367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTestHelpers.swift; sourceTree = "<group>"; };
@@ -658,7 +660,7 @@
 		CDC18A9D1FC831D1004F235F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CDC9D6B6229D8ECA0068E3D5 /* OAuthExternalUserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthExternalUserAgent.swift; sourceTree = "<group>"; };
 		CDCE7DCC22A0183A00A1D277 /* OAuthExternalUserAgentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthExternalUserAgentMock.swift; sourceTree = "<group>"; };
-		CDE0336A22A7B2AA00002282 /* Data4LifeClient+Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+Attachment.swift"; sourceTree = "<group>"; };
+		CDE0336A22A7B2AA00002282 /* Data4LifeClient+FhirStu3Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3Attachment.swift"; sourceTree = "<group>"; };
 		CDE0336D22A7B39300002282 /* FhirService+AttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirService+AttachmentOperations.swift"; sourceTree = "<group>"; };
 		CDE0336F22A7EA7500002282 /* Data4LifeClient+AttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+AttachmentTests.swift"; sourceTree = "<group>"; };
 		CDE0337122A7ED2C00002282 /* FHIRServiceTests+AttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FHIRServiceTests+AttachmentOperations.swift"; sourceTree = "<group>"; };
@@ -1360,9 +1362,10 @@
 			children = (
 				CD109221225B901E00325389 /* Data4LifeClient.swift */,
 				CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */,
+				CDE0336A22A7B2AA00002282 /* Data4LifeClient+FhirStu3Attachment.swift */,
 				36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */,
+				366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */,
 				3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */,
-				CDE0336A22A7B2AA00002282 /* Data4LifeClient+Attachment.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -2109,7 +2112,7 @@
 				CD109249225B901E00325389 /* FHIRModelVersionType.swift in Sources */,
 				CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */,
 				CD109268225B901E00325389 /* UIColor+GesundheitsCloud.swift in Sources */,
-				CDE0336C22A7B2AE00002282 /* Data4LifeClient+Attachment.swift in Sources */,
+				CDE0336C22A7B2AE00002282 /* Data4LifeClient+FhirStu3Attachment.swift in Sources */,
 				CD2B2AA423155B630037C869 /* Task.swift in Sources */,
 				CD109236225B901E00325389 /* LoginViewModel.swift in Sources */,
 				3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */,
@@ -2123,6 +2126,7 @@
 				0A4EB42623EA850D00D0A4AA /* HasIdentifiableAttachments.swift in Sources */,
 				CD109248225B901E00325389 /* AnyFhirResource.swift in Sources */,
 				CD109241225B901E00325389 /* ClientConfiguration.swift in Sources */,
+				366A445B2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift in Sources */,
 				CDCB9DE0225F5309004A565F /* CryptoService.swift in Sources */,
 				3607BCD1237AAFA5004C45F3 /* Data4LifeDIContainer.swift in Sources */,
 				CD109242225B901E00325389 /* Metadata.swift in Sources */,

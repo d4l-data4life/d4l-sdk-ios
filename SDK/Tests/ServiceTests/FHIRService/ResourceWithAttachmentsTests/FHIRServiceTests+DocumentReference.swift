@@ -26,7 +26,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
     private var recordService: RecordServiceMock<DocumentReference, DecryptedFhirStu3Record<DocumentReference>>!
     private var keychainService: KeychainServiceMock!
     private var cryptoService: CryptoServiceMock!
-    private var attachmentService: AttachmentServiceMock<Attachment>!
+    private var attachmentService: AttachmentServiceMock!
 
     override func setUp() {
         super.setUp()
@@ -82,7 +82,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(expectedDocumentReference, result.fhirResource, "The result doesn't match the expected resource")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, fixtureAttachment, "The uploaded attachment is different from the expected")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, fixtureAttachment.testable, "The uploaded attachment is different from the expected")
                 XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.count, 1, "The size of uploaded attachments doesn't fit the expected size")
 
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, fixtureDocumentReference, "The created record differs from the expected resource")
@@ -141,8 +141,8 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(expectedDocumentReference, result.fhirResource, "The result doesn't match the expected resource")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0, expectedAttachmentsWithoutId, "The uploaded attachments are different from the expected")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.map { $0.testable },
+                               expectedAttachmentsWithoutId.map { $0.testable}, "The uploaded attachments are different from the expected")
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, documentReference, "The created record differs from the expected resource")
             }.onError { error in
                 XCTFail(error.localizedDescription)
@@ -276,7 +276,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
 
                 XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
 
- XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, attachment, "A param in the method doesn't match the expectation")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, attachment.testable, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
             }.onError { error in
@@ -532,7 +532,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
                 XCTAssertEqual(expectedDocumentReference, result.fhirResource, "The expected resource doesn't match the result of the test")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, fixtureAttachment,
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, fixtureAttachment.testable,
                                "The uploaded attachment is different from the expected")
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, expectedDocumentReference, "The created record differs from the expected resource")
                 XCTAssertEqual(result.fhirResource.identifier!, expectedDocumentReference.identifier,  "The identifiers of the result differ from the expected resource exist")
@@ -577,7 +577,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
                 XCTAssertEqual(expectedDocumentReference, result.fhirResource, "The expected resource doesn't match the result of the test")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, fixtureAttachment, "The uploaded attachment is different from the expected")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, fixtureAttachment.testable, "The uploaded attachment is different from the expected")
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, fixtureDocumentReference, "The created record differs from the expected resource")
                 XCTAssertEqual(result.fhirResource.identifier!, expectedDocumentReference.identifier, "The identifiers of the result differ from the expected resource exist")
             }.onError { error in
@@ -620,7 +620,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment],
                                fhirResource.allAttachments as? [Attachment],
                                "A param in the method doesn't match the expectation")
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? HasIdentifiableAttachments)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
                                fhirResource.identifier, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1,
                                [attachmentId], "A param in the method doesn't match the expectation")
@@ -697,7 +697,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment],
                                firstResource.allAttachments as? [Attachment], "A param in the method doesn't match the expectation")
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? HasIdentifiableAttachments)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
             }.onError { error in
