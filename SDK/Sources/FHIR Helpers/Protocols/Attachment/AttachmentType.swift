@@ -29,7 +29,7 @@ protocol AttachmentType: AnyObject, NSCopying {
 }
 
 extension AttachmentType {
-    func matches(to attachment: Self) -> Bool {
+    func matches(to attachment: AttachmentType) -> Bool {
         if let ownId = attachmentId, let attachmentId = attachment.attachmentId, ownId == attachmentId {
             return true
         } else if let hash = attachmentHash, hash == attachment.attachmentHash {
@@ -40,7 +40,7 @@ extension AttachmentType {
         return false
     }
 
-    func filled(with filled: Self) -> Self {
+    func filled(with filled: AttachmentType) -> AttachmentType {
         let attachment = copy() as! Self // swiftlint:disable:this force_cast
         attachment.attachmentId = filled.attachmentId
         if let data = filled.attachmentData {

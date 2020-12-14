@@ -86,13 +86,12 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                 let attachmentKey = record.attachmentKey,
                 let resourceWithAttachments = record.resource as? HasAttachments
             else { throw Data4LifeSDKError.couldNotFindAttachment }
-            let attachments: [A] = try await(self.attachmentService.fetchAttachments(of: A.self,
-                                                                                     for: resourceWithAttachments,
-                                                                                     attachmentIds: identifiers,
-                                                                                     downloadType: downloadType,
-                                                                                     key: attachmentKey,
-                                                                                     parentProgress: parentProgress))
-            return attachments
+            let attachments: [AttachmentType] = try await(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+                                                                                                  attachmentIds: identifiers,
+                                                                                                  downloadType: downloadType,
+                                                                                                  key: attachmentKey,
+                                                                                                  parentProgress: parentProgress))
+            return attachments as? [A] ?? []
         }
         .bridgeError { error in
             throw self.bridgeErrorCancelledAction(error: error)
