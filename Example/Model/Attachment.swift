@@ -42,3 +42,27 @@ enum AttachmentType {
         }
     }
 }
+
+extension Data4LifeFHIR.DocumentReference {
+    static func make(titled title: String, attachments: [Data4LifeFHIR.Attachment]) -> Data4LifeFHIR.DocumentReference {
+        let document = DocumentReference()
+        document.description_fhir = title
+        document.attachments = attachments
+        document.indexed = .now
+        document.status = .current
+        document.type = CodeableConcept(code: "18782-3", display: "Radiology Study observation (findings)", system: "http://loinc.org")
+        return document
+    }
+}
+
+extension ModelsR4.DocumentReference {
+    static func make(titled title: String, attachments: [ModelsR4.Attachment]) -> ModelsR4.DocumentReference {
+        let document = ModelsR4.DocumentReference.init(content: attachments.map({ ModelsR4.DocumentReferenceContent(attachment: $0)}),
+                                                       status: DocumentReferenceStatus.current.asPrimitive())
+        document.description_fhir = title.asFHIRStringPrimitive()
+        document.type = ModelsR4.CodeableConcept(coding: [ModelsR4.Coding(code: "18782-3".asFHIRStringPrimitive(),
+                                                                          display: "Radiology Study observation (findings)".asFHIRStringPrimitive())
+        ])
+        return document
+    }
+}

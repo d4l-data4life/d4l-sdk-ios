@@ -67,7 +67,7 @@ extension FhirService {
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
-                return (resourceWithIdentifier as! R, generatedKey)
+                return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
             } else {
                 return (resource, generatedKey)
             }
@@ -110,7 +110,7 @@ extension FhirService {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) })
                 let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
                                                                                                     attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
-                return (cleanedResource as! DR.Resource, attachmentKey)
+                return (cleanedResource as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
             } else {
                 return (resource, attachmentKey)
             }

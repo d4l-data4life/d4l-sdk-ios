@@ -125,7 +125,7 @@ extension Data4LifeClientTests {
         fhirService.downloadSpecificRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.downloadStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        clientForDocumentReferences.downloadFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

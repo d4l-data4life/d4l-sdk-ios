@@ -28,7 +28,7 @@ extension Data4LifeClientTests {
         fhirService.downloadAttachmentResult = Promise.resolve(attachment)
 
         let asyncExpectation = expectation(description: "Should return a attachment")
-        clientForDocumentReferences.downloadStu3Attachment(withId: attachmentId, recordId: recordId) { result in
+        clientForDocumentReferences.downloadFhirStu3Attachment(withId: attachmentId, recordId: recordId) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -54,7 +54,7 @@ extension Data4LifeClientTests {
 
         let ids = [firstAttachmentId, secondAttachmentId]
         let asyncExpectation = expectation(description: "Should return a attachment")
-        clientForDocumentReferences.downloadStu3Attachments(withIds: ids, recordId: recordId) { result in
+        clientForDocumentReferences.downloadFhirStu3Attachments(withIds: ids, recordId: recordId) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)

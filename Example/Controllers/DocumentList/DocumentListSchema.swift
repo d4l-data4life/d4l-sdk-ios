@@ -27,7 +27,7 @@ extension DocumentTableSchema {
             .stu3Record(documents: []),
             .r4Record(documents: []),
             .appData(records: []),
-            .loading(isLoading: false)
+            .loading(isLoading: true)
         ]
     }
 

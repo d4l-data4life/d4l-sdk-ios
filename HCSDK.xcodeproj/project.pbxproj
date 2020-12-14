@@ -75,6 +75,8 @@
 		36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */; };
 		36647AC223D1A42D00DCA962 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
 		366A445B2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */; };
+		366A44652587C09F0003FBCE /* DocumentListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A44642587C09F0003FBCE /* DocumentListInteractor.swift */; };
+		366A446B2587C8B70003FBCE /* FileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A446A2587C8B70003FBCE /* FileData.swift */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -440,6 +442,8 @@
 		36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirAttachmentOperations.swift; sourceTree = "<group>"; };
 		36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Data4LifeSDKUtils.framework; path = Carthage/Build/iOS/Data4LifeSDKUtils.framework; sourceTree = "<group>"; };
 		366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Attachment.swift"; sourceTree = "<group>"; };
+		366A44642587C09F0003FBCE /* DocumentListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListInteractor.swift; sourceTree = "<group>"; };
+		366A446A2587C8B70003FBCE /* FileData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileData.swift; sourceTree = "<group>"; };
 		367B87E823F2F09300A6155E /* QuestionnaireResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuestionnaireResponse.json; sourceTree = "<group>"; };
 		367B87EA23F2F36500A6155E /* FHIRServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FHIRServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
 		367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTestHelpers.swift; sourceTree = "<group>"; };
@@ -904,6 +908,7 @@
 			children = (
 				CD1091B8225B8FC300325389 /* DocumentListTableViewController.swift */,
 				36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */,
+				366A44642587C09F0003FBCE /* DocumentListInteractor.swift */,
 			);
 			path = DocumentList;
 			sourceTree = "<group>";
@@ -929,6 +934,7 @@
 			children = (
 				36AE95312583790400B1A2D7 /* Attachment.swift */,
 				36AE953B2583791200B1A2D7 /* Document.swift */,
+				366A446A2587C8B70003FBCE /* FileData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2283,11 +2289,13 @@
 				36AE953C2583791200B1A2D7 /* Document.swift in Sources */,
 				CD1091C9225B8FC400325389 /* DatePickerCell.swift in Sources */,
 				CD1091C5225B8FC400325389 /* FilePickerViewController.swift in Sources */,
+				366A446B2587C8B70003FBCE /* FileData.swift in Sources */,
 				CD1091C7225B8FC400325389 /* FileCell.swift in Sources */,
 				CD1091CA225B8FC400325389 /* LoadingCell.swift in Sources */,
 				36AE9526257F8CE000B1A2D7 /* DocumentListSchema.swift in Sources */,
 				CD1091C4225B8FC400325389 /* DocumentDetailViewController.swift in Sources */,
 				CD1091C6225B8FC400325389 /* FiltersViewContoller.swift in Sources */,
+				366A44652587C09F0003FBCE /* DocumentListInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
