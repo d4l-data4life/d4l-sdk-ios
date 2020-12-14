@@ -73,7 +73,6 @@ class DocumentDetailViewController: UIViewController {
                 }
             }
         }
-
     }
 
     func loadAttachments() {

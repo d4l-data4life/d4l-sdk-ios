@@ -972,8 +972,8 @@
 		839E813A1E86DE5300C42094 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				36AE9530258378EC00B1A2D7 /* Model */,
 				CD1091B5225B8FBA00325389 /* AppDelegate.swift */,
+				36AE9530258378EC00B1A2D7 /* Model */,
 				CD1091BC225B8FC300325389 /* Cells */,
 				CD1091B7225B8FC300325389 /* Controllers */,
 				CD1091C1225B8FC300325389 /* Extensions */,

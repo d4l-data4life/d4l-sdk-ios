@@ -77,9 +77,9 @@ extension AttachmentType {
     }
 }
 
-extension Array where Element == AttachmentType {
+extension Array where Element: AttachmentType {
     @discardableResult
-    func validate() throws -> [AttachmentType] {
+    func validate() throws -> [Element] {
         try forEach { (attachment) in
             try attachment.validatePayload()
         }

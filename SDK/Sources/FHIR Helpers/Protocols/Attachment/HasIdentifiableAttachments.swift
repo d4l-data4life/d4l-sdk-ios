@@ -15,9 +15,7 @@
 
 import Foundation
 
-typealias HasIdentifiableAttachments = HasAttachments & CustomIdentifierProtocol
-
-extension HasAttachments where Self : CustomIdentifierProtocol {
+extension CustomIdentifierProtocol {
     func updateIdentifiers(additionalIds: [String]) {
         if !additionalIds.isEmpty {
             self.setAdditionalIds(additionalIds)
