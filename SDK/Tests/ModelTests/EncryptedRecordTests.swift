@@ -30,7 +30,7 @@ class EncryptedRecordTests: XCTestCase {
     }
 
     func testConvertEncryptedRecordFailMissingTek() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         let encryptedRecord = EncryptedRecordFactory.create(for: record)
 
@@ -52,7 +52,7 @@ class EncryptedRecordTests: XCTestCase {
     }
 
     func testConvertEncryptedRecordFailMissingRecordCommonKey() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         let encryptedRecord = EncryptedRecordFactory.create(for: record)
         let expectedError = Data4LifeSDKError.missingCommonKey
@@ -79,7 +79,7 @@ class EncryptedRecordTests: XCTestCase {
     }
 
     func testConvertEncryptedRecordFailInvalidDataKey() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
 
@@ -105,7 +105,7 @@ class EncryptedRecordTests: XCTestCase {
     }
 
     func testConvertEncryptedRecordFailInvalidBodyPayload() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
         encryptedRecord.encryptedBody = String(describing: Data([0x00]))
@@ -157,7 +157,7 @@ class EncryptedRecordTests: XCTestCase {
     }
 
     func testConvertEncryptedRecordFailInvalidModelVersion() {
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
         let record = DecryptedRecordFactory.create(resource)
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
         encryptedRecord.encryptedAttachmentKey = nil

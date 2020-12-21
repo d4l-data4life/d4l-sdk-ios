@@ -42,7 +42,7 @@ class AttachmentServiceTests: XCTestCase {
     func testFetchAttachment() {
         let parentProgress = Progress()
         let attachment = FhirFactory.createUploadedAttachmentElement()
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
         let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
@@ -71,7 +71,7 @@ class AttachmentServiceTests: XCTestCase {
         let parentProgress = Progress()
         let attachment = FhirFactory.createUploadedAttachmentElement()
         let originalAttachmentId = attachment.attachmentId!
-        let resource = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let resource = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let mediumAddId = "mediumAddId"
         let smallAddId = "smallAddId"
         let additionalId = "d4l_f_p_t#\(originalAttachmentId)#\(mediumAddId)#\(smallAddId)"
@@ -103,8 +103,8 @@ class AttachmentServiceTests: XCTestCase {
     }
 
     func testUploadAttachment() {
-        let attachment = FhirFactory.createAttachmentElement()
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let attachment = FhirFactory.createStu3AttachmentElement()
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
@@ -130,7 +130,7 @@ class AttachmentServiceTests: XCTestCase {
     func testUploadAttachmentWithThumbnailsIds() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
         let attachment = FhirFactory.createImageAttachmentElement(imageData: imageData)
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
@@ -163,7 +163,7 @@ class AttachmentServiceTests: XCTestCase {
     //Test image saved as jpeg with an invalid format as image
     func testUploadAttachmentInvalidImageData() {
         let attachment = FhirFactory.createImageAttachmentElement()
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
@@ -192,7 +192,7 @@ class AttachmentServiceTests: XCTestCase {
     func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanThumbnails() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
         let attachment = FhirFactory.createImageAttachmentElement(imageData: imageData)
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
@@ -228,7 +228,7 @@ class AttachmentServiceTests: XCTestCase {
     func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanSmallThumbnail() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
         let attachment = FhirFactory.createImageAttachmentElement(imageData: imageData)
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
@@ -264,7 +264,7 @@ class AttachmentServiceTests: XCTestCase {
     }
 
     func testUploadAttachmentsFailMissingData() {
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = nil
         let key = KeyFactory.createKey()
 
@@ -286,7 +286,7 @@ class AttachmentServiceTests: XCTestCase {
 
     func testUploadAttachmentsFailInvalidDataPayload() {
         let key = KeyFactory.createKey()
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
 
         // inject evil exe data to bypass attachment helper validation
         let evilExe = Data([0x4D, 0x5A, 0x00, 0x01, 0x00, 0x00, 0x02])
@@ -311,7 +311,7 @@ class AttachmentServiceTests: XCTestCase {
     func testFetchAttachmentInvalidPayload() {
         let progress = Progress()
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentId = attachmentId
 
         // inject evil exe data to bypass attachment helper validation
@@ -319,7 +319,7 @@ class AttachmentServiceTests: XCTestCase {
         attachment.attachmentDataString = evilExe.base64EncodedString()
         attachment.hash = evilExe.sha1Hash
 
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
         let paylaod = Document(data: attachment.attachmentData!)
 
@@ -348,12 +348,12 @@ class AttachmentServiceTests: XCTestCase {
     func testFetchAttachmentInvalidSize() {
         let progress = Progress()
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentId = attachmentId
 
         attachment.size = 21 * 1024 * 1024
 
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
         let payload = Document(data: attachment.attachmentData!)
 
@@ -382,7 +382,7 @@ class AttachmentServiceTests: XCTestCase {
         Resource.partnerId = partnerId
 
         let attachment = FhirFactory.createUploadedAttachmentElement()
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let mediumAddId = "mediumAddId"
         let expectedAdditionalId = "d4l_f_p_t#\(attachment.attachmentId!)#\(mediumAddId)"
         document.addAdditionalId(expectedAdditionalId)
@@ -412,7 +412,7 @@ class AttachmentServiceTests: XCTestCase {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
         let attachment1 = FhirFactory.createImageAttachmentElement(imageData: imageData)
         let attachment2 = FhirFactory.createImageAttachmentElement(imageData: imageData)
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment1, attachment2])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment1, attachment2])
 
         let record = DecryptedRecordFactory.create(document)
         let attachmentId1 = UUID().uuidString
@@ -458,12 +458,12 @@ class AttachmentServiceTests: XCTestCase {
     func testDownloadWrongHashAttachment() {
         let progress = Progress()
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentId = attachmentId
 
         attachment.hash = UUID().uuidString
 
-        let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
         let paylaod = Document(data: attachment.attachmentData!)
 

@@ -51,7 +51,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testCreateObservationResource() {
         let userId = UUID().uuidString
-        let fixtureAttachment = FhirFactory.createAttachmentElement()
+        let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let fixtureComponentAttachment1 = FhirFactory.createUploadedAttachmentElement()
         fixtureComponentAttachment1.id = nil
         let fixtureComponentAttachment2 = FhirFactory.createSampleImageAttachment()
@@ -111,9 +111,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         let userId = UUID().uuidString
 
-        let observationAttachment = FhirFactory.createAttachmentElement()
-        let observationComponentAttachment1 = FhirFactory.createAttachmentElement()
-        let observationComponentAttachment2 = FhirFactory.createAttachmentElement()
+        let observationAttachment = FhirFactory.createStu3AttachmentElement()
+        let observationComponentAttachment1 = FhirFactory.createStu3AttachmentElement()
+        let observationComponentAttachment2 = FhirFactory.createStu3AttachmentElement()
 
         XCTAssertEqual(observationAttachment.attachmentDataString, observationComponentAttachment2.attachmentDataString)
         XCTAssertNotEqual(observationAttachment, observationComponentAttachment2)
@@ -178,7 +178,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
     func testCreateObservationResourceWithSomeComponentsWithoutAttachments() {
 
         let userId = UUID().uuidString
-        let fixtureAttachment = FhirFactory.createAttachmentElement()
+        let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let fixtureComponentAttachment1 = FhirFactory.createUploadedAttachmentElement()
         fixtureComponentAttachment1.id = nil
         let fixtureComponentAttachment2 = FhirFactory.createSampleImageAttachment()
@@ -265,7 +265,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
     func testCreateObservationResourceFailInvalidContentSize() {
         let userId = UUID().uuidString
         let fhirResource = FhirFactory.createObservationResource()
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
@@ -294,7 +294,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testCreateObservationResourceFailInvalidContentType() {
         let userId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
 
@@ -320,7 +320,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
     func testUpdateObservationResource() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
         fhirResource.id = resourceId
 
@@ -384,7 +384,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testFailUpdateObservationInvalidContentType() {
         let userId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
         let record = DecryptedRecordFactory.create(fhirResource)
@@ -412,7 +412,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testFailUpdateObservationInvalidContentSize() {
         let userId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
@@ -444,7 +444,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
         let attachment1Id = UUID().uuidString
-        let attachment1 = FhirFactory.createAttachmentElement()
+        let attachment1 = FhirFactory.createStu3AttachmentElement()
         let attachment2 = FhirFactory.createSampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
@@ -463,10 +463,10 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         updatedAttachment!.attachmentHash = newData.sha1Hash
         updatedAttachment!.attachmentSize = newData.byteCount
 
-        let newAttachment = FhirFactory.createAttachmentElement()
+        let newAttachment = FhirFactory.createStu3AttachmentElement()
         let creationDate = DateTime.now
         newAttachment.creation = creationDate
-        let newAttachmentWithId = FhirFactory.createAttachmentElement()
+        let newAttachmentWithId = FhirFactory.createStu3AttachmentElement()
         let language = UUID().uuidString
         newAttachmentWithId.language = language
         let noneExistingId = UUID().uuidString
@@ -517,7 +517,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
         let attachment1Id = UUID().uuidString
-        let attachment1 = FhirFactory.createAttachmentElement()
+        let attachment1 = FhirFactory.createStu3AttachmentElement()
         let attachment2 = FhirFactory.createSampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
@@ -538,10 +538,10 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         updatedAttachment?.attachmentHash = newData.sha1Hash
         updatedAttachment?.attachmentSize = newData.byteCount
 
-        let newAttachment = FhirFactory.createAttachmentElement()
+        let newAttachment = FhirFactory.createStu3AttachmentElement()
         let creationDate = DateTime.now
         newAttachment.creation = creationDate
-        let newAttachmentWithId = FhirFactory.createAttachmentElement()
+        let newAttachmentWithId = FhirFactory.createStu3AttachmentElement()
         let language = UUID().uuidString
         newAttachmentWithId.language = language
         let noneExistingId = UUID().uuidString
@@ -592,7 +592,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
         let attachment1Id = UUID().uuidString
-        let attachment1 = FhirFactory.createAttachmentElement()
+        let attachment1 = FhirFactory.createStu3AttachmentElement()
         let attachment2 = FhirFactory.createSampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
@@ -607,9 +607,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
         updatedAttachment!.attachmentDataString = newData.base64EncodedString()
-        let newAttachment = FhirFactory.createAttachmentElement()
+        let newAttachment = FhirFactory.createStu3AttachmentElement()
         newAttachment.hash = "brokenHash"
-        let newAttachmentWithId = FhirFactory.createAttachmentElement()
+        let newAttachmentWithId = FhirFactory.createStu3AttachmentElement()
         let language = UUID().uuidString
         newAttachmentWithId.language = language
         let noneExistingId = UUID().uuidString
@@ -651,7 +651,7 @@ extension FhirStu3ServiceObservationTests {
         Resource.partnerId = partnerId
 
         let userId = UUID().uuidString
-        let fixtureAttachment = FhirFactory.createAttachmentElement()
+        let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let attachmentId = UUID().uuidString
         fixtureAttachment.id = attachmentId
         let fixtureResource = FhirFactory.createObservationResource(valueAttachment: fixtureAttachment, components: nil)
@@ -694,7 +694,7 @@ extension FhirStu3ServiceObservationTests {
 
     func testCreateObservationResourceWithoutThumbnailsIds() {
         let userId = UUID().uuidString
-        let fixtureAttachment = FhirFactory.createAttachmentElement()
+        let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let expectedAttachmentId = UUID().uuidString
         let fixtureResource = FhirFactory.createObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
@@ -742,7 +742,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment, components: nil)
 
@@ -809,7 +809,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         let progress = Progress()
 
         let firstAttachmentId = UUID().uuidString
-        let firstAttachment = FhirFactory.createAttachmentElement()
+        let firstAttachment = FhirFactory.createStu3AttachmentElement()
         firstAttachment.id = firstAttachmentId
 
         let firstResourceId = UUID().uuidString
@@ -818,7 +818,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         let firstRecord = DecryptedRecordFactory.create(firstResource as FhirStu3Resource)
 
         let secondAttachmentId = UUID().uuidString
-        let secondAttachment = FhirFactory.createAttachmentElement()
+        let secondAttachment = FhirFactory.createStu3AttachmentElement()
         secondAttachment.id = secondAttachmentId
 
         let secondResourceId = UUID().uuidString

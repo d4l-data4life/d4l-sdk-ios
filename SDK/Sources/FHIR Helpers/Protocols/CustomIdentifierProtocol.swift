@@ -49,11 +49,12 @@ public protocol CustomIdentifierMutable: class {
 
 protocol CustomIdentifierProtocol: CustomIdentifierMutable {
     var customIdentifiers: [FhirIdentifierType]? { get set }
+    func makeIdentifier(with id: String) -> FhirIdentifierType
 }
 
 extension CustomIdentifierProtocol {
     public func addAdditionalId(_ id: String) {
-        let newIdentifier = Identifier(identifier: id, partnerId: Resource.partnerId)
+        let newIdentifier = makeIdentifier(with: id)
         if var currentIdentifiers = customIdentifiers {
             currentIdentifiers.append(newIdentifier)
             customIdentifiers = currentIdentifiers
@@ -63,7 +64,7 @@ extension CustomIdentifierProtocol {
     }
 
     public func setAdditionalIds(_ ids: [String]) {
-        let newIds = ids.map { Identifier(identifier: $0, partnerId: Resource.partnerId) }
+        let newIds = ids.map { makeIdentifier(with: $0) }
         if let otherIds = customIdentifiers?.filter({ $0.assignerString != Resource.partnerId }) {
             customIdentifiers = otherIds + newIds
         } else {
@@ -102,6 +103,18 @@ extension CustomIdentifierProtocol {
         }
         customIdentifiers = updatedIdentifiers.isEmpty ? nil : updatedIdentifiers
         return self
+    }
+}
+
+extension CustomIdentifierProtocol where Self: FhirStu3Resource {
+    func makeIdentifier(with id: String) -> FhirIdentifierType {
+        Data4LifeFHIR.Identifier(identifier: id, partnerId: Resource.partnerId)
+    }
+}
+
+extension CustomIdentifierProtocol where Self: FhirR4Resource {
+    func makeIdentifier(with id: String) -> FhirIdentifierType {
+        ModelsR4.Identifier(assigner: ModelsR4.Reference(reference: Resource.partnerId.asFHIRStringPrimitive()), value: id.asFHIRStringPrimitive())
     }
 }
 

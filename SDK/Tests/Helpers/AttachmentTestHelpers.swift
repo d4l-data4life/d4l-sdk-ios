@@ -16,11 +16,11 @@
 import Data4LifeFHIR
 @testable import Data4LifeSDK
 
-extension Attachment {
-    func copyWithId(_ id: String? = nil) -> Attachment {
-        let attachment = copy() as! Attachment // swiftlint:disable:this force_cast
+extension AttachmentType {
+    func copyWithId(_ id: String? = nil) -> Self {
+        let attachment = copy() as! Self // swiftlint:disable:this force_cast
         if let id = id {
-            attachment.id = id
+            attachment.attachmentId = id
         }
         return attachment
     }

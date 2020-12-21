@@ -37,7 +37,7 @@ class TaggingServiceTests: XCTestCase {
     }
 
     func testDocumentReferenceTags() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         var expectedTags = [TaggingService.Keys.resourceType.rawValue: type(of: document).resourceType,
                             TaggingService.Keys.fhirVersion.rawValue: type(of: document).fhirVersion,
                             TaggingService.Keys.client.rawValue: self.clientId,
@@ -74,7 +74,7 @@ class TaggingServiceTests: XCTestCase {
     }
 
     func testDocumentReferenceUpdatedByClientTag() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let creator = "some-other-client"
         var oldTags = [TaggingService.Keys.resourceType.rawValue: type(of: document).resourceType,
                        TaggingService.Keys.client.rawValue: creator]
@@ -94,7 +94,7 @@ class TaggingServiceTests: XCTestCase {
     }
 
     func testDocumentReferenceUpdatedByPartnerTag() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let creator = "some-other-partner"
         var oldTags = [TaggingService.Keys.resourceType.rawValue: type(of: document).resourceType,
                        TaggingService.Keys.partner.rawValue: creator]

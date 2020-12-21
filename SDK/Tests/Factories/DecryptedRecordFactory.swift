@@ -18,6 +18,22 @@ import Foundation
 import Data4LifeCrypto
 
 struct DecryptedRecordFactory {
+    static func create<R: FhirR4Resource>(_ fhirResource: R,
+                                          dataKey: Key = KeyFactory.createKey(),
+                                          attachmentKey: Key? = KeyFactory.createKey()) -> DecryptedFhirR4Record<R> {
+        let tags = ["resourcetype": Swift.type(of: fhirResource).resourceType.rawValue.lowercased()]
+        let metadata = Metadata(updatedDate: Date(), createdDate: Date())
+        let id = fhirResource.id ?? UUID().uuidString.asFHIRStringPrimitive()
+        fhirResource.id = id
+        return DecryptedFhirR4Record(id: id.value!.string,
+                                     metadata: metadata,
+                                     tags: tags,
+                                     annotations: [],
+                                     resource: fhirResource,
+                                     dataKey: dataKey,
+                                     attachmentKey: attachmentKey,
+                                     modelVersion: R.modelVersion)
+    }
     static func create<R: FhirStu3Resource>(_ fhirResource: R,
                                             dataKey: Key = KeyFactory.createKey(),
                                             attachmentKey: Key? = KeyFactory.createKey()) -> DecryptedFhirStu3Record<R> {
@@ -46,6 +62,19 @@ struct DecryptedRecordFactory {
                                       annotations: [],
                                       dataKey: dataKey,
                                       modelVersion: Data.modelVersion)
+    }
+}
+
+extension DecryptedFhirR4Record {
+    func copy<R: FhirR4Resource>(with resource: R) -> DecryptedFhirR4Record<R> {
+        return DecryptedFhirR4Record<R>(id: id,
+                                        metadata: metadata,
+                                        tags: tags,
+                                        annotations: annotations,
+                                        resource: resource.copy() as! R, // swiftlint:disable:this force_cast
+                                        dataKey: dataKey,
+                                        attachmentKey: attachmentKey,
+                                        modelVersion: modelVersion)
     }
 }
 

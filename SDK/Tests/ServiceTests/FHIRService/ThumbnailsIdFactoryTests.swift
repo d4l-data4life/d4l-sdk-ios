@@ -36,7 +36,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
     }
 
     func testCreateAdditionalIdFailsBuildingId() {
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = UUID().uuidString
 
         let ids = ["testId"]
@@ -49,7 +49,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
     func testSetDocumentIdForDownloadTypeFull() {
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let thumbnailsId = ["addId1", "addId2"]
         let additionalId =
@@ -62,7 +62,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
     func testSetDocumentIddForDownloadTypeMedium() {
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let thumbnailsId = ["addId1", "addId2"]
         let additionalId =
@@ -75,7 +75,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
     func testSetDocumentIdForDownloadTypeSmall() {
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let thumbnailsId = ["addId1", "addId2"]
         let additionalId =
@@ -88,7 +88,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
     func testSetDocumentIdForDownloadInvalidFormatAccordingFormat() {
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let thumbnailsId = ["addId1", "addId2"]
         let additionalId = "\(downscaledAttachmentIdsFormat)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
@@ -105,7 +105,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
     func testSetDocumentIdForDownload3PartAdditionalId() {
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let thumbnailsId = ["addId1", "addId2"]
         let additionalId = "\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
@@ -119,8 +119,8 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let partnerId = UUID().uuidString
         Resource.partnerId = partnerId
 
-        let fhirResource = FhirFactory.createDocumentReferenceResource()
-        let attachment = FhirFactory.createAttachmentElement()
+        let fhirResource = FhirFactory.createStu3DocumentReferenceResource()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let attachmentId = UUID().uuidString
         attachment.id = attachmentId
         fhirResource.content = [DocumentReferenceContent(attachment: attachment)]
@@ -147,9 +147,9 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         Resource.partnerId = partnerId
 
         let fhirResourceId = UUID().uuidString
-        let fhirResource = FhirFactory.createDocumentReferenceResource()
+        let fhirResource = FhirFactory.createStu3DocumentReferenceResource()
         fhirResource.id = fhirResourceId
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let attachmentId = UUID().uuidString
         attachment.id = attachmentId
         fhirResource.content = [DocumentReferenceContent()]

@@ -22,7 +22,7 @@ extension Data4LifeClientTests {
     func testDownloadAttachment() {
         let attachmentId = UUID().uuidString
         let recordId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
 
         fhirService.downloadAttachmentResult = Promise.resolve(attachment)
@@ -45,8 +45,8 @@ extension Data4LifeClientTests {
         let secondAttachmentId = UUID().uuidString
         let recordId = UUID().uuidString
 
-        let firstAttachment = FhirFactory.createAttachmentElement()
-        let secondAttachment = FhirFactory.createAttachmentElement()
+        let firstAttachment = FhirFactory.createStu3AttachmentElement()
+        let secondAttachment = FhirFactory.createStu3AttachmentElement()
 
         firstAttachment.id = firstAttachmentId
         secondAttachment.id = secondAttachmentId

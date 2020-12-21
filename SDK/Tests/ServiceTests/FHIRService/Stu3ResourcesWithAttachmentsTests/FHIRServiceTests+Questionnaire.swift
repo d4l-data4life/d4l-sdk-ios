@@ -98,7 +98,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let newAttachment0 =  FhirFactory.createSampleImageAttachment()
         let questionnaireItem1 = FhirFactory.createQuestionnaireItem(id: "first-item", initial: newAttachment0)
 
-        let newAttachment1 = FhirFactory.createAttachmentElement()
+        let newAttachment1 = FhirFactory.createStu3AttachmentElement()
         let newAttachment2 = FhirFactory.createImageAttachmentElement()
         let newAttachment3 = newAttachment2.copyWithId()
         let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
@@ -177,7 +177,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let resourceId = UUID().uuidString
         let questionnaire = FhirFactory.createQuestionnaire()
         questionnaire.id = resourceId
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
@@ -210,7 +210,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let resourceId = UUID().uuidString
         let questionnaire = FhirFactory.createQuestionnaire()
         questionnaire.id = resourceId
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
@@ -244,7 +244,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let newAttachment0 =  FhirFactory.createSampleImageAttachment()
         let questionnaireItem1 = FhirFactory.createQuestionnaireItem(id: "first-item", initial: newAttachment0)
 
-        let newAttachment1 = FhirFactory.createAttachmentElement()
+        let newAttachment1 = FhirFactory.createStu3AttachmentElement()
         let newAttachment2 = FhirFactory.createImageAttachmentElement()
         let newAttachment3 = newAttachment2.copyWithId()
         let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
@@ -376,7 +376,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
         let updatedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
-        let newAttachment1 = FhirFactory.createAttachmentElement()
+        let newAttachment1 = FhirFactory.createStu3AttachmentElement()
         let newAttachment2 = FhirFactory.createImageAttachmentElement()
         let newAttachment3 = FhirFactory.createImageAttachmentElement()
         let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
@@ -438,7 +438,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let resourceId = UUID().uuidString
         let questionnaire = FhirFactory.createQuestionnaire()
         questionnaire.id = resourceId
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
@@ -472,7 +472,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let resourceId = UUID().uuidString
         let questionnaire = FhirFactory.createQuestionnaire()
         questionnaire.id = resourceId
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
 

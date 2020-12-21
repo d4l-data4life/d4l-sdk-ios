@@ -22,7 +22,7 @@ extension Data4LifeClientTests {
 
     func testCreateResourceWithAnnotations() {
         let annotations = [UUID().uuidString]
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         let record = RecordFactory.create(resource, annotations: annotations)
         fhirService.createFhirRecordResult = Async.resolve(record)
 
@@ -42,7 +42,7 @@ extension Data4LifeClientTests {
 
     func testUpdateResource() {
         let annotations = [UUID().uuidString]
-        let updateResource = FhirFactory.createDocumentReferenceResource()
+        let updateResource = FhirFactory.createStu3DocumentReferenceResource()
         let record = RecordFactory.create(updateResource, annotations: annotations)
 
         fhirService.updateFhirRecordResult = Async.resolve(record)
@@ -64,7 +64,7 @@ extension Data4LifeClientTests {
     }
 
     func testFetchResource() {
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         let resourceId = UUID().uuidString
         resource.id = resourceId
         let record = RecordFactory.create(resource)
@@ -102,7 +102,7 @@ extension Data4LifeClientTests {
 
     func testSearchResources() {
         let annotations = [UUID().uuidString]
-        let resources = [FhirFactory.createDocumentReferenceResource(), FhirFactory.createDocumentReferenceResource()]
+        let resources = [FhirFactory.createStu3DocumentReferenceResource(), FhirFactory.createStu3DocumentReferenceResource()]
         let records = resources.map { RecordFactory.create($0, annotations: annotations) }
         fhirService.fetchRecordsResult = Async.resolve(records)
 

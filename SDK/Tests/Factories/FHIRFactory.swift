@@ -16,6 +16,7 @@
 import Foundation
 @testable import Data4LifeSDK
 import Data4LifeFHIR
+import ModelsR4
 
 struct FhirFactory {
 
@@ -23,9 +24,9 @@ struct FhirFactory {
         return Data4LifeFHIR.DomainResource()
     }
 
-    static func createQuestionnaire(items: [QuestionnaireItem]? = nil) -> Data4LifeFHIR.Questionnaire {
+    static func createQuestionnaire(items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.Questionnaire {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let questionnaire: Questionnaire = try! bundle.decodable(fromJSON: "Questionnaire")
+        let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "Questionnaire")
 
         if let items = items {
             questionnaire.item = items
@@ -36,11 +37,11 @@ struct FhirFactory {
 
     static func createExpansionQuestionnaire() -> Data4LifeFHIR.Questionnaire {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let questionnaire: Questionnaire = try! bundle.decodable(fromJSON: "questionnaire-expansion")
+        let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "questionnaire-expansion")
         return questionnaire
     }
 
-    static func createQuestionnaireItem(id: String? = nil, initial: Attachment? = nil, items: [QuestionnaireItem]? = nil) -> Data4LifeFHIR.QuestionnaireItem {
+    static func createQuestionnaireItem(id: String? = nil, initial: Data4LifeFHIR.Attachment? = nil, items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.QuestionnaireItem {
         let item = QuestionnaireItem()
         item.id = id
         item.item = items
@@ -48,9 +49,9 @@ struct FhirFactory {
         return item
     }
 
-    static func createQuestionnaireResponse(items: [QuestionnaireResponseItem]? = nil) -> Data4LifeFHIR.QuestionnaireResponse {
+    static func createQuestionnaireResponse(items: [Data4LifeFHIR.QuestionnaireResponseItem]? = nil) -> Data4LifeFHIR.QuestionnaireResponse {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let response: QuestionnaireResponse = try! bundle.decodable(fromJSON: "QuestionnaireResponse")
+        let response: Data4LifeFHIR.QuestionnaireResponse = try! bundle.decodable(fromJSON: "QuestionnaireResponse")
 
         if let items = items {
             response.item = items
@@ -60,8 +61,8 @@ struct FhirFactory {
     }
 
     static func createQuestionnaireResponseItem(id: String = UUID().uuidString,
-                                                answers: [QuestionnaireResponseItemAnswer]? = nil,
-                                                nestedItems: [QuestionnaireResponseItem]? = nil) -> Data4LifeFHIR.QuestionnaireResponseItem {
+                                                answers: [Data4LifeFHIR.QuestionnaireResponseItemAnswer]? = nil,
+                                                nestedItems: [Data4LifeFHIR.QuestionnaireResponseItem]? = nil) -> Data4LifeFHIR.QuestionnaireResponseItem {
         let responseItem = QuestionnaireResponseItem()
         responseItem.id = id
         if let answers = answers {
@@ -74,8 +75,8 @@ struct FhirFactory {
     }
 
     static func createQuestionnaireResponseItemAnswer(id: String = UUID().uuidString,
-                                                      attachment: Attachment? = nil) -> Data4LifeFHIR.QuestionnaireResponseItemAnswer {
-        let responseItemAnswer = QuestionnaireResponseItemAnswer()
+                                                      attachment: Data4LifeFHIR.Attachment? = nil) -> Data4LifeFHIR.QuestionnaireResponseItemAnswer {
+        let responseItemAnswer = Data4LifeFHIR.QuestionnaireResponseItemAnswer()
         responseItemAnswer.id = id
         if let attachment = attachment {
             responseItemAnswer.valueAttachment = attachment
@@ -84,21 +85,33 @@ struct FhirFactory {
         return responseItemAnswer
     }
 
-    static func createCarePlanResource() -> Data4LifeFHIR.CarePlan {
+    static func createStu3CarePlanResource() -> Data4LifeFHIR.CarePlan {
         let reference = Reference(UUID().uuidString)
         return CarePlan(intent: .option, status: .active, subject: reference)
     }
 
-    static func createPatientResource(with attachments: [Attachment]? = nil) -> Data4LifeFHIR.Patient {
+    static func createR4CarePlanResource() -> ModelsR4.CarePlan {
+        let reference = ModelsR4.Reference(reference: UUID().uuidString.asFHIRStringPrimitive())
+        return ModelsR4.CarePlan(intent: RequestIntent.option.asPrimitive(), status: RequestStatus.active.asPrimitive(), subject: reference)
+    }
+
+    static func createStu3PatientResource(with attachments: [Data4LifeFHIR.Attachment]? = nil) -> Data4LifeFHIR.Patient {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let patient: Patient = try! bundle.decodable(fromJSON: "Patient")
+        let patient: Data4LifeFHIR.Patient = try! bundle.decodable(fromJSON: "Patient")
         patient.photo = attachments
         return patient
     }
 
-    static func createObservationResource(valueAttachment: Attachment? = nil, components: [ObservationComponent]? = nil) -> Data4LifeFHIR.Observation {
+    static func createR4PatientResource(with attachments: [ModelsR4.Attachment]? = nil) -> ModelsR4.Patient {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let observation: Observation = try! bundle.decodable(fromJSON: "ObservationFixture")
+        let patient: ModelsR4.Patient = try! bundle.decodable(fromJSON: "Patient")
+        patient.photo = attachments
+        return patient
+    }
+
+    static func createObservationResource(valueAttachment: Data4LifeFHIR.Attachment? = nil, components: [Data4LifeFHIR.ObservationComponent]? = nil) -> Data4LifeFHIR.Observation {
+        let bundle = Bundle(for: Data4LifeDITestContainer.self)
+        let observation: Data4LifeFHIR.Observation = try! bundle.decodable(fromJSON: "ObservationFixture")
 
         if let valueAttachment = valueAttachment {
             observation.valueAttachment = valueAttachment
@@ -111,9 +124,9 @@ struct FhirFactory {
         return observation
     }
 
-    static func createObservationComponentResource(valueAttachment: Attachment? = nil) -> Data4LifeFHIR.ObservationComponent {
+    static func createObservationComponentResource(valueAttachment: Data4LifeFHIR.Attachment? = nil) -> Data4LifeFHIR.ObservationComponent {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let component: ObservationComponent = try! bundle.decodable(fromJSON: "ObservationComponent")
+        let component: Data4LifeFHIR.ObservationComponent = try! bundle.decodable(fromJSON: "ObservationComponent")
 
         if let valueAttachment = valueAttachment {
             component.valueAttachment = valueAttachment
@@ -122,10 +135,20 @@ struct FhirFactory {
         return component
     }
 
-    static func createDocumentReferenceResource(with attachments: [Data4LifeFHIR.Attachment] = []) -> Data4LifeFHIR.DocumentReference {
+    static func createStu3DocumentReferenceResource(with attachments: [Data4LifeFHIR.Attachment] = []) -> Data4LifeFHIR.DocumentReference {
         let type = CodeableConcept(code: UUID().uuidString, display: UUID().uuidString, system: UUID().uuidString)
         let content = attachments.map { DocumentReferenceContent(attachment: $0) }
         return DocumentReference(content: content, indexed: .now, status: .current, type: type)
+    }
+
+    static func createR4DocumentReferenceResource(with attachments: [ModelsR4.Attachment] = []) -> ModelsR4.DocumentReference {
+        let coding = ModelsR4.Coding(code: UUID().uuidString.asFHIRStringPrimitive(), display: UUID().uuidString.asFHIRStringPrimitive(), system: "https://www.google.com".asFHIRURIPrimitive())
+        let type = ModelsR4.CodeableConcept(coding: [coding])
+        let content = attachments.map { ModelsR4.DocumentReferenceContent(attachment: $0) }
+        return ModelsR4.DocumentReference(content: content,
+                                          id: UUID().uuidString.asFHIRStringPrimitive(),
+                                          status: DocumentReferenceStatus.current.asPrimitive(),
+                                          type: type)
     }
 
     static func createUploadedAttachmentElement() -> Data4LifeFHIR.Attachment {
@@ -144,9 +167,16 @@ struct FhirFactory {
                                     data: imageData ?? Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))
     }
 
-    static func createAttachmentElement() -> Data4LifeFHIR.Attachment {
+    static func createStu3AttachmentElement() -> Data4LifeFHIR.Attachment {
         return try! Attachment.with(title: UUID().uuidString,
                                     creationDate: .now,
+                                    contentType: UUID().uuidString,
+                                    data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
+    }
+
+    static func createR4AttachmentElement() -> ModelsR4.Attachment {
+        return try! Attachment.with(title: UUID().uuidString,
+                                    creationDate: Date(),
                                     contentType: UUID().uuidString,
                                     data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
     }

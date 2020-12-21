@@ -21,7 +21,7 @@ import Data4LifeFHIR
 extension Data4LifeClientTests {
 
     func testCreateDocumentReferenceResource() {
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         let record = RecordFactory.create(resource)
 
         fhirService.createFhirRecordResult = Promise.resolve(record)
@@ -39,10 +39,10 @@ extension Data4LifeClientTests {
     }
 
     func testCreateDocumentReferenceResources() {
-        let firstResource = FhirFactory.createDocumentReferenceResource()
+        let firstResource = FhirFactory.createStu3DocumentReferenceResource()
         let firstRecord = RecordFactory.create(firstResource)
 
-        let secondResource = FhirFactory.createDocumentReferenceResource()
+        let secondResource = FhirFactory.createStu3DocumentReferenceResource()
         let secondRecord = RecordFactory.create(secondResource)
 
         let records = [firstRecord, secondRecord]
@@ -65,7 +65,7 @@ extension Data4LifeClientTests {
 
     func testUpdateDocumentReferenceResource() {
         let resourceId = UUID().uuidString
-        let updateResource = FhirFactory.createDocumentReferenceResource()
+        let updateResource = FhirFactory.createStu3DocumentReferenceResource()
         updateResource.id = resourceId
         let record = RecordFactory.create(updateResource)
 
@@ -87,12 +87,12 @@ extension Data4LifeClientTests {
 
     func testUpdateDocumentReferenceResources() {
         let firstId = UUID().uuidString
-        let firstResource = FhirFactory.createDocumentReferenceResource()
+        let firstResource = FhirFactory.createStu3DocumentReferenceResource()
         firstResource.id = firstId
         let firstRecord = RecordFactory.create(firstResource)
 
         let secondId = UUID().uuidString
-        let secondResource = FhirFactory.createDocumentReferenceResource()
+        let secondResource = FhirFactory.createStu3DocumentReferenceResource()
         secondResource.id = secondId
         let secondRecord = RecordFactory.create(secondResource)
 
@@ -119,7 +119,7 @@ extension Data4LifeClientTests {
     func testDownloadDocumentReferenceResourceSpecifyingType() {
 
         let resourceId = UUID().uuidString
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         resource.id = resourceId
         let record = RecordFactory.create(resource)
         fhirService.downloadSpecificRecordResult = Promise.resolve(record)

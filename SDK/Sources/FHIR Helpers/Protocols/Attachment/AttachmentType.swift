@@ -150,20 +150,7 @@ extension ModelsR4.Attachment: AttachmentType {
 
     var creationDate: Date? {
         get {
-            var month: Int?
-            if let monthInt8 = creation?.value?.date.month {
-                month = Int(monthInt8)
-            }
-            var year: Int?
-            if let yearInt8 = creation?.value?.date.year {
-                year = Int(yearInt8)
-            }
-            var day: Int?
-            if let dayInt8 = creation?.value?.date.day {
-                day = Int(dayInt8)
-            }
-
-            return Calendar.current.date(from: DateComponents(year: year, month: month, day: day))
+            return try? creation?.value?.asNSDate()
         }
         set {
             guard let newValue = newValue else {
@@ -171,20 +158,7 @@ extension ModelsR4.Attachment: AttachmentType {
                 return
             }
 
-            let creationDateComponents = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,.timeZone], from: newValue)
-            guard let year = creationDateComponents.year, let month = creationDateComponents.month, let day = creationDateComponents.day,
-                  let hour = creationDateComponents.hour, let minute = creationDateComponents.minute, let second = creationDateComponents.second else {
-                return
-            }
-
-            let creationDateTime = ModelsR4.DateTime(date: FHIRDate.init(year: year,
-                                                                         month: UInt8(month),
-                                                                         day: UInt8(day)),
-                                                     time: FHIRTime.init(hour: UInt8(hour),
-                                                                         minute: UInt8(minute),
-                                                                         second: Decimal(second)),
-                                                     timezone: creationDateComponents.timeZone)
-            self.creation = creationDateTime.asPrimitive()
+            self.creation = (try? ModelsR4.DateTime(date: newValue))?.asPrimitive()
         }
     }
 
@@ -215,18 +189,5 @@ extension ModelsR4.Attachment: AttachmentType {
     var attachmentData: Data? {
         guard let base64String = attachmentDataString else { return nil }
         return Data(base64Encoded: base64String)
-    }
-
-    public func copy(with zone: NSZone? = nil) -> Any {
-        return ModelsR4.Attachment(contentType: contentType,
-                                   creation: creation,
-                                   data: data,
-                                   extension: self.extension,
-                                   hash: self.hash,
-                                   id: id,
-                                   language: language,
-                                   size: size,
-                                   title: title,
-                                   url: url)
     }
 }

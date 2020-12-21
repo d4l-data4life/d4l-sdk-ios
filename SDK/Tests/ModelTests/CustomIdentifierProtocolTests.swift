@@ -24,7 +24,7 @@ class CustomIdentifierProtocolTests: XCTestCase {
         let otherIdentifier = Identifier(identifier: UUID().uuidString, partnerId: UUID().uuidString)
 
         Resource.partnerId = partnerId
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
 
         resource.identifier = [otherIdentifier]
         XCTAssertNil(resource.getAdditionalIds())
@@ -49,7 +49,7 @@ class CustomIdentifierProtocolTests: XCTestCase {
         let secondIdentifierValue = UUID().uuidString
 
         Resource.partnerId = partnerId
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
 
         resource.setAdditionalIds([firstIdentifierValue, secondIdentifierValue])
 

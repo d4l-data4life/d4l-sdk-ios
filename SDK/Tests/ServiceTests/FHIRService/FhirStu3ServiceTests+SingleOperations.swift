@@ -21,7 +21,7 @@ import Data4LifeFHIR
 extension FhirStu3ServiceTests {
     func testCreateResource() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
+        let fhirResource = FhirFactory.createStu3CarePlanResource()
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
 
@@ -47,7 +47,7 @@ extension FhirStu3ServiceTests {
     func testFetchResource() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
+        let fhirResource = FhirFactory.createStu3CarePlanResource()
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
 
@@ -73,7 +73,7 @@ extension FhirStu3ServiceTests {
     func testUpdateResource() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
+        let fhirResource = FhirFactory.createStu3CarePlanResource()
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
         let updateResource = fhirResource.copy() as! CarePlan // swiftlint:disable:this force_cast
@@ -100,7 +100,7 @@ extension FhirStu3ServiceTests {
 
     func testUpdateResourceMissingId() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
+        let fhirResource = FhirFactory.createStu3CarePlanResource()
         let expectedError = Data4LifeSDKError.invalidResourceMissingId
 
         keychainService[.userId] = userId
@@ -135,6 +135,66 @@ extension FhirStu3ServiceTests {
             }.finally {
                 asyncExpectation.fulfill()
         }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testSearchResources() {
+        let userId = UUID().uuidString
+        let recordId = UUID().uuidString
+        let fhirResource = FhirFactory.createStu3CarePlanResource()
+        fhirResource.id = recordId
+        let record = DecryptedRecordFactory.create(fhirResource)
+        let offset = 1
+        let pageSize = 2
+        let from = Date()
+        let to = Date()
+
+        keychainService[.userId] = userId
+        recordService.searchRecordsResult = Async.resolve([record])
+
+        let asyncExpectation = expectation(description: "should return resources")
+        fhirService.fetchRecords(decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self,
+                                 recordType: FhirRecord<CarePlan>.self,
+                                 annotations: [],
+                                 from: from,
+                                 to: to,
+                                 pageSize: pageSize,
+                                 offset: offset)
+            .then { result in
+                XCTAssertNotNil(result)
+                XCTAssertEqual(result.count, 1)
+                XCTAssertEqual(result.first?.id, fhirResource.id)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.0)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.1)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.2)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.3)
+            }.onError { error in
+                XCTFail(error.localizedDescription)
+            }.finally {
+                asyncExpectation.fulfill()
+            }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testCountResources() {
+        let userId = UUID().uuidString
+        let count = 1
+
+        keychainService[.userId] = userId
+        recordService.countRecordsResult = Async.resolve(count)
+
+        let asyncExpectation = expectation(description: "should return count of resources")
+        fhirService.countRecords(of: CarePlan.self, annotations: [])
+            .then { result in
+                XCTAssertEqual(count, result)
+                XCTAssertTrue(self.recordService.countRecordsCalledWith?.1 == CarePlan.self)
+            }.onError { error in
+                XCTFail(error.localizedDescription)
+            }.finally {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }

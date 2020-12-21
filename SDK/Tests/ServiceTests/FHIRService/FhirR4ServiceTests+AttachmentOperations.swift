@@ -1,14 +1,14 @@
 //  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
-//  
+//
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
 //  including any intellectual property rights that subsist in the SDK.
-//  
+//
 //  The SDK and its documentation may be accessed and used for viewing/review purposes only.
 //  Any usage of the SDK for other purposes, including usage for the development of
 //  applications/third-party applications shall require the conclusion of a license agreement
 //  between you and D4L.
-//  
+//
 //  If you are interested in licensing the SDK for your own applications/third-party
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
@@ -16,11 +16,11 @@
 import XCTest
 @testable import Data4LifeSDK
 import Then
-import Data4LifeFHIR
+import ModelsR4
 
-class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
+class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
 
-    var recordService: RecordServiceMock<FhirStu3Resource, DecryptedFhirStu3Record<FhirStu3Resource>>!
+    var recordService: RecordServiceMock<FhirR4Resource, DecryptedFhirR4Record<FhirR4Resource>>!
     var keychainService: KeychainServiceMock!
     var cryptoService: CryptoServiceMock!
     var fhirService: FhirService!
@@ -32,7 +32,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let container = Data4LifeDITestContainer()
         container.registerDependencies()
         container.register(scope: .containerInstance) { (_) -> RecordServiceType in
-            RecordServiceMock<FhirStu3Resource, DecryptedFhirStu3Record<FhirStu3Resource>>()
+            RecordServiceMock<FhirR4Resource, DecryptedFhirR4Record<FhirR4Resource>>()
         }
         fhirService = FhirService(container: container)
 
@@ -50,13 +50,13 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
         let userId = UUID().uuidString
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
-        attachment.id = attachmentId
+        let attachment = FhirFactory.createR4AttachmentElement()
+        attachment.id = attachmentId.asFHIRStringPrimitive()
         let recordId = UUID().uuidString
-        let documentReference = FhirFactory.createDocumentReferenceResource(with: [attachment])
-        documentReference.id = recordId
-        let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource)
-        documentReference.id = record.id
+        let documentReference = FhirFactory.createR4DocumentReferenceResource(with: [attachment])
+        documentReference.id = recordId.asFHIRStringPrimitive()
+        let record = DecryptedRecordFactory.create(documentReference as FhirR4Resource)
+        documentReference.id = record.id.asFHIRStringPrimitive()
         let expectedDownloadType: DownloadType = .full
 
         keychainService[.userId] = userId
@@ -64,23 +64,23 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         attachmentService.fetchAttachmentsResult = Promise.resolve([attachment])
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
-                                       decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+        fhirService.downloadAttachment(of: ModelsR4.Attachment.self,
+                                       decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                        withId: attachmentId,
                                        recordId: record.id,
                                        downloadType: .full,
                                        parentProgress: progress)
             .then { result in
                 XCTAssertNotNil(result)
-                XCTAssertEqual(result.id, attachmentId)
+                XCTAssertEqual(result.id?.value?.string, attachmentId)
                 XCTAssertEqual(attachment, result)
 
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, recordId)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId)
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments)
-                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment], documentReference.allAttachments as? [Attachment])
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [ModelsR4.Attachment], documentReference.allAttachments as? [ModelsR4.Attachment])
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [ModelsR4.Identifier],
                                documentReference.identifier)
 
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])
@@ -90,7 +90,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -99,13 +99,13 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
         let userId = UUID().uuidString
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
-        attachment.id = attachmentId
+        let attachment = FhirFactory.createR4AttachmentElement()
+        attachment.id = attachmentId.asFHIRStringPrimitive()
         let recordId = UUID().uuidString
-        let fixturePatient = FhirFactory.createPatientResource(with: [attachment])
-        fixturePatient.id = recordId
-        let record = DecryptedRecordFactory.create(fixturePatient as FhirStu3Resource)
-        fixturePatient.id = record.id
+        let fixturePatient = FhirFactory.createR4PatientResource(with: [attachment])
+        fixturePatient.id = recordId.asFHIRStringPrimitive()
+        let record = DecryptedRecordFactory.create(fixturePatient as FhirR4Resource)
+        fixturePatient.id = record.id.asFHIRStringPrimitive()
         let expectedDownloadType: DownloadType = .full
 
         keychainService[.userId] = userId
@@ -113,23 +113,23 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         attachmentService.fetchAttachmentsResult = Promise.resolve([attachment])
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
-                                       decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+        fhirService.downloadAttachment(of: ModelsR4.Attachment.self,
+                                       decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                        withId: attachmentId,
                                        recordId: record.id,
                                        downloadType: .full,
                                        parentProgress: progress)
             .then { result in
                 XCTAssertNotNil(result)
-                XCTAssertEqual(result.id, attachmentId)
+                XCTAssertEqual(result.id?.value?.string, attachmentId)
                 XCTAssertEqual(attachment, result)
 
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, recordId)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId)
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments)
-                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment], fixturePatient.allAttachments as? [Attachment])
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [ModelsR4.Attachment], fixturePatient.allAttachments as? [ModelsR4.Attachment])
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [ModelsR4.Identifier],
                                fixturePatient.identifier)
 
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])
@@ -139,7 +139,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -150,17 +150,17 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let recordId = UUID().uuidString
         let attachmentId = UUID().uuidString
 
-        let documentReference = FhirFactory.createDocumentReferenceResource()
-        documentReference.id = recordId
-        let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource, attachmentKey: nil)
-        documentReference.id = record.id
+        let documentReference = FhirFactory.createR4DocumentReferenceResource()
+        documentReference.id = recordId.asFHIRStringPrimitive()
+        let record = DecryptedRecordFactory.create(documentReference as FhirR4Resource, attachmentKey: nil)
+        documentReference.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
         recordService.fetchRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
-                                       decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+                                       decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                        withId: attachmentId,
                                        recordId: record.id,
                                        downloadType: .full,
@@ -171,7 +171,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.couldNotFindAttachment)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -180,19 +180,19 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
 
         let firstAttachmentId = UUID().uuidString
-        let firstAttachment = FhirFactory.createAttachmentElement()
-        firstAttachment.id = firstAttachmentId
+        let firstAttachment = FhirFactory.createR4AttachmentElement()
+        firstAttachment.id = firstAttachmentId.asFHIRStringPrimitive()
 
         let secondAttachmentId = UUID().uuidString
-        let secondAttachment = FhirFactory.createAttachmentElement()
-        secondAttachment.id = secondAttachmentId
+        let secondAttachment = FhirFactory.createR4AttachmentElement()
+        secondAttachment.id = secondAttachmentId.asFHIRStringPrimitive()
 
         let recordId = UUID().uuidString
-        let documentReference = FhirFactory.createDocumentReferenceResource(with: [firstAttachment, secondAttachment])
-        documentReference.id = recordId
+        let documentReference = FhirFactory.createR4DocumentReferenceResource(with: [firstAttachment, secondAttachment])
+        documentReference.id = recordId.asFHIRStringPrimitive()
 
-        let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource)
-        documentReference.id = record.id
+        let record = DecryptedRecordFactory.create(documentReference as FhirR4Resource)
+        documentReference.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
         recordService.fetchRecordResult = Promise.resolve(record)
@@ -200,7 +200,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
-                                       decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+                                       decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                        withId: firstAttachmentId,
                                        recordId: record.id,
                                        downloadType: .full,
@@ -211,7 +211,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.couldNotFindAttachment)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -221,19 +221,19 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
 
         let firstAttachmentId = UUID().uuidString
-        let firstAttachment = FhirFactory.createAttachmentElement()
-        firstAttachment.id = firstAttachmentId
+        let firstAttachment = FhirFactory.createR4AttachmentElement()
+        firstAttachment.id = firstAttachmentId.asFHIRStringPrimitive()
 
         let secondAttachmentId = UUID().uuidString
-        let secondAttachment = FhirFactory.createAttachmentElement()
-        secondAttachment.id = secondAttachmentId
+        let secondAttachment = FhirFactory.createR4AttachmentElement()
+        secondAttachment.id = secondAttachmentId.asFHIRStringPrimitive()
 
         let recordId = UUID().uuidString
-        let documentReference = FhirFactory.createDocumentReferenceResource(with: [firstAttachment, secondAttachment])
-        documentReference.id = recordId
+        let documentReference = FhirFactory.createR4DocumentReferenceResource(with: [firstAttachment, secondAttachment])
+        documentReference.id = recordId.asFHIRStringPrimitive()
 
-        let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource)
-        documentReference.id = record.id
+        let record = DecryptedRecordFactory.create(documentReference as FhirR4Resource)
+        documentReference.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
         recordService.fetchRecordResult = Promise.resolve(record)
@@ -244,7 +244,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should throw error cancelled download")
 
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
-                                       decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
+                                       decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                        withId: firstAttachmentId,
                                        recordId: record.id,
                                        downloadType: .full,
@@ -255,7 +255,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.downloadActionWasCancelled)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
