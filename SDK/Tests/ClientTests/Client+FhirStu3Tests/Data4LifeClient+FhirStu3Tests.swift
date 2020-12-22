@@ -14,11 +14,69 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
+import Alamofire
+import SafariServices
 import Then
 @testable import Data4LifeSDK
 import Data4LifeFHIR
+import Data4LifeCrypto
 
-extension Data4LifeClientTests {
+class Data4LifeClientFhirStu3Tests: XCTestCase {
+    var client: Data4LifeClient!
+
+    var sessionService: SessionService!
+    var oAuthService: OAuthServiceMock!
+    var userService: UserServiceMock!
+    var cryptoService: CryptoServiceMock!
+    var commonKeyService: CommonKeyServiceMock!
+    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<DocumentReference>, Attachment>!
+    var appDataService: AppDataServiceMock!
+    var keychainService: KeychainServiceMock!
+    var recordService: RecordServiceMock<DocumentReference,DecryptedFhirStu3Record<DocumentReference>>!
+    var environment: Environment!
+    var versionValidator: SDKVersionValidatorMock!
+
+    override func setUp() {
+        super.setUp()
+
+        environment = .development
+
+        let container = Data4LifeDITestContainer()
+        container.registerDependencies()
+        self.client = Data4LifeClient(container: container,
+                                      environment: environment)
+
+        do {
+            self.sessionService = try container.resolve()
+            self.oAuthService = try container.resolve(as: OAuthServiceType.self)
+            self.userService = try container.resolve(as: UserServiceType.self)
+            self.cryptoService = try container.resolve(as: CryptoServiceType.self)
+            self.commonKeyService = try container.resolve(as: CommonKeyServiceType.self)
+            self.fhirService = try container.resolve(as: FhirServiceType.self)
+            self.recordService = try container.resolve(as: RecordServiceType.self)
+            self.keychainService = try container.resolve(as: KeychainServiceType.self)
+            self.versionValidator = try container.resolve(as: SDKVersionValidatorType.self)
+            self.appDataService = try container.resolve(as: AppDataServiceType.self)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+
+        self.keychainService[.userId] = UUID().uuidString
+        fhirService.keychainService = keychainService
+        fhirService.recordService = recordService
+        fhirService.cryptoService = cryptoService
+        appDataService.keychainService = keychainService
+        appDataService.recordService = recordService
+        appDataService.cryptoService = cryptoService
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        clearStubs()
+    }
+}
+
+extension Data4LifeClientFhirStu3Tests {
 
     func testCreateResourceWithAnnotations() {
         let annotations = [UUID().uuidString]
@@ -27,7 +85,7 @@ extension Data4LifeClientTests {
         fhirService.createFhirRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createFhirStu3Record(resource, annotations: annotations) { result in
+        client.createFhirStu3Record(resource, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -48,7 +106,7 @@ extension Data4LifeClientTests {
         fhirService.updateFhirRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateFhirStu3Record(updateResource, annotations: annotations) { result in
+        client.updateFhirStu3Record(updateResource, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -72,7 +130,7 @@ extension Data4LifeClientTests {
         fhirService.fetchRecordWithIdResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.fetchFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        client.fetchFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -89,7 +147,7 @@ extension Data4LifeClientTests {
         fhirService.deleteRecordResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.deleteFhirStu3Record(withId: resourceId) { result in
+        client.deleteFhirStu3Record(withId: resourceId) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -107,7 +165,7 @@ extension Data4LifeClientTests {
         fhirService.fetchRecordsResult = Async.resolve(records)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.fetchFhirStu3Records(of: DocumentReference.self, annotations: annotations) { result in
+        client.fetchFhirStu3Records(of: DocumentReference.self, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -130,7 +188,7 @@ extension Data4LifeClientTests {
         fhirService.countRecordsResult = Async.resolve(resourceCount)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.countFhirStu3Records(of: resourceType, annotations: annotations) { result in
+        client.countFhirStu3Records(of: resourceType, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

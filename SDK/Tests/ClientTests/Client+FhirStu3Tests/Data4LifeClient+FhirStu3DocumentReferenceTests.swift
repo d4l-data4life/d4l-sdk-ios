@@ -18,7 +18,7 @@ import Then
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
-extension Data4LifeClientTests {
+extension Data4LifeClientFhirStu3Tests {
 
     func testCreateDocumentReferenceResource() {
         let resource = FhirFactory.createStu3DocumentReferenceResource()
@@ -27,7 +27,7 @@ extension Data4LifeClientTests {
         fhirService.createFhirRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createFhirStu3Record(resource) { result in
+        client.createFhirStu3Record(resource) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -51,7 +51,7 @@ extension Data4LifeClientTests {
         fhirService.createFhirRecordsResult = Promise.resolve((records, []))
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createFhirStu3Records(resources) { result in
+        client.createFhirStu3Records(resources) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -72,7 +72,7 @@ extension Data4LifeClientTests {
         fhirService.updateFhirRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateFhirStu3Record(updateResource) { result in
+        client.updateFhirStu3Record(updateResource) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -102,7 +102,7 @@ extension Data4LifeClientTests {
         fhirService.updateFhirRecordsResult = Promise.resolve((records, []))
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateFhirStu3Records(resources) { result in
+        client.updateFhirStu3Records(resources) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -125,7 +125,7 @@ extension Data4LifeClientTests {
         fhirService.downloadSpecificRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.downloadFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        client.downloadFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

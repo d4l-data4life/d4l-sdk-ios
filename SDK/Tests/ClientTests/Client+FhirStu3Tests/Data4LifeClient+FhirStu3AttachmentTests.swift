@@ -18,7 +18,7 @@ import Then
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
-extension Data4LifeClientTests {
+extension Data4LifeClientFhirStu3Tests {
     func testDownloadAttachment() {
         let attachmentId = UUID().uuidString
         let recordId = UUID().uuidString
@@ -28,7 +28,7 @@ extension Data4LifeClientTests {
         fhirService.downloadAttachmentResult = Promise.resolve(attachment)
 
         let asyncExpectation = expectation(description: "Should return a attachment")
-        clientForDocumentReferences.downloadFhirStu3Attachment(withId: attachmentId, recordId: recordId) { result in
+        client.downloadFhirStu3Attachment(withId: attachmentId, recordId: recordId) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -54,7 +54,7 @@ extension Data4LifeClientTests {
 
         let ids = [firstAttachmentId, secondAttachmentId]
         let asyncExpectation = expectation(description: "Should return a attachment")
-        clientForDocumentReferences.downloadFhirStu3Attachments(withIds: ids, recordId: recordId) { result in
+        client.downloadFhirStu3Attachments(withIds: ids, recordId: recordId) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)

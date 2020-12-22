@@ -21,8 +21,8 @@ import Then
 import Data4LifeFHIR
 import Data4LifeCrypto
 
-class Data4LifeClientTests: XCTestCase {
-    var clientForDocumentReferences: Data4LifeClient!
+class Data4LifeClientUserTests: XCTestCase {
+    var client: Data4LifeClient!
 
     var sessionService: SessionService!
     var oAuthService: OAuthServiceMock!
@@ -43,7 +43,7 @@ class Data4LifeClientTests: XCTestCase {
 
         let container = Data4LifeDITestContainer()
         container.registerDependencies()
-        self.clientForDocumentReferences = Data4LifeClient(container: container,
+        self.client = Data4LifeClient(container: container,
                                                            environment: environment)
 
         do {
@@ -74,7 +74,9 @@ class Data4LifeClientTests: XCTestCase {
         super.tearDown()
         clearStubs()
     }
+}
 
+extension Data4LifeClientUserTests {
     func testClientInfoValid() {
         let clientId = UUID().uuidString
         let redirectURL = URL(string: "http://domain.example.com/")!
@@ -82,8 +84,8 @@ class Data4LifeClientTests: XCTestCase {
         oAuthService.redirectURL = redirectURL
         oAuthService.clientId = clientId
 
-        XCTAssertEqual(clientForDocumentReferences.clientId, clientId)
-        XCTAssertEqual(clientForDocumentReferences.redirectURL, redirectURL.absoluteString)
+        XCTAssertEqual(client.clientId, clientId)
+        XCTAssertEqual(client.redirectURL, redirectURL.absoluteString)
     }
 
     func testClientConfigureDependencies() {
@@ -107,14 +109,14 @@ class Data4LifeClientTests: XCTestCase {
         userService.fetchUserInfoResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "should perform successful login")
-        clientForDocumentReferences.presentLogin(on: viewController, animated: true) { result in
+        client.presentLogin(on: viewController, animated: true) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertNil(viewController.presentedViewController)
             XCTAssertNotNil(window.rootViewController)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.0 is OAuthExternalUserAgent)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.1 == encodedPublicKey)
-            XCTAssertTrue(self.oAuthService.presentLoginCalled?.2 == self.clientForDocumentReferences.defaultScopes)
+            XCTAssertTrue(self.oAuthService.presentLoginCalled?.2 == self.client.defaultScopes)
             XCTAssertTrue(self.userService.fetchUserInfoCalled)
             XCTAssertNil(result.error)
             XCTAssertNotNil(try? KeyPair.destroy(tag: tag))
@@ -139,7 +141,7 @@ class Data4LifeClientTests: XCTestCase {
         userService.fetchUserInfoResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "should perform successful login")
-        clientForDocumentReferences.presentLogin(on: viewController, animated: true, scopes: scopes) { result in
+        client.presentLogin(on: viewController, animated: true, scopes: scopes) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertNil(viewController.presentedViewController)
@@ -169,7 +171,7 @@ class Data4LifeClientTests: XCTestCase {
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should fail login")
-        clientForDocumentReferences.presentLogin(on: viewController, animated: true) { result in
+        client.presentLogin(on: viewController, animated: true) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertNil(viewController.presentedViewController)
@@ -191,7 +193,7 @@ class Data4LifeClientTests: XCTestCase {
         cryptoService.fetchKeyPairResult = nil
 
         let asyncExpectation = expectation(description: "should fail fetching keypair")
-        clientForDocumentReferences.presentLogin(on: viewController, animated: true) { error in
+        client.presentLogin(on: viewController, animated: true) { error in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertNil(viewController.presentedViewController)
@@ -213,7 +215,7 @@ class Data4LifeClientTests: XCTestCase {
         let asyncExpectation = expectation(description: "should fail fetching keypair")
         let presentationExpectation = expectation(description: "should return presentation success")
 
-        clientForDocumentReferences.presentLogin(on: viewController,
+        client.presentLogin(on: viewController,
                             animated: true,
                             scopes: nil,
                             presentationCompletion: { presentationExpectation.fulfill() },
@@ -244,7 +246,7 @@ class Data4LifeClientTests: XCTestCase {
         userService.fetchUserInfoResult = Async.reject(expectedError)
 
         let asyncExpectation = expectation(description: "should perform successful login")
-        clientForDocumentReferences.presentLogin(on: viewController, animated: true) { result in
+        client.presentLogin(on: viewController, animated: true) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertNil(viewController.presentedViewController)
@@ -266,7 +268,7 @@ class Data4LifeClientTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "should logout")
 
-        clientForDocumentReferences.logout { result in
+        client.logout { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertNil(result.error)
@@ -285,7 +287,7 @@ class Data4LifeClientTests: XCTestCase {
         oAuthService.isSessionActiveResult = Async.resolve(())
 
         let asyncExpectation = expectation(description: "should return success true")
-        clientForDocumentReferences.isUserLoggedIn { result  in
+        client.isUserLoggedIn { result  in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(self.oAuthService.isSessionActiveCalled)
             XCTAssertNil(result.error)
@@ -299,7 +301,7 @@ class Data4LifeClientTests: XCTestCase {
         commonKeyService.currentKey = KeyFactory.createKey(.common)
 
         let asyncExpectation = expectation(description: "should return success false")
-        clientForDocumentReferences.isUserLoggedIn { result  in
+        client.isUserLoggedIn { result  in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(self.oAuthService.isSessionActiveCalled)
             XCTAssertNotNil(result.error)
@@ -310,7 +312,7 @@ class Data4LifeClientTests: XCTestCase {
 
     func testLoggedInFalseMissingKeys() {
         let asyncExpectation = expectation(description: "should return success false")
-        clientForDocumentReferences.isUserLoggedIn { result  in
+        client.isUserLoggedIn { result  in
             defer { asyncExpectation.fulfill() }
             XCTAssertFalse(self.oAuthService.isSessionActiveCalled)
             XCTAssertNotNil(result.error)
@@ -328,7 +330,7 @@ class Data4LifeClientTests: XCTestCase {
         fhirService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return count of all resources")
-        clientForDocumentReferences.countFhirStu3Records(of: DocumentReference.self) { result in
+        client.countFhirStu3Records(of: DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertEqual(count, result.value)
@@ -346,7 +348,7 @@ class Data4LifeClientTests: XCTestCase {
         fhirService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return response with count on background thread")
-        clientForDocumentReferences.countFhirStu3Records(of: DocumentReference.self, queue: queue) { result in
+        client.countFhirStu3Records(of: DocumentReference.self, queue: queue) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertEqual(result.value, count)
@@ -364,7 +366,7 @@ class Data4LifeClientTests: XCTestCase {
         fhirService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
-        clientForDocumentReferences.countFhirStu3Records(of: DocumentReference.self, queue: queue) { result in
+        client.countFhirStu3Records(of: DocumentReference.self, queue: queue) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertEqual(result.value, count)
@@ -378,7 +380,7 @@ class Data4LifeClientTests: XCTestCase {
         let state = true
         let asyncExpectation = expectation(description: "should return response after state changes")
 
-        clientForDocumentReferences.sessionStateDidChange { newState in
+        client.sessionStateDidChange { newState in
             asyncExpectation.fulfill()
             XCTAssertEqual(state, newState)
         }
@@ -393,9 +395,9 @@ class Data4LifeClientTests: XCTestCase {
         let firstCallback: (Bool) -> Void = { _ in asyncExpectation.fulfill() }
         let secondCallback: (Bool) -> Void = { _ in }
 
-        clientForDocumentReferences.sessionStateDidChange(completion: firstCallback)
+        client.sessionStateDidChange(completion: firstCallback)
         XCTAssertNotNil(oAuthService.sessionStateChanged)
-        clientForDocumentReferences.sessionStateDidChange(completion: secondCallback)
+        client.sessionStateDidChange(completion: secondCallback)
 
         // mock state change call
         oAuthService.sessionStateChanged?(true)

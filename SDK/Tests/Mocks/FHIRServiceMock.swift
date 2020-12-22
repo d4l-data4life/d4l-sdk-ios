@@ -57,7 +57,7 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
     // MARK: Attachment Operations Properties
     var downloadRecordCalledWith: (String, MDR.Type)?
     var downloadGenericRecordResult: Promise<FhirRecord<FhirStu3Resource>>?
-    var downloadSpecificRecordResult: Promise<FhirRecord<DocumentReference>>?
+    var downloadSpecificRecordResult: Promise<FhirRecord<MDR.Resource>>?
     var uploadAttachmentsCreatingCalledWith: (MDR.Resource)?
     var uploadAttachmentsCreatingResult: Async<(resource: MDR.Resource, key: Key?)>?
     var uploadAttachmentsUpdatingCalledWith: (MDR.Resource)?
