@@ -56,10 +56,10 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureComponentAttachment1.id = nil
         let fixtureComponentAttachment2 = FhirFactory.createStu3SampleImageAttachment()
 
-        let fixtureComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment1)
-        let fixtureComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
+        let fixtureComponent1 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: fixtureComponentAttachment1)
+        let fixtureComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
 
-        let fixtureObservation = FhirFactory.createObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2])
+        let fixtureObservation = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2])
 
         let additionalIds = [String]()
 
@@ -118,10 +118,10 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         XCTAssertEqual(observationAttachment.attachmentDataString, observationComponentAttachment2.attachmentDataString)
         XCTAssertNotEqual(observationAttachment, observationComponentAttachment2)
 
-        let observationComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: observationComponentAttachment1)
-        let observationComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: observationComponentAttachment2)
+        let observationComponent1 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: observationComponentAttachment1)
+        let observationComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: observationComponentAttachment2)
 
-        let observation = FhirFactory.createObservationResource(valueAttachment: observationAttachment,
+        let observation = FhirFactory.createStu3ObservationResource(valueAttachment: observationAttachment,
                                                                 components: [observationComponent1,
                                                                              observationComponent2])
 
@@ -183,10 +183,10 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureComponentAttachment1.id = nil
         let fixtureComponentAttachment2 = FhirFactory.createStu3SampleImageAttachment()
 
-        let fixtureComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment1)
-        let fixtureComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
-        let fixtureComponent3 = FhirFactory.createObservationComponentResource(valueAttachment: nil)
-        let fixtureObservation = FhirFactory.createObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2, fixtureComponent3])
+        let fixtureComponent1 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: fixtureComponentAttachment1)
+        let fixtureComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
+        let fixtureComponent3 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: nil)
+        let fixtureObservation = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2, fixtureComponent3])
 
         let additionalIds = [String]()
 
@@ -236,7 +236,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testCreateObservationResourceWithoutAttachments() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createObservationResource()
+        let fhirResource = FhirFactory.createStu3ObservationResource()
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
 
@@ -264,7 +264,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testCreateObservationResourceFailInvalidContentSize() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createObservationResource()
+        let fhirResource = FhirFactory.createStu3ObservationResource()
         let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
@@ -295,7 +295,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
     func testCreateObservationResourceFailInvalidContentType() {
         let userId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment)
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
 
         keychainService[.userId] = userId
@@ -321,7 +321,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment)
         fhirResource.id = resourceId
 
         let additionalIds = [String]()
@@ -363,7 +363,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
     func testFailUpdateObservationResourceMissingId() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createObservationResource()
+        let fhirResource = FhirFactory.createStu3ObservationResource()
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = nil
 
@@ -386,7 +386,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let userId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment)
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
 
@@ -416,7 +416,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment)
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
 
@@ -448,8 +448,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let attachment2 = FhirFactory.createStu3SampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
-        let component = FhirFactory.createObservationComponentResource(valueAttachment: attachment2)
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment1, components: [component])
+        let component = FhirFactory.createStu3ObservationComponentResource(valueAttachment: attachment2)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment1, components: [component])
 
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
@@ -473,8 +473,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         newAttachmentWithId.id = noneExistingId
 
         updatedResource.valueAttachment = updatedAttachment
-        let newComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: newAttachment)
-        let newComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: newAttachmentWithId)
+        let newComponent1 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: newAttachment)
+        let newComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: newAttachmentWithId)
 
         updatedResource.component?.append(contentsOf: [newComponent1, newComponent2])
 
@@ -521,10 +521,10 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let attachment2 = FhirFactory.createStu3SampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
-        let component = FhirFactory.createObservationComponentResource(valueAttachment: attachment2)
-        let component2 = FhirFactory.createObservationComponentResource(valueAttachment: nil)
-        let component3 = FhirFactory.createObservationComponentResource(valueAttachment: nil)
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment1, components: [component2, component, component3])
+        let component = FhirFactory.createStu3ObservationComponentResource(valueAttachment: attachment2)
+        let component2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: nil)
+        let component3 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: nil)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment1, components: [component2, component, component3])
 
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
@@ -548,8 +548,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         newAttachmentWithId.id = noneExistingId
 
         updatedResource.valueAttachment = updatedAttachment
-        let newComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: newAttachment)
-        let newComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: newAttachmentWithId)
+        let newComponent1 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: newAttachment)
+        let newComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: newAttachmentWithId)
 
         updatedResource.component?.append(contentsOf: [newComponent1, newComponent2])
 
@@ -596,8 +596,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let attachment2 = FhirFactory.createStu3SampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
-        let component = FhirFactory.createObservationComponentResource(valueAttachment: attachment2)
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment1, components: [component])
+        let component = FhirFactory.createStu3ObservationComponentResource(valueAttachment: attachment2)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment1, components: [component])
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
 
@@ -616,8 +616,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         newAttachmentWithId.id = noneExistingId
 
         updatedResource.valueAttachment = updatedAttachment
-        let newComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: newAttachment)
-        let newComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: newAttachmentWithId)
+        let newComponent1 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: newAttachment)
+        let newComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: newAttachmentWithId)
 
         updatedResource.component?.append(contentsOf: [newComponent1, newComponent2])
 
@@ -654,7 +654,7 @@ extension FhirStu3ServiceObservationTests {
         let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let attachmentId = UUID().uuidString
         fixtureAttachment.id = attachmentId
-        let fixtureResource = FhirFactory.createObservationResource(valueAttachment: fixtureAttachment, components: nil)
+        let fixtureResource = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
         let additionalPayloadsIds = ["addId1", "addId2"]
         let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
@@ -696,7 +696,7 @@ extension FhirStu3ServiceObservationTests {
         let userId = UUID().uuidString
         let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let expectedAttachmentId = UUID().uuidString
-        let fixtureResource = FhirFactory.createObservationResource(valueAttachment: fixtureAttachment, components: nil)
+        let fixtureResource = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
         let additionalIds = ["addId1"]
         let expectedAdditionalIds = [String]()
@@ -744,7 +744,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
-        let fhirResource = FhirFactory.createObservationResource(valueAttachment: attachment, components: nil)
+        let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment, components: nil)
 
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource as FhirStu3Resource)
@@ -780,7 +780,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
     func testDownloadObservationResourceWithoutAttachments() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let fhirResource = FhirFactory.createObservationResource()
+        let fhirResource = FhirFactory.createStu3ObservationResource()
         fhirResource.id = resourceId
         var record = DecryptedRecordFactory.create(fhirResource as FhirStu3Resource)
         record.attachmentKey = nil
@@ -813,7 +813,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         firstAttachment.id = firstAttachmentId
 
         let firstResourceId = UUID().uuidString
-        let firstResource = FhirFactory.createObservationResource(valueAttachment: firstAttachment, components: nil)
+        let firstResource = FhirFactory.createStu3ObservationResource(valueAttachment: firstAttachment, components: nil)
         firstResource.id = firstResourceId
         let firstRecord = DecryptedRecordFactory.create(firstResource as FhirStu3Resource)
 
@@ -822,7 +822,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         secondAttachment.id = secondAttachmentId
 
         let secondResourceId = UUID().uuidString
-        let secondResource = FhirFactory.createObservationResource(valueAttachment: secondAttachment, components: nil)
+        let secondResource = FhirFactory.createStu3ObservationResource(valueAttachment: secondAttachment, components: nil)
         secondResource.id = secondResourceId
 
         keychainService[.userId] = userId

@@ -135,7 +135,7 @@ class EncryptedRecordTests: XCTestCase {
     }
 
     func testFailLoadingEncryptedRecordJSON() {
-        let resource = FhirFactory.createDomainResource()
+        let resource = FhirFactory.createStu3DomainResource()
         let record = DecryptedRecordFactory.create(resource)
         let encryptedRecord = EncryptedRecordFactory.create(for: record)
 

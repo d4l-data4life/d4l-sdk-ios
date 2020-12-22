@@ -18,14 +18,13 @@ import Foundation
 import XCTest
 @testable import Data4LifeSDK
 import Data4LifeCrypto
-import Data4LifeFHIR
+import ModelsR4
 import Then
 
 // swiftlint:disable identifier_name
-// swiftlint:disable type_name
-class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
+class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
 
-    var recordService: RecordServiceMock<Data4LifeFHIR.QuestionnaireResponse, DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>>!
+    var recordService: RecordServiceMock<ModelsR4.QuestionnaireResponse, DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>>!
     var keychainService: KeychainServiceMock!
     var cryptoService: CryptoServiceMock!
     var fhirService: FhirService!
@@ -37,7 +36,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         let container = Data4LifeDITestContainer()
         container.registerDependencies()
         container.register(scope: .containerInstance) { (_) -> RecordServiceType in
-            RecordServiceMock<Data4LifeFHIR.QuestionnaireResponse, DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>>()
+            RecordServiceMock<ModelsR4.QuestionnaireResponse, DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>>()
         }
         fhirService = FhirService(container: container)
 
@@ -57,14 +56,14 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
     func testCreateQuestionnaireResponseWithoutAttachments() {
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse()
-        questionnaireResponse.id = resourceId
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse()
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
         recordService.createRecordResult = Async.resolve(originalRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(questionnaireResponse, result.resource, "The result doesn't match the expected resource")
@@ -88,20 +87,20 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse()
-        questionnaireResponse.id = resourceId
-        let newAttachment0 =  FhirFactory.createStu3SampleImageAttachment()
-        let questionnaireResponseItem1Answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "existing-answer", attachment: newAttachment0)
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse()
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
+        let newAttachment0 =  FhirFactory.createR4SampleImageAttachment()
+        let questionnaireResponseItem1Answer1 = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "existing-answer", attachment: newAttachment0)
         questionnaireResponse.item?.first?.answer = [questionnaireResponseItem1Answer1]
 
-        let newAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let newAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
+        let newAttachment1 = FhirFactory.createR4AttachmentElement()
+        let newAttachment2 = FhirFactory.createR4ImageAttachmentElement()
         let newAttachment3 = newAttachment2.copyWithId()
-        let questionnaireResponseItem1Answer2 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "first-new-answer", attachment: newAttachment1)
-        let questionnaireResponseItem1Item1Answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "second-new-answer", attachment: newAttachment2)
+        let questionnaireResponseItem1Answer2 = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "first-new-answer", attachment: newAttachment1)
+        let questionnaireResponseItem1Item1Answer1 = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "second-new-answer", attachment: newAttachment2)
 
-        let questionnaireResponseItem1Answer1Item1Answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "third-new-answer", attachment: newAttachment3)
-        let questionnaireResponseItem1Answer1Item1 = FhirFactory.createStu3QuestionnaireResponseItem(id: "third-new-item", answers: [questionnaireResponseItem1Answer1Item1Answer1])
+        let questionnaireResponseItem1Answer1Item1Answer1 = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "third-new-answer", attachment: newAttachment3)
+        let questionnaireResponseItem1Answer1Item1 = FhirFactory.createR4QuestionnaireResponseItem(id: "third-new-item", answers: [questionnaireResponseItem1Answer1Item1Answer1])
 
         questionnaireResponse.item?.first?.answer?.append(questionnaireResponseItem1Answer2)
         questionnaireResponse.item?.first?.item?.first?.answer = [questionnaireResponseItem1Item1Answer1]
@@ -110,20 +109,20 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
 
         //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = questionnaireResponse.allAttachments!.compactMap {
-            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! ModelsR4.Attachment) // swiftlint:disable:this force_cast
         }
 
-        let expectedQuestionnaireResponse = questionnaireResponse.copy() as! Data4LifeFHIR.QuestionnaireResponse // swiftlint:disable:this force_cast
+        let expectedQuestionnaireResponse = questionnaireResponse.copy() as! ModelsR4.QuestionnaireResponse // swiftlint:disable:this force_cast
         expectedQuestionnaireResponse.allAttachments?.forEach({$0.attachmentDataString = nil})
 
         let newAttachment0Id = UUID().uuidString
         let newAttachment1Id = UUID().uuidString
         let newAttachment2Id = UUID().uuidString
         let newAttachment3Id = UUID().uuidString
-        expectedQuestionnaireResponse.item?.first?.answer?.first?.valueAttachment?.id = newAttachment0Id
-        expectedQuestionnaireResponse.item?.first?.answer?[1].valueAttachment?.id = newAttachment1Id
-        expectedQuestionnaireResponse.item?.first?.item?.first?.answer?.first?.valueAttachment?.id = newAttachment2Id
-        expectedQuestionnaireResponse.item?.first?.answer?.first?.item?.first?.answer?.first?.valueAttachment?.id = newAttachment3Id
+        expectedQuestionnaireResponse.item?.first?.answer?.first?.valueAttachment?.id = newAttachment0Id.asFHIRStringPrimitive()
+        expectedQuestionnaireResponse.item?.first?.answer?[1].valueAttachment?.id = newAttachment1Id.asFHIRStringPrimitive()
+        expectedQuestionnaireResponse.item?.first?.item?.first?.answer?.first?.valueAttachment?.id = newAttachment2Id.asFHIRStringPrimitive()
+        expectedQuestionnaireResponse.item?.first?.answer?.first?.item?.first?.answer?.first?.valueAttachment?.id = newAttachment3Id.asFHIRStringPrimitive()
         let expectedRecord = originalRecord.copy(with: expectedQuestionnaireResponse)
 
         let uploadedAttachment0 = newAttachment0.copyWithId(newAttachment0Id)
@@ -143,7 +142,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         recordService.createRecordResult = Async.resolve(expectedRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(expectedQuestionnaireResponse, result.resource, "The result doesn't match the expected resource")
@@ -173,20 +172,20 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse()
-        questionnaireResponse.id = resourceId
-        let attachment = FhirFactory.createStu3AttachmentElement()
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse()
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
+        let attachment = FhirFactory.createR4AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
-        questionnaireResponse.item? = [FhirFactory.createStu3QuestionnaireResponseItem(answers: [
-                                                                                        FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: attachment)])]
+        questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
+                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
         recordService.createRecordResult = Async.resolve(originalRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
@@ -207,18 +206,18 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse()
-        questionnaireResponse.id = resourceId
-        let attachment = FhirFactory.createStu3AttachmentElement()
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse()
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
+        let attachment = FhirFactory.createR4AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
-        questionnaireResponse.item? = [FhirFactory.createStu3QuestionnaireResponseItem(answers: [
-                                                                                        FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: attachment)])]
+        questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
+                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
         recordService.createRecordResult = Async.resolve(originalRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.createFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
@@ -239,31 +238,31 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse(items: [])
-        questionnaireResponse.id = resourceId
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse(items: [])
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
 
-        let existingQuestionnaireResponseItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "existing-answer", attachment: nil)
+        let existingQuestionnaireResponseItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "existing-answer", attachment: nil)
         questionnaireResponse.item?.first?.answer = [existingQuestionnaireResponseItemAnswer]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
-        let updatedQuestionnaireResponse = questionnaireResponse.copy() as! Data4LifeFHIR.QuestionnaireResponse // swiftlint:disable:this force_cast
-        let questionnaireResponseFirstItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "first-new-answer", attachment: nil)
-        let questionnaireResponseSecondItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "second-new-answer", attachment: nil)
-        let questionnaireResponseThirdItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "third-new-answer", attachment: nil)
-        let questionnaireResponseThirdItem = FhirFactory.createStu3QuestionnaireResponseItem(id: "third-new-item", answers: [questionnaireResponseThirdItemAnswer])
+        let updatedQuestionnaireResponse = questionnaireResponse.copy() as! ModelsR4.QuestionnaireResponse // swiftlint:disable:this force_cast
+        let questionnaireResponseFirstItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "first-new-answer", attachment: nil)
+        let questionnaireResponseSecondItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "second-new-answer", attachment: nil)
+        let questionnaireResponseThirdItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "third-new-answer", attachment: nil)
+        let questionnaireResponseThirdItem = FhirFactory.createR4QuestionnaireResponseItem(id: "third-new-item", answers: [questionnaireResponseThirdItemAnswer])
 
         updatedQuestionnaireResponse.item?.first?.answer?.append(questionnaireResponseFirstItemAnswer)
         updatedQuestionnaireResponse.item?.first?.item?.first?.answer = [questionnaireResponseSecondItemAnswer]
         updatedQuestionnaireResponse.item?.first?.answer?.first?.item = [questionnaireResponseThirdItem]
 
-        let expectedQuestionnaireResponse = updatedQuestionnaireResponse.copy() as! Data4LifeFHIR.QuestionnaireResponse // swiftlint:disable:this force_cast
+        let expectedQuestionnaireResponse = updatedQuestionnaireResponse.copy() as! ModelsR4.QuestionnaireResponse // swiftlint:disable:this force_cast
         let expectedRecord = originalRecord.copy(with: expectedQuestionnaireResponse)
 
         recordService.fetchRecordResult = Async.resolve(originalRecord)
         recordService.updateRecordResult = Async.resolve(expectedRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(updatedQuestionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.updateFhirRecord(updatedQuestionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(result.resource, expectedQuestionnaireResponse, "The result doesn't match the expected resource")
@@ -288,46 +287,46 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaireResponseItemNestedInFirstItem = FhirFactory.createStu3QuestionnaireResponseItem(id: UUID().uuidString, answers: [], nestedItems: [])
-        let questionnaireResponseItem = FhirFactory.createStu3QuestionnaireResponseItem(id: UUID().uuidString, answers: [], nestedItems: [questionnaireResponseItemNestedInFirstItem])
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse(items: [questionnaireResponseItem])
-        questionnaireResponse.id = resourceId
-        let existingAttachment =  FhirFactory.createStu3SampleImageAttachment()
-        existingAttachment.id = UUID().uuidString
+        let questionnaireResponseItemNestedInFirstItem = FhirFactory.createR4QuestionnaireResponseItem(id: UUID().uuidString, answers: [], nestedItems: [])
+        let questionnaireResponseItem = FhirFactory.createR4QuestionnaireResponseItem(id: UUID().uuidString, answers: [], nestedItems: [questionnaireResponseItemNestedInFirstItem])
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse(items: [questionnaireResponseItem])
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
+        let existingAttachment =  FhirFactory.createR4SampleImageAttachment()
+        existingAttachment.id = UUID().uuidString.asFHIRStringPrimitive()
         existingAttachment.attachmentDataString = nil
-        let existingQuestionnaireResponseItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "existing-answer", attachment: existingAttachment)
+        let existingQuestionnaireResponseItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "existing-answer", attachment: existingAttachment)
         questionnaireResponse.item?.first?.answer = [existingQuestionnaireResponseItemAnswer]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
-        let updatedQuestionnaireResponse = questionnaireResponse.copy() as! Data4LifeFHIR.QuestionnaireResponse // swiftlint:disable:this force_cast
-        let newAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let newAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
-        let questionnaireResponseFirstItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "first-new-answer", attachment: newAttachment1)
-        let questionnaireResponseSecondItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "second-new-answer", attachment: newAttachment2)
+        let updatedQuestionnaireResponse = questionnaireResponse.copy() as! ModelsR4.QuestionnaireResponse // swiftlint:disable:this force_cast
+        let newAttachment1 = FhirFactory.createR4AttachmentElement()
+        let newAttachment2 = FhirFactory.createR4ImageAttachmentElement()
+        let questionnaireResponseFirstItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "first-new-answer", attachment: newAttachment1)
+        let questionnaireResponseSecondItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "second-new-answer", attachment: newAttachment2)
 
-        let questionnaireResponseThirdItemAnswer = FhirFactory.createStu3QuestionnaireResponseItemAnswer(id: "third-new-answer", attachment: newAttachment2)
-        let questionnaireResponseThirdItem = FhirFactory.createStu3QuestionnaireResponseItem(id: "third-new-item", answers: [questionnaireResponseThirdItemAnswer])
+        let questionnaireResponseThirdItemAnswer = FhirFactory.createR4QuestionnaireResponseItemAnswer(id: "third-new-answer", attachment: newAttachment2)
+        let questionnaireResponseThirdItem = FhirFactory.createR4QuestionnaireResponseItem(id: "third-new-item", answers: [questionnaireResponseThirdItemAnswer])
 
         updatedQuestionnaireResponse.item?.first?.answer?.append(questionnaireResponseFirstItemAnswer)
         updatedQuestionnaireResponse.item?.first?.item?.first?.answer = [questionnaireResponseSecondItemAnswer]
         updatedQuestionnaireResponse.item?.first?.answer?.first?.item = [questionnaireResponseThirdItem]
 
-        let expectedQuestionnaireResponse = updatedQuestionnaireResponse.copy() as! Data4LifeFHIR.QuestionnaireResponse // swiftlint:disable:this force_cast
+        let expectedQuestionnaireResponse = updatedQuestionnaireResponse.copy() as! ModelsR4.QuestionnaireResponse // swiftlint:disable:this force_cast
         let uploadedNewAttachmentId1 = UUID().uuidString
         let uploadedNewAttachmentId2 = UUID().uuidString
         let uploadedNewAttachmentId3 = UUID().uuidString
         expectedQuestionnaireResponse.allAttachments?.forEach { $0.attachmentDataString = nil }
-        expectedQuestionnaireResponse.item?.first?.answer?.first?.valueAttachment?.id = uploadedNewAttachmentId1
-        expectedQuestionnaireResponse.item?.first?.answer?.first?.item?.first?.answer?.first?.valueAttachment?.id = uploadedNewAttachmentId2
-        expectedQuestionnaireResponse.item?.first?.item?.first?.answer?.first?.valueAttachment?.id = uploadedNewAttachmentId3
+        expectedQuestionnaireResponse.item?.first?.answer?.first?.valueAttachment?.id = uploadedNewAttachmentId1.asFHIRStringPrimitive()
+        expectedQuestionnaireResponse.item?.first?.answer?.first?.item?.first?.answer?.first?.valueAttachment?.id = uploadedNewAttachmentId2.asFHIRStringPrimitive()
+        expectedQuestionnaireResponse.item?.first?.item?.first?.answer?.first?.valueAttachment?.id = uploadedNewAttachmentId3.asFHIRStringPrimitive()
         let expectedRecord = originalRecord.copy(with: expectedQuestionnaireResponse)
 
-        let uploadedAttachment1 = newAttachment1.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
-        uploadedAttachment1.id = uploadedNewAttachmentId1
-        let uploadedAttachment2 = newAttachment2.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
-        uploadedAttachment2.id = uploadedNewAttachmentId2
-        let uploadedAttachment3 = newAttachment2.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
-        uploadedAttachment3.id = uploadedNewAttachmentId3
+        let uploadedAttachment1 = newAttachment1.copy() as! ModelsR4.Attachment // swiftlint:disable:this force_cast
+        uploadedAttachment1.id = uploadedNewAttachmentId1.asFHIRStringPrimitive()
+        let uploadedAttachment2 = newAttachment2.copy() as! ModelsR4.Attachment // swiftlint:disable:this force_cast
+        uploadedAttachment2.id = uploadedNewAttachmentId2.asFHIRStringPrimitive()
+        let uploadedAttachment3 = newAttachment2.copy() as! ModelsR4.Attachment // swiftlint:disable:this force_cast
+        uploadedAttachment3.id = uploadedNewAttachmentId3.asFHIRStringPrimitive()
 
         attachmentService.uploadAttachmentsResult = Async.resolve([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])])
         recordService.fetchRecordResult = Async.resolve(originalRecord)
@@ -335,7 +334,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         recordService.updateRecordResult = Async.resolve(expectedRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(updatedQuestionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.updateFhirRecord(updatedQuestionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(result.resource, expectedQuestionnaireResponse, "The result doesn't match the expected resource")
@@ -363,14 +362,14 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         let userId = UUID().uuidString
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse()
-        questionnaireResponse.id = resourceId
-        let attachment = FhirFactory.createStu3AttachmentElement()
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse()
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
+        let attachment = FhirFactory.createR4AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
-        questionnaireResponse.item? = [FhirFactory.createStu3QuestionnaireResponseItem(answers: [
-                                                                                        FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: attachment)])]
+        questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
+                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
@@ -379,7 +378,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         recordService.fetchRecordResult = Async.resolve(updatedRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.updateFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
@@ -398,12 +397,12 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         let userId = UUID().uuidString
 
         let resourceId = UUID().uuidString
-        let questionnaireResponse = FhirFactory.createStu3QuestionnaireResponse()
-        questionnaireResponse.id = resourceId
-        let attachment = FhirFactory.createStu3AttachmentElement()
+        let questionnaireResponse = FhirFactory.createR4QuestionnaireResponse()
+        questionnaireResponse.id = resourceId.asFHIRStringPrimitive()
+        let attachment = FhirFactory.createR4AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
-        questionnaireResponse.item? = [FhirFactory.createStu3QuestionnaireResponseItem(answers: [
-                                                                                        FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: attachment)])]
+        questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
+                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
@@ -412,7 +411,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         recordService.fetchRecordResult = Async.resolve(updatedRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.QuestionnaireResponse>.self)
+        fhirService.updateFhirRecord(questionnaireResponse, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>.self)
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in

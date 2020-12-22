@@ -227,7 +227,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedIdentifier = UUID().uuidString
         let observationAttachment = FhirFactory.createStu3AttachmentElement()
         let observationComponentAttachment = FhirFactory.createStu3ImageAttachmentElement()
-        let observationComponent = FhirFactory.createObservationComponentResource(valueAttachment: observationComponentAttachment)
+        let observationComponent = FhirFactory.createStu3ObservationComponentResource(valueAttachment: observationComponentAttachment)
 
         observation.valueAttachment = observationAttachment
         observation.component = [observationComponent]
@@ -369,16 +369,16 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let answer1Attachment = FhirFactory.createStu3AttachmentElement()
         let answer2Attachment = FhirFactory.createStu3ImageAttachmentElement()
         let answer4Attachment = FhirFactory.createStu3SampleImageAttachment()
-        let answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer1Attachment)
-        let answer2 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer2Attachment)
-        let answer3NestedInItem3 = FhirFactory.createQuestionnaireResponseItemAnswer()
-        let answer4 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer4Attachment)
+        let answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: answer1Attachment)
+        let answer2 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: answer2Attachment)
+        let answer3NestedInItem3 = FhirFactory.createStu3QuestionnaireResponseItemAnswer()
+        let answer4 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: answer4Attachment)
 
-        let item3NestedInItem4 = FhirFactory.createQuestionnaireResponseItem(answers: [answer3NestedInItem3])
-        let item4NestedInAnswer2 = FhirFactory.createQuestionnaireResponseItem(answers: [answer4], nestedItems: [item3NestedInItem4])
+        let item3NestedInItem4 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer3NestedInItem3])
+        let item4NestedInAnswer2 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer4], nestedItems: [item3NestedInItem4])
         answer2.item = [item4NestedInAnswer2]
-        let item1 = FhirFactory.createQuestionnaireResponseItem(answers: [answer1])
-        let item2 = FhirFactory.createQuestionnaireResponseItem(answers: [answer2])
+        let item1 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer1])
+        let item2 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer2])
         questionnaireResponse.item = [item1, item2]
 
         XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], questionnaireResponse.allAttachments as? [Attachment])
@@ -422,16 +422,16 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let answer1Attachment = FhirFactory.createStu3AttachmentElement()
         let answer2Attachment = FhirFactory.createStu3ImageAttachmentElement()
         let answer4Attachment = FhirFactory.createStu3SampleImageAttachment()
-        let answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer1Attachment)
-        let answer2 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer2Attachment)
-        let answer3NestedInItem3 = FhirFactory.createQuestionnaireResponseItemAnswer()
-        let answer4 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer4Attachment)
+        let answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: answer1Attachment)
+        let answer2 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: answer2Attachment)
+        let answer3NestedInItem3 = FhirFactory.createStu3QuestionnaireResponseItemAnswer()
+        let answer4 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: answer4Attachment)
 
-        let item3NestedInItem4 = FhirFactory.createQuestionnaireResponseItem(answers: [answer3NestedInItem3])
-        let item4NestedInAnswer2 = FhirFactory.createQuestionnaireResponseItem(answers: [answer4], nestedItems: [item3NestedInItem4])
+        let item3NestedInItem4 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer3NestedInItem3])
+        let item4NestedInAnswer2 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer4], nestedItems: [item3NestedInItem4])
         answer2.item = [item4NestedInAnswer2]
-        let item1 = FhirFactory.createQuestionnaireResponseItem(answers: [answer1])
-        let item2 = FhirFactory.createQuestionnaireResponseItem(answers: [answer2])
+        let item1 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer1])
+        let item2 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer2])
         mainQuestionnaireResponseItem.item = [item1, item2]
 
         XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], mainQuestionnaireResponseItem.allAttachments as? [Attachment])
@@ -475,12 +475,12 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let questionnaireResponseItem1Answer2Attachment = FhirFactory.createStu3ImageAttachmentElement()
         let questionnaireResponseItem1Item1Answer1Attachment = FhirFactory.createStu3SampleImageAttachment()
 
-        let questionnaireResponseItem1Answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Answer1Attachment)
-        let questionnaireResponseItem1Answer2 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Answer2Attachment)
-        let questionnaireResponseItem1Item1Answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Item1Answer1Attachment)
-        let questionnaireResponseItem1Item1 = FhirFactory.createQuestionnaireResponseItem(answers: [questionnaireResponseItem1Item1Answer1])
+        let questionnaireResponseItem1Answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Answer1Attachment)
+        let questionnaireResponseItem1Answer2 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Answer2Attachment)
+        let questionnaireResponseItem1Item1Answer1 = FhirFactory.createStu3QuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Item1Answer1Attachment)
+        let questionnaireResponseItem1Item1 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [questionnaireResponseItem1Item1Answer1])
 
-        let item1 = FhirFactory.createQuestionnaireResponseItem(answers: [
+        let item1 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [
             questionnaireResponseItem1Answer1,
             questionnaireResponseItem1Answer2
         ], nestedItems: [questionnaireResponseItem1Item1])
