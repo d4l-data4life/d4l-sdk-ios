@@ -129,7 +129,7 @@ class AttachmentServiceTests: XCTestCase {
 
     func testUploadAttachmentWithThumbnailsIds() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
-        let attachment = FhirFactory.createImageAttachmentElement(imageData: imageData)
+        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
@@ -162,7 +162,7 @@ class AttachmentServiceTests: XCTestCase {
 
     //Test image saved as jpeg with an invalid format as image
     func testUploadAttachmentInvalidImageData() {
-        let attachment = FhirFactory.createImageAttachmentElement()
+        let attachment = FhirFactory.createStu3ImageAttachmentElement()
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
@@ -191,7 +191,7 @@ class AttachmentServiceTests: XCTestCase {
 
     func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanThumbnails() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
-        let attachment = FhirFactory.createImageAttachmentElement(imageData: imageData)
+        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
@@ -227,7 +227,7 @@ class AttachmentServiceTests: XCTestCase {
 
     func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanSmallThumbnail() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
-        let attachment = FhirFactory.createImageAttachmentElement(imageData: imageData)
+        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
@@ -410,8 +410,8 @@ class AttachmentServiceTests: XCTestCase {
 
     func testUploadTwoAttachmentsWithSameHash() {
         let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
-        let attachment1 = FhirFactory.createImageAttachmentElement(imageData: imageData)
-        let attachment2 = FhirFactory.createImageAttachmentElement(imageData: imageData)
+        let attachment1 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
+        let attachment2 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment1, attachment2])
 
         let record = DecryptedRecordFactory.create(document)

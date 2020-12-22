@@ -24,9 +24,9 @@ struct FhirFactory {
         return Data4LifeFHIR.DomainResource()
     }
 
-    static func createQuestionnaire(items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.Questionnaire {
+    static func createStu3Questionnaire(items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.Questionnaire {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "Questionnaire")
+        let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "stu3-questionnaire")
 
         if let items = items {
             questionnaire.item = items
@@ -35,13 +35,13 @@ struct FhirFactory {
         return questionnaire
     }
 
-    static func createExpansionQuestionnaire() -> Data4LifeFHIR.Questionnaire {
+    static func createStu3ExpansionQuestionnaire() -> Data4LifeFHIR.Questionnaire {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "questionnaire-expansion")
         return questionnaire
     }
 
-    static func createQuestionnaireItem(id: String? = nil, initial: Data4LifeFHIR.Attachment? = nil, items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.QuestionnaireItem {
+    static func createStu3QuestionnaireItem(id: String? = nil, initial: Data4LifeFHIR.Attachment? = nil, items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.QuestionnaireItem {
         let item = QuestionnaireItem()
         item.id = id
         item.item = items
@@ -102,13 +102,6 @@ struct FhirFactory {
         return patient
     }
 
-    static func createR4PatientResource(with attachments: [ModelsR4.Attachment]? = nil) -> ModelsR4.Patient {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
-        let patient: ModelsR4.Patient = try! bundle.decodable(fromJSON: "Patient")
-        patient.photo = attachments
-        return patient
-    }
-
     static func createObservationResource(valueAttachment: Data4LifeFHIR.Attachment? = nil, components: [Data4LifeFHIR.ObservationComponent]? = nil) -> Data4LifeFHIR.Observation {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let observation: Data4LifeFHIR.Observation = try! bundle.decodable(fromJSON: "ObservationFixture")
@@ -141,16 +134,6 @@ struct FhirFactory {
         return DocumentReference(content: content, indexed: .now, status: .current, type: type)
     }
 
-    static func createR4DocumentReferenceResource(with attachments: [ModelsR4.Attachment] = []) -> ModelsR4.DocumentReference {
-        let coding = ModelsR4.Coding(code: UUID().uuidString.asFHIRStringPrimitive(), display: UUID().uuidString.asFHIRStringPrimitive(), system: "https://www.google.com".asFHIRURIPrimitive())
-        let type = ModelsR4.CodeableConcept(coding: [coding])
-        let content = attachments.map { ModelsR4.DocumentReferenceContent(attachment: $0) }
-        return ModelsR4.DocumentReference(content: content,
-                                          id: UUID().uuidString.asFHIRStringPrimitive(),
-                                          status: DocumentReferenceStatus.current.asPrimitive(),
-                                          type: type)
-    }
-
     static func createUploadedAttachmentElement() -> Data4LifeFHIR.Attachment {
         let attachment = try! Attachment.with(title: UUID().uuidString,
                                               creationDate: .now,
@@ -160,7 +143,7 @@ struct FhirFactory {
         return attachment
     }
 
-    static func createImageAttachmentElement(imageData: Data? = nil) -> Data4LifeFHIR.Attachment {
+    static func createStu3ImageAttachmentElement(imageData: Data? = nil) -> Data4LifeFHIR.Attachment {
         return try! Attachment.with(title: UUID().uuidString,
                                     creationDate: .now,
                                     contentType: UUID().uuidString,
@@ -174,14 +157,9 @@ struct FhirFactory {
                                     data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
     }
 
-    static func createR4AttachmentElement() -> ModelsR4.Attachment {
-        return try! Attachment.with(title: UUID().uuidString,
-                                    creationDate: Date(),
-                                    contentType: UUID().uuidString,
-                                    data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
-    }
 
-    static func createSampleImageAttachment() -> Data4LifeFHIR.Attachment {
+
+    static func createStu3SampleImageAttachment() -> Data4LifeFHIR.Attachment {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let data = bundle.data(forResource: "sample", withExtension: "jpg")!
         return try! Attachment.with(title: UUID().uuidString, creationDate: .now, contentType: UUID().uuidString, data: data)
@@ -193,6 +171,66 @@ struct FhirFactory {
 
     static func createAppDataResourceData() -> Data {
         return try! createAppDataResource().encodedData(with: JSONEncoder())
+    }
+}
+
+// MARK: - R4
+extension FhirFactory {
+    static func createR4DocumentReferenceResource(with attachments: [ModelsR4.Attachment] = []) -> ModelsR4.DocumentReference {
+        let coding = ModelsR4.Coding(code: UUID().uuidString.asFHIRStringPrimitive(), display: UUID().uuidString.asFHIRStringPrimitive(), system: "https://www.google.com".asFHIRURIPrimitive())
+        let type = ModelsR4.CodeableConcept(coding: [coding])
+        let content = attachments.map { ModelsR4.DocumentReferenceContent(attachment: $0) }
+        return ModelsR4.DocumentReference(content: content,
+                                          id: UUID().uuidString.asFHIRStringPrimitive(),
+                                          status: DocumentReferenceStatus.current.asPrimitive(),
+                                          type: type)
+    }
+
+    static func createR4Questionnaire(items: [ModelsR4.QuestionnaireItem]? = nil) -> ModelsR4.Questionnaire {
+        let bundle = Bundle(for: Data4LifeDITestContainer.self)
+        let questionnaire: ModelsR4.Questionnaire = try! bundle.decodable(fromJSON: "r4-questionnaire")
+
+        if let items = items {
+            questionnaire.item = items
+        }
+
+        return questionnaire
+    }
+
+    static func createR4QuestionnaireItem(id: String? = nil, initial: ModelsR4.Attachment? = nil, items: [ModelsR4.QuestionnaireItem]? = nil) -> ModelsR4.QuestionnaireItem {
+        let initial = [initial.map({ QuestionnaireItemInitial(value: .attachment($0))})].compactMap({$0})
+        let item = ModelsR4.QuestionnaireItem.init(linkId: (id ?? UUID().uuidString).asFHIRStringPrimitive(), type: QuestionnaireItemType.attachment.asPrimitive())
+        item.id = id?.asFHIRStringPrimitive()
+        item.item = items
+        item.initial = initial.isEmpty ? nil : initial
+        return item
+    }
+
+    static func createR4SampleImageAttachment() -> ModelsR4.Attachment {
+        let bundle = Bundle(for: Data4LifeDITestContainer.self)
+        let data = bundle.data(forResource: "sample", withExtension: "jpg")!
+        return try! Attachment.with(title: UUID().uuidString, creationDate: Date(), contentType: UUID().uuidString, data: data)
+    }
+
+    static func createR4AttachmentElement() -> ModelsR4.Attachment {
+        return try! Attachment.with(title: UUID().uuidString,
+                                    creationDate: Date(),
+                                    contentType: UUID().uuidString,
+                                    data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
+    }
+
+    static func createR4ImageAttachmentElement(imageData: Data? = nil) -> ModelsR4.Attachment {
+        return try! Attachment.with(title: UUID().uuidString,
+                                    creationDate: Date(),
+                                    contentType: UUID().uuidString,
+                                    data: imageData ?? Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))
+    }
+
+    static func createR4PatientResource(with attachments: [ModelsR4.Attachment]? = nil) -> ModelsR4.Patient {
+        let bundle = Bundle(for: Data4LifeDITestContainer.self)
+        let patient: ModelsR4.Patient = try! bundle.decodable(fromJSON: "Patient")
+        patient.photo = attachments
+        return patient
     }
 }
 

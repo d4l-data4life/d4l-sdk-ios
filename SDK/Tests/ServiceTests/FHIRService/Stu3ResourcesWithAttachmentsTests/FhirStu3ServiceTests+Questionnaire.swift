@@ -54,7 +54,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
     }
 
     func testExpansionQuestionnaire() {
-        let questionnaire = FhirFactory.createExpansionQuestionnaire()
+        let questionnaire = FhirFactory.createStu3ExpansionQuestionnaire()
         XCTAssertNotNil(questionnaire)
         let valueSet = questionnaire.contained?.first as? ValueSet
         XCTAssertEqual(valueSet?.expansion?.identifier, "urn:uuid:2c923b12-a4e9-4ba7-a8fd-5ba26da69808")
@@ -63,7 +63,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
     func testCreateQuestionnaireWithoutAttachments() {
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
         recordService.createRecordResult = Async.resolve(originalRecord)
@@ -93,17 +93,17 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
-        let newAttachment0 =  FhirFactory.createSampleImageAttachment()
-        let questionnaireItem1 = FhirFactory.createQuestionnaireItem(id: "first-item", initial: newAttachment0)
+        let newAttachment0 =  FhirFactory.createStu3SampleImageAttachment()
+        let questionnaireItem1 = FhirFactory.createStu3QuestionnaireItem(id: "first-item", initial: newAttachment0)
 
         let newAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let newAttachment2 = FhirFactory.createImageAttachmentElement()
+        let newAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
         let newAttachment3 = newAttachment2.copyWithId()
-        let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
-        let questionnaireItem1Item1 = FhirFactory.createQuestionnaireItem(id: "second-new-answer", initial: newAttachment2)
-        let questionnaireItem1Item1Item1 = FhirFactory.createQuestionnaireItem(id: "third-new-answer", initial: newAttachment3)
+        let questionnaireItem2 = FhirFactory.createStu3QuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
+        let questionnaireItem1Item1 = FhirFactory.createStu3QuestionnaireItem(id: "second-new-answer", initial: newAttachment2)
+        let questionnaireItem1Item1Item1 = FhirFactory.createStu3QuestionnaireItem(id: "third-new-answer", initial: newAttachment3)
 
         questionnaire.item = [questionnaireItem1]
         questionnaire.item?.append(questionnaireItem2)
@@ -175,13 +175,13 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
         let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
-        questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
+        questionnaire.item? = [FhirFactory.createStu3QuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
         recordService.createRecordResult = Async.resolve(originalRecord)
@@ -208,11 +208,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
-        questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
+        questionnaire.item? = [FhirFactory.createStu3QuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
         recordService.createRecordResult = Async.resolve(originalRecord)
@@ -239,17 +239,17 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         keychainService[.userId] = userId
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
-        let newAttachment0 =  FhirFactory.createSampleImageAttachment()
-        let questionnaireItem1 = FhirFactory.createQuestionnaireItem(id: "first-item", initial: newAttachment0)
+        let newAttachment0 =  FhirFactory.createStu3SampleImageAttachment()
+        let questionnaireItem1 = FhirFactory.createStu3QuestionnaireItem(id: "first-item", initial: newAttachment0)
 
         let newAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let newAttachment2 = FhirFactory.createImageAttachmentElement()
+        let newAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
         let newAttachment3 = newAttachment2.copyWithId()
-        let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
-        let questionnaireItem1Item1 = FhirFactory.createQuestionnaireItem(id: "second-new-answer", initial: newAttachment2)
-        let questionnaireItem1Item1Item1 = FhirFactory.createQuestionnaireItem(id: "third-new-answer", initial: newAttachment3)
+        let questionnaireItem2 = FhirFactory.createStu3QuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
+        let questionnaireItem1Item1 = FhirFactory.createStu3QuestionnaireItem(id: "second-new-answer", initial: newAttachment2)
+        let questionnaireItem1Item1Item1 = FhirFactory.createStu3QuestionnaireItem(id: "third-new-answer", initial: newAttachment3)
 
         questionnaire.item = [questionnaireItem1]
         questionnaire.item?.append(questionnaireItem2)
@@ -327,15 +327,15 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
     func testUpdateQuestionnaireWithoutAttachments() {
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
-        let questionnaireItem1 = FhirFactory.createQuestionnaireItem()
+        let questionnaireItem1 = FhirFactory.createStu3QuestionnaireItem()
         questionnaire.item? = [questionnaireItem1]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
         let updatedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
-        let questionnaireItem2Item1 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: nil)
-        let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "third-new-item", items: [questionnaireItem2Item1])
+        let questionnaireItem2Item1 = FhirFactory.createStu3QuestionnaireItem(id: "first-new-answer", initial: nil)
+        let questionnaireItem2 = FhirFactory.createStu3QuestionnaireItem(id: "third-new-item", items: [questionnaireItem2Item1])
         updatedQuestionnaire.item?.append(questionnaireItem2)
 
         let expectedQuestionnaire = updatedQuestionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
@@ -366,23 +366,23 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
     func testUpdateQuestionnaireWithAttachments() {
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
-        let existingAttachment =  FhirFactory.createSampleImageAttachment()
+        let existingAttachment =  FhirFactory.createStu3SampleImageAttachment()
         existingAttachment.id = UUID().uuidString
         existingAttachment.attachmentDataString = nil
-        let questionnaireItem1 = FhirFactory.createQuestionnaireItem(id: "existing-answer", initial: existingAttachment)
+        let questionnaireItem1 = FhirFactory.createStu3QuestionnaireItem(id: "existing-answer", initial: existingAttachment)
         questionnaire.item = [questionnaireItem1]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
         let updatedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
         let newAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let newAttachment2 = FhirFactory.createImageAttachmentElement()
-        let newAttachment3 = FhirFactory.createImageAttachmentElement()
-        let questionnaireItem2 = FhirFactory.createQuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
-        let questionnaireItem1Item1 = FhirFactory.createQuestionnaireItem(id: "second-new-answer", initial: newAttachment2)
-        let questionnaireItem1Item2Item1 = FhirFactory.createQuestionnaireItem(id: "third-new-answer", initial: newAttachment3)
-        let questionnaireItem1Item2 = FhirFactory.createQuestionnaireItem(id: "third-new-item", items: [questionnaireItem1Item2Item1])
+        let newAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
+        let newAttachment3 = FhirFactory.createStu3ImageAttachmentElement()
+        let questionnaireItem2 = FhirFactory.createStu3QuestionnaireItem(id: "first-new-answer", initial: newAttachment1)
+        let questionnaireItem1Item1 = FhirFactory.createStu3QuestionnaireItem(id: "second-new-answer", initial: newAttachment2)
+        let questionnaireItem1Item2Item1 = FhirFactory.createStu3QuestionnaireItem(id: "third-new-answer", initial: newAttachment3)
+        let questionnaireItem1Item2 = FhirFactory.createStu3QuestionnaireItem(id: "third-new-item", items: [questionnaireItem1Item2Item1])
 
         updatedQuestionnaire.item?.append(questionnaireItem2)
         updatedQuestionnaire.item?.first?.item = [questionnaireItem1Item1]
@@ -436,13 +436,13 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let userId = UUID().uuidString
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
         let attachment = FhirFactory.createStu3AttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
-        questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
+        questionnaire.item? = [FhirFactory.createStu3QuestionnaireItem(initial: attachment)]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaire)
 
@@ -470,11 +470,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let userId = UUID().uuidString
 
         let resourceId = UUID().uuidString
-        let questionnaire = FhirFactory.createQuestionnaire()
+        let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
-        questionnaire.item? = [FhirFactory.createQuestionnaireItem(initial: attachment)]
+        questionnaire.item? = [FhirFactory.createStu3QuestionnaireItem(initial: attachment)]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaire)
 

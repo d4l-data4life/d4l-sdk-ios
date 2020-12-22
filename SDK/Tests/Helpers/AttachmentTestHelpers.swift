@@ -15,6 +15,18 @@
 
 import Data4LifeFHIR
 @testable import Data4LifeSDK
+import ModelsR4
+
+extension ModelsR4.QuestionnaireItem {
+    var initialAttachment: ModelsR4.Attachment? {
+        switch initial?.first?.value {
+        case .attachment(let attachment):
+            return attachment
+        default:
+            return nil 
+        }
+    }
+}
 
 extension AttachmentType {
     func copyWithId(_ id: String? = nil) -> Self {

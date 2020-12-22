@@ -74,7 +74,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(documentReference.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
 
         var filledAttachments: [AttachmentType] = [expectedAttachmentWithId, notExpectedAttachment]
         let schemaResult = try documentReference.makeFilledSchema(byMatchingTo: &filledAttachments)
@@ -102,7 +102,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(report.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
 
         var filledAttachments: [AttachmentType] = [expectedAttachmentWithId, notExpectedAttachment]
         let schemaResult = try report.makeFilledSchema(byMatchingTo:
@@ -120,7 +120,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let medication = Medication()
         XCTAssertNil(medication.allAttachments)
 
-        let expectedAttachment = FhirFactory.createImageAttachmentElement()
+        let expectedAttachment = FhirFactory.createStu3ImageAttachmentElement()
         medication.image = [expectedAttachment]
 
         XCTAssertEqual(expectedAttachment, medication.allAttachments?.first as? Attachment)
@@ -129,7 +129,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(medication.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
 
         var filledAttachments: [AttachmentType] = [expectedAttachmentWithId, notExpectedAttachment]
         let schemaResult = try medication.makeFilledSchema(byMatchingTo: &filledAttachments)
@@ -157,7 +157,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(patient.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
 
         var filledAttachments: [AttachmentType] = [expectedAttachmentWithId, notExpectedAttachment]
         let schemaResult = try patient.makeFilledSchema(byMatchingTo: &filledAttachments)
@@ -185,7 +185,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(practitioner.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
 
         var filledAttachments: [AttachmentType] = [expectedAttachmentWithId, notExpectedAttachment]
         let schemaResult = try practitioner.makeFilledSchema(byMatchingTo: &filledAttachments)
@@ -210,7 +210,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(component.schema, AttachmentSchema.single(expectedAttachment), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
         var filledAttachments: [AttachmentType] = [expectedAttachmentWithId, notExpectedAttachment]
         let schemaResult = try component.makeFilledSchema(byMatchingTo: &filledAttachments)
 
@@ -226,7 +226,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertNil(observation.allAttachments)
         let expectedIdentifier = UUID().uuidString
         let observationAttachment = FhirFactory.createStu3AttachmentElement()
-        let observationComponentAttachment = FhirFactory.createImageAttachmentElement()
+        let observationComponentAttachment = FhirFactory.createStu3ImageAttachmentElement()
         let observationComponent = FhirFactory.createObservationComponentResource(valueAttachment: observationComponentAttachment)
 
         observation.valueAttachment = observationAttachment
@@ -244,7 +244,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedComponentWithIdInAttachment = observationComponent.copy() as! ObservationComponent // swiftlint:disable:this force_cast
         expectedComponentWithIdInAttachment.valueAttachment = expectedComponentAttachmentWithId
 
-        let notExpectedAttachment = FhirFactory.createSampleImageAttachment()
+        let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
 
         var filledAttachments: [AttachmentType] = [expectedObservationAttachmentWithId, expectedComponentAttachmentWithId, notExpectedAttachment]
         let schemaResult = try observation.makeFilledSchema(byMatchingTo: &filledAttachments)
@@ -267,11 +267,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertNil(questionnaire.allAttachments)
 
         let questionnaireItemAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let questionnaireItemAttachment2 = FhirFactory.createImageAttachmentElement()
-        let nestedQuestionnaireItemAttachment3 = FhirFactory.createSampleImageAttachment()
-        let item1 = FhirFactory.createQuestionnaireItem(initial: questionnaireItemAttachment1)
-        let item2 = FhirFactory.createQuestionnaireItem(initial: questionnaireItemAttachment2)
-        let nestedItem3 = FhirFactory.createQuestionnaireItem(initial: nestedQuestionnaireItemAttachment3)
+        let questionnaireItemAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
+        let nestedQuestionnaireItemAttachment3 = FhirFactory.createStu3SampleImageAttachment()
+        let item1 = FhirFactory.createStu3QuestionnaireItem(initial: questionnaireItemAttachment1)
+        let item2 = FhirFactory.createStu3QuestionnaireItem(initial: questionnaireItemAttachment2)
+        let nestedItem3 = FhirFactory.createStu3QuestionnaireItem(initial: nestedQuestionnaireItemAttachment3)
         item2.item = [nestedItem3]
         questionnaire.item = [item1, item2]
 
@@ -315,11 +315,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let initialAttachment = FhirFactory.createUploadedAttachmentElement()
         initialAttachment.id = nil
         let questionnaireItemAttachment1 = FhirFactory.createStu3AttachmentElement()
-        let questionnaireItemAttachment2 = FhirFactory.createImageAttachmentElement()
-        let nestedQuestionnaireItemAttachment3 = FhirFactory.createSampleImageAttachment()
-        let item1 = FhirFactory.createQuestionnaireItem(initial: questionnaireItemAttachment1)
-        let item2 = FhirFactory.createQuestionnaireItem(initial: questionnaireItemAttachment2)
-        let nestedItem3 = FhirFactory.createQuestionnaireItem(initial: nestedQuestionnaireItemAttachment3)
+        let questionnaireItemAttachment2 = FhirFactory.createStu3ImageAttachmentElement()
+        let nestedQuestionnaireItemAttachment3 = FhirFactory.createStu3SampleImageAttachment()
+        let item1 = FhirFactory.createStu3QuestionnaireItem(initial: questionnaireItemAttachment1)
+        let item2 = FhirFactory.createStu3QuestionnaireItem(initial: questionnaireItemAttachment2)
+        let nestedItem3 = FhirFactory.createStu3QuestionnaireItem(initial: nestedQuestionnaireItemAttachment3)
         item2.item = [nestedItem3]
         mainQuestionnaireItem.initialAttachment = initialAttachment
         mainQuestionnaireItem.item = [item1, item2]
@@ -367,8 +367,8 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertNil(questionnaireResponse.allAttachments)
 
         let answer1Attachment = FhirFactory.createStu3AttachmentElement()
-        let answer2Attachment = FhirFactory.createImageAttachmentElement()
-        let answer4Attachment = FhirFactory.createSampleImageAttachment()
+        let answer2Attachment = FhirFactory.createStu3ImageAttachmentElement()
+        let answer4Attachment = FhirFactory.createStu3SampleImageAttachment()
         let answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer1Attachment)
         let answer2 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer2Attachment)
         let answer3NestedInItem3 = FhirFactory.createQuestionnaireResponseItemAnswer()
@@ -420,8 +420,8 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertNil(mainQuestionnaireResponseItem.allAttachments)
 
         let answer1Attachment = FhirFactory.createStu3AttachmentElement()
-        let answer2Attachment = FhirFactory.createImageAttachmentElement()
-        let answer4Attachment = FhirFactory.createSampleImageAttachment()
+        let answer2Attachment = FhirFactory.createStu3ImageAttachmentElement()
+        let answer4Attachment = FhirFactory.createStu3SampleImageAttachment()
         let answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer1Attachment)
         let answer2 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: answer2Attachment)
         let answer3NestedInItem3 = FhirFactory.createQuestionnaireResponseItemAnswer()
@@ -472,8 +472,8 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let valueAttachment = FhirFactory.createUploadedAttachmentElement()
         valueAttachment.id = nil
         let questionnaireResponseItem1Answer1Attachment = FhirFactory.createStu3AttachmentElement()
-        let questionnaireResponseItem1Answer2Attachment = FhirFactory.createImageAttachmentElement()
-        let questionnaireResponseItem1Item1Answer1Attachment = FhirFactory.createSampleImageAttachment()
+        let questionnaireResponseItem1Answer2Attachment = FhirFactory.createStu3ImageAttachmentElement()
+        let questionnaireResponseItem1Item1Answer1Attachment = FhirFactory.createStu3SampleImageAttachment()
 
         let questionnaireResponseItem1Answer1 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Answer1Attachment)
         let questionnaireResponseItem1Answer2 = FhirFactory.createQuestionnaireResponseItemAnswer(attachment: questionnaireResponseItem1Answer2Attachment)

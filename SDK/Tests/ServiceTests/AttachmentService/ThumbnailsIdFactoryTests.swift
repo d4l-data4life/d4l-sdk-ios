@@ -22,7 +22,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
 
     func testCreateAdditionalIdImageAttachment() {
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createImageAttachmentElement()
+        let attachment = FhirFactory.createStu3ImageAttachmentElement()
         attachment.id = attachmentId
         let ids = ["addId1", "addId2"]
         let attWidhIds = (attachment, ids)

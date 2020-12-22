@@ -17,7 +17,6 @@ import XCTest
 @testable import Data4LifeSDK
 import Then
 import Data4LifeFHIR
-import ModelsR4
 
 final class FhirStu3ServiceTests: XCTestCase {
 
@@ -34,36 +33,6 @@ final class FhirStu3ServiceTests: XCTestCase {
         container.registerDependencies()
         container.register(scope: .containerInstance) { (_) -> RecordServiceType in
             RecordServiceMock<Data4LifeFHIR.CarePlan,DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>>()
-        }
-
-        fhirService = FhirService(container: container)
-
-        do {
-            recordService = try container.resolve(as: RecordServiceType.self)
-            keychainService = try container.resolve(as: KeychainServiceType.self)
-            attachmentService = try container.resolve(as: AttachmentServiceType.self)
-            cryptoService = try container.resolve(as: CryptoServiceType.self)
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
-    }
-}
-
-final class FhirR4ServiceTests: XCTestCase {
-
-    var recordService: RecordServiceMock<ModelsR4.CarePlan,DecryptedFhirR4Record<ModelsR4.CarePlan>>!
-    var keychainService: KeychainServiceMock!
-    var cryptoService: CryptoServiceMock!
-    var fhirService: FhirService!
-    var attachmentService: AttachmentServiceMock!
-
-    override func setUp() {
-        super.setUp()
-
-        let container = Data4LifeDITestContainer()
-        container.registerDependencies()
-        container.register(scope: .containerInstance) { (_) -> RecordServiceType in
-            RecordServiceMock<ModelsR4.CarePlan,DecryptedFhirR4Record<ModelsR4.CarePlan>>()
         }
 
         fhirService = FhirService(container: container)

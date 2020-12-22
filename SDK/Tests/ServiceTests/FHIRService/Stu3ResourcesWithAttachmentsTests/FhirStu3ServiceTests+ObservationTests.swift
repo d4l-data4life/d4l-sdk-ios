@@ -54,7 +54,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let fixtureComponentAttachment1 = FhirFactory.createUploadedAttachmentElement()
         fixtureComponentAttachment1.id = nil
-        let fixtureComponentAttachment2 = FhirFactory.createSampleImageAttachment()
+        let fixtureComponentAttachment2 = FhirFactory.createStu3SampleImageAttachment()
 
         let fixtureComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment1)
         let fixtureComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
@@ -181,7 +181,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         let fixtureComponentAttachment1 = FhirFactory.createUploadedAttachmentElement()
         fixtureComponentAttachment1.id = nil
-        let fixtureComponentAttachment2 = FhirFactory.createSampleImageAttachment()
+        let fixtureComponentAttachment2 = FhirFactory.createStu3SampleImageAttachment()
 
         let fixtureComponent1 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment1)
         let fixtureComponent2 = FhirFactory.createObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
@@ -445,7 +445,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let resourceId = UUID().uuidString
         let attachment1Id = UUID().uuidString
         let attachment1 = FhirFactory.createStu3AttachmentElement()
-        let attachment2 = FhirFactory.createSampleImageAttachment()
+        let attachment2 = FhirFactory.createStu3SampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
         let component = FhirFactory.createObservationComponentResource(valueAttachment: attachment2)
@@ -518,7 +518,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let resourceId = UUID().uuidString
         let attachment1Id = UUID().uuidString
         let attachment1 = FhirFactory.createStu3AttachmentElement()
-        let attachment2 = FhirFactory.createSampleImageAttachment()
+        let attachment2 = FhirFactory.createStu3SampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
         let component = FhirFactory.createObservationComponentResource(valueAttachment: attachment2)
@@ -593,7 +593,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let resourceId = UUID().uuidString
         let attachment1Id = UUID().uuidString
         let attachment1 = FhirFactory.createStu3AttachmentElement()
-        let attachment2 = FhirFactory.createSampleImageAttachment()
+        let attachment2 = FhirFactory.createStu3SampleImageAttachment()
         attachment1.id = attachment1Id
         attachment2.id = UUID().uuidString
         let component = FhirFactory.createObservationComponentResource(valueAttachment: attachment2)
