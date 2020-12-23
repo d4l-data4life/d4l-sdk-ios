@@ -155,9 +155,9 @@ The following sections describe how you perform queries and other actions for do
 
 The `create`, `update`, `search` and `count` methods can optionally use `annotations` as a parameter. This parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the `search` and `count` methods.
 
-==== Creating a new record
+==== Creating a new FHIR record
 
-To create a new record, use the `createFhirStu3Record` method.
+To create a new record, use the `createFhirStu3Record` or `createFhirR4Record` method.
 
 [source,swift]
 ----
@@ -165,37 +165,55 @@ func createFhirStu3Record<R: FhirStu3Resource>(_ resource: R,
     annotations: [String]? = nil,
     completion: @escaping ResultBlock<Record<R>>)
 ----
+[source,swift]
+----
+func createFhirR4Record<R: FhirR4Resource>(_ resource: R,
+    annotations: [String]? = nil,
+    completion: @escaping ResultBlock<Record<R>>)
+----
 
 ==== Creating new FHIR records
 
-To create several new records, use the `createFhirStu3Records` method. The annotations will be added to all the created records.
+To create several new records, use the `createFhirStu3Records` or `createFhirR4Records` method. The annotations will be added to all the created records.
 
 [source,swift]
 ----
 func createFhirStu3Records<R: FhirStu3Resource>(_ resources: [R], annotations: [String] = [], completion: @escaping ResultBlock<BatchResult<Record<R>, R>>)
 ----
+[source,swift]
+----
+func createFhirR4Records<R: FhirR4Resource>(_ resources: [R], annotations: [String] = [], completion: @escaping ResultBlock<BatchResult<Record<R>, R>>)
+----
 
 ==== Fetching a FHIR record by its ID
 
-To fetch records for the given ID, use the `fetchFhirStu3Record` method with the `identifier` parameter of the record.
+To fetch records for the given ID, use the `fetchFhirStu3Record` or `fetchFhirR4Record` method with the `identifier` parameter of the record.
 
 [source,swift]
 ----
 func fetchFhirStu3Record<R: FhirStu3Resource>(withId identifier: String, of type: R.Type = R.self, completion: @escaping ResultBlock<Record<R>>)
 ----
+[source,swift]
+----
+func fetchFhirR4Record<R: FhirR4Resource>(withId identifier: String, of type: R.Type = R.self, completion: @escaping ResultBlock<Record<R>>)
+----
 
 ==== Fetching multiple FHIR records with IDs
 
-To fetch one or more records for the given IDs, use the `fetchFhirStu3Records` method with the `identifiers` parameters of the records.
+To fetch one or more records for the given IDs, use the `fetchFhirStu3Records` or `fetchFhirR4Records` method with the `identifiers` parameters of the records.
 
 [source,swift]
 ----
 func fetchFhirStu3Records<R: FhirStu3Resource>(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock<BatchResult<Record<R>, String>>)
 ----
+[source,swift]
+----
+func fetchFhirR4Records<R: FhirR4Resource>(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock<BatchResult<Record<R>, String>>)
+----
 
-==== Updating a FHIRrecord
+==== Updating a FHIR record
 
-To update a record, use the `updateFhirStu3Record` method.
+To update a record, use the `updateFhirStu3Record` or `updateFhirR4Record` method.
 If annotations are set to nil, existing annotations won't change, otherwise they will override existing ones. If you only need to append new annotations, pass them as a parameter including the old ones in order to maintain them.
 
 [source,swift]
@@ -205,42 +223,67 @@ public func updateFhirStu3Record<R: FhirStu3Resource>(_ resource: R,
     queue: DispatchQueue = responseQueue, completion: @escaping
     ResultBlock<Record<R>>)
 ----
+[source,swift]
+----
+public func updateFhirR4Record<R: FhirR4Resource>(_ resource: R,
+    annotations: [String]? = nil,
+    queue: DispatchQueue = responseQueue, completion: @escaping
+    ResultBlock<Record<R>>)
+----
 
 ==== Updating several FHIR records
 
-To update several records, use the `updateFhirStu3Records` method. If annotations are set to nil, existing annotations won't change, otherwise they will override existing ones for all updated records.
+To update several records, use the `updateFhirStu3Records` or `updateFhirR4Records` method. If annotations are set to nil, existing annotations won't change, otherwise they will override existing ones for all updated records.
 
 [source,swift]
 ----
 func updateFhirStu3Records<R: FhirStu3Resource>(_ resources: [R], annotations: [String]? = nil, completion: @escaping ResultBlock<BatchResult<Record<R>, R>>)
 ----
+[source,swift]
+----
+func updateFhirR4Records<R: FhirR4Resource>(_ resources: [R], annotations: [String]? = nil, completion: @escaping ResultBlock<BatchResult<Record<R>, R>>)
+----
 
 ==== Deleting a FHIR record by its ID
 
-To delete a record with its given ID, use the `deleteFhirStu3Record` method with the `identifier` parameter of the record.
+To delete a record with its given ID, use the `deleteFhirStu3Record` or `deleteFhirR4Record` method with the `identifier` parameter of the record.
 
 [source,swift]
 ----
 func deleteFhirStu3Record(withId identifier: String, completion: @escaping ResultBlock<Void>)
 ----
+[source,swift]
+----
+func deleteFhirR4Record(withId identifier: String, completion: @escaping ResultBlock<Void>)
+----
 
 ==== Deleting multiple FHIR records by their IDs
 
-To delete multiple records with their given IDs, use the `deleteFhirStu3Records` method with the `identifiers` parameters of the records.
+To delete multiple records with their given IDs, use the `deleteFhirStu3Records` or `deleteFhirR4Records` method with the `identifiers` parameters of the records.
 
 [source,swift]
 ----
 func deleteFhirStu3Records(withIds identifiers: [String], completion: @escaping ResultBlock<BatchResult<String, String>>)
 ----
+[source,swift]
+----
+func deleteFhirR4Records(withIds identifiers: [String], completion: @escaping ResultBlock<BatchResult<String, String>>)
+----
 
 ==== Counting FHIR records
 
-To count the stored records per record type, use the `countFHIRRecords` method with the given `type` parameter.
-If you don't provide a record type, the client returns the count of all available records.
+To count the stored records per record type, use the `countFhirStu3Records` or `countFhirR4Records` method with the given `type` parameter.
+If you don't provide a record type, the client returns the count of all available records of that Fhir Version.
 
 [source,swift]
 ----
 func countFhirStu3Records<R: FhirStu3Resource>(of type: R.Type?,
+    annotations: [String] = [],
+    completion: @escaping ResultBlock<Int>)
+----
+[source,swift]
+----
+func countFhirR4Records<R: FhirR4Resource>(of type: R.Type?,
     annotations: [String] = [],
     completion: @escaping ResultBlock<Int>)
 ----

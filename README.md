@@ -49,16 +49,6 @@ github "d4l-data4life/d4l-sdk-ios"
 
 Run `carthage` to build the framework and drag the built Data4LifeSDK.framework into your Xcode project. Follow [build instructions](https://github.com/Carthage/Carthage#getting-started).
 
-#### Swift Package Manager
-
-You can use [Swift Package Manager](https://swift.org/package-manager/) and specify dependency in `Package.swift` by adding this:
-
-```swift
-.package(url: "https://github.com/d4l-data4life/d4l-sdk-ios.git", .upToNextMinor(from: "1.12.0"))
-```
-
-Notice: Swift Package Manager uses a fixed debug configuration for debug Xcode builds, which may result in significantly worse performance when encrypting data. Release build is however optimized.
-
 ## Building
 
 #### Install Carthage
