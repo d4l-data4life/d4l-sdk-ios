@@ -151,7 +151,7 @@ class DocumentListTableViewController: UITableViewController {
     }
 
     func loadAppData(_ completion: @escaping () -> Void = {}) {
-        Data4LifeClient.default.fetchAppDataRecords(annotations: ["annotest"]) { [weak self] result in
+        Data4LifeClient.default.fetchAppDataRecords(annotations: ["d4l-data-donation"]) { [weak self] result in
             switch result {
             case .success(let appData):
                 self?.appData = appData

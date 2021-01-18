@@ -22,10 +22,10 @@ protocol TaggingServiceType {
 }
 
 struct TagGroup {
-    let tags: [String:String]
+    let tags: [String: String]
     let annotations: [String]
 
-    init(tags: [String:String], annotations: [String] = []) {
+    init(tags: [String: String], annotations: [String] = []) {
         self.tags = tags
         self.annotations = annotations
     }
@@ -49,7 +49,7 @@ struct TagGroup {
 
     func asParameters(separatedBy separator: Character = "=") -> [String] {
         let formattedAnnotations: [String] = annotations.compactMap {
-            "\(TaggingService.Keys.custom)\(separator)\($0)"
+            String.makePercentEncodedKeyValuePair(key: TaggingService.Keys.custom.rawValue, value: $0)
         }
         return tags.toKeyValueStringArray(separatedBy: separator) + formattedAnnotations
     }
