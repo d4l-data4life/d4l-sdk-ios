@@ -31,33 +31,33 @@ extension AsymmetricKey {
         var keyAsArray = [UInt8](repeating: 0, count: key.count / MemoryLayout<UInt8>.size)
         (key as NSData).getBytes(&keyAsArray, length: key.count)
 
-        //PKCS#8: magic byte at offset 22, check if it's actually ASN.1
+        // PKCS#8: magic byte at offset 22, check if it's actually ASN.1
         var idx = 22
         if ( keyAsArray[idx] != 0x04 ) {
             return key
         }
         idx += 1
 
-        //now we need to find out how long the key is, so we can extract the correct hunk
-        //of bytes from the buffer.
+        // now we need to find out how long the key is, so we can extract the correct hunk
+        // of bytes from the buffer.
         var len = Int(keyAsArray[idx])
         idx += 1
-        let det = len & 0x80 //check if the high bit set
+        let det = len & 0x80 // check if the high bit set
         if (det == 0) {
-            //no? then the length of the key is a number that fits in one byte, (< 128)
+            // no? then the length of the key is a number that fits in one byte, (< 128)
             len = len & 0x7f
         } else {
-            //otherwise, the length of the key is a number that doesn't fit in one byte (> 127)
+            // otherwise, the length of the key is a number that doesn't fit in one byte (> 127)
             var byteCount = Int(len & 0x7f)
             if (byteCount + idx > key.count) {
                 return nil
             }
-            //so we need to snip off byteCount bytes from the front, and reverse their order
+            // so we need to snip off byteCount bytes from the front, and reverse their order
             var accum: UInt = 0
             var idx2 = idx
             idx += byteCount
             while (byteCount > 0) {
-                //after each byte, we shove it over, accumulating the value into accum
+                // after each byte, we shove it over, accumulating the value into accum
                 accum = (accum << 8) + UInt(keyAsArray[idx2])
                 idx2 += 1
                 byteCount -= 1

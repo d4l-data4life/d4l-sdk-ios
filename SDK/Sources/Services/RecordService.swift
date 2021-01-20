@@ -197,7 +197,7 @@ private extension RecordService {
                 throw Data4LifeSDKError.missingTagKey
             }
 
-            //Update current common key
+            // Update current common key
             try await(self.userService.fetchUserInfo())
 
             let commonKeyId = self.commonKeyService.currentId ?? CommonKeyService.initialId

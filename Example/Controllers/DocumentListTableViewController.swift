@@ -135,7 +135,7 @@ class DocumentListTableViewController: UITableViewController {
     }
 
     @IBAction func addAppData(_ sender: Any) {
-        //let userKey = UserKey(t: "t", priv: "priv", pub: "pub", v: 5, scope: "scope")
+        // let userKey = UserKey(t: "t", priv: "priv", pub: "pub", v: 5, scope: "scope")
         let hellosString = "{\"word\":\"hello\"}"
         let hello = Data(hellosString.utf8)
         Data4LifeClient.default.createAppDataRecord(hello, annotations: ["annotest"]) { [weak self] result in
