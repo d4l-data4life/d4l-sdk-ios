@@ -189,6 +189,7 @@ private extension RecordService {
                                            decryptedRecordType: DR.Type = DR.self,
                                            uploadRequest: @escaping (Parameters) -> Router) -> Async<DR> {
         return async {
+
             let tagGroup = try await(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
 
             // Load crypto keys
@@ -206,7 +207,7 @@ private extension RecordService {
             }
 
             // Encrypt tags
-            let encryptedTags = try self.cryptoService.encrypt(values: tagGroup.asParameters(), key: tek)
+            let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(), key: tek)
 
             // Encrypt Resource body
             let encryptedResource: Data = try await(self.cryptoService.encrypt(value: resource, key: dataKey))
@@ -253,7 +254,7 @@ private extension RecordService {
                 throw Data4LifeSDKError.notLoggedIn
             }
 
-            let encryptedTags = try self.cryptoService.encrypt(values: tagGroup.asParameters(), key: tek)
+            let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(), key: tek)
 
             if let startDate = startDate {
                 parameters["start_date"] = startDate.yyyyMmDdFormattedString()

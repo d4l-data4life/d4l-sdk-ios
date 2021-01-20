@@ -23,10 +23,16 @@ extension Dictionary where Key == String, Value == String {
 
 extension String {
     static func makePercentEncodedKeyValuePair(key: String, value: String, separatedBy separator: Character = "=") -> String? {
-        guard let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased(),
-              let escapedValue = value.addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased() else {
+        guard let escapedKey = key.trimmingCharacters(in: .whitespacesAndNewlines)
+                .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased(),
+              let escapedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+                .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased() else {
             return nil
         }
         return "\(escapedKey)\(separator)\(escapedValue)"
+    }
+
+    var isLowercased: Bool {
+        allSatisfy { !$0.isLetter || $0.isLowercase }
     }
 }

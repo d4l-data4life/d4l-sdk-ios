@@ -409,7 +409,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     }
 
     func testSearchRecords() {
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
@@ -487,7 +487,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     }
 
     func testCountRecords() {
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let recordCount = 101
 
