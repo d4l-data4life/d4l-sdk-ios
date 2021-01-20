@@ -153,7 +153,9 @@ The following sections describe how you perform queries and other actions for do
 
 ===== Use of annotations
 
-The `create`, `update`, `search` and `count` methods can optionally use `annotations` as a parameter. This parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the `search` and `count` methods.
+The `create`, `update`, `search` and `count` methods can optionally use `annotations` as a parameter.
+This parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the `search` and `count` methods.
+These annotations cannot contain uppercased characters or empty strings.
 
 ==== Creating a new record
 
