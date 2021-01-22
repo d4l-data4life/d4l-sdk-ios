@@ -21,7 +21,7 @@ import Data4LifeCrypto
 import ModelsR4
 import Then
 
-//swiftlint:disable function_body_length
+// swiftlint:disable function_body_length
 class FhirR4ServiceQuestionnaireTests: XCTestCase {
 
     var recordService: RecordServiceMock<ModelsR4.Questionnaire, DecryptedFhirR4Record<ModelsR4.Questionnaire>>!
@@ -104,7 +104,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         questionnaire.item?.first?.item?[0].item? = [questionnaireItem1Item1Item1]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = questionnaire.allAttachments!.compactMap {
             ($0.copy() as! ModelsR4.Attachment) // swiftlint:disable:this force_cast
         }
@@ -250,7 +250,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         questionnaire.item?.first?.item?[0].item? = [questionnaireItem1Item1Item1]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = questionnaire.allAttachments!.compactMap {
             ($0.copy() as! ModelsR4.Attachment) // swiftlint:disable:this force_cast
         }

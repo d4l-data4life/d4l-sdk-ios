@@ -585,7 +585,7 @@ extension RecordServiceTests {
         // Common key
         commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
 
-        //Validator
+        // Validator
         versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 

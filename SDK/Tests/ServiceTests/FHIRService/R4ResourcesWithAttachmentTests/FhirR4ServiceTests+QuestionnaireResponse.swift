@@ -107,7 +107,7 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         questionnaireResponse.item?.first?.answer?.first?.item = [questionnaireResponseItem1Answer1Item1]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = questionnaireResponse.allAttachments!.compactMap {
             ($0.copy() as! ModelsR4.Attachment) // swiftlint:disable:this force_cast
         }
