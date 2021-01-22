@@ -177,7 +177,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         questionnaireResponse.id = resourceId
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentData = (currentData + blankData).base64EncodedString()
         questionnaireResponse.item? = [FhirFactory.createQuestionnaireResponseItem(answers: [
             FhirFactory.createQuestionnaireResponseItemAnswer(attachment: attachment)])]
@@ -364,7 +364,7 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         questionnaireResponse.id = resourceId
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentData = (currentData + blankData).base64EncodedString()
         questionnaireResponse.item? = [FhirFactory.createQuestionnaireResponseItem(answers: [
             FhirFactory.createQuestionnaireResponseItemAnswer(attachment: attachment)])]

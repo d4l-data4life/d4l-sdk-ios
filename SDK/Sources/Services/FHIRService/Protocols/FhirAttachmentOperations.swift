@@ -86,13 +86,12 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                 let attachmentKey = record.attachmentKey,
                 let resourceWithAttachments = record.resource as? HasAttachments
             else { throw Data4LifeSDKError.couldNotFindAttachment }
-            let attachments: [A] = try await(self.attachmentService.fetchAttachments(of: A.self,
-                                                                                     for: resourceWithAttachments,
-                                                                                     attachmentIds: identifiers,
-                                                                                     downloadType: downloadType,
-                                                                                     key: attachmentKey,
-                                                                                     parentProgress: parentProgress))
-            return attachments
+            let attachments: [AttachmentType] = try await(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+                                                                                                  attachmentIds: identifiers,
+                                                                                                  downloadType: downloadType,
+                                                                                                  key: attachmentKey,
+                                                                                                  parentProgress: parentProgress))
+            return attachments as? [A] ?? []
         }
         .bridgeError { error in
             throw self.bridgeErrorCancelledAction(error: error)
@@ -125,7 +124,7 @@ extension FhirAttachmentOperations {
                     new.append(attachment)
                     continue
                 }
-                if remoteAttachment.attachmentHash == attachment.getData()?.sha1Hash || attachment.getData() == nil {
+                if remoteAttachment.attachmentHash == attachment.attachmentData?.sha1Hash || attachment.attachmentData == nil {
                     unmodified.append(attachment)
                 } else {
                     modified.append(attachment)
@@ -139,8 +138,8 @@ extension FhirAttachmentOperations {
     func updateDataFields(in attachments: [AttachmentType]) -> [AttachmentType] {
         let preparedAttachments = attachments.map { attachment -> AttachmentType in
             let copy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-            copy.attachmentHash = attachment.getData()?.sha1Hash
-            copy.attachmentSize = attachment.getData()?.count
+            copy.attachmentHash = attachment.attachmentData?.sha1Hash
+            copy.attachmentSize = attachment.attachmentData?.count
             return copy
         }
 

@@ -58,7 +58,8 @@ class TaggingServiceTests: XCTestCase {
 
     func testDocumentReferenceTypeTag() {
         let expectedAnnotations = ["exampleAnnotation1"]
-        var expectedTags = [TaggingService.Keys.resourceType.rawValue: DocumentReference.resourceType]
+        var expectedTags = [TaggingService.Keys.resourceType.rawValue: DocumentReference.resourceType,
+                            TaggingService.Keys.fhirVersion.rawValue: DocumentReference.fhirVersion]
         expectedTags.lowercased()
 
         let asyncExpectation = expectation(description: "should create tags")

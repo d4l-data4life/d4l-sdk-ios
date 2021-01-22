@@ -25,7 +25,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
     var keychainService: KeychainServiceMock!
     var cryptoService: CryptoServiceMock!
     var fhirService: FhirService!
-    var attachmentService: AttachmentServiceMock<Attachment>!
+    var attachmentService: AttachmentServiceMock!
 
     override func setUp() {
         super.setUp()
@@ -62,7 +62,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentResultWithId = expectedPatient.photo!.first!.copy() as! Attachment // swiftlint:disable:this force_cast
 
-        expectedPatient.allAttachments?.forEach { $0.attachmentData = nil }
+        expectedPatient.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let createdRecord = DecryptedRecordFactory.create(expectedPatient)
         expectedPatient.id = createdRecord.id
@@ -80,7 +80,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
                 XCTAssertEqual(expectedPatient, result.fhirResource, "The result doesn't match the expected resource")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, fixtureAttachment, "The uploaded attachment is different from the expected")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, fixtureAttachment.testable, "The uploaded attachment is different from the expected")
                 XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.count, 1, "The size of uploaded attachments doesn't fit the expected size")
 
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, expectedPatient, "The created record differs from the expected resource")
@@ -126,8 +126,8 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let fhirResource = FhirFactory.createPatientResource()
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
-        attachment.attachmentData = (currentData + blankData).base64EncodedString()
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
+        attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         fhirResource.photo = [attachment]
         let record = DecryptedRecordFactory.create(fhirResource)
 
@@ -155,7 +155,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let userId = UUID().uuidString
         let fhirResource = FhirFactory.createPatientResource()
         let attachment = FhirFactory.createAttachmentElement()
-        attachment.attachmentData = Data([0x00]).base64EncodedString()
+        attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         fhirResource.photo = [attachment]
 
         keychainService[.userId] = userId
@@ -195,7 +195,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let newAttachmentId = UUID().uuidString
         let attachmentWithId = attachment.copyWithId(newAttachmentId)
         expectedPatient.photo = [attachmentWithId]
-        expectedPatient.photo?.forEach { $0.attachmentData = nil }
+        expectedPatient.photo?.forEach { $0.attachmentDataString = nil }
         let expectedUpdatedRecord = originalRecord.copy(with: expectedPatient)
 
         keychainService[.userId] = userId
@@ -214,9 +214,9 @@ class FhirStu3ServicePatientTests: XCTestCase {
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.3, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertNotNil(self.recordService.updateRecordCalledWith?.4, "A param in the method doesn't match the expectation")
 
-                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentData, "Data in the attachment is expected to be nil")
+                XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
 
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, attachment, "A param in the method doesn't match the expectation")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, attachment.testable, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
         }.onError { error in
@@ -252,7 +252,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let userId = UUID().uuidString
         let fhirResource = FhirFactory.createPatientResource()
         let attachment = FhirFactory.createAttachmentElement()
-        attachment.attachmentData = Data([0x00]).base64EncodedString()
+        attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         fhirResource.photo = [attachment]
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
@@ -282,8 +282,8 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let fhirResource = FhirFactory.createPatientResource()
         let attachment = FhirFactory.createAttachmentElement()
         let blankData = [UInt8](repeating: 0x00, count: 21 * 1024 * 1024) // 21mb
-        guard let currentData = attachment.getData() else { fatalError("Attachment should have data") }
-        attachment.attachmentData = (currentData + blankData).base64EncodedString()
+        guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
+        attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         fhirResource.photo = [attachment]
         let record = DecryptedRecordFactory.create(fhirResource)
         fhirResource.id = record.id
@@ -321,7 +321,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
 
         let attachment2 = FhirFactory.createAttachmentElement()
         attachment2.id = UUID().uuidString
-        attachment2.attachmentData = nil
+        attachment2.attachmentDataString = nil
 
         patient.photo = [attachment1, attachment2]
         let originalRecord = DecryptedRecordFactory.create(patient)
@@ -332,7 +332,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
 
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment1 = updatedPatient.allAttachments!.first! as! Attachment // swiftlint:disable:this force_cast
-        updatedAttachment1.attachmentData = newData.base64EncodedString()
+        updatedAttachment1.attachmentDataString = newData.base64EncodedString()
         updatedAttachment1.attachmentHash = newData.sha1Hash
         updatedAttachment1.attachmentSize = newData.byteCount
 
@@ -403,7 +403,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let attachment = FhirFactory.createAttachmentElement()
         let attachment2 = FhirFactory.createAttachmentElement()
         attachment2.id = UUID().uuidString
-        attachment2.attachmentData = nil
+        attachment2.attachmentDataString = nil
         fhirResource.id = resourceId
         attachment.id = attachmentId
         fhirResource.photo = [attachment, attachment2]
@@ -414,7 +414,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let updatedResource = fhirResource.copy() as! Patient // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as! Attachment // swiftlint:disable:this force_cast
-        updatedAttachment.attachmentData = newData.base64EncodedString()
+        updatedAttachment.attachmentDataString = newData.base64EncodedString()
         let newAttachment = FhirFactory.createAttachmentElement()
         newAttachment.hash = "brokenHash"
         let newAttachmentWithId = FhirFactory.createAttachmentElement()
@@ -468,7 +468,7 @@ extension FhirStu3ServicePatientTests {
 
         let expectedPatient = fixturePatient.copy() as! Patient // swiftlint:disable:this force_cast
         expectedPatient.setAdditionalIds(expectedAdditionalId)
-        expectedPatient.allAttachments?.forEach { $0.attachmentData = nil }
+        expectedPatient.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let createdRecord = DecryptedRecordFactory.create(expectedPatient)
         expectedPatient.id = createdRecord.id
@@ -486,7 +486,7 @@ extension FhirStu3ServicePatientTests {
                 XCTAssertEqual(expectedPatient, result.fhirResource, "The expected resource doesn't match the result of the test")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, fixtureAttachment,
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, fixtureAttachment.testable,
                                "The uploaded attachment is different from the expected")
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, expectedPatient, "The created record differs from the expected resource")
                 XCTAssertEqual(result.fhirResource.identifier!, expectedPatient.identifier,  "The identifiers of the result differ from the expected resource exist")
@@ -530,7 +530,7 @@ extension FhirStu3ServicePatientTests {
                 XCTAssertEqual(expectedPatient, result.fhirResource, "The expected resource doesn't match the result of the test")
                 XCTAssertEqual(result.id, createdRecord.id, "The result id is different from the record id")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "The used attachment key is different from the generated one")
-                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first, fixtureAttachment, "The uploaded attachment is different from the expected")
+                XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, fixtureAttachment.testable, "The uploaded attachment is different from the expected")
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, fixturePatient, "The created record differs from the expected resource")
                 XCTAssertEqual(result.fhirResource.identifier!, expectedPatient.identifier, "The identifiers of the result differ from the expected resource exist")
             }.onError { error in
@@ -572,7 +572,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment],
                                fhirResource.allAttachments as? [Attachment], "A param in the method doesn't match the expectation")
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? HasIdentifiableAttachments)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
                                fhirResource.identifier, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1,
                                [attachmentId], "A param in the method doesn't match the expectation")
@@ -651,7 +651,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment],
                                firstResource.allAttachments as? [Attachment], "A param in the method doesn't match the expectation")
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? HasIdentifiableAttachments)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
         }.onError { error in

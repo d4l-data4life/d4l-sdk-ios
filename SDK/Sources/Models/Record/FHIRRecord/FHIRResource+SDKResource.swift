@@ -23,16 +23,9 @@ protocol FhirSDKResource: AnyFhirResource, SDKResource {
 extension FhirStu3Resource: FhirSDKResource {
     static var searchTags: [String : String] {
         var tags = [TaggingService.Keys.resourceType.rawValue: Self.resourceType]
+        tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         tags.lowercased()
         return tags
-    }
-
-    var resourceTags: [String : String] {
-        var resourceTags: [String: String] = [:]
-        resourceTags += Self.searchTags
-        resourceTags[TaggingService.Keys.fhirVersion.rawValue] = type(of: self).fhirVersion
-        resourceTags.lowercased()
-        return resourceTags
     }
 
     var fhirIdentifier: String? {
@@ -44,16 +37,9 @@ extension FhirStu3Resource: FhirSDKResource {
 extension FhirR4Resource: FhirSDKResource {
     static var searchTags: [String : String] {
         var tags = [TaggingService.Keys.resourceType.rawValue: Self.resourceType.rawValue]
+        tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         tags.lowercased()
         return tags
-    }
-
-    var resourceTags: [String : String] {
-        var resourceTags: [String: String] = [:]
-        resourceTags += Self.searchTags
-        resourceTags[TaggingService.Keys.fhirVersion.rawValue] = type(of: self).fhirVersion
-        resourceTags.lowercased()
-        return resourceTags
     }
 
     var fhirIdentifier: String? {

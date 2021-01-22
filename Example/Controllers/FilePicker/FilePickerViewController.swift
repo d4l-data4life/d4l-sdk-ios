@@ -15,24 +15,22 @@
 
 import UIKit
 
-typealias FileData = (name: String, image: UIImage)
-
 protocol FilePickerDelegate: class {
     func filePickerDidSelect(files: [FileData])
 }
 
 class FilePickerViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @IBOutlet var collectionView:UICollectionView!
-    @IBOutlet var doneButton:UIBarButtonItem!
+
+    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var doneButton: UIBarButtonItem!
     weak var delegate: FilePickerDelegate?
-    var files:[FileData] = []
+    var files: [FileData] = []
 
     @IBAction func openImagePickerButtonTapped(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = false
-
         present(imagePicker, animated: true)
     }
 
@@ -59,7 +57,7 @@ class FilePickerViewController: UIViewController, UIImagePickerControllerDelegat
         filenameAlertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         filenameAlertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
             let filename = filenameAlertController.textFields?.first?.text ?? UUID().uuidString
-            self?.files.append((filename, image))
+            self?.files.append(FileData(name: filename, image: image))
             self?.collectionView.reloadData()
             self?.doneButton.isEnabled = true
         }))

@@ -24,7 +24,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
     var keychainService: KeychainServiceMock!
     var cryptoService: CryptoServiceMock!
     var fhirService: FhirService!
-    var attachmentService: AttachmentServiceMock<Data4LifeFHIR.Attachment>!
+    var attachmentService: AttachmentServiceMock!
 
     override func setUp() {
         super.setUp()
@@ -80,7 +80,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments)
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment], documentReference.allAttachments as? [Attachment])
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? HasIdentifiableAttachments)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
                                documentReference.identifier)
 
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])
@@ -129,7 +129,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments)
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment], fixturePatient.allAttachments as? [Attachment])
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? HasIdentifiableAttachments)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
                                fixturePatient.identifier)
 
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])

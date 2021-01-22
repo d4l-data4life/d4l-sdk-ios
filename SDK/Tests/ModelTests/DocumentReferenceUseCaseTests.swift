@@ -75,7 +75,7 @@ class DocumentReferenceUseCase: XCTestCase {
         attachment.creation = DateTime(string: "2020-03-15")
         XCTAssertEqual(attachment.hashValidity, .notValid, "Attachment hash should be invalid")
 
-        attachment.hash = attachment.getData()!.sha1Hash
+        attachment.hash = attachment.attachmentData!.sha1Hash
         XCTAssertEqual(attachment.hashValidity, .valid, "Attachment hash should be valid")
     }
 

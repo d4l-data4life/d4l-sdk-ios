@@ -30,12 +30,11 @@ extension FhirService {
 
             if let resourceWithAttachments = record.fhirResource as? HasAttachments {
                 let ids = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId }
-                let downloadedAttachments: [Data4LifeFHIR.Attachment] = try await(self.attachmentService.fetchAttachments(of: Attachment.self,
-                                                                                                                          for: resourceWithAttachments,
-                                                                                                                          attachmentIds: ids ?? [],
-                                                                                                                          downloadType: .full,
-                                                                                                                          key: attachmentKey,
-                                                                                                                          parentProgress: Progress()))
+                let downloadedAttachments: [AttachmentType] = try await(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+                                                                                                                attachmentIds: ids ?? [],
+                                                                                                                downloadType: .full,
+                                                                                                                key: attachmentKey,
+                                                                                                                parentProgress: Progress()))
                 var downloadedGenericAttachments = downloadedAttachments as [AttachmentType]
                 let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &downloadedGenericAttachments)
                 resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
@@ -51,25 +50,27 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            guard let validatedAttachments = try resourceWithAttachments.validateAttachments() as? [Data4LifeFHIR.Attachment] else {
+            guard let validatedAttachments = try resourceWithAttachments.validateAttachments() else {
                 return (resource, nil)
             }
 
             let generatedKey = try await(self.cryptoService.generateGCKey(.attachment))
-            let uploadedAttachmentsWithIds: [(Data4LifeFHIR.Attachment, [String])]  = try await(self.attachmentService.uploadAttachments(validatedAttachments,
-                                                                                                                                         key: generatedKey))
+            let uploadedAttachmentsWithIds: [(AttachmentType, [String])] =
+                try await(self.attachmentService.uploadAttachments(validatedAttachments,
+                                                                   key: generatedKey))
             var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 } as [AttachmentType]
 
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &uploadedAttachments)
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
-            resourceWithAttachments.allAttachments?.forEach { $0.attachmentData = nil }
+            resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
-            if let resourceWithIdentifier = resourceWithAttachments as? HasIdentifiableAttachments {
+            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
+                return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
+            } else {
+                return (resource, generatedKey)
             }
-
-            return (resource, generatedKey)
         }
     }
 
@@ -87,14 +88,14 @@ extension FhirService {
 
             let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
             // Gets all Attachments without data
-            let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments as? [Attachment] ?? []
+            let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments ?? []
             let newKey = try await(self.cryptoService.generateGCKey(.attachment))
             let attachmentKey = remoteRecord.attachmentKey ?? newKey
 
             let classifiedAttachments = self.compareAttachments(local: attachments, remote: remoteAttachments)
             let preparedModifiedAttachments = self.updateDataFields(in: classifiedAttachments.modified)
 
-            let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate() as? [Attachment] ?? []
+            let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate()
 
             let uploadedAttachmentsWithIds = try await(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
             let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 }
@@ -103,15 +104,16 @@ extension FhirService {
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
 
             // We don't wanna upload base64 encoded data (in case of old downloaded attachments)
-            resourceWithAttachments.allAttachments?.forEach { $0.attachmentData = nil }
+            resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
-            if let resourceWithIdentifier = resourceWithAttachments as? HasIdentifiableAttachments {
+            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) })
+                let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
+                                                                                                    attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
+                return (cleanedResource as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
+            } else {
+                return (resource, attachmentKey)
             }
-
-            let cleanedResource = try ThumbnailsIdFactory.cleanObsoleteAdditionalIdentifiers(resource)
-
-            return (cleanedResource, attachmentKey)
         }
     }
 }
@@ -120,12 +122,13 @@ extension FhirService {
 extension FhirService {
 
     private func uploadAttachments(
-        _ attachments: [Attachment],
-        attachmentKey: Key) -> Promise<[(attachment: Attachment, thumbnailIds: [String])]> {
+        _ attachments: [AttachmentType],
+        attachmentKey: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]> {
         return async {
-            if attachments.isEmpty == false {
-                let updatedAttachmentsWithThumbnailsIds: [(Data4LifeFHIR.Attachment, [String])] = try await(self.attachmentService.uploadAttachments(attachments,
-                                                                                                                                                     key: attachmentKey))
+            if !attachments.isEmpty {
+                let updatedAttachmentsWithThumbnailsIds: [(AttachmentType, [String])] =
+                    try await(self.attachmentService.uploadAttachments(attachments,
+                                                                       key: attachmentKey))
                 return updatedAttachmentsWithThumbnailsIds
             } else {
                 return []

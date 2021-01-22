@@ -19,14 +19,13 @@ import Data4LifeCrypto
 import Then
 
 protocol AttachmentServiceType {
-    func uploadAttachments<A: AttachmentType>(_ attachments: [A],
-                                              key: Key) -> Promise<[(attachment: A, thumbnailIds: [String])]>
-    func fetchAttachments<A: AttachmentType>(of type: A.Type,
-                                             for resourceWithAttachments: HasAttachments,
-                                             attachmentIds: [String],
-                                             downloadType: DownloadType,
-                                             key: Key,
-                                             parentProgress: Progress) -> Promise<[A]>
+    func uploadAttachments(_ attachments: [AttachmentType],
+                           key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]>
+    func fetchAttachments(for resourceWithAttachments: HasAttachments,
+                          attachmentIds: [String],
+                          downloadType: DownloadType,
+                          key: Key,
+                          parentProgress: Progress) -> Promise<[AttachmentType]>
 }
 
 final class AttachmentService: AttachmentServiceType {
@@ -43,11 +42,11 @@ final class AttachmentService: AttachmentServiceType {
         }
     }
 
-    func uploadAttachments<A: AttachmentType>(_ attachments: [A],
-                                              key: Key) -> Promise<[(attachment: A, thumbnailIds: [String])]> {
+    func uploadAttachments(_ attachments: [AttachmentType],
+                           key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]> {
         return async {
-            let documentsWithAdditionalIds = try attachments.map { attachment -> (A, [String]) in
-                guard let base64EncodedString = attachment.attachmentData, let data = Data(base64Encoded: base64EncodedString) else {
+            let documentsWithAdditionalIds = try attachments.map { attachment -> (AttachmentType, [String]) in
+                guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
                     throw Data4LifeSDKError.invalidAttachmentMissingData
                 }
                 do { try attachment.validatePayloadType() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadType }
@@ -63,7 +62,7 @@ final class AttachmentService: AttachmentServiceType {
                     }
                 }
 
-                let attachmentCopy = attachment.copy() as! A // swiftlint:disable:this force_cast
+                let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
                 attachmentCopy.attachmentId = uploaded.id
                 return (attachmentCopy, thumbnailsIds ?? [])
             }
@@ -72,16 +71,15 @@ final class AttachmentService: AttachmentServiceType {
         }
     }
 
-    func fetchAttachments<A: AttachmentType>(of type: A.Type = A.self,
-                                             for resourceWithAttachments: HasAttachments,
-                                             attachmentIds: [String],
-                                             downloadType: DownloadType,
-                                             key: Key,
-                                             parentProgress: Progress) -> Promise<[A]> {
+    func fetchAttachments(for resourceWithAttachments: HasAttachments,
+                          attachmentIds: [String],
+                          downloadType: DownloadType,
+                          key: Key,
+                          parentProgress: Progress) -> Promise<[AttachmentType]> {
         return async {
             guard let attachments = resourceWithAttachments.allAttachments else { return [] }
 
-            let filledAttachments = try attachments.compactMap { attachment -> A? in
+            let filledAttachments = try attachments.compactMap { attachment -> AttachmentType? in
                 guard let attachmentId = attachment.attachmentId, attachmentIds.contains(attachmentId) else { return nil }
                 // Size validation has to be done from the fhir property in order to avoid the attachment's downloading time
                 do { try attachment.validatePayloadSize() } catch {
@@ -89,7 +87,7 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 var selectedDocumentId: String?
-                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? HasIdentifiableAttachments,
+                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifierProtocol,
                     downloadType.isThumbnailType {
                     selectedDocumentId = try self.selectDocumentId(resourceWithIdentifiableAttachments, downloadType: downloadType, for: attachmentId)
                     attachment.attachmentId = ThumbnailsIdFactory.displayAttachmentId(attachmentId, for: selectedDocumentId)
@@ -98,8 +96,8 @@ final class AttachmentService: AttachmentServiceType {
                 let documentId: String = selectedDocumentId ?? attachmentId
                 let data = try await(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
 
-                let attachmentCopy = attachment.copy() as! A // swiftlint:disable:this force_cast
-                attachmentCopy.attachmentData = data.base64EncodedString()
+                let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
+                attachmentCopy.attachmentDataString = data.base64EncodedString()
 
                 do { try attachmentCopy.validatePayloadType() } catch {
                     throw Data4LifeSDKError.invalidAttachmentPayloadType
@@ -157,7 +155,7 @@ final class AttachmentService: AttachmentServiceType {
         }
     }
 
-    private func selectDocumentId(_ resourceWithIdentifiableAttachments: HasIdentifiableAttachments, downloadType: DownloadType,
+    private func selectDocumentId(_ resourceWithIdentifiableAttachments: CustomIdentifierProtocol, downloadType: DownloadType,
                                   for attachmentId: String) throws -> String? {
         guard let identifiers = resourceWithIdentifiableAttachments.customIdentifiers else { return attachmentId }
 

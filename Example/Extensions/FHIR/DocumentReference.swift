@@ -15,7 +15,7 @@
 
 import Data4LifeFHIR
 
-extension DocumentReference {
+extension Data4LifeFHIR.DocumentReference {
     var attachments: [Attachment]? {
         get {
             guard content?.isEmpty == false else { return nil }

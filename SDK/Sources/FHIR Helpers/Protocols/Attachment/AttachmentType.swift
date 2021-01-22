@@ -21,17 +21,11 @@ import Data4LifeCrypto
 protocol AttachmentType: AnyObject, NSCopying {
     var attachmentId: String? { get set }
     var attachmentContentType: String? { get set }
-    var attachmentData: String? { get set }
+    var attachmentDataString: String? { get set }
     var attachmentHash: String? { get set }
     var attachmentSize: Int? { get set }
     var creationDate: Date? { get set }
-}
-
-extension AttachmentType {
-    func getData() -> Data? {
-        guard let base64String = attachmentData else { return nil }
-        return Data(base64Encoded: base64String)
-    }
+    var attachmentData: Data? { get }
 }
 
 extension AttachmentType {
@@ -40,17 +34,17 @@ extension AttachmentType {
             return true
         } else if let hash = attachmentHash, hash == attachment.attachmentHash {
             return true
-        } else if let hash = attachmentHash, let attachmentDataHash = attachment.getData()?.sha1Hash, hash == attachmentDataHash {
+        } else if let hash = attachmentHash, let attachmentDataHash = attachment.attachmentData?.sha1Hash, hash == attachmentDataHash {
             return true
         }
         return false
     }
 
     func filled(with filled: AttachmentType) -> AttachmentType {
-        let attachment = copy() as! AttachmentType // swiftlint:disable:this force_cast
+        let attachment = copy() as! Self // swiftlint:disable:this force_cast
         attachment.attachmentId = filled.attachmentId
-        if let data = filled.getData() {
-            attachment.attachmentData = filled.attachmentData
+        if let data = filled.attachmentData {
+            attachment.attachmentDataString = filled.attachmentDataString
             attachment.attachmentSize = data.byteCount
             attachment.attachmentHash = data.sha1Hash
         }
@@ -60,6 +54,10 @@ extension AttachmentType {
 }
 
 extension Data4LifeFHIR.Attachment: AttachmentType {
+    static func with(title: String, creationDate: Date, contentType: String, data: Data) throws -> Data4LifeFHIR.Attachment {
+        try Attachment.with(title: title, creationDate: creationDate.fhir_asDateTime(), contentType: contentType, data: data)
+    }
+
     var creationDate: Date? {
         get {
             creation?.nsDate
@@ -74,7 +72,7 @@ extension Data4LifeFHIR.Attachment: AttachmentType {
         set { self.id = newValue }
     }
 
-    var attachmentData: String? {
+    var attachmentDataString: String? {
         get { data_fhir }
         set { self.data_fhir = newValue }
     }
@@ -93,9 +91,27 @@ extension Data4LifeFHIR.Attachment: AttachmentType {
         get { hash }
         set { self.hash = newValue }
     }
+
+    var attachmentData: Data? {
+        guard let base64String = attachmentDataString else { return nil }
+        return Data(base64Encoded: base64String)
+    }
 }
 
 extension ModelsR4.Attachment: AttachmentType {
+
+    public static func with(title: String, creationDate: Date, contentType: String, data: Data) throws -> ModelsR4.Attachment {
+
+        let attachment = ModelsR4.Attachment()
+        attachment.attachmentDataString = data.base64EncodedString()
+        attachment.contentType = contentType.asFHIRStringPrimitive()
+        attachment.creationDate = creationDate
+        attachment.attachmentHash = data.sha1Hash
+        attachment.title = title.asFHIRStringPrimitive()
+        attachment.attachmentSize = data.count
+        return attachment
+    }
+
     var attachmentContentType: String? {
         get {
             contentType?.value?.string
@@ -155,15 +171,20 @@ extension ModelsR4.Attachment: AttachmentType {
                 return
             }
 
-            let components = Calendar.current.dateComponents([.year, .month, .day], from: newValue)
-            guard let year = components.year, let month = components.month, let day = components.day else {
-                self.creation = nil
+            let creationDateComponents = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,.timeZone], from: newValue)
+            guard let year = creationDateComponents.year, let month = creationDateComponents.month, let day = creationDateComponents.day,
+                  let hour = creationDateComponents.hour, let minute = creationDateComponents.minute, let second = creationDateComponents.second else {
                 return
             }
 
-            let date = ModelsR4.FHIRDate(year: year, month: UInt8(month), day: UInt8(day))
-            let dateTime = ModelsR4.DateTime(date: date)
-            self.creation = dateTime.asPrimitive()
+            let creationDateTime = ModelsR4.DateTime(date: FHIRDate.init(year: year,
+                                                                         month: UInt8(month),
+                                                                         day: UInt8(day)),
+                                                     time: FHIRTime.init(hour: UInt8(hour),
+                                                                         minute: UInt8(minute),
+                                                                         second: Decimal(second)),
+                                                     timezone: creationDateComponents.timeZone)
+            self.creation = creationDateTime.asPrimitive()
         }
     }
 
@@ -176,17 +197,24 @@ extension ModelsR4.Attachment: AttachmentType {
         }
     }
 
-    var attachmentData: String? {
+    var attachmentDataString: String? {
         get {
             data?.value?.dataString
         }
         set {
             guard let newValue = newValue else {
+                data = nil
                 return
             }
+
             let binary = ModelsR4.Base64Binary(newValue)
             data = binary.asPrimitive()
         }
+    }
+
+    var attachmentData: Data? {
+        guard let base64String = attachmentDataString else { return nil }
+        return Data(base64Encoded: base64String)
     }
 
     public func copy(with zone: NSZone? = nil) -> Any {

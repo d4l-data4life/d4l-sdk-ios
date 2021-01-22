@@ -15,8 +15,8 @@
 
 struct ThumbnailsIdFactory {
 
-    private static let splitChar: Character = "#"
-    private static let downscaledAttachmentIdsFormat = "d4l_f_p_t"
+    static let splitChar: Character = "#"
+    static let downscaledAttachmentIdsFormat = "d4l_f_p_t"
 
     static func createAdditionalId(from attachmentWithIds: (attachment: AttachmentType, thumbnailIds: [String])) -> String? {
         let attachment = attachmentWithIds.0
@@ -55,37 +55,6 @@ struct ThumbnailsIdFactory {
         }
 
         return selectedId
-    }
-
-    static func cleanObsoleteAdditionalIdentifiers<R: FhirSDKResource>(_ resource: R) throws -> R {
-        guard
-            let resourceWithIdentifiableAttachments = resource as? HasIdentifiableAttachments,
-            let identifiers = resourceWithIdentifiableAttachments.customIdentifiers
-        else {
-            return resource
-        }
-
-        let currentAttachmentsIds = resourceWithIdentifiableAttachments.allAttachments?.compactMap { $0.attachmentId }
-
-        let updatedIdentifiers = try identifiers.compactMap { identifier -> FhirIdentifierType? in
-            guard identifier.valueString?.contains(downscaledAttachmentIdsFormat) ?? false else {
-                return identifier
-            }
-            guard
-                let ids = identifier.valueString?.split(separator: splitChar),
-                ids.count == 4
-            else {
-                let resourceId = resource.fhirIdentifier ?? "Not available"
-                throw Data4LifeSDKError.invalidAttachmentAdditionalId("Resource Id: \(resourceId)")
-            }
-
-            let attachmentId = String(ids[1])
-            let identifierIsInUse = currentAttachmentsIds?.contains(attachmentId) ?? false
-
-            return identifierIsInUse ? identifier : nil
-        }
-        resourceWithIdentifiableAttachments.customIdentifiers = updatedIdentifiers.isEmpty ? nil : updatedIdentifiers
-        return resource
     }
 
     static func displayAttachmentId(_ attachmentId: String, for documentId: String?) -> String {

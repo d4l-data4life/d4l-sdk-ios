@@ -44,13 +44,12 @@ class AttachmentServiceTests: XCTestCase {
         let attachment = FhirFactory.createUploadedAttachmentElement()
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let payload = Document(id: attachment.attachmentId!, data: attachment.getData()!)
+        let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Promise.resolve(payload)
 
         let asyncExpectation = expectation(description: "should fetch attachment")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachment.attachmentId!],
                                            downloadType: .full,
                                            key: attachmentKey,
@@ -59,7 +58,7 @@ class AttachmentServiceTests: XCTestCase {
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(self.documentService.fetchDocumentCalledWith?.0, attachment.attachmentId!)
                 XCTAssertEqual(self.documentService.fetchDocumentCalledWith?.1, attachmentKey)
-                XCTAssertEqual(result.first!.getData(), attachment.getData())
+                XCTAssertEqual(result.first!.attachmentData, attachment.attachmentData)
         }
 
         waitForExpectations(timeout: 5)
@@ -79,13 +78,12 @@ class AttachmentServiceTests: XCTestCase {
         resource.addAdditionalId(additionalId)
 
         let attachmentKey = KeyFactory.createKey()
-        let payload = Document(id: attachment.attachmentId!, data: attachment.getData()!)
+        let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Async.resolve(payload)
 
         let asyncExpectation = expectation(description: "should fetch attachment")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: resource,
+        attachmentService.fetchAttachments(for: resource,
                                            attachmentIds: [originalAttachmentId],
                                            downloadType: .small,
                                            key: attachmentKey,
@@ -95,7 +93,7 @@ class AttachmentServiceTests: XCTestCase {
                 XCTAssertEqual(self.documentService.fetchDocumentCalledWith?.0, smallAddId)
                 XCTAssertEqual(self.documentService.fetchDocumentCalledWith?.1, attachmentKey)
                 let resultedAttachment = result.first!
-                XCTAssertEqual(resultedAttachment.getData(), attachment.getData())
+                XCTAssertEqual(resultedAttachment.attachmentData, attachment.attachmentData)
 
                 let expectedAttachmentId = "\(originalAttachmentId)#\(smallAddId)"
                 XCTAssertEqual(resultedAttachment.attachmentId!, expectedAttachmentId)
@@ -109,7 +107,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.getData()!)
+        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
         documentService.createDocumentResult = Promise.resolve(payload)
 
@@ -119,7 +117,7 @@ class AttachmentServiceTests: XCTestCase {
             .then { result in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(result.first?.attachment.attachmentId, attachmentId)
-                XCTAssertEqual(result.first?.attachment.attachmentData, attachment.attachmentData)
+                XCTAssertEqual(result.first?.attachment.attachmentDataString, attachment.attachmentDataString)
                 XCTAssertEqual(result.first?.thumbnailIds, [])
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, payload.data)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
@@ -135,7 +133,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.getData()!)
+        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
         let expectedThumbnailsIds = [UUID().uuidString, UUID().uuidString]
         let thumbnailPayloads = expectedThumbnailsIds.map { Document(id: $0, data: imageData) }
@@ -152,7 +150,7 @@ class AttachmentServiceTests: XCTestCase {
             .then { result in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(result.first?.attachment.attachmentId, attachmentId)
-                XCTAssertEqual(result.first?.attachment.attachmentData, attachment.attachmentData)
+                XCTAssertEqual(result.first?.attachment.attachmentDataString, attachment.attachmentDataString)
                 XCTAssertEqual(result.first?.thumbnailIds, expectedThumbnailsIds)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayloads.last?.data)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
@@ -168,7 +166,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.getData()!)
+        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
         documentService.createDocumentResult = Async.resolve(payload)
         imageResizer.isResizableResult = true
@@ -179,7 +177,7 @@ class AttachmentServiceTests: XCTestCase {
             .then { result in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(result.first?.0.attachmentId, attachmentId)
-                XCTAssertEqual(result.first?.0.attachmentData, attachment.attachmentData)
+                XCTAssertEqual(result.first?.0.attachmentDataString, attachment.attachmentDataString)
 
                 XCTAssertEqual(result.first?.1, [])
 
@@ -197,7 +195,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.getData()!)
+        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
         let expectedThumbnailsIds = [attachmentId, attachmentId]
         let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
@@ -215,7 +213,7 @@ class AttachmentServiceTests: XCTestCase {
             .then { result in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(result.first?.0.attachmentId, attachmentId)
-                XCTAssertEqual(result.first?.0.attachmentData, attachment.attachmentData)
+                XCTAssertEqual(result.first?.0.attachmentDataString, attachment.attachmentDataString)
                 XCTAssertEqual(result.first?.1, expectedThumbnailsIds)
 
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, payload.data)
@@ -233,7 +231,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.getData()!)
+        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
         let mediumThumbnailId = UUID().uuidString
         let expectedThumbnailsIds = [mediumThumbnailId, attachmentId]
@@ -254,7 +252,7 @@ class AttachmentServiceTests: XCTestCase {
             .then { result in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(result.first?.0.attachmentId, attachmentId)
-                XCTAssertEqual(result.first?.0.attachmentData, attachment.attachmentData)
+                XCTAssertEqual(result.first?.0.attachmentDataString, attachment.attachmentDataString)
                 XCTAssertEqual(result.first?.1, expectedThumbnailsIds)
 
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayload.data)
@@ -267,7 +265,7 @@ class AttachmentServiceTests: XCTestCase {
 
     func testUploadAttachmentsFailMissingData() {
         let attachment = FhirFactory.createAttachmentElement()
-        attachment.attachmentData = nil
+        attachment.attachmentDataString = nil
         let key = KeyFactory.createKey()
 
         let expectedError = Data4LifeSDKError.invalidAttachmentMissingData
@@ -292,7 +290,7 @@ class AttachmentServiceTests: XCTestCase {
 
         // inject evil exe data to bypass attachment helper validation
         let evilExe = Data([0x4D, 0x5A, 0x00, 0x01, 0x00, 0x00, 0x02])
-        attachment.attachmentData = evilExe.base64EncodedString()
+        attachment.attachmentDataString = evilExe.base64EncodedString()
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadType
         let asyncExpectation = expectation(description: "should fail uploading attachment")
@@ -318,19 +316,18 @@ class AttachmentServiceTests: XCTestCase {
 
         // inject evil exe data to bypass attachment helper validation
         let evilExe = Data([0x4D, 0x5A, 0x00, 0x01, 0x00, 0x00, 0x02])
-        attachment.attachmentData = evilExe.base64EncodedString()
+        attachment.attachmentDataString = evilExe.base64EncodedString()
         attachment.hash = evilExe.sha1Hash
 
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let paylaod = Document(data: attachment.getData()!)
+        let paylaod = Document(data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Promise.resolve(paylaod)
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadType
         let asyncExpectation = expectation(description: "should throw error invalid payload")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachmentId],
                                            downloadType: .full,
                                            key: attachmentKey,
@@ -358,13 +355,12 @@ class AttachmentServiceTests: XCTestCase {
 
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let payload = Document(data: attachment.getData()!)
+        let payload = Document(data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Promise.resolve(payload)
 
         let asyncExpectation = expectation(description: "shoould return an empty array of attachments")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachmentId],
                                            downloadType: .full,
                                            key: attachmentKey,
@@ -396,8 +392,7 @@ class AttachmentServiceTests: XCTestCase {
         let expectedError = Data4LifeSDKError.invalidAttachmentAdditionalId("Attachment Id: \(attachment.attachmentId!)")
         let asyncExpectation = expectation(description: "should throw error invalid thumbnails format")
 
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachment.attachmentId!],
                                            downloadType: .small,
                                            key: attachmentKey,
@@ -422,8 +417,8 @@ class AttachmentServiceTests: XCTestCase {
         let record = DecryptedRecordFactory.create(document)
         let attachmentId1 = UUID().uuidString
         let attachmentId2 = UUID().uuidString
-        let payload1 = Document(id: attachmentId1, data: attachment1.getData()!)
-        let payload2 = Document(id: attachmentId2, data: attachment2.getData()!)
+        let payload1 = Document(id: attachmentId1, data: attachment1.attachmentData!)
+        let payload2 = Document(id: attachmentId2, data: attachment2.attachmentData!)
 
         let expectedThumbnailsIds1 = [UUID().uuidString, UUID().uuidString]
         let thumbnailPayloads1 = expectedThumbnailsIds1.map { Document(id: $0, data: imageData) }
@@ -446,10 +441,10 @@ class AttachmentServiceTests: XCTestCase {
                 XCTAssertNotEqual(result.first!.attachment.attachmentId!, result[1].attachment.attachmentId!)
 
                 XCTAssertEqual(result.first!.attachment.attachmentId, attachmentId1)
-                XCTAssertEqual(result.first!.attachment.attachmentData, attachment1.attachmentData)
+                XCTAssertEqual(result.first!.attachment.attachmentDataString, attachment1.attachmentDataString)
                 XCTAssertEqual(result.first!.thumbnailIds, expectedThumbnailsIds1)
                 XCTAssertEqual(result[1].attachment.attachmentId, attachmentId2)
-                XCTAssertEqual(result[1].attachment.attachmentData, attachment2.attachmentData)
+                XCTAssertEqual(result[1].attachment.attachmentDataString, attachment2.attachmentDataString)
                 XCTAssertEqual(result[1].thumbnailIds, expectedThumbnailsIds2)
 
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayloads1.last!.data)
@@ -470,14 +465,13 @@ class AttachmentServiceTests: XCTestCase {
 
         let document = FhirFactory.createDocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let paylaod = Document(data: attachment.getData()!)
+        let paylaod = Document(data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Promise.resolve(paylaod)
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadHash
         let asyncExpectation = expectation(description: "should throw error invalid payload")
-        attachmentService.fetchAttachments(of: Attachment.self,
-                                           for: document,
+        attachmentService.fetchAttachments(for: document,
                                            attachmentIds: [attachmentId],
                                            downloadType: .full,
                                            key: attachmentKey, parentProgress: progress)

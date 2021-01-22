@@ -15,6 +15,7 @@
 
 import Foundation
 import Data4LifeCrypto
+import ModelsR4
 import Then
 
 struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
@@ -96,9 +97,13 @@ struct DecryptedFhirR4Record<T: FhirR4Resource>: DecryptedRecord {
             let dataKey = try decryptDataKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
             let attachmentKey = try decryptAttachmentKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
 
-            let resource = try await(cryptoService.decrypt(data: encryptedData,
-                                                           to: T.self,
-                                                           key: dataKey))
+            let resourceProxy = try await(cryptoService.decrypt(data: encryptedData,
+                                                                to: ResourceProxy.self,
+                                                                key: dataKey))
+            guard let resource = resourceProxy.get(if: T.self) else {
+                throw Data4LifeSDKError.invalidResourceCouldNotConvertToType(String(describing: T.self))
+            }
+
             let meta = metaData(from: encryptedRecord)
             resource.id = encryptedRecord.id.asFHIRStringPrimitive()
             return DecryptedFhirR4Record(id: encryptedRecord.id,

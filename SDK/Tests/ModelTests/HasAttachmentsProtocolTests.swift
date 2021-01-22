@@ -68,7 +68,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         documentReference.addAdditionalId(expectedIdentifier)
 
         XCTAssertEqual(expectedAttachment, documentReference.allAttachments?.first as? Attachment, "Result differs from expected attachments")
-        XCTAssertTrue((documentReference as HasIdentifiableAttachments).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false, "Result differs from expected identifiers")
+        XCTAssertTrue((documentReference as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false, "Result differs from expected identifiers")
 
         // AttachmentSchema Test
         XCTAssertEqual(documentReference.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
@@ -96,7 +96,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         report.addAdditionalId(expectedIdentifier)
 
         XCTAssertEqual(expectedAttachment, report.allAttachments?.first as? Attachment)
-        XCTAssertTrue((report as HasIdentifiableAttachments).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
+        XCTAssertTrue((report as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
         XCTAssertEqual(report.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
@@ -151,7 +151,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         patient.addAdditionalId(expectedIdentifier)
 
         XCTAssertEqual(expectedAttachment, patient.allAttachments?.first as? Attachment)
-        XCTAssertTrue((patient as HasIdentifiableAttachments).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
+        XCTAssertTrue((patient as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
         XCTAssertEqual(patient.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
@@ -179,7 +179,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         practitioner.addAdditionalId(expectedIdentifier)
 
         XCTAssertEqual(expectedAttachment, practitioner.allAttachments?.first as? Attachment)
-        XCTAssertTrue((practitioner as HasIdentifiableAttachments).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
+        XCTAssertTrue((practitioner as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
         XCTAssertEqual(practitioner.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
@@ -234,7 +234,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         observation.addAdditionalId(expectedIdentifier)
 
         XCTAssertEqual([observationAttachment, observationComponentAttachment], observation.allAttachments as? [Attachment])
-        XCTAssertTrue((observation as HasIdentifiableAttachments).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
+        XCTAssertTrue((observation as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
         XCTAssertEqual(observation.schema, AttachmentSchema.observation(value: observationAttachment, components: [observationComponent]), "The attachment schema is wrong")

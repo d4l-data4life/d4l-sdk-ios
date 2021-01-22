@@ -77,6 +77,32 @@ extension CustomIdentifierProtocol {
         guard values.isEmpty == false else { return nil }
         return values
     }
+
+    func cleanObsoleteAdditionalIdentifiers(resourceId: String?, attachmentIds: [String]) throws -> Self {
+        guard let identifiers = customIdentifiers else {
+            return self
+        }
+
+        let updatedIdentifiers = try identifiers.compactMap { identifier -> FhirIdentifierType? in
+            guard identifier.valueString?.contains(ThumbnailsIdFactory.downscaledAttachmentIdsFormat) ?? false else {
+                return identifier
+            }
+            guard
+                let ids = identifier.valueString?.split(separator: ThumbnailsIdFactory.splitChar),
+                ids.count == 4
+            else {
+                let resourceId = resourceId ?? "Not available"
+                throw Data4LifeSDKError.invalidAttachmentAdditionalId("Resource Id: \(resourceId)")
+            }
+
+            let attachmentId = String(ids[1])
+            let identifierIsInUse = attachmentIds.contains(attachmentId)
+
+            return identifierIsInUse ? identifier : nil
+        }
+        customIdentifiers = updatedIdentifiers.isEmpty ? nil : updatedIdentifiers
+        return self
+    }
 }
 
 extension Data4LifeFHIR.DocumentReference: CustomIdentifierProtocol {

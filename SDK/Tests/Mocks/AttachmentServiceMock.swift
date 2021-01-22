@@ -19,30 +19,28 @@ import Then
 @testable import Data4LifeCrypto
 import Data4LifeFHIR
 
-class AttachmentServiceMock<MA: AttachmentType>: AttachmentServiceType {
+class AttachmentServiceMock: AttachmentServiceType {
     var fetchAttachmentsCalledWith: (HasAttachments, [String], DownloadType, Key, Progress)?
-    var fetchAttachmentsResult: Async<[MA]>?
-    func fetchAttachments<A: AttachmentType>(of type: A.Type,
-                                             for resourceWithAttachments: HasAttachments,
-                                             attachmentIds: [String],
-                                             downloadType: DownloadType,
-                                             key: Key,
-                                             parentProgress: Progress) -> Promise<[A]> {
+    var fetchAttachmentsResult: Async<[AttachmentType]>?
+    func fetchAttachments(for resourceWithAttachments: HasAttachments,
+                          attachmentIds: [String],
+                          downloadType: DownloadType,
+                          key: Key,
+                          parentProgress: Progress) -> Promise<[AttachmentType]> {
         fetchAttachmentsCalledWith = (resourceWithAttachments, attachmentIds, downloadType, key, parentProgress)
-        return fetchAttachmentsResult as? Async<[A]> ?? Async.reject()
+        return fetchAttachmentsResult ?? Async.reject()
     }
 
-    var uploadAttachmentsCalledWith: ([MA], Key)?
-    var uploadAttachmentsResult: Async<[(attachment: MA, thumbnailIds: [String])]>?
-    var uploadAttachmentsResults: [Async<[(attachment: MA, thumbnailIds: [String])]>]?
+    var uploadAttachmentsCalledWith: ([AttachmentType], Key)?
+    var uploadAttachmentsResult: Async<[(attachment: AttachmentType, thumbnailIds: [String])]>?
+    var uploadAttachmentsResults: [Async<[(attachment: AttachmentType, thumbnailIds: [String])]>]?
 
-    func uploadAttachments<A: AttachmentType>(_ attachments: [A], key: Key) -> Promise<[(attachment: A, thumbnailIds: [String])]> {
-
-        uploadAttachmentsCalledWith = (attachments as! [MA], key) // swiftlint:disable:this force_cast
-        if let results = uploadAttachmentsResults, let first = results.first as? Async<[(attachment: A, thumbnailIds: [String])]> {
+    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+        uploadAttachmentsCalledWith = (attachments, key)
+        if let results = uploadAttachmentsResults, let first = results.first {
             uploadAttachmentsResults = Array(results.dropFirst())
             return first
         }
-        return uploadAttachmentsResult as? Async<[(attachment: A, thumbnailIds: [String])]> ?? Async.reject()
+        return uploadAttachmentsResult ?? Async.reject()
     }
 }
