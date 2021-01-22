@@ -5,15 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.12.0] - 2021-01-22
 ### Added
-- Adds FhirR4 support for all operations
+All FHIR Stu3 methods are also available now for FHIR R4 models
 
 ### Fixed
-- Annotations are now handled as tags (lowercased, percent encoded, trimmed) in order to comply with JS
+Annotations are now treated like tags, so percent encoded / trimmed / lowercased.
 
-## [1.12.0] - 2020-12-02
 ### Changed
-Open sourced
+Changed repository to d4l
 
 ## [1.11.1] - 2020-11-18
 ### Fixed
@@ -404,7 +405,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.1...master
+[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.0...master
+[1.12.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.1...1.12.0
 [1.11.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.0...1.11.1
 [1.11.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.10.1...1.11.0
 [1.10.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.10.0...1.10.1
