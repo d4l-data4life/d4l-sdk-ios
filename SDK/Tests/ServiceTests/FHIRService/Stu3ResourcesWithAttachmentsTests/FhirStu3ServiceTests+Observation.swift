@@ -66,11 +66,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let expectedObservation = fixtureObservation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
-        //We expect that result of the uploadAttachments method return the uploaded attachments with an Id
+        // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResultWithId = expectedObservation.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = fixtureObservation.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
@@ -130,16 +130,16 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let expectedObservation = observation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
-        //We expect that result of the uploadAttachments method return the uploaded attachments with an Id
+        // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResult = expectedObservation.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = observation.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
 
-        //expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
+        // expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
 
         let expectedRecord = DecryptedRecordFactory.create(expectedObservation)
         expectedObservation.id = expectedRecord.id
@@ -193,11 +193,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let expectedObservation = fixtureObservation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
-        //We expect that result of the uploadAttachments method return the uploaded attachments with an Id
+        // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResultWithId = expectedObservation.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = fixtureObservation.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }

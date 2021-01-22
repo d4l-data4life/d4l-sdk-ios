@@ -87,7 +87,7 @@ extension FhirService {
             }
 
             let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
-            //Gets all Attachments without data
+            // Gets all Attachments without data
             let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments ?? []
             let newKey = try await(self.cryptoService.generateGCKey(.attachment))
             let attachmentKey = remoteRecord.attachmentKey ?? newKey

@@ -70,7 +70,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(expectedAttachment, documentReference.allAttachments?.first as? Attachment, "Result differs from expected attachments")
         XCTAssertTrue((documentReference as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false, "Result differs from expected identifiers")
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(documentReference.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
@@ -98,7 +98,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(expectedAttachment, report.allAttachments?.first as? Attachment)
         XCTAssertTrue((report as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(report.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
@@ -125,7 +125,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         XCTAssertEqual(expectedAttachment, medication.allAttachments?.first as? Attachment)
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(medication.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
@@ -153,7 +153,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(expectedAttachment, patient.allAttachments?.first as? Attachment)
         XCTAssertTrue((patient as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(patient.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
@@ -181,7 +181,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual(expectedAttachment, practitioner.allAttachments?.first as? Attachment)
         XCTAssertTrue((practitioner as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(practitioner.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
@@ -206,7 +206,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         XCTAssertEqual(expectedAttachment, component.allAttachments?.first as? Attachment)
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(component.schema, AttachmentSchema.single(expectedAttachment), "The attachment schema is wrong")
 
         let expectedAttachmentWithId = expectedAttachment.copyWithId(UUID().uuidString)
@@ -236,7 +236,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         XCTAssertEqual([observationAttachment, observationComponentAttachment], observation.allAttachments as? [Attachment])
         XCTAssertTrue((observation as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         XCTAssertEqual(observation.schema, AttachmentSchema.observation(value: observationAttachment, components: [observationComponent]), "The attachment schema is wrong")
 
         let expectedObservationAttachmentWithId = observationAttachment.copyWithId(UUID().uuidString)
@@ -277,7 +277,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         XCTAssertEqual([questionnaireItemAttachment1, questionnaireItemAttachment2, nestedQuestionnaireItemAttachment3], questionnaire.allAttachments as? [Attachment])
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaire(items: [item1, item2])
         XCTAssertEqual(questionnaire.schema, expectedSchema, "The attachment schema is wrong")
 
@@ -325,7 +325,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         mainQuestionnaireItem.item = [item1, item2]
         XCTAssertEqual([initialAttachment, questionnaireItemAttachment1, questionnaireItemAttachment2, nestedQuestionnaireItemAttachment3], mainQuestionnaireItem.allAttachments as? [Attachment])
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireItem(initial: initialAttachment, nestedItems: [item1, item2])
         XCTAssertEqual(mainQuestionnaireItem.schema, expectedSchema, "The attachment schema is wrong")
 
@@ -383,7 +383,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], questionnaireResponse.allAttachments as? [Attachment])
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireResponse(items: [item1, item2])
         XCTAssertEqual(questionnaireResponse.schema, expectedSchema, "The attachment schema is wrong")
 
@@ -436,7 +436,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], mainQuestionnaireResponseItem.allAttachments as? [Attachment])
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireResponseItem(answers: nil, nestedItems: [item1, item2])
         XCTAssertEqual(mainQuestionnaireResponseItem.schema, expectedSchema, "The attachment schema is wrong")
 
@@ -494,7 +494,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
                         questionnaireResponseItem1Answer2Attachment,
                         questionnaireResponseItem1Item1Answer1Attachment])
 
-        //AttachmentSchema Test
+        // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireResponseItemAnswer(value: valueAttachment, nestedItems: [item1])
         XCTAssertEqual(mainQuestionnaireResponseItemAnswer.schema, expectedSchema, "The attachment schema is wrong")
 

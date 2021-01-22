@@ -30,7 +30,7 @@ extension AttachmentType {
             let creationDate = self.creationDate
             else { return .unknown }
 
-        //All attachments created after Mar. 13th 2020 will be validated
+        // All attachments created after Mar. 13th 2020 will be validated
         let startingValidationDate = Date(timeIntervalSince1970: 1584144000.0)
         if creationDate.compare(startingValidationDate) == .some(.orderedDescending) {
             return attachmentData?.sha1Hash == hash ? .valid : .notValid

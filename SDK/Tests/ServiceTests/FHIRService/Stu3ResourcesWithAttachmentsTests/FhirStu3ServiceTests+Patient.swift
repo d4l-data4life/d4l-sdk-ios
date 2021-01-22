@@ -59,7 +59,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         expectedPatient.setAdditionalIds(additionalIds)
         expectedPatient.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
-        //We expect that result of the uploadAttachments method return the uploaded attachments with an Id
+        // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentResultWithId = expectedPatient.photo!.first!.copy() as! Attachment // swiftlint:disable:this force_cast
 
         expectedPatient.allAttachments?.forEach { $0.attachmentDataString = nil }

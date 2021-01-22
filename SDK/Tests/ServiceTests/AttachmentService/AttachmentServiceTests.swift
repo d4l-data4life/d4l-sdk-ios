@@ -160,7 +160,7 @@ class AttachmentServiceTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    //Test image saved as jpeg with an invalid format as image
+    // Test image saved as jpeg with an invalid format as image
     func testUploadAttachmentInvalidImageData() {
         let attachment = FhirFactory.createStu3ImageAttachmentElement()
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])

@@ -60,7 +60,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         expectedDocumentReference.setAdditionalIds(additionalIds)
         expectedDocumentReference.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
-        //We expect that result of the uploadAttachments method return the uploaded attachments with an Id
+        // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentResultWithId = expectedDocumentReference.content!.first!.attachment!.copy() as! Attachment // swiftlint:disable:this force_cast
 
         expectedDocumentReference.allAttachments?.forEach { $0.attachmentDataString = nil }
@@ -113,11 +113,11 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         expectedDocumentReference.setAdditionalIds(additionalIds)
         expectedDocumentReference.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
-        //We expect that result of the uploadAttachments method return the uploaded attachments with an Id
+        // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResultWithId = expectedDocumentReference.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }
-        //We expect that the parameter of the uploadAttachments method pass the attachments without an Id
+        // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = documentReference.allAttachments!.compactMap {
             ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
         }

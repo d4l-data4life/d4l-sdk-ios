@@ -45,7 +45,7 @@ struct ImageResizer: Resizable {
     }
 
     func getSize(_ imageSize: ImageSize, for image: UIImage) -> CGSize {
-        //Calculate the width of the image according to the selected height
+        // Calculate the width of the image according to the selected height
         let width = (imageSize.floatValue * image.size.width) / image.size.height
         return CGSize(width: width, height: imageSize.floatValue)
     }
@@ -54,7 +54,7 @@ struct ImageResizer: Resizable {
         guard image.size.height > size.height, image.size.width > size.width else {
             throw Data4LifeSDKError.resizingImageSmallerThanOriginalOne
         }
-        //Fix the scale for the renderer. Otherwise it might change the size of the thumbnails depending on the device
+        // Fix the scale for the renderer. Otherwise it might change the size of the thumbnails depending on the device
         let format = UIGraphicsImageRendererFormat(for: UITraitCollection.init())
         format.scale = 1.0
         let renderer = UIGraphicsImageRenderer(size: size, format: format)

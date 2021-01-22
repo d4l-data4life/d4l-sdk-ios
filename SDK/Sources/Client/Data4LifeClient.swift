@@ -143,7 +143,7 @@ public class Data4LifeClient {
             fatalError(error.localizedDescription)
         }
 
-        //Calling this method provide a way to test that the dependencies were configured properly
+        // Calling this method provide a way to test that the dependencies were configured properly
         configureDependencies()
     }
 }
