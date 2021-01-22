@@ -55,9 +55,6 @@ struct TagGroup: Equatable {
             guard !annotation.isEmpty else {
                 throw Data4LifeSDKError.emptyAnnotationNotAllowed
             }
-            guard annotation.isLowercased else {
-                throw Data4LifeSDKError.upperCasedAnnotationNotAllowed
-            }
         }
     }
 }

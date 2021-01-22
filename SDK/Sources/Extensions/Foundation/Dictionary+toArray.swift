@@ -31,8 +31,4 @@ extension String {
         }
         return "\(escapedKey)\(separator)\(escapedValue)"
     }
-
-    var isLowercased: Bool {
-        allSatisfy { !$0.isLetter || $0.isLowercase }
-    }
 }

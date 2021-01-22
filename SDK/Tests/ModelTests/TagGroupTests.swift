@@ -18,13 +18,20 @@ import XCTest
 
 fileprivate extension TagGroup {
     static var annotationLowercased: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid"])
-    static var annotationContainsUppercase: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["invAlid"])
+    static var annotationContainsUppercase: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["vAlid"])
     static var annotationIsEmpty: TagGroup = TagGroup(tags: ["tag": "value"], annotations: [""])
     static var annotationContainsSymbols: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["="])
-    static var secondAnnotationContainsUppercase: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid", "invAlid"])
+    static var annotationTrimmedValid: TagGroup = TagGroup(tags: ["tag": "value"], annotations: [" valid "])
+    static var annotationMixedValid: TagGroup = TagGroup(tags: ["tag": "value"], annotations: [" vALid ---==%%123.321%%==--- valiD "])
+    static var secondAnnotationContainsUppercase: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid", "vAlid"])
     static var secondAnnotationIsEmpty: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid", ""])
     static var secondAnnotationContainsSymbols: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid","="])
-    static var annotationMixedValid: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid ---==%%123.321%%==--- valid"])
+
+    var normalized: TagGroup {
+        let tags = self.tags.map { ( $0.key.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), $0.value.lowercased().trimmingCharacters(in: .whitespacesAndNewlines))}
+        let annotations = self.annotations.map { $0.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)}
+        return TagGroup(tags: Dictionary(uniqueKeysWithValues: tags), annotations: annotations)
+    }
 }
 
 class TagGroupTests: XCTestCase {
@@ -37,10 +44,8 @@ class TagGroupTests: XCTestCase {
 
     func testUppercasedAnnotation() throws {
         let tagGroup = TagGroup.annotationContainsUppercase
-        XCTAssertThrowsError(try tagGroup.asParameters(), "should throw upperCase error") { (error) in
-            XCTAssertEqual(error as? Data4LifeSDKError,
-                           Data4LifeSDKError.upperCasedAnnotationNotAllowed)
-        }
+        let parameters = try tagGroup.asParameters()
+        XCTAssertEqual(parameters, ["tag=value","custom=valid"])
     }
 
     func testEmptyAnnotation() throws {
@@ -65,10 +70,8 @@ class TagGroupTests: XCTestCase {
 
     func testSecondUppercasedAnnotation() throws {
         let tagGroup = TagGroup.secondAnnotationContainsUppercase
-        XCTAssertThrowsError(try tagGroup.asParameters(), "should throw upperCase error") { (error) in
-            XCTAssertEqual(error as? Data4LifeSDKError,
-                           Data4LifeSDKError.upperCasedAnnotationNotAllowed)
-        }
+        let parameters = try tagGroup.asParameters()
+        XCTAssertEqual(parameters, ["tag=value", "custom=valid", "custom=valid"])
     }
 
     func testSecondEmptyAnnotation() throws {
@@ -84,6 +87,12 @@ class TagGroupTests: XCTestCase {
         let parameters = try tagGroup.asParameters()
         XCTAssertEqual(parameters, ["tag=value", "custom=valid", "custom=%3d"])
     }
+
+    func testTrimmedAnnotation() throws {
+        let tagGroup = TagGroup.annotationTrimmedValid
+        let parameters = try tagGroup.asParameters()
+        XCTAssertEqual(parameters, ["tag=value","custom=valid"])
+    }
 }
 
 extension TagGroupTests {
@@ -95,6 +104,6 @@ extension TagGroupTests {
 
     func testMixedValidAnnotationInit() throws {
         let tagGroup = TagGroup(from: ["tag=value","custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid"])
-        XCTAssertEqual(tagGroup, TagGroup.annotationMixedValid)
+        XCTAssertEqual(tagGroup, TagGroup.annotationMixedValid.normalized)
     }
 }
