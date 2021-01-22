@@ -50,7 +50,7 @@ For these two cases we have two types of _records_:
 
 === The FHIRRecord data model
 
-The `FhirRecord` data model holds resource, metadata and additional metadata. `AnyFhirResource>` is a protocol restricted to `Data4LifeFHIR.DomainResource` or `ModelsR4.DomainResource` type.
+The `FhirRecord` data model holds resource, metadata and additional metadata. `AnyFhirResource` is a protocol restricted to `Data4LifeFHIR.DomainResource` or `ModelsR4.DomainResource` type.
 
 [source,swift]
 ----
