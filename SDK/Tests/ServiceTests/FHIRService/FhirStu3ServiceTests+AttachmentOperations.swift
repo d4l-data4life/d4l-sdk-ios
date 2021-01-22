@@ -50,10 +50,10 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
         let userId = UUID().uuidString
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let recordId = UUID().uuidString
-        let documentReference = FhirFactory.createDocumentReferenceResource(with: [attachment])
+        let documentReference = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         documentReference.id = recordId
         let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource)
         documentReference.id = record.id
@@ -99,10 +99,10 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
         let userId = UUID().uuidString
         let attachmentId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
+        let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
         let recordId = UUID().uuidString
-        let fixturePatient = FhirFactory.createPatientResource(with: [attachment])
+        let fixturePatient = FhirFactory.createStu3PatientResource(with: [attachment])
         fixturePatient.id = recordId
         let record = DecryptedRecordFactory.create(fixturePatient as FhirStu3Resource)
         fixturePatient.id = record.id
@@ -150,7 +150,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let recordId = UUID().uuidString
         let attachmentId = UUID().uuidString
 
-        let documentReference = FhirFactory.createDocumentReferenceResource()
+        let documentReference = FhirFactory.createStu3DocumentReferenceResource()
         documentReference.id = recordId
         let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource, attachmentKey: nil)
         documentReference.id = record.id
@@ -180,15 +180,15 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
 
         let firstAttachmentId = UUID().uuidString
-        let firstAttachment = FhirFactory.createAttachmentElement()
+        let firstAttachment = FhirFactory.createStu3AttachmentElement()
         firstAttachment.id = firstAttachmentId
 
         let secondAttachmentId = UUID().uuidString
-        let secondAttachment = FhirFactory.createAttachmentElement()
+        let secondAttachment = FhirFactory.createStu3AttachmentElement()
         secondAttachment.id = secondAttachmentId
 
         let recordId = UUID().uuidString
-        let documentReference = FhirFactory.createDocumentReferenceResource(with: [firstAttachment, secondAttachment])
+        let documentReference = FhirFactory.createStu3DocumentReferenceResource(with: [firstAttachment, secondAttachment])
         documentReference.id = recordId
 
         let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource)
@@ -221,15 +221,15 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let progress = Progress()
 
         let firstAttachmentId = UUID().uuidString
-        let firstAttachment = FhirFactory.createAttachmentElement()
+        let firstAttachment = FhirFactory.createStu3AttachmentElement()
         firstAttachment.id = firstAttachmentId
 
         let secondAttachmentId = UUID().uuidString
-        let secondAttachment = FhirFactory.createAttachmentElement()
+        let secondAttachment = FhirFactory.createStu3AttachmentElement()
         secondAttachment.id = secondAttachmentId
 
         let recordId = UUID().uuidString
-        let documentReference = FhirFactory.createDocumentReferenceResource(with: [firstAttachment, secondAttachment])
+        let documentReference = FhirFactory.createStu3DocumentReferenceResource(with: [firstAttachment, secondAttachment])
         documentReference.id = recordId
 
         let record = DecryptedRecordFactory.create(documentReference as FhirStu3Resource)

@@ -36,7 +36,7 @@ class SessionServiceTests: XCTestCase {
 
     func testNetworkUnavailable() {
         let userId = UUID().uuidString
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         let encryptedRecord = EncryptedRecordFactory.create(for: record)
 

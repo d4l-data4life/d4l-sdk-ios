@@ -15,12 +15,13 @@
 
 import Data4LifeFHIR
 @testable import Data4LifeSDK
+import ModelsR4
 
-extension Attachment {
-    func copyWithId(_ id: String? = nil) -> Attachment {
-        let attachment = copy() as! Attachment // swiftlint:disable:this force_cast
+extension AttachmentType {
+    func copyWithId(_ id: String? = nil) -> Self {
+        let attachment = copy() as! Self // swiftlint:disable:this force_cast
         if let id = id {
-            attachment.id = id
+            attachment.attachmentId = id
         }
         return attachment
     }
@@ -84,5 +85,28 @@ final class AnyAttachmentType: AttachmentType, Equatable {
             lhs.attachmentData == rhs.attachmentData &&
             lhs.attachmentDataString == rhs.attachmentDataString &&
             lhs.creationDate == rhs.creationDate
+    }
+}
+
+// MARK: - R4 Resources with attachments
+extension ModelsR4.QuestionnaireItem {
+    var initialAttachment: ModelsR4.Attachment? {
+        switch initial?.first?.value {
+        case .attachment(let attachment):
+            return attachment
+        default:
+            return nil
+        }
+    }
+}
+
+extension ModelsR4.QuestionnaireResponseItemAnswer {
+    var valueAttachment: ModelsR4.Attachment? {
+        switch value {
+        case .attachment(let attachment):
+            return attachment
+        default:
+            return nil
+        }
     }
 }

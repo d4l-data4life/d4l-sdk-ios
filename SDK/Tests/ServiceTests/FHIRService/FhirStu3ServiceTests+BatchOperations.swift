@@ -21,7 +21,7 @@ import Data4LifeFHIR
 extension FhirStu3ServiceTests {
     func testCreateResources() {
         let userId = UUID().uuidString
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
         let record = DecryptedRecordFactory.create(resource)
 
         keychainService[.userId] = userId
@@ -45,7 +45,7 @@ extension FhirStu3ServiceTests {
     func testFetchResources() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
         resource.id = resourceId
         let record = DecryptedRecordFactory.create(resource)
 
@@ -70,7 +70,7 @@ extension FhirStu3ServiceTests {
     func testUpdateResources() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
         resource.id = resourceId
         let record = DecryptedRecordFactory.create(resource)
         let futureResource = resource.copy() as! CarePlan // swiftlint:disable:this force_cast
@@ -117,29 +117,5 @@ extension FhirStu3ServiceTests {
         }
 
         waitForExpectations(timeout: 5)
-    }
-}
-
-final class AnySDKResource<T: SDKResource>: SDKResource, Equatable {
-    var resource: T?
-
-    init(resource: T?) {
-        self.resource = resource
-    }
-
-    static var searchTags: [String : String] {
-        return [:]
-    }
-
-    static var modelVersion: Int { 1 }
-    static func == (lhs: AnySDKResource, rhs: AnySDKResource) -> Bool {
-        let encoder = JSONEncoder()
-        let lhsJson = try? encoder.encode(lhs.resource)
-        let rhsJson = try? encoder.encode(rhs.resource)
-        return lhsJson == rhsJson
-    }
-
-    static func make(from resource: T?) -> AnySDKResource<T> {
-        return AnySDKResource<T>(resource: resource)
     }
 }

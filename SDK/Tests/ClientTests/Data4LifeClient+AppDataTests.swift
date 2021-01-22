@@ -18,7 +18,7 @@ import Then
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
-extension Data4LifeClientTests {
+extension Data4LifeClientUserTests {
 
     func testCreateAppDataResource() {
         let resource = "test".data(using: .utf8)!
@@ -28,7 +28,7 @@ extension Data4LifeClientTests {
         appDataService.createAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createAppDataRecord(resource, annotations: annotations) { result in
+        client.createAppDataRecord(resource, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -48,7 +48,7 @@ extension Data4LifeClientTests {
         appDataService.createAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createAppDataRecord(resource, annotations: annotations) { result in
+        client.createAppDataRecord(resource, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -67,7 +67,7 @@ extension Data4LifeClientTests {
         appDataService.updateAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateAppDataRecord(updateResource, recordId: record.id) { result in
+        client.updateAppDataRecord(updateResource, recordId: record.id) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -86,7 +86,7 @@ extension Data4LifeClientTests {
         appDataService.updateAppDataRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateCodableAppDataRecord(updateResource, recordId: record.id) { result in
+        client.updateCodableAppDataRecord(updateResource, recordId: record.id) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -106,7 +106,7 @@ extension Data4LifeClientTests {
         appDataService.fetchRecordWithIdResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.fetchAppDataRecord(withId: resourceId) { result in
+        client.fetchAppDataRecord(withId: resourceId) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -123,7 +123,7 @@ extension Data4LifeClientTests {
         appDataService.deleteRecordResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.deleteAppDataRecord(withId: resourceId) { result in
+        client.deleteAppDataRecord(withId: resourceId) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -141,7 +141,7 @@ extension Data4LifeClientTests {
         appDataService.fetchRecordsResult = Async.resolve(records)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.fetchAppDataRecords { result in
+        client.fetchAppDataRecords { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -159,7 +159,7 @@ extension Data4LifeClientTests {
         appDataService.countRecordsResult = Async.resolve(resourceCount)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.countAppDataRecords { result in
+        client.countAppDataRecords { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

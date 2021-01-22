@@ -19,7 +19,7 @@ import Alamofire
 import Then
 import Data4LifeFHIR
 
-class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
+final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     var recordService: RecordService!
     var keychain: KeychainServiceMock!
@@ -68,7 +68,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     func testCreateFhirStu3Record() {
         let userId = UUID().uuidString
 
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         var record = DecryptedRecordFactory.create(resource)
         let annotations = ["example-annotation1"]
         record.annotations = annotations
@@ -125,7 +125,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
 
     func testUpdateFhirStu3RecordWithAttachment() {
         let userId = UUID().uuidString
-        let oldDocument = FhirFactory.createDocumentReferenceResource()
+        let oldDocument = FhirFactory.createStu3DocumentReferenceResource()
         let oldRecord = DecryptedRecordFactory.create(oldDocument)
         oldDocument.id = oldRecord.id
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
@@ -202,7 +202,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
 
     func testUpdateFhirStu3RecordWithAttachmentMaintainingOldAnnotations() {
         let userId = UUID().uuidString
-        let oldDocument = FhirFactory.createDocumentReferenceResource()
+        let oldDocument = FhirFactory.createStu3DocumentReferenceResource()
         var oldRecord = DecryptedRecordFactory.create(oldDocument)
         let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
@@ -282,7 +282,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
 
     func testUpdateFhirStu3RecordWithAttachmentUpdatingAnnotations() {
         let userId = UUID().uuidString
-        let oldDocument = FhirFactory.createDocumentReferenceResource()
+        let oldDocument = FhirFactory.createStu3DocumentReferenceResource()
         var oldRecord = DecryptedRecordFactory.create(oldDocument)
         let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
@@ -365,7 +365,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     func testFetchFhirStu3Record() {
         let userId = UUID().uuidString
 
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
         var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
@@ -413,7 +413,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         var record = DecryptedRecordFactory.create(document)
         record.annotations = annotations
         var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
@@ -572,7 +572,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
 
     func testFailUploadRecordMissingTek() {
         let userId = UUID().uuidString
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
 
         let expectedError = Data4LifeSDKError.missingTagKey
@@ -595,7 +595,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
 
     func testFailUploadRecordMissingCommonKey() {
         let userId = UUID().uuidString
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
 
         let expectedError = Data4LifeSDKError.missingCommonKey
@@ -621,7 +621,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     func testFetchRecordsFailsUnsupportedVersion() {
         let userId = UUID().uuidString
 
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
         var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil

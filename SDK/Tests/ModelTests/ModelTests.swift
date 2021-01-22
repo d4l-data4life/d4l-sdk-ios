@@ -19,14 +19,14 @@ import Data4LifeFHIR
 
 class ModelTests: XCTestCase {
     func testAllModelVersion() {
-        let document = FhirFactory.createDocumentReferenceResource()
+        let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         XCTAssertEqual(record.modelVersion, DocumentReference.modelVersion)
         XCTAssertEqual(DocumentReference.modelVersion, FhirStu3Resource.modelVersion)
     }
 
     func testConvertResourceToFHIRModel() {
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
 
         do {
             _ = try resource.map(to: CarePlan.self)
@@ -36,7 +36,7 @@ class ModelTests: XCTestCase {
     }
 
     func testFailConvertingResourceToFHIRModel() {
-        let resource = FhirFactory.createCarePlanResource()
+        let resource = FhirFactory.createStu3CarePlanResource()
 
         do {
             _ = try resource.map(to: MedicationRequest.self)

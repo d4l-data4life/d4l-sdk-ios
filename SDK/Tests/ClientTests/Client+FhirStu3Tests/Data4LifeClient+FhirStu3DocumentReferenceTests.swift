@@ -18,16 +18,16 @@ import Then
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
-extension Data4LifeClientTests {
+extension Data4LifeClientFhirStu3Tests {
 
     func testCreateDocumentReferenceResource() {
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         let record = RecordFactory.create(resource)
 
         fhirService.createFhirRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createFhirStu3Record(resource) { result in
+        client.createFhirStu3Record(resource) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -39,10 +39,10 @@ extension Data4LifeClientTests {
     }
 
     func testCreateDocumentReferenceResources() {
-        let firstResource = FhirFactory.createDocumentReferenceResource()
+        let firstResource = FhirFactory.createStu3DocumentReferenceResource()
         let firstRecord = RecordFactory.create(firstResource)
 
-        let secondResource = FhirFactory.createDocumentReferenceResource()
+        let secondResource = FhirFactory.createStu3DocumentReferenceResource()
         let secondRecord = RecordFactory.create(secondResource)
 
         let records = [firstRecord, secondRecord]
@@ -51,7 +51,7 @@ extension Data4LifeClientTests {
         fhirService.createFhirRecordsResult = Promise.resolve((records, []))
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.createFhirStu3Records(resources) { result in
+        client.createFhirStu3Records(resources) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -65,14 +65,14 @@ extension Data4LifeClientTests {
 
     func testUpdateDocumentReferenceResource() {
         let resourceId = UUID().uuidString
-        let updateResource = FhirFactory.createDocumentReferenceResource()
+        let updateResource = FhirFactory.createStu3DocumentReferenceResource()
         updateResource.id = resourceId
         let record = RecordFactory.create(updateResource)
 
         fhirService.updateFhirRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateFhirStu3Record(updateResource) { result in
+        client.updateFhirStu3Record(updateResource) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -87,12 +87,12 @@ extension Data4LifeClientTests {
 
     func testUpdateDocumentReferenceResources() {
         let firstId = UUID().uuidString
-        let firstResource = FhirFactory.createDocumentReferenceResource()
+        let firstResource = FhirFactory.createStu3DocumentReferenceResource()
         firstResource.id = firstId
         let firstRecord = RecordFactory.create(firstResource)
 
         let secondId = UUID().uuidString
-        let secondResource = FhirFactory.createDocumentReferenceResource()
+        let secondResource = FhirFactory.createStu3DocumentReferenceResource()
         secondResource.id = secondId
         let secondRecord = RecordFactory.create(secondResource)
 
@@ -102,7 +102,7 @@ extension Data4LifeClientTests {
         fhirService.updateFhirRecordsResult = Promise.resolve((records, []))
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.updateFhirStu3Records(resources) { result in
+        client.updateFhirStu3Records(resources) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -119,13 +119,13 @@ extension Data4LifeClientTests {
     func testDownloadDocumentReferenceResourceSpecifyingType() {
 
         let resourceId = UUID().uuidString
-        let resource = FhirFactory.createDocumentReferenceResource()
+        let resource = FhirFactory.createStu3DocumentReferenceResource()
         resource.id = resourceId
         let record = RecordFactory.create(resource)
         fhirService.downloadSpecificRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        clientForDocumentReferences.downloadFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        client.downloadFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

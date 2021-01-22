@@ -1,4 +1,4 @@
-github "d4l-data4life/d4l-fhir-ios" ~> 0.17.0
+github "d4l-data4life/d4l-fhir-ios" ~> 0.18.0
 github "d4l-data4life/d4l-utils-ios" ~> 0.3.0
 
 github "Alamofire/Alamofire" == 4.9.1

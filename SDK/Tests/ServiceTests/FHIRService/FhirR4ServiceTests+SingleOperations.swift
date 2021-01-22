@@ -16,20 +16,20 @@
 import XCTest
 @testable import Data4LifeSDK
 import Then
-import Data4LifeFHIR
+import ModelsR4
 
-extension FhirStu3ServiceTests {
-    func testCreateResource() {
+extension FhirR4ServiceTests {
+    func testCreateR4Resource() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
+        let fhirResource = FhirFactory.createR4CarePlanResource()
         let record = DecryptedRecordFactory.create(fhirResource)
-        fhirResource.id = record.id
+        fhirResource.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, fhirResource)
@@ -39,24 +39,24 @@ extension FhirStu3ServiceTests {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testFetchResource() {
+    func testFetchR4Resource() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
-        fhirResource.id = resourceId
+        let fhirResource = FhirFactory.createR4CarePlanResource()
+        fhirResource.id = resourceId.asFHIRStringPrimitive()
         let record = DecryptedRecordFactory.create(fhirResource)
 
         keychainService[.userId] = userId
         recordService.fetchRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.fetchFhirRecord(withId: resourceId, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
-            .then { (result: FhirRecord<CarePlan>) in
+        fhirService.fetchFhirRecord(withId: resourceId, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
+            .then { (result: FhirRecord<ModelsR4.CarePlan>) in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(fhirResource, result.fhirResource)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId)
@@ -65,26 +65,26 @@ extension FhirStu3ServiceTests {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testUpdateResource() {
+    func testUpdateR4Resource() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
-        fhirResource.id = resourceId
+        let fhirResource = FhirFactory.createR4CarePlanResource()
+        fhirResource.id = resourceId.asFHIRStringPrimitive()
         let record = DecryptedRecordFactory.create(fhirResource)
-        let updateResource = fhirResource.copy() as! CarePlan // swiftlint:disable:this force_cast
-        updateResource.language = UUID().uuidString
+        let updateResource = fhirResource.copy() as! ModelsR4.CarePlan // swiftlint:disable:this force_cast
+        updateResource.language = UUID().uuidString.asFHIRStringPrimitive()
         let updatedRecord = record.copy(with: updateResource)
 
         keychainService[.userId] = userId
         recordService.updateRecordResult = Async.resolve(updatedRecord)
 
         let asyncExpectation = expectation(description: "should update language property")
-        fhirService.updateFhirRecord(updateResource, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.updateFhirRecord(updateResource, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertNotEqual(result.fhirResource, fhirResource)
@@ -94,19 +94,19 @@ extension FhirStu3ServiceTests {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
-    func testUpdateResourceMissingId() {
+    func testUpdateR4ResourceMissingId() {
         let userId = UUID().uuidString
-        let fhirResource = FhirFactory.createCarePlanResource()
+        let fhirResource = FhirFactory.createR4CarePlanResource()
         let expectedError = Data4LifeSDKError.invalidResourceMissingId
 
         keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should throw an error")
-        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
             .then { _ in
                 XCTFail("Should throw an error")
             }.onError { error in
@@ -115,11 +115,11 @@ extension FhirStu3ServiceTests {
                 XCTAssertEqual(sdkError, expectedError)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
-    func testDeleteResource() {
+    func testDeleteR4Resource() {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
 
@@ -134,7 +134,67 @@ extension FhirStu3ServiceTests {
                 XCTAssertNil(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testSearchR4Resources() {
+        let userId = UUID().uuidString
+        let recordId = UUID().uuidString
+        let fhirResource = FhirFactory.createR4CarePlanResource()
+        fhirResource.id = recordId.asFHIRStringPrimitive()
+        let record = DecryptedRecordFactory.create(fhirResource)
+        let offset = 1
+        let pageSize = 2
+        let from = Date()
+        let to = Date()
+
+        keychainService[.userId] = userId
+        recordService.searchRecordsResult = Async.resolve([record])
+
+        let asyncExpectation = expectation(description: "should return resources")
+        fhirService.fetchRecords(decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self,
+                                 recordType: FhirRecord<ModelsR4.CarePlan>.self,
+                                 annotations: [],
+                                 from: from,
+                                 to: to,
+                                 pageSize: pageSize,
+                                 offset: offset)
+            .then { result in
+                XCTAssertNotNil(result)
+                XCTAssertEqual(result.count, 1)
+                XCTAssertEqual(result.first?.id, fhirResource.id?.value?.string)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.0)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.1)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.2)
+                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.3)
+            }.onError { error in
+                XCTFail(error.localizedDescription)
+            }.finally {
+                asyncExpectation.fulfill()
+            }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testCountR4Resources() {
+        let userId = UUID().uuidString
+        let count = 1
+
+        keychainService[.userId] = userId
+        recordService.countRecordsResult = Async.resolve(count)
+
+        let asyncExpectation = expectation(description: "should return count of resources")
+        fhirService.countRecords(of: ModelsR4.CarePlan.self, annotations: [])
+            .then { result in
+                XCTAssertEqual(count, result)
+                XCTAssertTrue(self.recordService.countRecordsCalledWith?.1 == ModelsR4.CarePlan.self)
+            }.onError { error in
+                XCTFail(error.localizedDescription)
+            }.finally {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }

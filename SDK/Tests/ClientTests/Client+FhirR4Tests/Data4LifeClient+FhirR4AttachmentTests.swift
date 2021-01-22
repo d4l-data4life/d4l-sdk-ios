@@ -18,17 +18,17 @@ import Then
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
-extension Data4LifeClientTests {
+extension Data4LifeClientFhirR4Tests {
     func testDownloadAttachment() {
         let attachmentId = UUID().uuidString
         let recordId = UUID().uuidString
-        let attachment = FhirFactory.createAttachmentElement()
-        attachment.id = attachmentId
+        let attachment = FhirFactory.createR4AttachmentElement()
+        attachment.id = attachmentId.asFHIRStringPrimitive()
 
         fhirService.downloadAttachmentResult = Promise.resolve(attachment)
 
         let asyncExpectation = expectation(description: "Should return a attachment")
-        clientForDocumentReferences.downloadFhirStu3Attachment(withId: attachmentId, recordId: recordId) { result in
+        client.downloadFhirR4Attachment(withId: attachmentId, recordId: recordId) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
@@ -45,16 +45,16 @@ extension Data4LifeClientTests {
         let secondAttachmentId = UUID().uuidString
         let recordId = UUID().uuidString
 
-        let firstAttachment = FhirFactory.createAttachmentElement()
-        let secondAttachment = FhirFactory.createAttachmentElement()
+        let firstAttachment = FhirFactory.createR4AttachmentElement()
+        let secondAttachment = FhirFactory.createR4AttachmentElement()
 
-        firstAttachment.id = firstAttachmentId
-        secondAttachment.id = secondAttachmentId
+        firstAttachment.id = firstAttachmentId.asFHIRStringPrimitive()
+        secondAttachment.id = secondAttachmentId.asFHIRStringPrimitive()
         fhirService.downloadAttachmentsResult = Promise.resolve([firstAttachment, secondAttachment])
 
         let ids = [firstAttachmentId, secondAttachmentId]
         let asyncExpectation = expectation(description: "Should return a attachment")
-        clientForDocumentReferences.downloadFhirStu3Attachments(withIds: ids, recordId: recordId) { result in
+        client.downloadFhirR4Attachments(withIds: ids, recordId: recordId) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
