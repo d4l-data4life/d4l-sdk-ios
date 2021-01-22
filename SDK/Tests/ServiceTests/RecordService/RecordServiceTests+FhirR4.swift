@@ -26,7 +26,7 @@ extension RecordServiceTests {
 
         let resource = FhirFactory.createR4DocumentReferenceResource()
         var record = DecryptedRecordFactory.create(resource)
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         record.annotations = annotations
         var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
@@ -160,7 +160,7 @@ extension RecordServiceTests {
         let userId = UUID().uuidString
         let oldDocument = FhirFactory.createR4DocumentReferenceResource()
         var oldRecord = DecryptedRecordFactory.create(oldDocument)
-        let oldAnnotations = ["oldAnnotation"]
+        let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id.asFHIRStringPrimitive()
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
@@ -240,7 +240,7 @@ extension RecordServiceTests {
         let userId = UUID().uuidString
         let oldDocument = FhirFactory.createR4DocumentReferenceResource()
         var oldRecord = DecryptedRecordFactory.create(oldDocument)
-        let oldAnnotations = ["oldAnnotation"]
+        let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id.asFHIRStringPrimitive()
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
@@ -248,7 +248,7 @@ extension RecordServiceTests {
         let document = oldDocument.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle.asFHIRStringPrimitive()
-        let annotations = ["newAnnotation"]
+        let annotations = ["new-annotation"]
         var record = DecryptedRecordFactory.create(document)
         record.annotations = annotations
         record.id = oldRecord.id
@@ -365,7 +365,7 @@ extension RecordServiceTests {
     }
 
     func testSearchR4Records() {
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
@@ -443,7 +443,7 @@ extension RecordServiceTests {
     }
 
     func testCountR4Records() {
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let recordCount = 101
 
