@@ -80,7 +80,7 @@ class ImageResizerTest: XCTestCase {
         let imageSize = imageResizer.getSize(.smallHeight, for: image)
 
         XCTAssertTrue(imageSize.height == ImageSize.smallHeight.floatValue)
-        //Here we just test that the width has changed. 
+        // Here we just test that the width has changed. 
         XCTAssertTrue(imageSize.width != image.size.width)
     }
 }

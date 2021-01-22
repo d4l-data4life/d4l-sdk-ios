@@ -17,7 +17,7 @@ import Foundation
 
 final class LoggerContainer: DIContainer {
 
-    ///Used for the global logDebug function
+    /// Used for the global logDebug function
     static var shared: LoggerContainer = {
         let loggerContainer = LoggerContainer()
         loggerContainer.registerDependencies(with: .console)

@@ -21,40 +21,6 @@ protocol TaggingServiceType {
     func makeTagGroup<R: SDKResource>(for type: R.Type, annotations: [String]?) -> Async<TagGroup>
 }
 
-struct TagGroup {
-    let tags: [String:String]
-    let annotations: [String]
-
-    init(tags: [String:String], annotations: [String] = []) {
-        self.tags = tags
-        self.annotations = annotations
-    }
-
-    init(from parameters: [String]) {
-        var tagsDictionary = [String: String]()
-        var annotationsList = [String]()
-
-        for decryptedTag in parameters {
-            guard let (key, value) = decryptedTag.splitKeyAndValue() else { break }
-            if key == TaggingService.Keys.custom.rawValue {
-                annotationsList.append(value)
-            } else {
-                tagsDictionary[key] = value
-            }
-        }
-
-        self.tags = tagsDictionary
-        self.annotations = annotationsList
-    }
-
-    func asParameters(separatedBy separator: Character = "=") -> [String] {
-        let formattedAnnotations: [String] = annotations.compactMap {
-            "\(TaggingService.Keys.custom)\(separator)\($0)"
-        }
-        return tags.toKeyValueStringArray(separatedBy: separator) + formattedAnnotations
-    }
-}
-
 struct TaggingService: TaggingServiceType {
 
     enum Keys: String {

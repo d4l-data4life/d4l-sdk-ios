@@ -17,12 +17,22 @@ import Foundation
 
 extension Dictionary where Key == String, Value == String {
     func toKeyValueStringArray(separatedBy separator: Character = "=") -> [String] {
-        return self.compactMap { (key, value) in
-            guard let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
-                let escapedValue = value.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
-                    return nil
-            }
-            return "\(escapedKey)\(separator)\(escapedValue)"
+        return self.compactMap { String.makePercentEncodedKeyValuePair(key: $0, value: $1) }
+    }
+}
+
+extension String {
+    static func makePercentEncodedKeyValuePair(key: String, value: String, separatedBy separator: Character = "=") -> String? {
+        guard let escapedKey = key.trimmingCharacters(in: .whitespacesAndNewlines)
+                .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased(),
+              let escapedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+                .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased() else {
+            return nil
         }
+        return "\(escapedKey)\(separator)\(escapedValue)"
+    }
+
+    var isLowercased: Bool {
+        allSatisfy { !$0.isLetter || $0.isLowercase }
     }
 }

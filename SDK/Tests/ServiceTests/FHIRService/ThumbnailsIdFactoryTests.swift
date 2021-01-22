@@ -142,7 +142,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
     }
 
     func testCleanObsoleteAdditionalIdentifiersInvalidAdditionalIdFormat() {
-        //Create resource with identifiers and attachments
+        // Create resource with identifiers and attachments
         let partnerId = UUID().uuidString
         Resource.partnerId = partnerId
 

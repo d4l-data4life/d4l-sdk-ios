@@ -101,6 +101,8 @@
 		36DD7A5B255ED0D600FA6EB7 /* Encodable+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD7A5A255ED0D600FA6EB7 /* Encodable+Data.swift */; };
 		36F6F08A237C16B80054DE4A /* Data4LifeDITestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F6F089237C16B80054DE4A /* Data4LifeDITestContainer.swift */; };
 		36F6F08C237C17020054DE4A /* DIContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F6F08B237C17020054DE4A /* DIContainerTests.swift */; };
+		36FB754725B87D430001FB19 /* TagGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB754625B87D430001FB19 /* TagGroup.swift */; };
+		36FB755125B881D80001FB19 /* TagGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB755025B881D80001FB19 /* TagGroupTests.swift */; };
 		7F20B7152367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		7F20B7162367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
@@ -472,6 +474,8 @@
 		36DD7A5A255ED0D600FA6EB7 /* Encodable+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Data.swift"; sourceTree = "<group>"; };
 		36F6F089237C16B80054DE4A /* Data4LifeDITestContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data4LifeDITestContainer.swift; sourceTree = "<group>"; };
 		36F6F08B237C17020054DE4A /* DIContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainerTests.swift; sourceTree = "<group>"; };
+		36FB754625B87D430001FB19 /* TagGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagGroup.swift; sourceTree = "<group>"; };
+		36FB755025B881D80001FB19 /* TagGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagGroupTests.swift; sourceTree = "<group>"; };
 		7F20B7142367128100B21680 /* data4life.care.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = data4life.care.der; sourceTree = "<group>"; };
 		837463A61E854E7500AB500F /* Data4LifeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		837463AF1E854E7500AB500F /* Data4LifeSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Data4LifeSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1260,6 +1264,7 @@
 				CD1091E1225B901E00325389 /* EncryptedRecord.swift */,
 				CD1091DF225B901E00325389 /* Metadata.swift */,
 				0AF4C09422DDEC8900C5CD67 /* DownloadType.swift */,
+				36FB754625B87D430001FB19 /* TagGroup.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -1379,21 +1384,21 @@
 		CD109225225B901E00325389 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				CD109230225B901E00325389 /* FHIRService */,
 				3689D7F224EAB2D2004295D9 /* AppDataService */,
-				0A3934AD23FE5D3700DDCE2B /* SessionService */,
-				CDC9D6B8229D8ED00068E3D5 /* OAuthService */,
 				CD10922A225B901E00325389 /* AttachmentService */,
-				CD10922E225B901E00325389 /* InfoService.swift */,
-				CD109228225B901E00325389 /* UserService.swift */,
-				CD109227225B901E00325389 /* RecordService.swift */,
-				CD1090AF225B893A00325389 /* CryptoService.swift */,
+				CD109230225B901E00325389 /* FHIRService */,
+				CDC9D6B8229D8ED00068E3D5 /* OAuthService */,
+				0A3934AD23FE5D3700DDCE2B /* SessionService */,
 				0A64853323A0E98100B00E7A /* CommonKeyService.swift */,
-				CD10922C225B901E00325389 /* KeychainService.swift */,
-				CD10922F225B901E00325389 /* TaggingService.swift */,
+				CD1090AF225B893A00325389 /* CryptoService.swift */,
 				CDA407A522E5E2A100B29A0D /* DocumentService.swift */,
-				368AFB0B23744D56004AE88F /* LoggerService.swift */,
 				3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */,
+				CD10922E225B901E00325389 /* InfoService.swift */,
+				CD10922C225B901E00325389 /* KeychainService.swift */,
+				368AFB0B23744D56004AE88F /* LoggerService.swift */,
+				CD109227225B901E00325389 /* RecordService.swift */,
+				CD10922F225B901E00325389 /* TaggingService.swift */,
+				CD109228225B901E00325389 /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1620,6 +1625,7 @@
 				CDFB908A229C2E0000B33C7B /* ClientConfigurationTests.swift */,
 				0AC79E33235DC0AC007BC681 /* TaskTest.swift */,
 				0A8D847723C5D6E300D7DDD3 /* HasAttachmentsProtocolTests.swift */,
+				36FB755025B881D80001FB19 /* TagGroupTests.swift */,
 			);
 			path = ModelTests;
 			sourceTree = "<group>";
@@ -2107,6 +2113,7 @@
 				CD109282225B901E00325389 /* FhirService+BatchOperations.swift in Sources */,
 				CDE39AEC22E746AB00ABE043 /* Document.swift in Sources */,
 				CD109245225B901E00325389 /* FHIRRecord.swift in Sources */,
+				36FB754725B87D430001FB19 /* TagGroup.swift in Sources */,
 				CD10923C225B901E00325389 /* Serialization.swift in Sources */,
 				CD10924C225B901E00325389 /* Resource.swift in Sources */,
 				368AFB0E23744DF5004AE88F /* BuildConfiguration.swift in Sources */,
@@ -2192,6 +2199,7 @@
 				CD841E13225CBE80002656D5 /* ReachabilityMock.swift in Sources */,
 				CD841E54225CBE80002656D5 /* AttachmentServiceTests.swift in Sources */,
 				CD841E40225CBE80002656D5 /* StubbedResponse.swift in Sources */,
+				36FB755125B881D80001FB19 /* TagGroupTests.swift in Sources */,
 				CD841E5B225CBE80002656D5 /* InfoServiceTests.swift in Sources */,
 				CD841E2A225CBE80002656D5 /* Assert.swift in Sources */,
 				36553F8A24C72AE200699A9B /* FHIRServiceTests+Questionnaire.swift in Sources */,
@@ -2552,6 +2560,7 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -2585,6 +2594,7 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
@@ -2657,6 +2667,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -2686,6 +2697,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
@@ -2718,6 +2730,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -2749,6 +2762,7 @@
 				SKIP_INSTALL = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};

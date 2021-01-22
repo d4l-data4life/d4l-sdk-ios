@@ -48,6 +48,8 @@ public enum Data4LifeSDKError: LocalizedError {
     case couldNotFindAttachment
     case downloadActionWasCancelled
     case couldNotEncodeAppData
+    case emptyAnnotationNotAllowed
+    case upperCasedAnnotationNotAllowed
 
     // AppAuth errors (https://github.com/openid/AppAuth-iOS/blob/master/Source/OIDError.h)
     case appAuth(Error)
@@ -135,6 +137,10 @@ extension Data4LifeSDKError: CustomStringConvertible {
             return "Could not synchronize attachments"
         case .couldNotEncodeAppData:
             return "Could not encode app data"
+        case .emptyAnnotationNotAllowed:
+            return "Empty annotations are not allowed"
+        case .upperCasedAnnotationNotAllowed:
+            return "Annotations letters can only be lower cased"
         }
     }
 }

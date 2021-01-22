@@ -5,10 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Annotations are now handled as tags (lowercased, percent encoded, trimmed) in order to comply with JS
 
 ## [1.12.0] - 2020-12-02
 ### Changed
-Open sourced 
+Open sourced
 
 ## [1.11.1] - 2020-11-18
 ### Fixed
