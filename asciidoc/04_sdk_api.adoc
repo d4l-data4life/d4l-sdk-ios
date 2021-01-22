@@ -155,7 +155,7 @@ The following sections describe how you perform queries and other actions for do
 
 The `create`, `update`, `search` and `count` methods can optionally use `annotations` as a parameter.
 This parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the `search` and `count` methods.
-These annotations cannot contain uppercased characters or empty strings.
+These annotations cannot contain empty strings, and uppercased characters will be always lowercased, due to some internal functionality, so it's recommended to use lowercased ones.
 
 ==== Creating a new FHIR record
 

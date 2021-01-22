@@ -40,7 +40,7 @@ The smallest unit of data that can be stored and referenced by the {compname} pl
 
 * *Metadata* that's needed to properly associate a record with a user
 
-* *Annotations* Custom tags saved as strings that the user can use in order to filter or identify the existing resources. These cannot contain uppercased characters or empty strings.
+* *Annotations* Custom tags saved as strings that the user can use in order to filter or identify the existing resources. These cannot contain empty strings, and uppercased characters will be always lowercased, due to some internal functionality, so it's recommended to use lowercased ones.
 
 A record can contain:
 1) anything that can be modeled by a FHIR (STU3 or R4) resource. From a single vital sign measurement, such as body temperature, to a complex document linking to or containing multiple attachments and measuring many megabytes in size.
