@@ -170,7 +170,7 @@ extension KeychainService {
         query[kSecClass] = kSecClassGenericPassword
         query[kSecMatchLimit] = kSecMatchLimitAll
 
-        //Initiate the search
+        // Initiate the search
         var items: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &items)
         guard status != errSecItemNotFound,

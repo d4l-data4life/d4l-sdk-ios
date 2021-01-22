@@ -83,7 +83,7 @@ final class AttachmentService: AttachmentServiceType {
 
             let filledAttachments = try attachments.compactMap { attachment -> A? in
                 guard let attachmentId = attachment.attachmentId, attachmentIds.contains(attachmentId) else { return nil }
-                //Size validation has to be done from the fhir property in order to avoid the attachment's downloading time
+                // Size validation has to be done from the fhir property in order to avoid the attachment's downloading time
                 do { try attachment.validatePayloadSize() } catch {
                     throw Data4LifeSDKError.invalidAttachmentPayloadSize
                 }
@@ -106,7 +106,7 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 if downloadType.isThumbnailType {
-                    //Update hash and size for thumbnails attachments
+                    // Update hash and size for thumbnails attachments
                     attachmentCopy.attachmentHash = data.sha1Hash
                     attachmentCopy.attachmentSize = data.count
                 } else {
@@ -126,9 +126,9 @@ final class AttachmentService: AttachmentServiceType {
                                   originalData: Data,
                                   key: Key) -> Promise<[String]> {
         return async {
-            //Convert imageData to UIImage
+            // Convert imageData to UIImage
             guard let imageToResize = UIImage(data: originalData) else {
-                //Data is not an image. This case should never happen, because the mimeType is actually an image
+                // Data is not an image. This case should never happen, because the mimeType is actually an image
                 return []
             }
 
@@ -138,13 +138,13 @@ final class AttachmentService: AttachmentServiceType {
                 let selectedSize = self.imageResizer.getSize(imageSize, for: imageToResize)
                 do {
                     guard let resizedData = try self.imageResizer.resize(imageToResize, for: selectedSize) else {
-                        //This case should never happen
+                        // This case should never happen
                         return []
                     }
 
                     let uploaded = try await(self.documentService.create(document: Document(data: resizedData), key: key))
                     guard let thumbnailId = uploaded.id else {
-                        //A created document should always have got an id
+                        // A created document should always have got an id
                         return []
                     }
                     thumbnailsIds.append(thumbnailId)

@@ -70,7 +70,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
 
         let resource = FhirFactory.createDocumentReferenceResource()
         var record = DecryptedRecordFactory.create(resource)
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         record.annotations = annotations
         var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
@@ -204,7 +204,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         let userId = UUID().uuidString
         let oldDocument = FhirFactory.createDocumentReferenceResource()
         var oldRecord = DecryptedRecordFactory.create(oldDocument)
-        let oldAnnotations = ["oldAnnotation"]
+        let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
@@ -284,7 +284,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         let userId = UUID().uuidString
         let oldDocument = FhirFactory.createDocumentReferenceResource()
         var oldRecord = DecryptedRecordFactory.create(oldDocument)
-        let oldAnnotations = ["oldAnnotation"]
+        let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
@@ -292,7 +292,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         let document = oldDocument.copy() as! DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle
-        let annotations = ["newAnnotation"]
+        let annotations = ["new-annotation"]
         var record = DecryptedRecordFactory.create(document)
         record.annotations = annotations
         record.id = oldRecord.id
@@ -409,7 +409,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     }
 
     func testSearchRecords() {
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
@@ -487,7 +487,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
     }
 
     func testCountRecords() {
-        let annotations = ["exampleAnnotation1"]
+        let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let recordCount = 101
 
@@ -629,7 +629,7 @@ class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_lengt
         // Common key
         commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
 
-        //Validator
+        // Validator
         versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
