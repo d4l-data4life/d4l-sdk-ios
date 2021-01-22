@@ -5,8 +5,8 @@ repository = "gesundheitscloud/hc-sdk-ios"
 framework_binary_path = "build/" + project + ".framework.zip"
 sdk_podspec_path = '../Data4LifeSDK.podspec'
 crypto_podspec_path = '../Data4LifeCrypto.podspec'
-private_podspec_repo_name = 'gesundheitscloud'
-private_podspect_repo_url = 'git@github.com:gesundheitscloud/cocoapods-specs'
+private_podspec_repo_name = 'd4l-data4life'
+private_podspect_repo_url = 'git@github.com:d4l-data4life/d4l-cocoapods-specs'
 device = "iPhone 11"
 
 platform :ios do

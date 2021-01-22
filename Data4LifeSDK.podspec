@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
   s.dependency 'Data4LifeCrypto', '~> 1.4.0'
   s.dependency 'SVProgressHUD', '2.2.5'
 
-  s.dependency 'Data4LifeFHIR', '~> 0.17.0'
-  s.dependency 'ModelsR4', '~> 0.17.0'
+  s.dependency 'Data4LifeFHIR', '~> 0.18.0'
+  s.dependency 'ModelsR4', '~> 0.18.0'
 end
