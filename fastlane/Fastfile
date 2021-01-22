@@ -7,7 +7,7 @@ sdk_podspec_path = '../Data4LifeSDK.podspec'
 crypto_podspec_path = '../Data4LifeCrypto.podspec'
 private_podspec_repo_name = 'gesundheitscloud'
 private_podspect_repo_url = 'git@github.com:gesundheitscloud/cocoapods-specs'
-device = "iPhone 11 (14.0)"
+device = "iPhone 11 (14.1)"
 
 platform :ios do
   desc "Run unit tests and upload code coverage"
