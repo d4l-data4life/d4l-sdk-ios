@@ -43,18 +43,18 @@ The smallest unit of data that can be stored and referenced by the {compname} pl
 * *Annotations* Custom tags saved as strings that the user can use in order to filter or identify the existing resources. These cannot contain uppercased characters or empty strings.
 
 A record can contain:
-1) anything that can be modeled by a FHIR resource. From a single vital sign measurement, such as body temperature, to a complex document linking to or containing multiple attachments and measuring many megabytes in size.
-2) Generic Data
+1) anything that can be modeled by a FHIR (STU3 or R4) resource. From a single vital sign measurement, such as body temperature, to a complex document linking to or containing multiple attachments and measuring many megabytes in size.
+2) Generic Data (called App Data)
 
 For these two cases we have two types of _records_:
 
 === The FHIRRecord data model
 
-The `FhirRecord` data model holds resource, metadata and additional metadata. `FhirStu3Resource` is typealias of the `Data4LifeFHIR.DomainResource` type.
+The `FhirRecord` data model holds resource, metadata and additional metadata. `AnyFhirResource` is a protocol restricted to `Data4LifeFHIR.DomainResource` or `ModelsR4.DomainResource` type.
 
 [source,swift]
 ----
-struct FhirRecord<R: FhirStu3Resource> {
+struct FhirRecord<R: AnyFhirResource> {
     public var id: String
     public var fhirResource: R
     public var metadata: Metadata
