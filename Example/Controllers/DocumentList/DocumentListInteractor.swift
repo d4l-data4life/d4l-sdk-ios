@@ -101,7 +101,7 @@ extension DocumentListInteractor {
     }
 
     func didTapAddAppData() {
-        //let userKey = UserKey(t: "t", priv: "priv", pub: "pub", v: 5, scope: "scope")
+        // let userKey = UserKey(t: "t", priv: "priv", pub: "pub", v: 5, scope: "scope")
         let hellosString = "{\"word\":\"hello\"}"
         let hello = Data(hellosString.utf8)
         d4lClient.createAppDataRecord(hello, annotations: ["annotest"]) { [weak self] result in

@@ -120,7 +120,7 @@ extension FhirAttachmentOperations {
             } else {
                 guard let remoteAttachment = remote.first(where: { $0.attachmentId == attachment.attachmentId }) else {
                     // This case should never happen, it means that attachment
-                    //has an `id` but it's not found in the current record
+                    // has an `id` but it's not found in the current record
                     new.append(attachment)
                     continue
                 }
