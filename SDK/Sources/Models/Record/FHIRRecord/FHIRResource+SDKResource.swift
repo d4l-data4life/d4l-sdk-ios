@@ -22,7 +22,10 @@ protocol FhirSDKResource: AnyFhirResource, SDKResource {
 
 extension FhirStu3Resource: FhirSDKResource {
     static var searchTags: [String : String] {
-        var tags = [TaggingService.Keys.resourceType.rawValue: Self.resourceType]
+        var tags = [String: String]()
+        if Self.resourceType != Data4LifeFHIR.DomainResource.resourceType {
+            tags[TaggingService.Keys.resourceType.rawValue] = Self.resourceType
+        }
         tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         tags.lowercased()
         return tags

@@ -216,6 +216,7 @@ private extension DocumentListInteractor {
         loadAppData { [weak self] in
             self?.loadR4Documents { [weak self] in
                 self?.loadStu3Documents()
+                self?.countStu3Documents()
             }
         }
     }
@@ -271,6 +272,15 @@ private extension DocumentListInteractor {
             }
 
             self?.view?.updateTableView()
+        }
+    }
+
+    private func countStu3Documents() {
+        d4lClient.countFhirStu3Records { (result) in
+            print("Total fhir stu3 records: \((try? result.get()) ?? -1)")
+        }
+        d4lClient.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { (result) in
+            print("Total fhir stu3 documents: \((try? result.get()) ?? -1)")
         }
     }
 }
