@@ -39,7 +39,10 @@ extension FhirStu3Resource: FhirSDKResource {
 
 extension FhirR4Resource: FhirSDKResource {
     static var searchTags: [String : String] {
-        var tags = [TaggingService.Keys.resourceType.rawValue: Self.resourceType.rawValue]
+        var tags = [String: String]()
+        if Self.resourceType != ModelsR4.DomainResource.resourceType {
+            tags[TaggingService.Keys.resourceType.rawValue] = Self.resourceType.rawValue
+        }
         tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         tags.lowercased()
         return tags

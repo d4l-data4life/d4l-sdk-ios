@@ -34,6 +34,11 @@ final class DocumentListInteractor {
         return dates?[1] ?? nil
     }
 
+    private var stu3DocumentReferenceCount: Int = -1
+    private var stu3RecordCount: Int = -1
+    private var r4DocumentReferenceCount: Int = -1
+    private var r4RecordCount: Int = -1
+
     weak var view: DocumentListTableViewController?
     private let d4lClient: Data4LifeClient
     init(view: DocumentListTableViewController, d4lClient: Data4LifeClient = Data4LifeClient.default) {
@@ -61,6 +66,28 @@ extension DocumentListInteractor {
             let state = result.error == nil ? true : false
             self?.view?.updateUI(state: state)
         }
+    }
+
+    var countDescription: String {
+        var stu3Descriptions = [String]()
+        var r4Descriptions = [String]()
+        if stu3DocumentReferenceCount != -1 {
+            stu3Descriptions.append("Docs: \(stu3DocumentReferenceCount)")
+        }
+        if stu3RecordCount != -1 {
+            stu3Descriptions.append("Records: \(stu3RecordCount)")
+        }
+        if r4DocumentReferenceCount != -1 {
+            r4Descriptions.append("Docs: \(r4DocumentReferenceCount)")
+        }
+        if r4RecordCount != -1 {
+            r4Descriptions.append("Records: \(r4RecordCount)")
+        }
+
+        return [
+            "Stu3: " + stu3Descriptions.joined(separator: " "),
+            "R4: " + r4Descriptions.joined(separator: " ")
+        ].joined(separator: "\n")
     }
 
     func didPullToRefresh() {
@@ -216,7 +243,7 @@ private extension DocumentListInteractor {
         loadAppData { [weak self] in
             self?.loadR4Documents { [weak self] in
                 self?.loadStu3Documents()
-                self?.countStu3Documents()
+                self?.countDocuments()
             }
         }
     }
@@ -275,12 +302,23 @@ private extension DocumentListInteractor {
         }
     }
 
-    private func countStu3Documents() {
-        d4lClient.countFhirStu3Records { (result) in
+    private func countDocuments() {
+        d4lClient.countFhirStu3Records { [weak self] (result) in
             print("Total fhir stu3 records: \((try? result.get()) ?? -1)")
-        }
-        d4lClient.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { (result) in
-            print("Total fhir stu3 documents: \((try? result.get()) ?? -1)")
+            self?.stu3RecordCount = (try? result.get()) ?? -1
+            self?.d4lClient.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { [weak self]  (result) in
+                print("Total fhir stu3 documents: \((try? result.get()) ?? -1)")
+                self?.stu3DocumentReferenceCount = (try? result.get()) ?? -1
+                self?.d4lClient.countFhirR4Records { [weak self] (result) in
+                    print("Total fhir r4 records: \((try? result.get()) ?? -1)")
+                    self?.r4RecordCount = (try? result.get()) ?? -1
+                    self?.d4lClient.countFhirR4Records(of: ModelsR4.DocumentReference.self) { [weak self]  (result) in
+                        print("Total fhir r4 documents: \((try? result.get()) ?? -1)")
+                        self?.r4DocumentReferenceCount = (try? result.get()) ?? -1
+                        self?.view?.updateTableView()
+                    }
+                }
+            }
         }
     }
 }

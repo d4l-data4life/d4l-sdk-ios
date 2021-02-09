@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="co5-HE-Hqz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="co5-HE-Hqz">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,6 +15,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="e5i-I9-Wgo">
+                            <rect key="frame" x="0.0" y="161.5" width="375" height="69"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQM-fK-ieC">
+                                    <rect key="frame" x="167" y="8" width="41.5" height="46"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" systemColor="systemIndigoColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                            <constraints>
+                                <constraint firstItem="AQM-fK-ieC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="e5i-I9-Wgo" secondAttribute="leading" constant="20" id="Bk8-iJ-X94"/>
+                                <constraint firstItem="AQM-fK-ieC" firstAttribute="centerX" secondItem="e5i-I9-Wgo" secondAttribute="centerX" id="Zew-oj-hAI"/>
+                                <constraint firstItem="AQM-fK-ieC" firstAttribute="top" secondItem="e5i-I9-Wgo" secondAttribute="top" constant="8" id="a7P-ky-xV4"/>
+                                <constraint firstAttribute="bottom" secondItem="AQM-fK-ieC" secondAttribute="bottom" constant="15" id="lJu-oO-kfv"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AQM-fK-ieC" secondAttribute="trailing" constant="20" id="uYo-t4-dZL"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="8uU-l4-tgf" style="IBUITableViewCellStyleDefault" id="KRT-ps-Qoe">
                                 <rect key="frame" x="16" y="55.5" width="343" height="44"/>
@@ -80,6 +100,8 @@
                         </connections>
                     </refreshControl>
                     <connections>
+                        <outlet property="countsLabel" destination="AQM-fK-ieC" id="jYu-FK-ZZC"/>
+                        <outlet property="footerView" destination="e5i-I9-Wgo" id="AbG-9R-ZZs"/>
                         <outlet property="headerView" destination="FTf-4d-alb" id="bZr-kT-Rgb"/>
                         <outlet property="leftBarButton" destination="NIP-x4-nkZ" id="pXB-Ol-aGt"/>
                         <outlet property="searchButton" destination="gjb-vM-Njn" id="D1A-yJ-Wx2"/>
@@ -97,7 +119,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </objects>
-            <point key="canvasLocation" x="-162.40000000000001" y="733.5832083958021"/>
+            <point key="canvasLocation" x="-162.40000000000001" y="732.68365817091455"/>
         </scene>
         <!--Pick files-->
         <scene sceneID="e85-Vm-7Aj">
@@ -424,6 +446,12 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
