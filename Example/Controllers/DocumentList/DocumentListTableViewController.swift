@@ -38,7 +38,7 @@ class DocumentListTableViewController: UITableViewController {
     }
 
     private func configureSubviews() {
-        tableView.tableFooterView = footerView
+        tableView.tableFooterView = UIView()
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         tableView.sectionHeaderHeight = UITableView.automaticDimension
