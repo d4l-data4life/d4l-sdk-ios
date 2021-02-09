@@ -111,6 +111,22 @@ class TaggingServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 5)
     }
+
+    func testStu3DomainResourceTypeTag() {
+        let expectedAnnotations = ["example-annotation1"]
+        var expectedTags = [TaggingService.Keys.fhirVersion.rawValue: Data4LifeFHIR.DocumentReference.fhirVersion]
+        expectedTags.lowercased()
+
+        let asyncExpectation = expectation(description: "should create tags")
+        taggingService.makeTagGroup(for: FhirStu3Resource.self, annotations: expectedAnnotations)
+            .then { tagGroup in
+                asyncExpectation.fulfill()
+                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
+            }
+
+        waitForExpectations(timeout: 5)
+    }
 }
 
 extension TaggingServiceTests {
@@ -142,6 +158,22 @@ extension TaggingServiceTests {
 
         let asyncExpectation = expectation(description: "should create tags")
         taggingService.makeTagGroup(for: ModelsR4.DocumentReference.self, annotations: expectedAnnotations)
+            .then { tagGroup in
+                asyncExpectation.fulfill()
+                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
+            }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testR4DomainResourceTypeTag() {
+        let expectedAnnotations = ["example-annotation1"]
+        var expectedTags = [TaggingService.Keys.fhirVersion.rawValue: ModelsR4.DocumentReference.fhirVersion]
+        expectedTags.lowercased()
+
+        let asyncExpectation = expectation(description: "should create tags")
+        taggingService.makeTagGroup(for: FhirR4Resource.self, annotations: expectedAnnotations)
             .then { tagGroup in
                 asyncExpectation.fulfill()
                 XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
