@@ -21,7 +21,6 @@ import Data4LifeCrypto
 import Data4LifeFHIR
 import Then
 
-// swiftlint:disable identifier_name
 // swiftlint:disable type_name
 class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
 

@@ -104,9 +104,9 @@ class AuthStateMock: NSObject, NSCoding, AuthStateType {
     }
 
     static var authStateByPresentingExternalUserAgentCalledWith: (OIDAuthorizationRequest, OIDExternalUserAgent, (AuthStateType?, Error?) -> Void)? // swiftlint:disable:this identifier_name
-    static var authStateByPresentingExternalUserAgentCallbackResult: (AuthStateType?, Error?)?
+    static var authStateByPresentingExternalUserAgentCallbackResult: (AuthStateType?, Error?)? // swiftlint:disable:this identifier_name
     static var authStateByPresentingExternalUserAgentResult: OIDExternalUserAgentSession?
-    
+
     static func authState(byPresenting authorizationRequest: OIDAuthorizationRequest,
                           presenting externalUserAgent: OIDExternalUserAgent,
                           callback: @escaping (AuthStateType?, Error?) -> Void) -> OIDExternalUserAgentSession? {
