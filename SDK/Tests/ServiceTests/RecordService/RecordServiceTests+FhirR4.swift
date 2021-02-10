@@ -364,7 +364,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testSearchR4Records() {
+    func testSearchFhirR4Records() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let startDate = Date()
@@ -407,7 +407,7 @@ extension RecordServiceTests {
                                     decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(records.count, 1)
+                XCTAssertEqual(records.count, 1 * 2)
                 XCTAssertEqual(record.resource, document)
 
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
@@ -417,7 +417,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testSearchR4NoResults() {
+    func testSearchFhirR4NoResults() {
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
@@ -442,7 +442,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testCountR4Records() {
+    func testCountFhirR4Records() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let recordCount = 101
@@ -457,14 +457,14 @@ extension RecordServiceTests {
         recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)
             .then { count in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(count, recordCount)
+                XCTAssertEqual(count, recordCount * 2)
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
             }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testCountsR4RecordsFail() {
+    func testCountFhirR4RecordsFail() {
         let userId = UUID().uuidString
         let expectedError = Data4LifeSDKError.keyMissingInSerialization(key: "`x-total-count`")
 
@@ -487,7 +487,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testDeleteR4Record() {
+    func testDeleteFhirR4Record() {
         let recordId = UUID().uuidString
         let userId = UUID().uuidString
 
@@ -502,7 +502,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailR4BuildingParamsMissingTek() {
+    func testFailFhirR4BuildingParamsMissingTek() {
         let userId = UUID().uuidString
         cryptoService.tek = nil
         let expectedError = Data4LifeSDKError.notLoggedIn
@@ -526,7 +526,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadR4RecordMissingTek() {
+    func testFailUploadFhirR4RecordMissingTek() {
         let userId = UUID().uuidString
         let document = FhirFactory.createR4DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
@@ -549,7 +549,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadR4RecordMissingCommonKey() {
+    func testFailUploadFhirR4RecordMissingCommonKey() {
         let userId = UUID().uuidString
         let document = FhirFactory.createR4DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
@@ -574,7 +574,7 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFetchR4RecordsFailsUnsupportedVersion() {
+    func testFetchFhirR4RecordsFailsUnsupportedVersion() {
         let userId = UUID().uuidString
 
         let document = FhirFactory.createR4DocumentReferenceResource()

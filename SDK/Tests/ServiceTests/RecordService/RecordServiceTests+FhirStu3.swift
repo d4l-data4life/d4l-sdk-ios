@@ -408,7 +408,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testSearchRecords() {
+    func testSearchFhirStu3Records() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let startDate = Date()
@@ -451,7 +451,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                                     decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(records.count, 1)
+                XCTAssertEqual(records.count, 1 * 2)
                 XCTAssertEqual(record.resource, document)
 
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
@@ -461,7 +461,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testSearchNoResults() {
+    func testSearchFhirStu3NoResults() {
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
@@ -486,7 +486,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testCountRecords() {
+    func testCountFhirStu3Records() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let recordCount = 101
@@ -501,14 +501,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         recordService.countRecords(userId: userId, resourceType: DocumentReference.self, annotations: annotations)
             .then { count in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(count, recordCount)
+                XCTAssertEqual(count, recordCount * 2)
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
             }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testCountsRecordsFail() {
+    func testCountFhirStu3RecordsFail() {
         let userId = UUID().uuidString
         let expectedError = Data4LifeSDKError.keyMissingInSerialization(key: "`x-total-count`")
 
@@ -546,7 +546,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testFailBuildingPramsMissingTek() {
+    func testFailBuildingParamsMissingTek() {
         let userId = UUID().uuidString
         cryptoService.tek = nil
         let expectedError = Data4LifeSDKError.notLoggedIn
@@ -570,7 +570,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadRecordMissingTek() {
+    func testFailUploadFhirStu3RecordMissingTek() {
         let userId = UUID().uuidString
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
@@ -593,7 +593,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadRecordMissingCommonKey() {
+    func testFailUploadFhirStu3RecordMissingCommonKey() {
         let userId = UUID().uuidString
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
@@ -618,7 +618,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testFetchRecordsFailsUnsupportedVersion() {
+    func testFetchFhirStu3RecordsFailsUnsupportedVersion() {
         let userId = UUID().uuidString
 
         let document = FhirFactory.createStu3DocumentReferenceResource()
