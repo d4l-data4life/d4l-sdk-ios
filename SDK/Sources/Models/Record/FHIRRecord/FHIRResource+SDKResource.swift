@@ -16,17 +16,33 @@
 import Foundation
 import ModelsR4
 
-protocol FhirSDKResource: AnyFhirResource, SDKResource {
-    var fhirIdentifier: String? { get set }
+protocol SDKResource: ModelVersionInformation, Codable {
+    static var searchTags: [String: String] { get }
 }
 
-extension FhirStu3Resource: FhirSDKResource {
+protocol FhirSDKResource: AnyFhirResource, SDKResource {
+    var fhirIdentifier: String? { get set }
+    static var fhirVersion: String { get }
+    static var resourceTypeString: String { get }
+    static var baseResourceTypeString: String { get }
+}
+
+extension FhirSDKResource {
     static var searchTags: [String : String] {
-        var tags = [TaggingService.Keys.resourceType.rawValue: Self.resourceType]
+        var tags = [String: String]()
+        if Self.resourceTypeString != baseResourceTypeString {
+            tags[TaggingService.Keys.resourceType.rawValue] = Self.resourceTypeString
+        }
         tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         tags.lowercased()
         return tags
     }
+}
+
+extension FhirStu3Resource: FhirSDKResource {
+
+    static var baseResourceTypeString: String { FhirStu3Resource.resourceType }
+    static var resourceTypeString: String { Self.resourceType }
 
     var fhirIdentifier: String? {
         get { id }
@@ -35,12 +51,9 @@ extension FhirStu3Resource: FhirSDKResource {
 }
 
 extension FhirR4Resource: FhirSDKResource {
-    static var searchTags: [String : String] {
-        var tags = [TaggingService.Keys.resourceType.rawValue: Self.resourceType.rawValue]
-        tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
-        tags.lowercased()
-        return tags
-    }
+
+    static var baseResourceTypeString: String { FhirR4Resource.resourceType.rawValue }
+    static var resourceTypeString: String { Self.resourceType.rawValue }
 
     var fhirIdentifier: String? {
         get { id?.value?.string }

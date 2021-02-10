@@ -32,7 +32,3 @@ extension SDKRecord {
                   annotations: decryptedRecord.annotations)
     }
 }
-
-protocol SDKResource: ModelVersionInformation, Codable {
-    static var searchTags: [String: String] { get }
-}

@@ -23,6 +23,8 @@ class DocumentListTableViewController: UITableViewController {
     @IBOutlet private var leftBarButton: UIBarButtonItem!
     @IBOutlet private var searchButton: UIBarButtonItem!
     @IBOutlet private var headerView: UIView!
+    @IBOutlet private var footerView: UIView!
+    @IBOutlet private var countsLabel: UILabel!
 
     private var documentVersionToBeAdded: DocumentVersion?
 
@@ -66,9 +68,11 @@ class DocumentListTableViewController: UITableViewController {
         leftBarButton.title = userSessionActive ? "Log out" : "Login"
         searchButton.isEnabled = userSessionActive
         tableView.tableHeaderView = userSessionActive ? nil : headerView
+        tableView.tableFooterView = userSessionActive ? footerView : nil
     }
 
     func updateTableView() {
+        countsLabel.text = interactor.countDescription
         refreshControl?.endRefreshing()
         tableView.reloadData()
     }
