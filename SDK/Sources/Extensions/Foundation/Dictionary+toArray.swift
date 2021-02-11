@@ -16,7 +16,7 @@
 import Foundation
 
 extension Dictionary where Key == String, Value == String {
-    func toKeyValueStringArray(separatedBy separator: Character = "=", usingPercentEncoding: Bool = true) -> [String] {
+    func formattedKeyValuePairs(separatedBy separator: Character = "=", usingPercentEncoding: Bool = true) -> [String] {
         return self.compactMap { String.formatKeyValuePair(key: $0, value: $1, usingPercentEncoding: usingPercentEncoding) }
     }
 }
