@@ -234,7 +234,7 @@ extension RecordServiceTests {
                                                                                          offset: 0)
          searchRecords.then { records in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(records.count, 1)
+                XCTAssertEqual(records.count, 1 * 2)
             XCTAssertEqual(record.resource, appData)
         }
 
@@ -280,7 +280,7 @@ extension RecordServiceTests {
         recordService.countRecords(userId: userId, resourceType: Data.self)
             .then { count in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(count, recordCount)
+                XCTAssertEqual(count, recordCount * 2)
         }
 
         waitForExpectations(timeout: 5)

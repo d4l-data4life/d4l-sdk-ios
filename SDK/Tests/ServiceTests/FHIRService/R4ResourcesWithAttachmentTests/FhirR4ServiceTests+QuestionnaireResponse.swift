@@ -21,7 +21,6 @@ import Data4LifeCrypto
 import ModelsR4
 import Then
 
-// swiftlint:disable identifier_name
 class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
 
     var recordService: RecordServiceMock<ModelsR4.QuestionnaireResponse, DecryptedFhirR4Record<ModelsR4.QuestionnaireResponse>>!

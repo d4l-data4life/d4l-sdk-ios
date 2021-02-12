@@ -58,7 +58,7 @@ class EncryptedRecordTests: XCTestCase {
         let expectedError = Data4LifeSDKError.missingCommonKey
 
         cryptoService.tek = KeyFactory.createKey()
-        cryptoService.decryptValuesResult = record.tags.toKeyValueStringArray()
+        cryptoService.decryptValuesResult = record.tags.formattedKeyValuePairs()
 
         commonKeyService.fetchKeyResult = Async.reject(expectedError)
 
@@ -84,7 +84,7 @@ class EncryptedRecordTests: XCTestCase {
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
 
         commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
-        cryptoService.decryptValuesResult = record.tags.toKeyValueStringArray()
+        cryptoService.decryptValuesResult = record.tags.formattedKeyValuePairs()
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "Should fail decrypting record")
@@ -117,7 +117,7 @@ class EncryptedRecordTests: XCTestCase {
         commonKeyService.fetchKeyResult = Promise.resolve(KeyFactory.createKey())
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = record.tags.toKeyValueStringArray()
+        let decryptedTags = record.tags.formattedKeyValuePairs()
 
         cryptoService.decryptDataResult = decryptedDataKey
         cryptoService.decryptValuesResult = decryptedTags
@@ -171,7 +171,7 @@ class EncryptedRecordTests: XCTestCase {
         cryptoService.tek = KeyFactory.createKey()
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = record.tags.toKeyValueStringArray()
+        let decryptedTags = record.tags.formattedKeyValuePairs()
 
         let encryptedResourceData = Data(base64Encoded: encryptedRecord.encryptedBody)!
         let decryptedResourceData: Data = try! JSONEncoder().encode(record.resource)

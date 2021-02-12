@@ -33,7 +33,9 @@ protocol RecordServiceType {
                                            attachmentKey: Key?,
                                            decryptedRecordType: DR.Type) -> Async<DR>
     func deleteRecord(recordId: String, userId: String) -> Async<Void>
-    func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String]) -> Async<Int>
+    func countRecords<R: SDKResource>(userId: String,
+                                      resourceType: R.Type,
+                                      annotations: [String]) -> Async<Int>
     func searchRecords<DR: DecryptedRecord>(for userId: String,
                                             from startDate: Date?,
                                             to endDate: Date?,
@@ -140,12 +142,53 @@ struct RecordService: RecordServiceType {
                                             annotations: [String] = [],
                                             decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
         return async {
+            let decryptedRecordsWithPercentEncodedTags = try await(searchRecords(for: userId,
+                                                                       from: startDate,
+                                                                       to: endDate,
+                                                                       pageSize: pageSize,
+                                                                       offset: offset,
+                                                                       annotations: annotations,
+                                                                       usingPercentEncodedTags: true,
+                                                                       decryptedRecordType: decryptedRecordType))
+            let decryptedRecordsWithNonPercentEncodedTags = try await(searchRecords(for: userId,
+                                                                                    from: startDate,
+                                                                                    to: endDate,
+                                                                                    pageSize: pageSize,
+                                                                                    offset: offset,
+                                                                                    annotations: annotations,
+                                                                                    usingPercentEncodedTags: false,
+                                                                                    decryptedRecordType: decryptedRecordType))
+            return decryptedRecordsWithPercentEncodedTags + decryptedRecordsWithNonPercentEncodedTags
+        }
+    }
+
+    func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
+        return async {
+            let countPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
+            let countNonPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: false))
+            return countPercentEncoded + countNonPercentEncoded
+        }
+    }
+}
+
+private extension RecordService {
+
+    func searchRecords<DR: DecryptedRecord>(for userId: String,
+                                            from startDate: Date?,
+                                            to endDate: Date?,
+                                            pageSize: Int?,
+                                            offset: Int?,
+                                            annotations: [String] = [],
+                                            usingPercentEncodedTags: Bool,
+                                            decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
+        return async {
             let tagGroup = try await(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
             let params = try await(self.buildParameters(from: startDate,
-                                                        to: endDate,
-                                                        offset: offset,
-                                                        pageSize: pageSize,
-                                                        tagGroup: tagGroup))
+                                                                      to: endDate,
+                                                                      offset: offset,
+                                                                      pageSize: pageSize,
+                                                                      tagGroup: tagGroup,
+                                                                      usingPercentEncodedTags: usingPercentEncodedTags))
 
             let route = Router.searchRecords(userId: userId, parameters: params)
             let encryptedRecords: [EncryptedRecord] = try await(
@@ -163,23 +206,23 @@ struct RecordService: RecordServiceType {
         }
     }
 
-    func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
+    func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String], usingPercentEncoding: Bool) -> Async<Int> {
         return async {
             let tagGroup = try await(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
-            let params = try await(self.buildParameters(tagGroup: tagGroup))
+            let params = try await(self.buildParameters(tagGroup: tagGroup, usingPercentEncodedTags: usingPercentEncoding))
             let route = Router.countRecords(userId: userId, parameters: params)
             let headers = try await(self.sessionService.request(route: route).responseHeaders())
 
-            guard let countString = headers["x-total-count"] as? String, let count = Int(countString) else {
+            guard
+                let countString = headers["x-total-count"] as? String,
+                let count = Int(countString) else {
                 throw Data4LifeSDKError.keyMissingInSerialization(key: "`x-total-count`")
             }
 
             return count
         }
     }
-}
 
-private extension RecordService {
     func uploadRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
                                            userId: String,
                                            dataKey: Key,
@@ -247,14 +290,15 @@ private extension RecordService {
                          to endDate: Date? = nil,
                          offset: Int? = nil,
                          pageSize: Int? = nil,
-                         tagGroup: TagGroup) throws -> Async<Parameters> {
+                         tagGroup: TagGroup,
+                         usingPercentEncodedTags: Bool) throws -> Async<Parameters> {
         return async {
             var parameters: Parameters = [:]
             guard let tek = self.cryptoService.tek else {
                 throw Data4LifeSDKError.notLoggedIn
             }
 
-            let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(), key: tek)
+            let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(percentEncoding: usingPercentEncodedTags), key: tek)
 
             if let startDate = startDate {
                 parameters["start_date"] = startDate.yyyyMmDdFormattedString()

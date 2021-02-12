@@ -55,6 +55,9 @@ identifier_name:
   min_length: # only min_length
     warning: 2
     error: 1 # only error
+  max_length:
+    warning: 45
+    error: 50
   excluded: # excluded via string array
     - id
     - URL

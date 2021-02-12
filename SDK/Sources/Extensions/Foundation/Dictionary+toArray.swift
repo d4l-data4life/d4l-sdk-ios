@@ -16,19 +16,25 @@
 import Foundation
 
 extension Dictionary where Key == String, Value == String {
-    func toKeyValueStringArray(separatedBy separator: Character = "=") -> [String] {
-        return self.compactMap { String.makePercentEncodedKeyValuePair(key: $0, value: $1) }
+    func formattedKeyValuePairs(separatedBy separator: Character = "=", usingPercentEncoding: Bool = true) -> [String] {
+        return self.compactMap { String.formatKeyValuePair(key: $0, value: $1, usingPercentEncoding: usingPercentEncoding) }
     }
 }
 
 extension String {
-    static func makePercentEncodedKeyValuePair(key: String, value: String, separatedBy separator: Character = "=") -> String? {
-        guard let escapedKey = key.trimmingCharacters(in: .whitespacesAndNewlines)
-                .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased(),
-              let escapedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                .addingPercentEncoding(withAllowedCharacters: .alphanumerics)?.lowercased() else {
-            return nil
+    static func formatKeyValuePair(key: String, value: String, separatedBy separator: Character = "=", usingPercentEncoding: Bool) -> String? {
+
+        let trimmedKey = key.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if usingPercentEncoding {
+            guard let escapedKey = trimmedKey.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+                  let escapedValue = trimmedValue.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
+                return nil
+            }
+            return "\(escapedKey.lowercased())\(separator)\(escapedValue.lowercased())"
+        } else {
+            return "\(trimmedKey.lowercased())\(separator)\(trimmedValue.lowercased())"
         }
-        return "\(escapedKey)\(separator)\(escapedValue)"
     }
 }

@@ -42,12 +42,12 @@ struct TagGroup: Equatable {
         self.annotations = annotationsList
     }
 
-    func asParameters(separatedBy separator: Character = "=") throws -> [String] {
+    func asParameters(separatedBy separator: Character = "=", percentEncoding: Bool = true) throws -> [String] {
         try validateAnnotations()
         let formattedAnnotations: [String] = annotations.compactMap {
-            String.makePercentEncodedKeyValuePair(key: TaggingService.Keys.custom.rawValue, value: $0)
+            String.formatKeyValuePair(key: TaggingService.Keys.custom.rawValue, value: $0, usingPercentEncoding: percentEncoding)
         }
-        return tags.toKeyValueStringArray(separatedBy: separator) + formattedAnnotations
+        return tags.formattedKeyValuePairs(separatedBy: separator, usingPercentEncoding: percentEncoding) + formattedAnnotations
     }
 
     private func validateAnnotations() throws {
