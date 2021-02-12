@@ -1,7 +1,7 @@
 # Data4LifeSDK for iOS
 Pure Swift API client for HealthCloud that automatically handles encryption
 
-[![CocoaPods Compatible](https://img.shields.io/badge/pod-v1.12.0-blue.svg)](https://github.com/CocoaPods/CocoaPods)
+[![CocoaPods Compatible](https://img.shields.io/badge/pod-v1.12.1-blue.svg)](https://github.com/CocoaPods/CocoaPods)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/badge/license-PRIVATE-blue.svg)](https://github.com/d4l-data4life/d4l-sdk-ios/blob/main/LICENSE)
 
