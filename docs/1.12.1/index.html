@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="application-name" content="data4life">
+<meta name="description" content="PHDP SDK Reference documentation">
+<meta name="keywords" content="SDK iOS Swift FHIR">
+<meta name="author" content="&#169; 2019 D4L data4life gGmbH. All rights reserved.">
+<title>PHDP SDK reference documentation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="styles/asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>PHDP SDK reference documentation</h1>
+<div class="details">
+<span id="author" class="author">&#169; 2019 D4L data4life gGmbH. All rights reserved.</span><br>
+<span id="revnumber">version 1.12.1</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_using_the_ios_sdk">Using the iOS SDK</a>
+<ul class="sectlevel3">
+<li><a href="#_updating_and_validating_versions">Updating and validating versions</a></li>
+<li><a href="#_software_requirements">Software requirements</a></li>
+<li><a href="#_installing_dependency_managers">Installing dependency managers</a>
+<ul class="sectlevel3">
+<li><a href="#_carthage">Carthage</a></li>
+<li><a href="#_cocoapods">CocoaPods</a></li>
+<li><a href="#_dependencies_of_the_sdk">Dependencies of the SDK</a></li>
+</ul>
+</li>
+<li><a href="#_setting_up_the_sdk">Setting up the SDK</a></li>
+</ul>
+</li>
+<li><a href="#_the_ios_sdk_and_the_personal_health_data_platform">The iOS SDK and the Personal Health Data Platform</a>
+<ul class="sectlevel2">
+<li><a href="#_encrypting_and_decrypting_your_data">Encrypting and decrypting your data</a></li>
+<li><a href="#_providing_local_data_storage_and_encryption">Providing local data storage and encryption</a></li>
+</ul>
+</li>
+<li><a href="#_about_data_models">About data models</a>
+<ul class="sectlevel2">
+<li><a href="#_the_fhirrecord_data_model">The FHIRRecord data model</a></li>
+<li><a href="#_the_appdatarecord_data_model">The AppDataRecord data model</a></li>
+<li><a href="#_the_metadata_data_model">The Metadata data model</a></li>
+</ul>
+</li>
+<li><a href="#_about_the_data4life_api">About the data4life API</a>
+<ul class="sectlevel2">
+<li><a href="#_authentication_and_authorization">Authentication and authorization</a>
+<ul class="sectlevel3">
+<li><a href="#_displaying_the_login_screen">Displaying the login screen</a></li>
+<li><a href="#_displaying_the_login_screen_with_custom_oauth_2_0_scopes">Displaying the login screen with custom OAuth 2.0 scopes</a></li>
+<li><a href="#_using_additional_parameters_for_the_login">Using additional parameters for the login</a></li>
+<li><a href="#_logging_out_users">Logging out users</a></li>
+<li><a href="#_checking_if_a_user_is_logged_in">Checking if a user is logged in</a></li>
+<li><a href="#_receiving_updates_about_the_session_state">Receiving updates about the session state</a></li>
+</ul>
+</li>
+<li><a href="#_using_debug_logging">Using debug logging</a></li>
+<li><a href="#_handling_response_threads">Handling response threads</a></li>
+<li><a href="#_managing_records">Managing records</a>
+<ul class="sectlevel4">
+<li><a href="#_use_of_annotations">Use of annotations</a></li>
+<li><a href="#_creating_a_new_fhir_record">Creating a new FHIR record</a></li>
+<li><a href="#_creating_new_fhir_records">Creating new FHIR records</a></li>
+<li><a href="#_fetching_a_fhir_record_by_its_id">Fetching a FHIR record by its ID</a></li>
+<li><a href="#_fetching_multiple_fhir_records_with_ids">Fetching multiple FHIR records with IDs</a></li>
+<li><a href="#_updating_a_fhir_record">Updating a FHIR record</a></li>
+<li><a href="#_updating_several_fhir_records">Updating several FHIR records</a></li>
+<li><a href="#_deleting_a_fhir_record_by_its_id">Deleting a FHIR record by its ID</a></li>
+<li><a href="#_deleting_multiple_fhir_records_by_their_ids">Deleting multiple FHIR records by their IDs</a></li>
+<li><a href="#_counting_fhir_records">Counting FHIR records</a></li>
+<li><a href="#_creating_a_new_appdata_record">Creating a new AppData record</a></li>
+<li><a href="#_fetching_an_appdata_record_by_its_id">Fetching an AppData record by its ID</a></li>
+<li><a href="#_updating_an_appdata_record">Updating an AppData record</a></li>
+<li><a href="#_deleting_an_appdata_record_by_its_id">Deleting an AppData record by its ID</a></li>
+<li><a href="#_counting_appdata_records">Counting AppData records</a></li>
+</ul>
+</li>
+<li><a href="#_managing_resources_with_attachments">Managing resources with attachments</a>
+<ul class="sectlevel3">
+<li><a href="#_downloading_all_resources_attachments_with_their_data_payloads">Downloading all resource&#8217;s attachments with their data payloads</a></li>
+<li><a href="#_downloading_multiple_resource_records_and_all_their_attachments_with_their_data_payloads">Downloading multiple resource records and all their attachments with their data payloads</a></li>
+</ul>
+</li>
+<li><a href="#_handling_attachments">Handling attachments</a>
+<ul class="sectlevel3">
+<li><a href="#_downloading_attachment_data">Downloading attachment data</a></li>
+<li><a href="#_using_different_size_versions">Using different size versions</a></li>
+<li><a href="#_cancelling_the_request_in_progress">Cancelling the request in progress</a></li>
+<li><a href="#_observing_the_download_progress">Observing the download progress</a></li>
+<li><a href="#_downloading_a_single_attachment_with_data_payload">Downloading a single attachment with data payload</a></li>
+<li><a href="#_downloading_a_list_of_attachments_with_data_payloads">Downloading a list of attachments with data payloads</a></li>
+</ul>
+</li>
+<li><a href="#_storing_custom_identifiers">Storing custom identifiers</a></li>
+</ul>
+</li>
+<li><a href="#_copyright_and_license">Appendix A: Copyright and license</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document covers the iOS SDK project for the Personal Health Data Platform.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_the_ios_sdk">Using the iOS SDK</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As part of our integration efforts with our partners, data4life provides SDKs for the following platforms:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>iOS (Swift)</p>
+</li>
+<li>
+<p>Android (Java)</p>
+</li>
+<li>
+<p>Web (JavaScript)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The data4life SDKs encapsulate different aspects of communication with the backend servers of the data4life Personal Health Data Platform.
+The SDKs let integration partners store sensitive health data on our secure platform.
+The SDKs also enable sharing the data with authorized parties and other applications in an easy and secure way.</p>
+</div>
+<div class="sect3">
+<h4 id="_updating_and_validating_versions">Updating and validating versions</h4>
+<div class="paragraph">
+<p>Data4Life can deprecate or unsupport old SDK versions that aren&#8217;t anymore secure or stay occassioning bugs. In that case the user will get notifications from the SDK:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If the current version is <strong>deprecated</strong>, the user will get a notification in the console asking to update to a more recent version from the SDK. The SDK will still be able to be runned and used.</p>
+</li>
+<li>
+<p>If the current version is <strong>unsupported</strong>, the user will get an error by using the SDK and will need to update to a new version in order to continue using the SDK.</p>
+</li>
+<li>
+<p>If for some reason the version validation can&#8217;t happen, the user will get a notification in the console warning that the current version validation is <strong>unknown</strong>. The SDK will still work, but it might crash.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_software_requirements">Software requirements</h3>
+<div class="paragraph">
+<p>The iOS SDK has the following software requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Xcode 12 or later</p>
+</li>
+<li>
+<p>iOS 12.0 or later</p>
+</li>
+<li>
+<p>Swift 5.3 or later</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_dependency_managers">Installing dependency managers</h3>
+<div class="paragraph">
+<p>This section describes how you get the SDK up and running.
+Use the following for dependency management for the iOS SDK:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Carthage</strong> is a dependency manager written in Swift.
+It builds your dependencies and provides you with binary frameworks while you retain control over your project structure and setup.</p>
+</li>
+<li>
+<p><strong>CocoaPods</strong> is a dependency manager for Swift and Objective-C Cocoa projects.
+The file with the specification that describes the dependencies of the targets of one or more Xcode projects is called <code>Podfile</code>.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_carthage">Carthage</h4>
+<div class="paragraph">
+<p>To install Carthage, use the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>github "d4l-data4life/d4l-sdk-ios"</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The SDK has a few <a href="#_dependencies_of_the_sdk">dependencies</a>.
+You must add them and link them manually with <span class="icon"><i class="fa fa-external-link"></i></span> <a href="https://github.com/Carthage/Carthage#nested-dependencies">your project</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cocoapods">CocoaPods</h4>
+<div class="paragraph">
+<p>To add a private CocoaPods specs repository to the <code>Podfile</code>, use the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="ruby">source 'https://github.com/d4l-data4life/d4l-cocoapods-specs.git'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To add the framework to the <code>Podfile</code>, use the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="ruby">pod 'Data4LifeSDK'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more info, see <span class="icon"><i class="fa fa-eye"></i></span> the <a href="https://github.com/d4l-data4life/d4l-cocoapods-specs/blob/master/README.md">CocoaPods specs repository</a> readme file.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dependencies_of_the_sdk">Dependencies of the SDK</h4>
+<div class="paragraph">
+<p>The iOS SDK has the following dependencies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/Alamofire/Alamofire">Alamofire</a> <span class="icon"><i class="fa fa-external-link"></i></span> – HTTP networking library written in Swift</p>
+</li>
+<li>
+<p><a href="https://github.com/krzyzanowskim/CryptoSwift">CryptoSwift</a> <span class="icon"><i class="fa fa-external-link"></i></span> – collection of cryptographic algorithms implemented in Swift</p>
+</li>
+<li>
+<p><a href="https://github.com/freshOS/then">then</a> <span class="icon"><i class="fa fa-external-link"></i></span> – Promises library for Swift</p>
+</li>
+<li>
+<p><a href="https://github.com/openid/AppAuth-iOS">AppAuth</a> <span class="icon"><i class="fa fa-external-link"></i></span> – iOS and macOS SDK for communicating with OAuth 2.0 and OpenID Connect providers</p>
+</li>
+<li>
+<p><a href="https://github.com/SVProgressHUD/SVProgressHUD">SVProgressHUD</a> <span class="icon"><i class="fa fa-external-link"></i></span> – progress head-up display (HUD) to display the progress of an ongoing task</p>
+</li>
+<li>
+<p><a href="https://github.com/d4l-data4life/d4l-fhir-ios">Data4LifeFHIR</a> <span class="icon"><i class="fa fa-external-link"></i></span> – data4life minimal FHIR standard models and data types for iOS</p>
+</li>
+<li>
+<p><a href="https://github.com/d4l-data4life/d4l-utils-ios">Data4LifeSDKUtils</a> <span class="icon"><i class="fa fa-external-link"></i></span> – data4life Set of private utils used in data4Life Frameworks</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_the_sdk">Setting up the SDK</h3>
+<div class="paragraph">
+<p>To set up the iOS SDK, follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure the client information</p>
+</li>
+<li>
+<p>Handle the OAuth 2.0 redirect URL</p>
+</li>
+<li>
+<p>Display the login screen</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This section describes the steps in more detail.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="1">
+<li>
+<p>Prepare the SDK for use by configuring the client information.
+This must be the first SDK call or the client crashes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">import UIKit
+import Data4LifeSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -&gt; Bool {
+
+    let clientId = "client-id#ios"
+    let secret = "secret"
+    let redirectURLString = "app://oauth"
+    let environment = .staging
+    Data4LifeClient.configureWith(clientId: clientId,
+                                  clientSecret: secret,
+                                  redirectURLString: redirectURLString,
+                                  environment: environment)
+
+    return true
+  }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Handle the OAuth 2.0 redirect URL in the <code>AppDelegate</code> class.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">import UIKit
+import Data4LifeSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -&gt; Bool {
+
+    Data4LifeClient.default.handle(url: url)
+
+    return true
+  }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Display the login screen.
+Afterwards, you can use it throughout the app with the default client by providing a view controller to present.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">let viewController = UIApplication.shared.keyWindow?.rootViewController
+Data4LifeClient.default.presentLogin(on: viewController, animated: true) { result in
+    switch result {
+    case .success:
+        // Handle success
+    case .failure(let error):
+        // Handle error
+    }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Optional: To use the SDK inside extensions, provide the <code>keychainGroupId</code> identifier when you configure the SDK and enable the <code>KeychainSharing</code> capability in the Xcode project.
+The SDK also requires the <code>AppGroups</code> capability with the same setup.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -&gt; Bool {
+
+    let clientId = "client-id#ios"
+    let secret = "secret"
+    let redirectURLString = "app://oauth"
+    let environment = .staging
+    let teamId = "TEAMDID"
+    let groupId = "Group1"
+    let keychainGroupId = "\(teamId).\(groupId)"
+    let appGroupId= "group.unique.id"
+
+    Data4LifeClient.configureWith(clientId: clientId,
+                              clientSecret: secret,
+                              redirectURLString: redirectURLString,
+                              environment: .staging,
+                              keychainGroupId: keychainGroupId,
+                              appGroupId: appGroupId,
+                              environment: environment)
+
+    return true
+  }</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_ios_sdk_and_the_personal_health_data_platform">The iOS SDK and the Personal Health Data Platform</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section gives an overview of how you manage data with the data4life Personal Health Data Platform (PHDP).</p>
+</div>
+<div class="sect2">
+<h3 id="_encrypting_and_decrypting_your_data">Encrypting and decrypting your data</h3>
+<div class="paragraph">
+<p>The data4life SDK automatically handles data encryption.
+The data4life Personal Health Data Platform uses a privacy by design approach, optimizing for the strictest possible privacy-preserving settings.
+As an integrator, only you have access to the data that your application sends to the platform.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Client-side encryption lays in the hands of the integrator application, so you are responsible for providing a proper <a href="#Providing local data storage">storage</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_providing_local_data_storage_and_encryption">Providing local data storage and encryption</h3>
+<div class="paragraph">
+<p>data4life doesn&#8217;t offer any client-side data storage solution. You can use the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><span class="icon"><i class="fa fa-external-link"></i></span> <a href="http://realm.io">Realm</a>  as an encrypted database</p>
+</li>
+<li>
+<p><span class="icon"><i class="fa fa-external-link"></i></span> <a href="https://github.com/krzyzanowskim/CryptoSwift">CryptoSwift</a> for general-purpose encryption</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Save the cryptographic keys to the Keychain on the phone of the user.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_data_models">About data models</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section gives you an overview of data models used by the iOS SDK.
+The smallest unit of data that can be stored and referenced by the data4life platform is called a <em>record</em>. A record contains the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Payload</strong> of either medical data in the form of an encrypted FHIR resource (Fast Healthcare Interoperability Resources) or generic data</p>
+</li>
+<li>
+<p><strong>Metadata</strong> that&#8217;s needed to properly associate a record with a user</p>
+</li>
+<li>
+<p><strong>Annotations</strong> Custom tags saved as strings that the user can use in order to filter or identify the existing resources. These cannot contain empty strings, and uppercased characters will be always lowercased, due to some internal functionality, so it&#8217;s recommended to use lowercased ones.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A record can contain:
+1) anything that can be modeled by a FHIR (STU3 or R4) resource. From a single vital sign measurement, such as body temperature, to a complex document linking to or containing multiple attachments and measuring many megabytes in size.
+2) Generic Data (called App Data)</p>
+</div>
+<div class="paragraph">
+<p>For these two cases we have two types of <em>records</em>:</p>
+</div>
+<div class="sect2">
+<h3 id="_the_fhirrecord_data_model">The FHIRRecord data model</h3>
+<div class="paragraph">
+<p>The <code>FhirRecord</code> data model holds resource, metadata and additional metadata. <code>AnyFhirResource</code> is a protocol restricted to <code>Data4LifeFHIR.DomainResource</code> or <code>ModelsR4.DomainResource</code> type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">struct FhirRecord&lt;R: AnyFhirResource&gt; {
+    public var id: String
+    public var fhirResource: R
+    public var metadata: Metadata
+    public var annotations: [String]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_appdatarecord_data_model">The AppDataRecord data model</h3>
+<div class="paragraph">
+<p>The <code>AppDataRecord</code> data model like the FHIR one holds resource, metadata and additional metadata.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">struct AppDataRecord {
+    public var id: String
+    public var data: Data
+    public var metadata: Metadata
+    public var annotations: [String]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_metadata_data_model">The Metadata data model</h3>
+<div class="paragraph">
+<p>The <code>Metadata</code> data model holds read-only information about records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">struct Metadata {
+    var updatedDate: Date
+    var createdDate: Date
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_the_data4life_api">About the data4life API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section gives you an overview of the data4life API.
+The SDK handles all communication with the backend servers.
+This abstracts away much of the know-how needed to communicate with the servers and exposes a number of lean custom models.
+Integration partners and developers can rely on these models and the exposed methods to interact with the data4life Personal Health Data Platform.</p>
+</div>
+<div class="paragraph">
+<p>Only logged-in users can run queries and perform actions.
+When a request is made without a valid access token and a refresh token, the SDK throws an <code>unauthorized</code> exception.</p>
+</div>
+<div class="sect2">
+<h3 id="_authentication_and_authorization">Authentication and authorization</h3>
+<div class="paragraph">
+<p>This section covers the authorization project features of the SDK.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Authentication</strong> is the process of verifying who users are.</p>
+</li>
+<li>
+<p><strong>Authorization</strong> is the process of verifying what users have access to.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The SDK automatically handles all authentication and user management tasks. The user login is managed by the data4life auth app to ensure the safety of the user’s credentials. When the <code>login</code> functionality is invoked, the SDK opens a web view with the necessary pages. Or redirects in the case of a web-based app.</p>
+</div>
+<div class="sect3">
+<h4 id="_displaying_the_login_screen">Displaying the login screen</h4>
+<div class="paragraph">
+<p>To display the login screen to users.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">Data4LifeClient.default.presentLogin(on: self, animated: true) { result in
+    switch result {
+    case .success:
+        // Handle result
+    case .failure(let error):
+        // Handle error
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_displaying_the_login_screen_with_custom_oauth_2_0_scopes">Displaying the login screen with custom OAuth 2.0 scopes</h4>
+<div class="paragraph">
+<p>Scopes are a mechanism in the OAuth 2.0 protocol to limit an application&#8217;s access to a user account.
+The scope information is displayed to the user in the login screen.</p>
+</div>
+<div class="paragraph">
+<p>To display the login screen with additional scopes to users, use the <code>presentLogin</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">let scopes = ["example", "scope"]
+Data4LifeClient.default.presentLogin(on: self, animated: true, scopes: scopes) { result in
+    switch result {
+    case .success:
+        // Handle result
+    case .failure(let error):
+        // Handle error
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_additional_parameters_for_the_login">Using additional parameters for the login</h4>
+<div class="paragraph">
+<p>To display the login screen with additional parameters, for example, with the <code>loginCompletion</code> callback, use the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func presentLogin(on viewController: UIViewController, animated: Bool, scopes: [String]? = nil, presentationCompletion: (() -&gt; Void)? = nil, loginCompletion: @escaping DefaultResultBlock)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_logging_out_users">Logging out users</h4>
+<div class="paragraph">
+<p>To log the currently logged-in user out of the current session, use the <code>logout</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func logout(completion: @escaping DefaultResultBlock)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_checking_if_a_user_is_logged_in">Checking if a user is logged in</h4>
+<div class="paragraph">
+<p>To check if a user is logged in, use the <code>userLoggedIn</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func userLoggedIn(_ completion: @escaping DefaultResultBlock)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_receiving_updates_about_the_session_state">Receiving updates about the session state</h4>
+<div class="paragraph">
+<p>To receive updates about the session state, use the <code>sessionStateDidChange</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func sessionStateDidChange(completion: @escaping (Bool) -&gt; Void)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_debug_logging">Using debug logging</h3>
+<div class="paragraph">
+<p>The SDK supports logging to console for debug configurations.
+It is disabled by default. To enable it, set the <code>isLoggingEnabled</code> flag on the client to <code>true</code>.
+However, release configuration is always silent.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">Data4LifeClient.default.isLoggingEnabled = true</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_handling_response_threads">Handling response threads</h3>
+<div class="paragraph">
+<p>All SDK calls accept <code>DispatchQueue</code> as a parameter.
+The defined queue is used to return results, the <code>main</code> queue is the default.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">let queue = DispatchQueue.global(qos: .background)
+Data4LifeClient.default.creteRecord(document, queue: queue) { result in
+    // Handle result
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_managing_records">Managing records</h3>
+<div class="paragraph">
+<p>The following sections describe how you perform queries and other actions for documents and records.</p>
+</div>
+<div class="sect4">
+<h5 id="_use_of_annotations">Use of annotations</h5>
+<div class="paragraph">
+<p>The <code>create</code>, <code>update</code>, <code>search</code> and <code>count</code> methods can optionally use <code>annotations</code> as a parameter.
+This parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the <code>search</code> and <code>count</code> methods.
+These annotations cannot contain empty strings, and uppercased characters will be always lowercased, due to some internal functionality, so it&#8217;s recommended to use lowercased ones.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_creating_a_new_fhir_record">Creating a new FHIR record</h4>
+<div class="paragraph">
+<p>To create a new record, use the <code>createFhirStu3Record</code> or <code>createFhirR4Record</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func createFhirStu3Record&lt;R: FhirStu3Resource&gt;(_ resource: R,
+    annotations: [String]? = nil,
+    completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func createFhirR4Record&lt;R: FhirR4Resource&gt;(_ resource: R,
+    annotations: [String]? = nil,
+    completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_creating_new_fhir_records">Creating new FHIR records</h4>
+<div class="paragraph">
+<p>To create several new records, use the <code>createFhirStu3Records</code> or <code>createFhirR4Records</code> method. The annotations will be added to all the created records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func createFhirStu3Records&lt;R: FhirStu3Resource&gt;(_ resources: [R], annotations: [String] = [], completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, R&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func createFhirR4Records&lt;R: FhirR4Resource&gt;(_ resources: [R], annotations: [String] = [], completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetching_a_fhir_record_by_its_id">Fetching a FHIR record by its ID</h4>
+<div class="paragraph">
+<p>To fetch records for the given ID, use the <code>fetchFhirStu3Record</code> or <code>fetchFhirR4Record</code> method with the <code>identifier</code> parameter of the record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func fetchFhirStu3Record&lt;R: FhirStu3Resource&gt;(withId identifier: String, of type: R.Type = R.self, completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func fetchFhirR4Record&lt;R: FhirR4Resource&gt;(withId identifier: String, of type: R.Type = R.self, completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetching_multiple_fhir_records_with_ids">Fetching multiple FHIR records with IDs</h4>
+<div class="paragraph">
+<p>To fetch one or more records for the given IDs, use the <code>fetchFhirStu3Records</code> or <code>fetchFhirR4Records</code> method with the <code>identifiers</code> parameters of the records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func fetchFhirStu3Records&lt;R: FhirStu3Resource&gt;(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, String&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func fetchFhirR4Records&lt;R: FhirR4Resource&gt;(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, String&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updating_a_fhir_record">Updating a FHIR record</h4>
+<div class="paragraph">
+<p>To update a record, use the <code>updateFhirStu3Record</code> or <code>updateFhirR4Record</code> method.
+If annotations are set to nil, existing annotations won&#8217;t change, otherwise they will override existing ones. If you only need to append new annotations, pass them as a parameter including the old ones in order to maintain them.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">public func updateFhirStu3Record&lt;R: FhirStu3Resource&gt;(_ resource: R,
+    annotations: [String]? = nil,
+    queue: DispatchQueue = responseQueue, completion: @escaping
+    ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">public func updateFhirR4Record&lt;R: FhirR4Resource&gt;(_ resource: R,
+    annotations: [String]? = nil,
+    queue: DispatchQueue = responseQueue, completion: @escaping
+    ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updating_several_fhir_records">Updating several FHIR records</h4>
+<div class="paragraph">
+<p>To update several records, use the <code>updateFhirStu3Records</code> or <code>updateFhirR4Records</code> method. If annotations are set to nil, existing annotations won&#8217;t change, otherwise they will override existing ones for all updated records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func updateFhirStu3Records&lt;R: FhirStu3Resource&gt;(_ resources: [R], annotations: [String]? = nil, completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, R&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func updateFhirR4Records&lt;R: FhirR4Resource&gt;(_ resources: [R], annotations: [String]? = nil, completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deleting_a_fhir_record_by_its_id">Deleting a FHIR record by its ID</h4>
+<div class="paragraph">
+<p>To delete a record with its given ID, use the <code>deleteFhirStu3Record</code> or <code>deleteFhirR4Record</code> method with the <code>identifier</code> parameter of the record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func deleteFhirStu3Record(withId identifier: String, completion: @escaping ResultBlock&lt;Void&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func deleteFhirR4Record(withId identifier: String, completion: @escaping ResultBlock&lt;Void&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deleting_multiple_fhir_records_by_their_ids">Deleting multiple FHIR records by their IDs</h4>
+<div class="paragraph">
+<p>To delete multiple records with their given IDs, use the <code>deleteFhirStu3Records</code> or <code>deleteFhirR4Records</code> method with the <code>identifiers</code> parameters of the records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func deleteFhirStu3Records(withIds identifiers: [String], completion: @escaping ResultBlock&lt;BatchResult&lt;String, String&gt;&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func deleteFhirR4Records(withIds identifiers: [String], completion: @escaping ResultBlock&lt;BatchResult&lt;String, String&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_counting_fhir_records">Counting FHIR records</h4>
+<div class="paragraph">
+<p>To count the stored records per record type, use the <code>countFhirStu3Records</code> or <code>countFhirR4Records</code> method with the given <code>type</code> parameter.
+If you don&#8217;t provide a record type, the client returns the count of all available records of that Fhir Version.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func countFhirStu3Records&lt;R: FhirStu3Resource&gt;(of type: R.Type?,
+    annotations: [String] = [],
+    completion: @escaping ResultBlock&lt;Int&gt;)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func countFhirR4Records&lt;R: FhirR4Resource&gt;(of type: R.Type?,
+    annotations: [String] = [],
+    completion: @escaping ResultBlock&lt;Int&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_creating_a_new_appdata_record">Creating a new AppData record</h4>
+<div class="paragraph">
+<p>To create a new AppData record, use the <code>createAppDataRecord</code> method or the <code>createCodableAppDataRecord</code> method. The annotations parameter allows to tag records with custom information saved as a list of strings. Annotations can be filtered inside the <code>search</code> and <code>count</code> methods.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func createAppDataRecord(_ data: Data,
+                         annotations: [String] = []],
+                         queue: DispatchQueue = responseQueue,
+                         completion: @escaping ResultBlock&lt;AppDataRecord&gt;)
+
+func createCodableAppDataRecord&lt;D: Codable&gt;(_ codable: D,
+                                            annotations: [String] = [],
+                                            queue: DispatchQueue = responseQueue,
+                                            completion: @escaping ResultBlock&lt;AppDataRecord&gt;)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the codable version of the create is used, the <code>AppDataRecord</code> has a convenient function to get the resource back:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">extension AppDataRecord {
+    func getDecodableResource&lt;D: Decodable&gt;(of type: D.Type = D.self) throws -&gt; D
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fetching_an_appdata_record_by_its_id">Fetching an AppData record by its ID</h4>
+<div class="paragraph">
+<p>To fetch AppData records for the given ID, use the <code>fetchAppDataRecord</code> method with the <code>identifier</code> parameter of the record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func fetchAppDataRecord(withId identifier: String,
+                        queue: DispatchQueue = responseQueue,
+                        completion: @escaping ResultBlock&lt;AppDataRecord&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updating_an_appdata_record">Updating an AppData record</h4>
+<div class="paragraph">
+<p>To update an AppData record, use the <code>updateAppDataRecord</code> method or the <code>updateCodableAppDataRecord</code> method.
+If annotations are set to nil, existing annotations won&#8217;t change, otherwise they will override existing ones. If you only need to append new annotations, pass them as a parameter including the old ones in order to maintain them.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func updateAppDataRecord(_ data: Data,
+                         recordId: String,
+                         annotations: [String]? = nil,
+                         queue: DispatchQueue = responseQueue,
+                         completion: @escaping ResultBlock&lt;AppDataRecord&gt;)
+
+func updateCodableAppDataRecord&lt;D: Codable&gt;(_ codable: D,
+                                            recordId: String,
+                                            annotations: [String]? = nil,
+                                            queue: DispatchQueue = responseQueue,
+                                            completion: @escaping ResultBlock&lt;AppDataRecord&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deleting_an_appdata_record_by_its_id">Deleting an AppData record by its ID</h4>
+<div class="paragraph">
+<p>To delete an AppData record with its given ID, use the <code>deleteAppDataRecord</code> method with the <code>identifier</code> parameter of the record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">public func deleteAppDataRecord(withId identifier: String,
+                                queue: DispatchQueue = responseQueue,
+                                completion: @escaping ResultBlock&lt;Void&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_counting_appdata_records">Counting AppData records</h4>
+<div class="paragraph">
+<p>To count the stored AppData records, use the <code>countAppDataRecords</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func countAppDataRecords(annotations: [String] = [],
+                         queue: DispatchQueue = responseQueue,
+                         completion: @escaping ResultBlock&lt;Int&gt;)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_managing_resources_with_attachments">Managing resources with attachments</h3>
+<div class="paragraph">
+<p>In FHIR, some resources can index a document, clinical note, and other binary objects to make them available to a healthcare system. At the moment attachment which can contain attachment are:
+- <code>DocumentReference</code>
+- <code>DiagnosticReport</code>
+- <code>Medication</code>
+- <code>Practitioner</code>
+- <code>Patient</code>
+- <code>Observation</code> (including its component attachments)
+- <code>Questionnaire</code> (including its nested items attachments)
+- <code>QuestionnaireResponse</code> (including its nested items and answers attachments)</p>
+</div>
+<div class="sect3">
+<h4 id="_downloading_all_resources_attachments_with_their_data_payloads">Downloading all resource&#8217;s attachments with their data payloads</h4>
+<div class="paragraph">
+<p>If you want a record to be downloaded with its given ID and its attachments, use the <code>downloadStu3Record</code> method and the <code>identifier</code> parameter of the record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func downloadStu3Record&lt;R: FhirStu3Resource&gt;(withId identifier: String, completion: @escaping ResultBlock&lt;Record&lt;R&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_downloading_multiple_resource_records_and_all_their_attachments_with_their_data_payloads">Downloading multiple resource records and all their attachments with their data payloads</h4>
+<div class="paragraph">
+<p>If you want one or more records to be downloaded with their given IDs and their attachments, use the <code>downloadStu3Records</code> method and the <code>identifiers</code> parameters of the records.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func downloadStu3Records&lt;R: FhirStu3Resource&gt;(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock&lt;BatchResult&lt;Record&lt;R&gt;, String&gt;&gt;)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_handling_attachments">Handling attachments</h3>
+<div class="sect3">
+<h4 id="_downloading_attachment_data">Downloading attachment data</h4>
+<div class="paragraph">
+<p>If a <code>FhirStu3Resource</code> with attachments is fetched using the <code>fetchFhirStu3Record</code> method, all of the attachments only have metadata (for example, <code>title</code> and <code>contentType</code>) but no data payload. To download an attachment including the data payload, use the <code>downloadStu3Attachment</code> method or the <code>downloadStu3Attachments</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">Data4LifeClient.default.downloadStu3Record(withId: "identifier", of: DocumentReference.self) { result in
+    guard let document = result.value?.resource else {
+        return
+    }
+
+    guard let attachments = document.getAttachments() else {
+        return
+    }
+
+    let data = attachments.first?.getData()
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_different_size_versions">Using different size versions</h4>
+<div class="paragraph">
+<p>When you implement downloading attachments, and if different options are available, you can specify which version of the attachment to download.
+When downloading a medium-size or small-size image, the downloaded attachment ID is a composed identifier of the original attachment and the thumbnail ID, separated by the <code>#</code> character.
+When the <code>downloadType</code> parameter is not specified or is unavailable, the original-size attachment (full-size version) is downloaded.
+The SDK automatically generates the medium-size and the small-size versions of attachments during attachment creation for resizable attachments. The following file formats support resizable attachments: PNG, TIFF, and JPEG.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">public enum DownloadType {
+    case full, medium, small
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cancelling_the_request_in_progress">Cancelling the request in progress</h4>
+<div class="paragraph">
+<p>The downloading attachments methods <code>downloadStu3Attachment</code> and <code>downloadStu3Attachments</code> return an object to cancel the request in progress:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>let cancellableRequest = Data4LifeClient.default.downloadStu3Attachments(withIds: identifiers, recordId: documentId) { [weak self] result in
+    ...
+}
+
+cancellableRequest?.cancel()</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_observing_the_download_progress">Observing the download progress</h4>
+<div class="paragraph">
+<p>To get a <a href="https://developer.apple.com/documentation/foundation/progress">Progress</a> object, which you can use, for example, for a progress bar, include the <code>onProgressUpdated</code> closure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> let cancellableRequest = Data4LifeClient.default.downloadStu3Attachments(withIds: identifiers, recordId: documentId,
+ onProgressUpdated: { progress in
+    DispatchQueue.main.async {
+        self.progressView.setProgress(Float(progress.fractionCompleted),
+        animated: true)
+    }
+ }, completion: { [weak self] result in
+    ...
+ })</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_downloading_a_single_attachment_with_data_payload">Downloading a single attachment with data payload</h4>
+<div class="paragraph">
+<p>If you want an attachment to be downloaded including the data payload, use the <code>downloadStu3Attachment</code> method with the parameter of the attachment ID.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func downloadStu3Attachment(withId identifier: String,
+    recordId: String,
+    downloadType: DownloadType = .full,
+    onProgressUpdated: ((Progress) -&gt; Void)? = nil,
+    completion: @escaping ResultBlock&lt;Attachment&gt;)
+-&gt; Cancellable</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_downloading_a_list_of_attachments_with_data_payloads">Downloading a list of attachments with data payloads</h4>
+<div class="paragraph">
+<p>If you want one or more attachments to be downloaded including their data payloads with their given IDs, use the <code>downloadStu3Attachments</code> method with the parameters of the attachment ID.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func downloadStu3Attachments(withIds identifiers: [String],
+    recordId: String,
+    downloadType: DownloadType = .full,
+    onProgressUpdated: ((Progress) -&gt; Void)? = nil,
+    completion: @escaping ResultBlock&lt;[Attachment]&gt;)
+-&gt; Cancellable</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_storing_custom_identifiers">Storing custom identifiers</h3>
+<div class="paragraph">
+<p>Most of the FHIR resources support adding custom identifiers per client.
+The following resources are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DocumentReference</code></p>
+</li>
+<li>
+<p><code>Observation</code></p>
+</li>
+<li>
+<p><code>DiagnosticReport</code></p>
+</li>
+<li>
+<p><code>CarePlan</code></p>
+</li>
+<li>
+<p><code>Organization</code></p>
+</li>
+<li>
+<p><code>Practitioner</code></p>
+</li>
+<li>
+<p><code>Patient</code></p>
+</li>
+<li>
+<p><code>Questionnaire</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can use these helper functions on all supported resources.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">func addAdditionalId(_ id: String)
+func setAdditionalIds(_ ids: [String])
+func getAdditionalIds() -&gt; [String]?</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To add and fetch a custom identifier, use the following.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">let document = DocumentReference(...)
+document.addAdditionalId("some-custom-identifier")
+
+guard let ids = document.getAdditionalIds() else { return }
+let storedIdentifier = ids.first</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To overwrite custom identifiers with new values, use the following.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">let document = DocumentReference(...)
+let identifiers = ["some-custom-identifier-one", "some-custom-identifier-two"]
+document.setAdditionalIds(identifiers)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To delete all of the custom identifiers, use the following.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="swift">let document = DocumentReference(...)
+document.setAdditionalIds([])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_license">Appendix A: Copyright and license</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre>Copyright (c) 2020 D4L data4life gGmbH
+All rights reserved.
+
+D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
+including any intellectual property rights that subsist in the SDK.
+
+The SDK and its documentation may be accessed and used for viewing/review purposes only.
+Any usage of the SDK for other purposes, including usage for the development of
+applications/third-party applications shall require the conclusion of a license agreement
+between you and D4L.
+
+If you are interested in licensing the SDK for your own applications/third-party
+applications and/or if you’d like to contribute to the development of the SDK, please
+contact D4L by email to help@data4life.care.</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.12.1<br>
+Last updated 2020-12-02 13:31:48 +0100
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
+</body>
+</html>

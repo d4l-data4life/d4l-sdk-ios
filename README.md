@@ -7,7 +7,7 @@ Pure Swift API client for HealthCloud that automatically handles encryption
 
 ## Documentation
 
-Current documentation can be found on [GitHub Pages](https://d4l-data4life.github.io/d4l-sdk-ios/1.12.0).
+Current documentation can be found on [GitHub Pages](https://d4l-data4life.github.io/d4l-sdk-ios/1.12.1).
 
 ## Usage
 ### Requirements
