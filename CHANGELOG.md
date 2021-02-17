@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.12.1] - 2021-02-12
+### Fixed
+- Count methods will correctly count all resources when used without a type parameter
+- Search / Count methods will be able to get resources also from legacy SDK versions
+
 ## [1.12.0] - 2021-01-22
 ### Added
 All FHIR Stu3 methods are also available now for FHIR R4 models
@@ -405,7 +410,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.0...master
+[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.1...main
+[1.12.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.1...1.12.0
 [1.11.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.0...1.11.1
 [1.11.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.10.1...1.11.0
