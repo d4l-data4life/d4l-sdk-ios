@@ -142,31 +142,49 @@ struct RecordService: RecordServiceType {
                                             annotations: [String] = [],
                                             decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
         return async {
-            let decryptedRecordsWithPercentEncodedTags = try await(searchRecords(for: userId,
-                                                                       from: startDate,
-                                                                       to: endDate,
-                                                                       pageSize: pageSize,
-                                                                       offset: offset,
-                                                                       annotations: annotations,
-                                                                       usingPercentEncodedTags: true,
-                                                                       decryptedRecordType: decryptedRecordType))
-            let decryptedRecordsWithNonPercentEncodedTags = try await(searchRecords(for: userId,
-                                                                                    from: startDate,
-                                                                                    to: endDate,
-                                                                                    pageSize: pageSize,
-                                                                                    offset: offset,
-                                                                                    annotations: annotations,
-                                                                                    usingPercentEncodedTags: false,
-                                                                                    decryptedRecordType: decryptedRecordType))
-            return decryptedRecordsWithPercentEncodedTags + decryptedRecordsWithNonPercentEncodedTags
+            let tagGroup = try await(taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
+            if try tagGroup.hasPercentEncodableCharacters() {
+                let decryptedRecordsWithPercentEncodedTags = try await(searchRecords(for: userId,
+                                                                                     from: startDate,
+                                                                                     to: endDate,
+                                                                                     pageSize: pageSize,
+                                                                                     offset: offset,
+                                                                                     annotations: annotations,
+                                                                                     usingPercentEncodedTags: true,
+                                                                                     decryptedRecordType: decryptedRecordType))
+                let decryptedRecordsWithNonPercentEncodedTags = try await(searchRecords(for: userId,
+                                                                                        from: startDate,
+                                                                                        to: endDate,
+                                                                                        pageSize: pageSize,
+                                                                                        offset: offset,
+                                                                                        annotations: annotations,
+                                                                                        usingPercentEncodedTags: false,
+                                                                                        decryptedRecordType: decryptedRecordType))
+                return decryptedRecordsWithPercentEncodedTags + decryptedRecordsWithNonPercentEncodedTags
+            } else {
+                return try await(searchRecords(for: userId,
+                                               from: startDate,
+                                               to: endDate,
+                                               pageSize: pageSize,
+                                               offset: offset,
+                                               annotations: annotations,
+                                               usingPercentEncodedTags: true,
+                                               decryptedRecordType: decryptedRecordType))
+            }
+
         }
     }
 
     func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
         return async {
-            let countPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
-            let countNonPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: false))
-            return countPercentEncoded + countNonPercentEncoded
+            let tagGroup = try await(taggingService.makeTagGroup(for: resourceType, annotations: annotations))
+            if try tagGroup.hasPercentEncodableCharacters() {
+                let countPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
+                let countNonPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: false))
+                return countPercentEncoded + countNonPercentEncoded
+            } else {
+                return try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
+            }
         }
     }
 }
@@ -184,11 +202,11 @@ private extension RecordService {
         return async {
             let tagGroup = try await(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
             let params = try await(self.buildParameters(from: startDate,
-                                                                      to: endDate,
-                                                                      offset: offset,
-                                                                      pageSize: pageSize,
-                                                                      tagGroup: tagGroup,
-                                                                      usingPercentEncodedTags: usingPercentEncodedTags))
+                                                        to: endDate,
+                                                        offset: offset,
+                                                        pageSize: pageSize,
+                                                        tagGroup: tagGroup,
+                                                        usingPercentEncodedTags: usingPercentEncodedTags))
 
             let route = Router.searchRecords(userId: userId, parameters: params)
             let encryptedRecords: [EncryptedRecord] = try await(

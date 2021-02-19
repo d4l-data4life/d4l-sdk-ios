@@ -194,18 +194,19 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testSearchAppDataRecords() {
+    func testSearchAppDataRecordsWithNonPercentEncodableTags() {
+        let annotations = ["example"]
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
         let appData = FhirFactory.createAppDataResourceData()
 
-        let record = DecryptedRecordFactory.create(appData)
+        let record = DecryptedRecordFactory.create(appData, annotations: annotations)
         var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"]))
-        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
+        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
@@ -234,7 +235,54 @@ extension RecordServiceTests {
                                                                                          offset: 0)
          searchRecords.then { records in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(records.count, 1 * 2)
+                XCTAssertEqual(records.count, 1)
+            XCTAssertEqual(record.resource, appData)
+        }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testSearchAppDataRecordsWithPercentEncodableTags() {
+        let userId = UUID().uuidString
+        let startDate = Date()
+        let endDate = Date()
+        let appData = FhirFactory.createAppDataResourceData()
+        let annotations = ["hello-hello"]
+        let record = DecryptedRecordFactory.create(appData, annotations: annotations)
+        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
+        encryptedRecord.encryptedAttachmentKey = nil
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
+        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
+        cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
+        cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
+
+        // Common key
+        commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
+
+        // encrypted body
+        cryptoService.encryptValueResult = Async.resolve(encryptedRecord.encryptedBodyData)
+
+        // encrypted data key
+        cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
+        cryptoService.generateGCKeyResult = record.dataKey
+
+        // decrypt values for data key and body
+        let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
+        let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
+        cryptoService.decryptDataForInput = [dataInput, bodyInput]
+
+        stub("GET", "/users/\(userId)/records", with: [encryptedRecord.json])
+
+        let asyncExpectation = expectation(description: "should return a list of records")
+        let searchRecords: Async<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
+                                                                                         from: startDate,
+                                                                                         to: endDate,
+                                                                                         pageSize: 10,
+                                                                                         offset: 0)
+        searchRecords.then { records in
+            defer { asyncExpectation.fulfill() }
+            XCTAssertEqual(records.count, 1 * 2)
             XCTAssertEqual(record.resource, appData)
         }
 
@@ -266,13 +314,35 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testCountAppDataRecords() {
+    func testCountAppDataRecordsWithNonPercentEncodableTags() {
+        let annotations = ["hello"]
         let userId = UUID().uuidString
         let recordCount = 101
 
         stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-total-count" : "\(recordCount)"], code: 200)
 
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
+        cryptoService.encryptValuesResult = []
+        cryptoService.decryptValuesResult = []
+
+        let asyncExpectation = expectation(description: "should return header containg record count")
+        recordService.countRecords(userId: userId, resourceType: Data.self)
+            .then { count in
+                defer { asyncExpectation.fulfill() }
+                XCTAssertEqual(count, recordCount)
+        }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testCountAppDataRecordsWithPercentEncodableTags() {
+        let annotations = ["hello-percent"]
+        let userId = UUID().uuidString
+        let recordCount = 101
+
+        stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-total-count" : "\(recordCount)"], code: 200)
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
 
@@ -281,7 +351,7 @@ extension RecordServiceTests {
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount * 2)
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }

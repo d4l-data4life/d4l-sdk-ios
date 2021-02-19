@@ -50,6 +50,12 @@ struct TagGroup: Equatable {
         return tags.formattedKeyValuePairs(separatedBy: separator, usingPercentEncoding: percentEncoding) + formattedAnnotations
     }
 
+    func hasPercentEncodableCharacters() throws -> Bool {
+        let percentEncodedParameters = try asParameters(percentEncoding: true)
+        let nonPercentEncodedParameters = try asParameters(percentEncoding: false)
+        return percentEncodedParameters != nonPercentEncodedParameters
+    }
+
     private func validateAnnotations() throws {
         for annotation in annotations {
             guard !annotation.isEmpty else {
