@@ -51,8 +51,8 @@ struct TagGroup: Equatable {
     }
 
     func hasPercentEncodableCharacters() throws -> Bool {
-        let percentEncodedParameters = try asParameters(percentEncoding: true)
-        let nonPercentEncodedParameters = try asParameters(percentEncoding: false)
+        let percentEncodedParameters = try asParameters(percentEncoding: true).sorted()
+        let nonPercentEncodedParameters = try asParameters(percentEncoding: false).sorted()
         return percentEncodedParameters != nonPercentEncodedParameters
     }
 
