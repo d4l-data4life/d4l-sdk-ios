@@ -364,18 +364,70 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testSearchFhirR4Records() {
+    func testSearchFhirR4RecordsWithNonPercentEncodableTags() {
+        let annotations = ["exampleannotation1"]
+        let userId = UUID().uuidString
+        let startDate = Date()
+        let endDate = Date()
+        let document = FhirFactory.createR4DocumentReferenceResource()
+        let record = DecryptedRecordFactory.create(document, annotations: annotations)
+        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
+        encryptedRecord.encryptedAttachmentKey = nil
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
+        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
+        cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
+        cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
+
+        // Common key
+        commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
+
+        // encrypted body
+        cryptoService.encryptValueResult = Async.resolve(encryptedRecord.encryptedBodyData)
+
+        // encrypted data key
+        cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
+        cryptoService.generateGCKeyResult = record.dataKey
+
+        // decrypt values for data key and body
+        let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
+        let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
+        cryptoService.decryptDataForInput = [dataInput, bodyInput]
+
+        stub("GET", "/users/\(userId)/records", with: [encryptedRecord.json])
+
+        let asyncExpectation = expectation(description: "should return a list of records")
+        recordService.searchRecords(for: userId,
+                                    from: startDate,
+                                    to: endDate,
+                                    pageSize: 10,
+                                    offset: 0,
+                                    annotations: annotations,
+                                    decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
+            .then { records in
+                defer { asyncExpectation.fulfill() }
+                XCTAssertEqual(records.count, 1)
+                XCTAssertEqual(record.resource, document)
+
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(record.annotations, annotations)
+            }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testSearchFhirR4RecordsWithPercentEncodableTags() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let startDate = Date()
         let endDate = Date()
         let document = FhirFactory.createR4DocumentReferenceResource()
-        var record = DecryptedRecordFactory.create(document)
+        var record = DecryptedRecordFactory.create(document, annotations: annotations)
         record.annotations = annotations
         var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"]))
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
@@ -442,14 +494,36 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testCountFhirR4Records() {
+    func testCountFhirR4RecordsWithNoPercentEncodableTags() {
+        let annotations = ["hello"]
+        let userId = UUID().uuidString
+        let recordCount = 101
+
+        stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-total-count" : "\(recordCount)"], code: 200)
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
+        cryptoService.encryptValuesResult = []
+        cryptoService.decryptValuesResult = []
+
+        let asyncExpectation = expectation(description: "should return header containg record count")
+        recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)
+            .then { count in
+                defer { asyncExpectation.fulfill() }
+                XCTAssertEqual(count, recordCount)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+            }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testCountFhirR4RecordsWithPercentEncodableTags() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
         let recordCount = 101
 
         stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-total-count" : "\(recordCount)"], code: 200)
 
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
 

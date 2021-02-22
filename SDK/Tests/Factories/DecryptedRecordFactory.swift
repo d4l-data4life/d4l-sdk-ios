@@ -19,6 +19,7 @@ import Data4LifeCrypto
 
 struct DecryptedRecordFactory {
     static func create<R: FhirR4Resource>(_ fhirResource: R,
+                                          annotations: [String] = [],
                                           dataKey: Key = KeyFactory.createKey(),
                                           attachmentKey: Key? = KeyFactory.createKey()) -> DecryptedFhirR4Record<R> {
         let tags = ["resourcetype": Swift.type(of: fhirResource).resourceType.rawValue.lowercased()]
@@ -28,13 +29,14 @@ struct DecryptedRecordFactory {
         return DecryptedFhirR4Record(id: id.value!.string,
                                      metadata: metadata,
                                      tags: tags,
-                                     annotations: [],
+                                     annotations: annotations,
                                      resource: fhirResource,
                                      dataKey: dataKey,
                                      attachmentKey: attachmentKey,
                                      modelVersion: R.modelVersion)
     }
     static func create<R: FhirStu3Resource>(_ fhirResource: R,
+                                            annotations: [String] = [],
                                             dataKey: Key = KeyFactory.createKey(),
                                             attachmentKey: Key? = KeyFactory.createKey()) -> DecryptedFhirStu3Record<R> {
         let tags = ["resourcetype": Swift.type(of: fhirResource).resourceType.lowercased()]
@@ -44,7 +46,7 @@ struct DecryptedRecordFactory {
         return DecryptedFhirStu3Record(id: id,
                                        metadata: metadata,
                                        tags: tags,
-                                       annotations: [],
+                                       annotations: annotations,
                                        resource: fhirResource.copy() as! R, // swiftlint:disable:this force_cast
             dataKey: dataKey,
             attachmentKey: attachmentKey,
@@ -52,6 +54,7 @@ struct DecryptedRecordFactory {
     }
 
     static func create(_ appData: Data,
+                       annotations: [String] = [],
                        dataKey: Key = KeyFactory.createKey()) -> DecryptedAppDataRecord {
         let tags = ["flag":"appdata"]
         let metadata = Metadata(updatedDate: Date(), createdDate: Date())
@@ -59,7 +62,7 @@ struct DecryptedRecordFactory {
                                       metadata: metadata,
                                       resource: appData,
                                       tags: tags,
-                                      annotations: [],
+                                      annotations: annotations,
                                       dataKey: dataKey,
                                       modelVersion: Data.modelVersion)
     }
