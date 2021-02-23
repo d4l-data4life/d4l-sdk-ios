@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Data4LifeSDK"
-  s.version          = "1.12.1"
+  s.version          = "1.12.2"
   s.summary          = "iOS SDK for interacting with the Gesundheitscloud health data backend."
   s.homepage         = "https://github.com/d4l-data4life/d4l-sdk-ios/"
   s.license          = 'Private License'
