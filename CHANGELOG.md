@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.12.2] - 2021-02-23
+### Fixed
+- Fix for unfiltered search/count methods
+
 ## [1.12.1] - 2021-02-12
 ### Fixed
 - Count methods will correctly count all resources when used without a type parameter
@@ -410,7 +414,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.1...main
+[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.2...main
+[1.12.2]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.1...1.12.2
 [1.12.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.1...1.12.0
 [1.11.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.0...1.11.1
