@@ -1,5 +1,5 @@
-github "d4l-data4life/d4l-fhir-ios" ~> 0.18.0
-github "d4l-data4life/d4l-utils-ios" ~> 0.3.0
+github "d4l-data4life/d4l-fhir-ios" "feature/SDK-544/prepare-for-xcframeworks"
+github "d4l-data4life/d4l-utils-ios" "feature/SDK-544/prepare-for-xcframeworks"
 
 github "Alamofire/Alamofire" == 5.4.1
 github "freshOS/then" == 5.1.3

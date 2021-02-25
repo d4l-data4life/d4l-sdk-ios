@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,7 +25,6 @@
 		0AA4559724167197008B788C /* SDKFileManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4559624167197008B788C /* SDKFileManagerMock.swift */; };
 		0AA455992417A21B008B788C /* InfoServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA455982417A21B008B788C /* InfoServiceMock.swift */; };
 		0AA4559C2417D027008B788C /* SDKFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4559B2417D027008B788C /* SDKFileManagerTests.swift */; };
-		0AB7C16C233BB091004A3789 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AB7C16B233BB091004A3789 /* SVProgressHUD.framework */; };
 		0ABC455023D9441800682359 /* FhirStu3ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABC454F23D9441800682359 /* FhirStu3ServiceTests+Patient.swift */; };
 		0ABC455423D99CE600682359 /* Patient.json in Resources */ = {isa = PBXBuildFile; fileRef = 0ABC455323D99CE600682359 /* Patient.json */; };
 		0AC728D723A2709500A8E453 /* CommonKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC728D523A2706800A8E453 /* CommonKeyServiceTests.swift */; };
@@ -43,18 +42,13 @@
 		0AF4C09E22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09D22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift */; };
 		3600188723966DBF004D9048 /* LoggerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600188623966DBF004D9048 /* LoggerContainer.swift */; };
 		3600188A23991125004D9048 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600188923991125004D9048 /* RouterTests.swift */; };
-		3601A32A253743F300CD96EC /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173D3541F7BF64500EDB609 /* CryptoSwift.framework */; };
 		3607BCCE2379B8C3004C45F3 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3607BCCD2379B8C3004C45F3 /* DIContainer.swift */; };
 		3607BCD1237AAFA5004C45F3 /* Data4LifeDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3607BCD0237AAFA5004C45F3 /* Data4LifeDIContainer.swift */; };
 		36080C33237DB04000085476 /* DIScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C32237DB04000085476 /* DIScope.swift */; };
 		36080C35237DB05900085476 /* DIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C34237DB05900085476 /* DIError.swift */; };
 		36080C37237DB12900085476 /* Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C36237DB12900085476 /* Wrapper.swift */; };
 		36080C39237DB14200085476 /* DIResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C38237DB14200085476 /* DIResolver.swift */; };
-		36080C3B2382F74E00085476 /* Data4LifeFHIR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */; };
 		36238DB2252F3CE200923F22 /* AESKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* AESKeyService.swift */; };
-		36238DBB252F3E7800923F22 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
-		36238DBC252F3E7800923F22 /* Data4LifeSDKUtils.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		36238DC1252F3EEF00923F22 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
 		3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */; };
 		3634699824ED5A26001EEE66 /* AppDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699724ED5A26001EEE66 /* AppDataServiceTests.swift */; };
 		3634699A24ED5D53001EEE66 /* AppDataServiceTests+SingleOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699924ED5D53001EEE66 /* AppDataServiceTests+SingleOperations.swift */; };
@@ -69,11 +63,9 @@
 		36553F8B24C72B2500699A9B /* stu3-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 367B87F023F6D86200A6155E /* stu3-questionnaire.json */; };
 		36553F8C24C72B2900699A9B /* stu3-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 367B87E823F2F09300A6155E /* stu3-questionnaire-response.json */; };
 		3659BC8223D74E0A009970DA /* Attachment+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659BC8123D74E0A009970DA /* Attachment+Validation.swift */; };
-		365D76FF25553783004F37E9 /* ModelsR4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 365D76FE25553783004F37E9 /* ModelsR4.framework */; };
 		36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E8D253D83C100DAB5FD /* FhirSingleOperations.swift */; };
 		36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E97253D842300DAB5FD /* FhirBatchOperations.swift */; };
 		36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */; };
-		36647AC223D1A42D00DCA962 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
 		366A445B2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */; };
 		366A44652587C09F0003FBCE /* DocumentListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A44642587C09F0003FBCE /* DocumentListInteractor.swift */; };
 		366A446B2587C8B70003FBCE /* FileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A446A2587C8B70003FBCE /* FileData.swift */; };
@@ -88,8 +80,22 @@
 		3685D45F2592262300F97F9E /* FhirR4ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */; };
 		3685D4692592297700F97F9E /* r4-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4682592297700F97F9E /* r4-questionnaire-response.json */; };
 		3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */; };
+<<<<<<< HEAD
 		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
 		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
+=======
+		36882BBC25E8044200BDA715 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */; };
+		36882BCA25E8045E00BDA715 /* Data4LifeFHIR.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC225E8045E00BDA715 /* Data4LifeFHIR.xcframework */; };
+		36882BCB25E8045E00BDA715 /* ModelsR4.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC325E8045E00BDA715 /* ModelsR4.xcframework */; };
+		36882BCC25E8045E00BDA715 /* Alamofire.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC425E8045E00BDA715 /* Alamofire.xcframework */; };
+		36882BCD25E8045E00BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; };
+		36882BCE25E8045E00BDA715 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC625E8045E00BDA715 /* AppAuth.xcframework */; };
+		36882BCF25E8045E00BDA715 /* SVProgressHUD.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */; };
+		36882BD025E8045E00BDA715 /* Then.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC825E8045E00BDA715 /* Then.xcframework */; };
+		36882BD525E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; };
+		36882BD625E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		36882BFF25E80E8200BDA715 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
+>>>>>>> Changes project to work with xcframeworks
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -124,11 +130,8 @@
 		7F20B7152367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		7F20B7162367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
-		837463D71E85663400AB500F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463D41E85663400AB500F /* Alamofire.framework */; };
 		839E81411E86DE5300C42094 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 839E813F1E86DE5300C42094 /* Main.storyboard */; };
 		839E81461E86DE5300C42094 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 839E81441E86DE5300C42094 /* LaunchScreen.storyboard */; };
-		83B276BC1F7FE57900E4D418 /* then.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B276BB1F7FE57900E4D418 /* then.framework */; };
-		83C641CD1E86027500F60B53 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463D41E85663400AB500F /* Alamofire.framework */; };
 		CD1090B5225B893A00325389 /* KeyPair+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109099225B893A00325389 /* KeyPair+Codable.swift */; };
 		CD1090B8225B893A00325389 /* AsymmetricKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10909B225B893A00325389 /* AsymmetricKey.swift */; };
 		CD1090BB225B893A00325389 /* AsymmetricKey+SPKI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10909C225B893A00325389 /* AsymmetricKey+SPKI.swift */; };
@@ -221,10 +224,8 @@
 		CD109281225B901E00325389 /* FhirService+SingleOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109233225B901E00325389 /* FhirService+SingleOperations.swift */; };
 		CD109282225B901E00325389 /* FhirService+BatchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109234225B901E00325389 /* FhirService+BatchOperations.swift */; };
 		CD109283225B901E00325389 /* SessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109235225B901E00325389 /* SessionService.swift */; };
-		CD109284225B94FE00325389 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		CD2574F022B91D340029791B /* OAuthExternalUserAgentSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2574EF22B91D340029791B /* OAuthExternalUserAgentSessionMock.swift */; };
 		CD2B2AA423155B630037C869 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2B2AA323155B620037C869 /* Task.swift */; };
-		CD3720E72031ECDC007B536A /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3720E62031ECDC007B536A /* AppAuth.framework */; };
 		CD524A942260DB830007DB8F /* KeyPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD524A922260DB5C0007DB8F /* KeyPairTests.swift */; };
 		CD5CB01A22A53A0800A91DE8 /* OAuthExternalUserAgentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5CB01922A53A0800A91DE8 /* OAuthExternalUserAgentTests.swift */; };
 		CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B291F228031A40091A8EA /* UserInfoResponse.swift */; };
@@ -336,6 +337,13 @@
 			remoteGlobalIDString = 839E81381E86DE5300C42094;
 			remoteInfo = Example;
 		};
+		36882C0125E80E8200BDA715 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CD108FF0225B88BE00325389;
+			remoteInfo = Data4LifeCrypto;
+		};
 		9173D35A1F82234A00EDB609 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
@@ -356,13 +364,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 839E81381E86DE5300C42094;
 			remoteInfo = Example;
-		};
-		CD841E64225CC6A8002656D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CD108FF0225B88BE00325389;
-			remoteInfo = HCCrypto;
 		};
 		CD92FE05228420E400DA7024 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -388,7 +389,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				CD92FE0F2284406300DA7024 /* Data4LifeCrypto.framework in Embed Frameworks */,
-				36238DBC252F3E7800923F22 /* Data4LifeSDKUtils.framework in Embed Frameworks */,
+				36882BD625E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Embed Frameworks */,
 				CD92FE0D2284405A00DA7024 /* Data4LifeSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -416,7 +417,6 @@
 		0AA4559624167197008B788C /* SDKFileManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFileManagerMock.swift; sourceTree = "<group>"; };
 		0AA455982417A21B008B788C /* InfoServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoServiceMock.swift; sourceTree = "<group>"; };
 		0AA4559B2417D027008B788C /* SDKFileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFileManagerTests.swift; sourceTree = "<group>"; };
-		0AB7C16B233BB091004A3789 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 		0ABC454F23D9441800682359 /* FhirStu3ServiceTests+Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Patient.swift"; sourceTree = "<group>"; };
 		0ABC455323D99CE600682359 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
 		0AC728D523A2706800A8E453 /* CommonKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonKeyServiceTests.swift; sourceTree = "<group>"; };
@@ -439,7 +439,6 @@
 		36080C34237DB05900085476 /* DIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIError.swift; sourceTree = "<group>"; };
 		36080C36237DB12900085476 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		36080C38237DB14200085476 /* DIResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIResolver.swift; sourceTree = "<group>"; };
-		36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Data4LifeFHIR.framework; path = Carthage/Build/iOS/Data4LifeFHIR.framework; sourceTree = "<group>"; };
 		36238DB1252F3CE200923F22 /* AESKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESKeyService.swift; sourceTree = "<group>"; };
 		36238E7A2530B8E400923F22 /* donorKey.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = donorKey.json; sourceTree = "<group>"; };
 		3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordServiceTests+AppData.swift"; sourceTree = "<group>"; };
@@ -453,11 +452,9 @@
 		365525ED250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelsR4+HasAttachments.swift"; sourceTree = "<group>"; };
 		36553F8824C72A1000699A9B /* questionnaire-expansion.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "questionnaire-expansion.json"; sourceTree = "<group>"; };
 		3659BC8123D74E0A009970DA /* Attachment+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+Validation.swift"; sourceTree = "<group>"; };
-		365D76FE25553783004F37E9 /* ModelsR4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ModelsR4.framework; path = Carthage/Build/iOS/ModelsR4.framework; sourceTree = "<group>"; };
 		36635E8D253D83C100DAB5FD /* FhirSingleOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirSingleOperations.swift; sourceTree = "<group>"; };
 		36635E97253D842300DAB5FD /* FhirBatchOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirBatchOperations.swift; sourceTree = "<group>"; };
 		36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirAttachmentOperations.swift; sourceTree = "<group>"; };
-		36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Data4LifeSDKUtils.framework; path = Carthage/Build/iOS/Data4LifeSDKUtils.framework; sourceTree = "<group>"; };
 		366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Attachment.swift"; sourceTree = "<group>"; };
 		366A44642587C09F0003FBCE /* DocumentListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListInteractor.swift; sourceTree = "<group>"; };
 		366A446A2587C8B70003FBCE /* FileData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileData.swift; sourceTree = "<group>"; };
@@ -476,8 +473,20 @@
 		3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Patient.swift"; sourceTree = "<group>"; };
 		3685D4682592297700F97F9E /* r4-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire-response.json"; sourceTree = "<group>"; };
 		3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionServiceInterceptor.swift; sourceTree = "<group>"; };
 		36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptorMock.swift; sourceTree = "<group>"; };
+=======
+		36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CryptoSwift.xcframework; path = Carthage/Build/CryptoSwift.xcframework; sourceTree = "<group>"; };
+		36882BC125E8045D00BDA715 /* AppAuthCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuthCore.xcframework; path = Carthage/Build/AppAuthCore.xcframework; sourceTree = "<group>"; };
+		36882BC225E8045E00BDA715 /* Data4LifeFHIR.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeFHIR.xcframework; path = Carthage/Build/Data4LifeFHIR.xcframework; sourceTree = "<group>"; };
+		36882BC325E8045E00BDA715 /* ModelsR4.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ModelsR4.xcframework; path = Carthage/Build/ModelsR4.xcframework; sourceTree = "<group>"; };
+		36882BC425E8045E00BDA715 /* Alamofire.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Alamofire.xcframework; path = Carthage/Build/Alamofire.xcframework; sourceTree = "<group>"; };
+		36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeSDKUtils.xcframework; path = Carthage/Build/Data4LifeSDKUtils.xcframework; sourceTree = "<group>"; };
+		36882BC625E8045E00BDA715 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuth.xcframework; path = Carthage/Build/AppAuth.xcframework; sourceTree = "<group>"; };
+		36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SVProgressHUD.xcframework; path = Carthage/Build/SVProgressHUD.xcframework; sourceTree = "<group>"; };
+		36882BC825E8045E00BDA715 /* Then.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Then.xcframework; path = Carthage/Build/Then.xcframework; sourceTree = "<group>"; };
+>>>>>>> Changes project to work with xcframeworks
 		3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+AppData.swift"; sourceTree = "<group>"; };
 		3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasMainRecordOperations.swift; sourceTree = "<group>"; };
 		3689D7F324EAB2DF004295D9 /* AppDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataService.swift; sourceTree = "<group>"; };
@@ -511,13 +520,10 @@
 		7F20B7142367128100B21680 /* data4life.care.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = data4life.care.der; sourceTree = "<group>"; };
 		837463A61E854E7500AB500F /* Data4LifeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		837463AF1E854E7500AB500F /* Data4LifeSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Data4LifeSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		837463D41E85663400AB500F /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		839E81391E86DE5300C42094 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		839E81401E86DE5300C42094 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		839E81451E86DE5300C42094 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		839E81471E86DE5300C42094 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		83B276BB1F7FE57900E4D418 /* then.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = then.framework; path = Carthage/Build/iOS/then.framework; sourceTree = "<group>"; };
-		9173D3541F7BF64500EDB609 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 		CD109095225B88BE00325389 /* Data4LifeCrypto.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeCrypto.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD109099225B893A00325389 /* KeyPair+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyPair+Codable.swift"; sourceTree = "<group>"; };
 		CD10909B225B893A00325389 /* AsymmetricKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsymmetricKey.swift; sourceTree = "<group>"; };
@@ -620,7 +626,6 @@
 		CD109235225B901E00325389 /* SessionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionService.swift; sourceTree = "<group>"; };
 		CD2574EF22B91D340029791B /* OAuthExternalUserAgentSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthExternalUserAgentSessionMock.swift; sourceTree = "<group>"; };
 		CD2B2AA323155B620037C869 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		CD3720E62031ECDC007B536A /* AppAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppAuth.framework; path = Carthage/Build/iOS/AppAuth.framework; sourceTree = "<group>"; };
 		CD524A922260DB5C0007DB8F /* KeyPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPairTests.swift; sourceTree = "<group>"; };
 		CD5CB01922A53A0800A91DE8 /* OAuthExternalUserAgentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthExternalUserAgentTests.swift; sourceTree = "<group>"; };
 		CD7B291F228031A40091A8EA /* UserInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoResponse.swift; sourceTree = "<group>"; };
@@ -713,14 +718,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36647AC223D1A42D00DCA962 /* Data4LifeSDKUtils.framework in Frameworks */,
-				36080C3B2382F74E00085476 /* Data4LifeFHIR.framework in Frameworks */,
-				365D76FF25553783004F37E9 /* ModelsR4.framework in Frameworks */,
-				0AB7C16C233BB091004A3789 /* SVProgressHUD.framework in Frameworks */,
-				CD109284225B94FE00325389 /* Data4LifeCrypto.framework in Frameworks */,
-				CD3720E72031ECDC007B536A /* AppAuth.framework in Frameworks */,
-				83B276BC1F7FE57900E4D418 /* then.framework in Frameworks */,
-				837463D71E85663400AB500F /* Alamofire.framework in Frameworks */,
+				36882BCA25E8045E00BDA715 /* Data4LifeFHIR.xcframework in Frameworks */,
+				36882BFF25E80E8200BDA715 /* Data4LifeCrypto.framework in Frameworks */,
+				36882BCB25E8045E00BDA715 /* ModelsR4.xcframework in Frameworks */,
+				36882BCC25E8045E00BDA715 /* Alamofire.xcframework in Frameworks */,
+				36882BCD25E8045E00BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */,
+				36882BCE25E8045E00BDA715 /* AppAuth.xcframework in Frameworks */,
+				36882BCF25E8045E00BDA715 /* SVProgressHUD.xcframework in Frameworks */,
+				36882BD025E8045E00BDA715 /* Then.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,10 +733,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36238DC1252F3EEF00923F22 /* Data4LifeSDKUtils.framework in Frameworks */,
 				CD841E61225CC57B002656D5 /* Data4LifeCrypto.framework in Frameworks */,
 				837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */,
-				83C641CD1E86027500F60B53 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,7 +743,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD92FE0E2284406300DA7024 /* Data4LifeCrypto.framework in Frameworks */,
-				36238DBB252F3E7800923F22 /* Data4LifeSDKUtils.framework in Frameworks */,
+				36882BD525E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */,
 				CD92FE0C2284405A00DA7024 /* Data4LifeSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -749,7 +752,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3601A32A253743F300CD96EC /* CryptoSwift.framework in Frameworks */,
+				36882BBC25E8044200BDA715 /* CryptoSwift.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1047,14 +1050,15 @@
 		837463D11E85663300AB500F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				365D76FE25553783004F37E9 /* ModelsR4.framework */,
-				36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */,
-				36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */,
-				0AB7C16B233BB091004A3789 /* SVProgressHUD.framework */,
-				CD3720E62031ECDC007B536A /* AppAuth.framework */,
-				83B276BB1F7FE57900E4D418 /* then.framework */,
-				9173D3541F7BF64500EDB609 /* CryptoSwift.framework */,
-				837463D41E85663400AB500F /* Alamofire.framework */,
+				36882BC425E8045E00BDA715 /* Alamofire.xcframework */,
+				36882BC625E8045E00BDA715 /* AppAuth.xcframework */,
+				36882BC125E8045D00BDA715 /* AppAuthCore.xcframework */,
+				36882BC225E8045E00BDA715 /* Data4LifeFHIR.xcframework */,
+				36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */,
+				36882BC325E8045E00BDA715 /* ModelsR4.xcframework */,
+				36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */,
+				36882BC825E8045E00BDA715 /* Then.xcframework */,
+				36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1858,7 +1862,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				CD841E65225CC6A8002656D5 /* PBXTargetDependency */,
+				36882C0225E80E8200BDA715 /* PBXTargetDependency */,
 			);
 			name = Data4LifeSDK;
 			packageProductDependencies = (
@@ -1874,7 +1878,6 @@
 				837463AB1E854E7500AB500F /* Sources */,
 				837463AC1E854E7500AB500F /* Frameworks */,
 				837463AD1E854E7500AB500F /* Resources */,
-				83C641D01E86089200F60B53 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1894,7 +1897,6 @@
 				839E81351E86DE5300C42094 /* Sources */,
 				839E81361E86DE5300C42094 /* Frameworks */,
 				839E81371E86DE5300C42094 /* Resources */,
-				8388D8751F95F81300B134C8 /* Copy Frameworks */,
 				CD92FE0B2284402E00DA7024 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -2109,50 +2111,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8388D8751F95F81300B134C8 /* Copy Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Then.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Data4LifeFHIR.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/AppAuth.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Data4LifeSDKUtils.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/ModelsR4.framework",
-			);
-			name = "Copy Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-		83C641D01E86089200F60B53 /* Copy Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Data4LifeSDKUtils.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Data4LifeFHIR.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/AppAuth.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Then.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/ModelsR4.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
-			);
-			name = "Copy Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
 		CDB889C61FB30516000C76C0 /* Run Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2452,6 +2410,11 @@
 			target = 839E81381E86DE5300C42094 /* Example */;
 			targetProxy = 36185286257015F8005D15A5 /* PBXContainerItemProxy */;
 		};
+		36882C0225E80E8200BDA715 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD108FF0225B88BE00325389 /* Data4LifeCrypto */;
+			targetProxy = 36882C0125E80E8200BDA715 /* PBXContainerItemProxy */;
+		};
 		837463B21E854E7500AB500F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
@@ -2466,11 +2429,6 @@
 			isa = PBXTargetDependency;
 			target = 839E81381E86DE5300C42094 /* Example */;
 			targetProxy = CD841DB0225CBA8D002656D5 /* PBXContainerItemProxy */;
-		};
-		CD841E65225CC6A8002656D5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CD108FF0225B88BE00325389 /* Data4LifeCrypto */;
-			targetProxy = CD841E64225CC6A8002656D5 /* PBXContainerItemProxy */;
 		};
 		CD92FE06228420E400DA7024 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2618,7 +2576,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2631,6 +2590,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2640,14 +2600,15 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SDK/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.12.2;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2666,6 +2627,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2675,14 +2637,15 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SDK/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.12.2;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2703,12 +2666,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SDK/Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.hpihc.HCSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2724,12 +2688,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SDK/Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.hpihc.HCSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2750,13 +2715,13 @@
 				CODE_SIGN_STYLE = Manual;
 				D4L_CONFIGURATION = STAGING;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2781,13 +2746,13 @@
 				CODE_SIGN_STYLE = Manual;
 				D4L_CONFIGURATION = STAGING;
 				DEVELOPMENT_TEAM = D2QJWMP9SU;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = WildcardDevelopment;
@@ -2803,6 +2768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2812,14 +2778,15 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Crypto/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCrypto;
 				PRODUCT_NAME = Data4LifeCrypto;
@@ -2836,6 +2803,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2845,14 +2813,15 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Crypto/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCrypto;
 				PRODUCT_NAME = Data4LifeCrypto;
@@ -2877,7 +2846,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Crypto/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCryptoTests2;
@@ -2902,7 +2875,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Crypto/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCryptoTests2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
