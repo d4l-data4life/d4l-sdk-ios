@@ -218,10 +218,10 @@ fileprivate extension DocumentService {
                 let request = try self.sessionService.request(route: route)
 
                 // This needs the Content-Length header in order to get totalUnitCount's progress working
-                parentProgress.addChild(request.progress, withPendingUnitCount: 1)
+                parentProgress.addChild(request.downloadProgress, withPendingUnitCount: 1)
 
                 // This provides cancel functionality
-                request.progress.cancellationHandler = { [weak request] in
+                request.downloadProgress.cancellationHandler = { [weak request] in
                     request?.cancel()
                     reject(URLError.init(URLError.cancelled))
                 }

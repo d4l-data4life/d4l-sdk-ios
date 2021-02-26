@@ -35,11 +35,11 @@ extension Data4LifeDIContainer {
             }.register(scope: .containerInstance) { (container) -> KeychainServiceType in
                 let keychainName = try clientConfiguration.keychainName()
                 return KeychainService(container: container, name: keychainName, groupId: clientConfiguration.keychainGroupId)
-            }.register(scope: .containerInstance) { (container) -> SessionAdapterType in
+            }.register(scope: .containerInstance) { (container) -> RequestInterceptorType in
                 let infoService: InfoServiceType = try container.resolve()
                 let sdkVersion = infoService.fetchSDKVersion()
-                return SessionAdapter(keychainService: try container.resolve(),
-                                      sdkVersion: sdkVersion)
+                return SessionServiceInterceptor(keychainService: try container.resolve(),
+                                                 sdkVersion: sdkVersion)
             }.register(scope: .transientInstance) { (_) -> SDKFileManagerType in
                 SDKFileManager()
             }.register(scope: .containerInstance) { (container) -> SDKVersionValidatorType in
@@ -48,7 +48,7 @@ extension Data4LifeDIContainer {
                 SessionService(hostname: try clientConfiguration.environmentHost(),
                                sdkBundle: try container.resolve(),
                                versionValidator: try container.resolve(),
-                               adapter: try container.resolve())
+                               interceptor: try container.resolve())
             }.register(scope: .containerInstance) { (container) -> OAuthServiceType in
                 let authURL = try Router.authorizeUrl()
                 let tokenURL = try Router.fetchTokenUrl()

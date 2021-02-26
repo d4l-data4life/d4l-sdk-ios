@@ -35,6 +35,7 @@ public class Data4LifeClient {
 
     /// SessionService that stores context data and sends requests
     let sessionService: SessionService
+    let sessionServiceInterceptor: RequestInterceptorType
 
     /// Manages the OAuth Authorization, also acts an adapter for the sessionService
     var oAuthService: OAuthServiceType
@@ -84,6 +85,7 @@ public class Data4LifeClient {
         self.container = container
         do {
             self.sessionService = try container.resolve()
+            self.sessionServiceInterceptor = try container.resolve()
             self.oAuthService = try container.resolve()
             self.cryptoService = try container.resolve()
             self.commonKeyService = try container.resolve()
@@ -131,6 +133,7 @@ public class Data4LifeClient {
         self.container = container
         do {
             self.sessionService = try container.resolve()
+            self.sessionServiceInterceptor = try container.resolve()
             self.oAuthService = try container.resolve()
             self.cryptoService = try container.resolve()
             self.commonKeyService = try container.resolve()
@@ -150,7 +153,7 @@ public class Data4LifeClient {
 
 extension Data4LifeClient {
     private func configureDependencies() {
-        sessionService.retrier = oAuthService
+        sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
         try? await(versionValidator.fetchVersionConfigurationRemotely())
     }
@@ -159,7 +162,7 @@ extension Data4LifeClient {
 extension Data4LifeClient {
     /**
      Prepare SDK before usage, should be called before any other action
-     
+
      - parameter clientId: client identifier
      - parameter clientSecret: client secret
      - parameter redirectURLString: OAuth redirect address
@@ -191,7 +194,7 @@ extension Data4LifeClient {
 
     /**
      Pushes the loginView to the provided viewController.
-     
+
      - parameter viewController: ViewController on which the loginView is pushed
      - parameter animated: Bool that decides if animations should happen in the loginView
      - parameter scopes: request permissions with OAuth2 scopes
@@ -218,35 +221,20 @@ extension Data4LifeClient {
 
     /**
      Clears all credentials from the client and performs logout
-     
+
      - parameter completion: Completion that returns an empty result
      */
     public func logout(queue: DispatchQueue = responseQueue,
                        completion: @escaping DefaultResultBlock) {
-        oAuthService.logout()
+        oAuthService
+            .logout()
             .then(cryptoService.deleteKeyPair())
             .complete(queue: queue, completion)
     }
 
     /**
-     Refresh data tokens
-     
-     - parameter completion: Completion closure to be called after the token have been refreshed
-     */
-    public func refreshedAccessToken(completion: @escaping ResultBlock<String?>) {
-        oAuthService.refreshTokens { result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success:
-                completion(.success(self.keychainService[.accessToken]))
-            }
-        }
-    }
-
-    /**
      Checks if the user is logged in, requires active internet connection
-     
+
      - parameter completion: Completion that returns boolean representing current state
      */
     public func isUserLoggedIn(queue: DispatchQueue = responseQueue,
@@ -261,7 +249,7 @@ extension Data4LifeClient {
 
     /**
      Returns a boolean indicating session state change. It's possible to register only one listener.
-     
+
      - parameter completion: Completion that returns boolean representing current state
      */
     public func sessionStateDidChange(queue: DispatchQueue = responseQueue,
@@ -274,7 +262,7 @@ extension Data4LifeClient {
 extension Data4LifeClient {
     /**
      Handles URL callback for OAuth protocol
-     
+
      - parameter url: Callback url
      */
     public func handle(url: URL) {

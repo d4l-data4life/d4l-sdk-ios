@@ -16,30 +16,35 @@
 import Foundation
 import Alamofire
 
+private struct IsoDateTimeSerializer<T: Decodable>: ResponseSerializer {
+    typealias SerializedObject = T
+
+    func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?) throws -> T {
+        guard error == nil, let data = data else {
+            throw Data4LifeSDKError.network(error!)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .formatted(DateFormatter.with(format: .iso8601DateTime))
+
+            let codable: T = try decoder.decode(T.self, from: data)
+            return codable
+        } catch let error {
+            throw Data4LifeSDKError.jsonSerialization(error)
+        }
+    }
+}
+
 extension DataRequest {
     @discardableResult
     func responseDecodable<T: Decodable>(
-        queue: DispatchQueue? = backgroundQueue,
-        completionHandler: @escaping (DataResponse<T>) -> Void)
-        -> Self {
-            let responseSerializer = DataResponseSerializer<T> { _, _, data, error in
-                guard error == nil, let data = data else {
-                    return .failure(Data4LifeSDKError.network(error!))
-                }
-
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(DateFormatter.with(format: .iso8601DateTime))
-
-                    let codable: T = try decoder.decode(T.self, from: data)
-                    return .success(codable)
-                } catch let error {
-                    return .failure(Data4LifeSDKError.jsonSerialization(error))
-                }
-            }
-
-            return response(queue: queue,
-                            responseSerializer: responseSerializer,
-                            completionHandler: completionHandler)
+        queue: DispatchQueue = backgroundQueue,
+        completionHandler: @escaping (AFDataResponse<T>) -> Void)
+    -> Self {
+        let serializer = IsoDateTimeSerializer<T>()
+        return response(queue: queue,
+                        responseSerializer: serializer,
+                        completionHandler: completionHandler)
     }
 }

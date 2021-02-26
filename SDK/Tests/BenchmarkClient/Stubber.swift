@@ -43,10 +43,11 @@ public class Stubber {
         container.register(scope: .containerInstance) { (resolver) -> SessionService in
             let configuration = URLSessionConfiguration.default
             configuration.protocolClasses = [StubbedURLProtocol.self]
+
             return SessionService(configuration: configuration,
                                   versionValidator: try! resolver.resolve(),
-                                  serverTrustPolicyManager: nil,
-                                  adapter: try? resolver.resolve())
+                                  serverTrustManager: nil,
+                                  interceptor: try? resolver.resolve())
         }.register(scope: .containerInstance) { (container) -> KeychainServiceType in
             let keychainName = ClientConfiguration.Keychain.baseName
             return KeychainService(container: container, name: keychainName, groupId: clientConfig.keychainGroupId)
@@ -65,7 +66,7 @@ extension Stubber: InteractiveURLProtocolDelegate {
         if urlString.contains("records"), method == "GET" {
             // if request contains `limit` param use it to create appropriate number of resources, otherwise return single resource
             if let queryComponents = request.url?.query?.components(separatedBy: "&"),
-                let recordsQueryCount = queryComponents.filter({ $0.contains("limit") }).first?.components(separatedBy: "=").last {
+               let recordsQueryCount = queryComponents.filter({ $0.contains("limit") }).first?.components(separatedBy: "=").last {
                 var results: [Any] = []
                 for _ in 0..<Int(recordsQueryCount)! {
                     guard let object = try? JSONSerialization.jsonObject(with: response.data, options: .allowFragments) else {

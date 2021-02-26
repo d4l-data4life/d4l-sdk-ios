@@ -34,6 +34,7 @@ protocol OAuthServiceType: RequestRetrier {
 }
 
 class OAuthService: OAuthServiceType {
+
     var keychainService: KeychainServiceType
     var sessionService: SessionService
     let numberOfRetriesOnTimeout: Int
@@ -65,7 +66,7 @@ class OAuthService: OAuthServiceType {
                                        tokenEndpoint: tokenURL)
     }
 
-    private var retryRequests: [RequestRetryCompletion] = []
+    private var retryRequests: [(RetryResult) -> Void] = []
     var isRefreshing = false
 
     init(clientId: String,
@@ -95,33 +96,25 @@ class OAuthService: OAuthServiceType {
         NSKeyedArchiver.setClassName("HCSDK.AuthState", for: Data4LifeSDK.AuthState.self)
     }
 
-    func should(_ manager: SessionManager,
-                retry request: Request,
-                with error: Error,
-                completion: @escaping RequestRetryCompletion) {
+    func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+
         guard let response = request.task?.response as? HTTPURLResponse,
               response.statusCode == 401 || response.statusCode == 408 else {
-            completion(false, 0.0)
+            completion(.doNotRetry)
             return
         }
 
         if (error as NSError).code == NSURLErrorTimedOut || response.statusCode == 408 {
             if currentRetryCount < numberOfRetriesOnTimeout {
                 currentRetryCount += 1
-                completion(true, 0.0)
+                completion(.retry)
                 return
             } else {
                 currentRetryCount = 0
-                completion(false, 0.0)
+                completion(.doNotRetry)
             }
         }
 
-        guard isRefreshing == false else {
-            retryRequests.append(completion)
-            return
-        }
-
-        isRefreshing = true
         self.retryRequests.append(completion)
 
         refreshTokens(completion: { [weak self] _ in
@@ -132,19 +125,20 @@ class OAuthService: OAuthServiceType {
 
     func refreshTokens(completion: @escaping DefaultResultBlock) {
         guard let state = self.storedAuthState else { return }
-
+        guard isRefreshing == false else { return }
+        isRefreshing = true
         state.setNeedsTokenRefresh()
         state.performAction(freshTokens: { (accessToken, refreshToken, error) in
             if let error = error {
                 self.keychainService.clear()
-                self.retryRequests.forEach { $0(false, 0.0) }
+                self.retryRequests.forEach { $0(.doNotRetry) }
                 self.sessionStateChanged?(false)
                 completion(.failure(error))
             } else {
                 self.keychainService[.refreshToken] = refreshToken
                 self.keychainService[.accessToken] = accessToken
-                self.retryRequests.forEach { $0(true, 0.0) }
-                self.saveAuthState(state)
+                self.retryRequests.forEach { $0(.retry) }
+                try? self.saveAuthState(state)
                 completion(.success(()))
             }
         }, additionalRefreshParameters: ["client_secret": self.clientSecret])
@@ -163,39 +157,48 @@ class OAuthService: OAuthServiceType {
                                                    responseType: OIDResponseTypeCode,
                                                    additionalParameters: ["public_key": publicKey])
         return Async { (resolve: @escaping () -> Void, reject: @escaping (Error) -> Void) in
-            self.externalUserAgentSession = authStateType
-                .authState(byPresenting: authRequest, presenting: userAgent, callback: { (state, error) in
-                    if let error = error {
-                        let nsError = error as NSError
-                        guard let errorCode = OIDErrorCode(rawValue: nsError.code) else {
-                            reject(Data4LifeSDKError.appAuth(error))
-                            return
-                        }
+            self.externalUserAgentSession = authStateType.authState(byPresenting: authRequest,
+                                                                    presenting: userAgent,
+                                                                    callback: { (state, error) in
+                                                                        if let error = error {
+                                                                            let nsError = error as NSError
+                                                                            guard let errorCode = OIDErrorCode(rawValue: nsError.code) else {
+                                                                                reject(Data4LifeSDKError.appAuth(error))
+                                                                                return
+                                                                            }
 
-                        switch errorCode {
-                        case .userCanceledAuthorizationFlow:
-                            reject(Data4LifeSDKError.userCanceledAuthFlow)
-                        case .serverError:
-                            reject(Data4LifeSDKError.authServerError)
-                        case .networkError:
-                            reject(Data4LifeSDKError.authNetworkError)
-                        default:
-                            reject(Data4LifeSDKError.appAuth(error))
-                        }
-                    } else if let state = state {
-                        self.saveAuthState(state)
-                        self.sessionStateChanged?(true)
-                        resolve()
-                    }
-                })
+                                                                            switch errorCode {
+                                                                            case .userCanceledAuthorizationFlow:
+                                                                                reject(Data4LifeSDKError.userCanceledAuthFlow)
+                                                                            case .serverError:
+                                                                                reject(Data4LifeSDKError.authServerError)
+                                                                            case .networkError:
+                                                                                reject(Data4LifeSDKError.authNetworkError)
+                                                                            default:
+                                                                                reject(Data4LifeSDKError.appAuth(error))
+                                                                            }
+                                                                        } else if let state = state {
+                                                                            do {
+                                                                                try self.saveAuthState(state)
+                                                                                self.sessionStateChanged?(true)
+                                                                                resolve()
+                                                                            } catch {
+                                                                                reject(error)
+                                                                            }
+                                                                        }
+                                                                    })
         }
     }
 
-    func saveAuthState(_ state: AuthStateType) {
-        let stateData = try? NSKeyedArchiver.archivedData(withRootObject: state, requiringSecureCoding: false)
-        self.keychainService[.authState] = stateData?.base64EncodedString()
-        self.keychainService[.accessToken] = state.lastTokenResponse?.accessToken
-        self.keychainService[.refreshToken] = state.lastTokenResponse?.refreshToken
+    func saveAuthState(_ state: AuthStateType) throws {
+        do {
+            let stateData = try NSKeyedArchiver.archivedData(withRootObject: state, requiringSecureCoding: false)
+            self.keychainService[.authState] = stateData.base64EncodedString()
+            self.keychainService[.accessToken] = state.lastTokenResponse?.accessToken
+            self.keychainService[.refreshToken] = state.lastTokenResponse?.refreshToken
+        } catch {
+            throw Data4LifeSDKError.notLoggedIn
+        }
     }
 
     func isSessionActive() -> Async<Void> {

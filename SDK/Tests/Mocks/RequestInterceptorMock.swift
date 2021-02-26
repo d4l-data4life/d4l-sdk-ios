@@ -15,9 +15,14 @@
 
 import Foundation
 @testable import Data4LifeSDK
+import Alamofire
 
-class SessionAdapterMock: SessionAdapterType {
-    func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
-        return urlRequest
+class RequestInterceptorMock: RequestInterceptorType {
+    func setRetrier(_ retrier: RequestRetrier) {
+
+    }
+
+    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+        completion(.success(urlRequest))
     }
 }

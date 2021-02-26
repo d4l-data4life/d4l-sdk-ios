@@ -88,6 +88,8 @@
 		3685D45F2592262300F97F9E /* FhirR4ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */; };
 		3685D4692592297700F97F9E /* r4-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4682592297700F97F9E /* r4-questionnaire-response.json */; };
 		3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */; };
+		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
+		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -175,7 +177,6 @@
 		CD1091CA225B8FC400325389 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091C0225B8FC300325389 /* LoadingCell.swift */; };
 		CD1091CB225B8FC400325389 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091C2225B8FC300325389 /* UIViewController+Alerts.swift */; };
 		CD109236225B901E00325389 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091CE225B901E00325389 /* LoginViewModel.swift */; };
-		CD109237225B901E00325389 /* SessionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D0225B901E00325389 /* SessionAdapter.swift */; };
 		CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D1225B901E00325389 /* DataRequestExtension.swift */; };
 		CD109239225B901E00325389 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D2225B901E00325389 /* AuthState.swift */; };
 		CD10923A225B901E00325389 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D3225B901E00325389 /* Reachability.swift */; };
@@ -229,7 +230,6 @@
 		CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B291F228031A40091A8EA /* UserInfoResponse.swift */; };
 		CD7B29272280341A0091A8EA /* Result+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B29262280341A0091A8EA /* Result+Optionals.swift */; };
 		CD841E10225CBE80002656D5 /* AuthStateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DB4225CBE80002656D5 /* AuthStateMock.swift */; };
-		CD841E11225CBE80002656D5 /* SessionAdapterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DB5225CBE80002656D5 /* SessionAdapterMock.swift */; };
 		CD841E12225CBE80002656D5 /* Data4LifeClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DB6225CBE80002656D5 /* Data4LifeClientMock.swift */; };
 		CD841E13225CBE80002656D5 /* ReachabilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DB7225CBE80002656D5 /* ReachabilityMock.swift */; };
 		CD841E14225CBE80002656D5 /* UserServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DB8225CBE80002656D5 /* UserServiceMock.swift */; };
@@ -258,7 +258,6 @@
 		CD841E2D225CBE80002656D5 /* Async+ResultBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */; };
 		CD841E2E225CBE80002656D5 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD8225CBE80002656D5 /* StringTests.swift */; };
 		CD841E30225CBE80002656D5 /* *.gesundheitscloud.de.cer in Resources */ = {isa = PBXBuildFile; fileRef = CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */; };
-		CD841E31225CBE80002656D5 /* Async+OAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDD225CBE80002656D5 /* Async+OAuthService.swift */; };
 		CD841E32225CBE80002656D5 /* Data+UTF8String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */; };
 		CD841E33225CBE80002656D5 /* Bundle+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDF225CBE80002656D5 /* Bundle+Data.swift */; };
 		CD841E34225CBE80002656D5 /* doc-ref-fetched.json in Resources */ = {isa = PBXBuildFile; fileRef = CD841DE2225CBE80002656D5 /* doc-ref-fetched.json */; };
@@ -477,6 +476,8 @@
 		3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Patient.swift"; sourceTree = "<group>"; };
 		3685D4682592297700F97F9E /* r4-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire-response.json"; sourceTree = "<group>"; };
 		3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
+		36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionServiceInterceptor.swift; sourceTree = "<group>"; };
+		36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptorMock.swift; sourceTree = "<group>"; };
 		3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+AppData.swift"; sourceTree = "<group>"; };
 		3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasMainRecordOperations.swift; sourceTree = "<group>"; };
 		3689D7F324EAB2DF004295D9 /* AppDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataService.swift; sourceTree = "<group>"; };
@@ -571,7 +572,6 @@
 		CD1091C0225B8FC300325389 /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		CD1091C2225B8FC300325389 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		CD1091CE225B901E00325389 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		CD1091D0225B901E00325389 /* SessionAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionAdapter.swift; sourceTree = "<group>"; };
 		CD1091D1225B901E00325389 /* DataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestExtension.swift; sourceTree = "<group>"; };
 		CD1091D2225B901E00325389 /* AuthState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		CD1091D3225B901E00325389 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -626,7 +626,6 @@
 		CD7B291F228031A40091A8EA /* UserInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoResponse.swift; sourceTree = "<group>"; };
 		CD7B29262280341A0091A8EA /* Result+Optionals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Optionals.swift"; sourceTree = "<group>"; };
 		CD841DB4225CBE80002656D5 /* AuthStateMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateMock.swift; sourceTree = "<group>"; };
-		CD841DB5225CBE80002656D5 /* SessionAdapterMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionAdapterMock.swift; sourceTree = "<group>"; };
 		CD841DB6225CBE80002656D5 /* Data4LifeClientMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeClientMock.swift; sourceTree = "<group>"; };
 		CD841DB7225CBE80002656D5 /* ReachabilityMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityMock.swift; sourceTree = "<group>"; };
 		CD841DB8225CBE80002656D5 /* UserServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserServiceMock.swift; sourceTree = "<group>"; };
@@ -655,7 +654,6 @@
 		CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+ResultBlockTests.swift"; sourceTree = "<group>"; };
 		CD841DD8225CBE80002656D5 /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "*.gesundheitscloud.de.cer"; sourceTree = "<group>"; };
-		CD841DDD225CBE80002656D5 /* Async+OAuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+OAuthService.swift"; sourceTree = "<group>"; };
 		CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+UTF8String.swift"; sourceTree = "<group>"; };
 		CD841DDF225CBE80002656D5 /* Bundle+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Data.swift"; sourceTree = "<group>"; };
 		CD841DE2225CBE80002656D5 /* doc-ref-fetched.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "doc-ref-fetched.json"; sourceTree = "<group>"; };
@@ -1290,7 +1288,7 @@
 		CD1091CF225B901E00325389 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				CD1091D0225B901E00325389 /* SessionAdapter.swift */,
+				36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */,
 				CD1091D1225B901E00325389 /* DataRequestExtension.swift */,
 				CD1091D2225B901E00325389 /* AuthState.swift */,
 				CD1091D3225B901E00325389 /* Reachability.swift */,
@@ -1567,9 +1565,9 @@
 				CD841DBC225CBE80002656D5 /* OAuthServiceMock.swift */,
 				CD841DB7225CBE80002656D5 /* ReachabilityMock.swift */,
 				CD841DC1225CBE80002656D5 /* RecordServiceMock.swift */,
+				36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */,
 				0AA4559624167197008B788C /* SDKFileManagerMock.swift */,
 				0AD36C94240798D200584D9B /* SDKVersionValidatorMock.swift */,
-				CD841DB5225CBE80002656D5 /* SessionAdapterMock.swift */,
 				CD841DBE225CBE80002656D5 /* TaggingServiceMock.swift */,
 				CD841DB8225CBE80002656D5 /* UserServiceMock.swift */,
 			);
@@ -1660,7 +1658,6 @@
 		CD841DDC225CBE80002656D5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DDD225CBE80002656D5 /* Async+OAuthService.swift */,
 				CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */,
 				CD841DDF225CBE80002656D5 /* Bundle+Data.swift */,
 			);
@@ -2182,7 +2179,6 @@
 				CDA407A622E5E2A100B29A0D /* DocumentService.swift in Sources */,
 				CD10926B225B901E00325389 /* Async+RecordTransformations.swift in Sources */,
 				CD10927E225B901E00325389 /* TaggingService.swift in Sources */,
-				CD109237225B901E00325389 /* SessionAdapter.swift in Sources */,
 				36080C33237DB04000085476 /* DIScope.swift in Sources */,
 				CD10927F225B901E00325389 /* FhirService.swift in Sources */,
 				0A64853423A0E98100B00E7A /* CommonKeyService.swift in Sources */,
@@ -2265,6 +2261,7 @@
 				36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */,
 				CD109277225B901E00325389 /* RecordService.swift in Sources */,
 				3689D80024EABBE9004295D9 /* DecryptedFHIRRecord.swift in Sources */,
+				36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */,
 				36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */,
 				365525EE250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift in Sources */,
 				CD10926E225B901E00325389 /* Dictionary+toArray.swift in Sources */,
@@ -2322,6 +2319,7 @@
 				CD841E1D225CBE80002656D5 /* RecordServiceMock.swift in Sources */,
 				CD841E56225CBE80002656D5 /* FhirStu3ServiceTests+SingleOperations.swift in Sources */,
 				CDCE7DCD22A0183A00A1D277 /* OAuthExternalUserAgentMock.swift in Sources */,
+				36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */,
 				CD841E60225CC211002656D5 /* KeyFactory.swift in Sources */,
 				36E646D32588FF3000C6B51C /* FhirR4ServiceTests+AttachmentOperations.swift in Sources */,
 				36F6F08A237C16B80054DE4A /* Data4LifeDITestContainer.swift in Sources */,
@@ -2353,7 +2351,6 @@
 				0A4EB42823EA8C0300D0A4AA /* FhirStu3ServiceTests+Observation.swift in Sources */,
 				0AF4C09C22E5D12200C5CD67 /* ImageResizerTests.swift in Sources */,
 				3685D44B25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift in Sources */,
-				CD841E11225CBE80002656D5 /* SessionAdapterMock.swift in Sources */,
 				CD841E51225CBE80002656D5 /* UserServiceTests.swift in Sources */,
 				CD841E32225CBE80002656D5 /* Data+UTF8String.swift in Sources */,
 				3679AA6D259238130006494F /* FhirStu3ServiceTests+QuestionnaireResponse.swift in Sources */,
@@ -2377,7 +2374,6 @@
 				CD841E46225CBE80002656D5 /* ModelTests.swift in Sources */,
 				36E646DD258901EB00C6B51C /* FhirR4ServiceTests+BatchOperations.swift in Sources */,
 				CDCB9DE1225F54A6004A565F /* CryptoServiceTests.swift in Sources */,
-				CD841E31225CBE80002656D5 /* Async+OAuthService.swift in Sources */,
 				3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */,
 				36E6469F2588F5CD00C6B51C /* AnySDKResource.swift in Sources */,
 				3634699E24ED693D001EEE66 /* AppDataServiceMock.swift in Sources */,

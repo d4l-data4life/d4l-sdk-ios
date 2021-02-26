@@ -23,7 +23,7 @@ class SessionServiceTests: XCTestCase {
     var sessionService: SessionService!
     var versionValidator: SDKVersionValidatorMock!
     var networkReachabilityManager: ReachabilityMock!
-    var serverTrustPolicyManager: ServerTrustPolicyManager!
+    var serverTrustManager: ServerTrustManager!
 
     override func setUp() {
         super.setUp()
@@ -155,7 +155,7 @@ class SessionServiceTests: XCTestCase {
                     XCTAssertTrue((error as? AFError)?.responseCode == 404)
                 }.finally {
                     asyncExpectation.fulfill()
-            }
+                }
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -177,11 +177,10 @@ class SessionServiceTests: XCTestCase {
                     XCTFail("Should return an error")
                 }.onError { error in
                     let nsError = error as NSError
-                    XCTAssertEqual(nsError.code, -999)
-                    XCTAssertEqual(nsError.localizedDescription, "cancelled")
+                    XCTAssertEqual(nsError.code, 11)
                 }.finally {
                     asyncExpectation.fulfill()
-            }
+                }
         } catch {
             XCTFail(error.localizedDescription)
         }

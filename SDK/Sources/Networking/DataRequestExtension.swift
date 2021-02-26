@@ -19,9 +19,9 @@ import Then
 /// Make Alamofire compatible with custom completion handler
 extension DataRequest {
     func responseDecodable<T: Decodable>(
-        queue: DispatchQueue? = backgroundQueue) -> Async<T> {
+        queue: DispatchQueue = backgroundQueue) -> Async<T> {
         return Async<T> { resolve, reject in
-            self.validate().responseDecodable(queue: queue) { (response: DataResponse<T>)  in
+            self.validate().responseDecodable(queue: queue) { (response: AFDataResponse<T>)  in
                 switch response.result {
                 case .success(let value):
                     resolve(value)
@@ -34,7 +34,7 @@ extension DataRequest {
 
     @discardableResult
     func responseData(
-        queue: DispatchQueue? = backgroundQueue) -> Async<Data> {
+        queue: DispatchQueue = backgroundQueue) -> Async<Data> {
         return Async { resolve, reject in
             self.validate().responseData(queue: queue) { (response) in
                 switch response.result {
@@ -48,9 +48,9 @@ extension DataRequest {
     }
 
     func responseEmpty(
-        queue: DispatchQueue? = backgroundQueue) -> Async<Void> {
+        queue: DispatchQueue = backgroundQueue) -> Async<Void> {
         return Async { (resolve : @escaping (() -> Void), reject: @escaping ((Error) -> Void)) in
-            self.validate().responseData(queue: queue) { response in
+            self.validate().response(queue: queue) { response in
                 switch response.result {
                 case .success:
                     resolve()
@@ -62,7 +62,7 @@ extension DataRequest {
     }
 
     func responseHeaders(
-        queue: DispatchQueue? = backgroundQueue) -> Async<[AnyHashable: Any]> {
+        queue: DispatchQueue = backgroundQueue) -> Async<[AnyHashable: Any]> {
         return Async { resolve, reject in
             self.validate().responseData(queue: queue) { response in
                 switch response.result {

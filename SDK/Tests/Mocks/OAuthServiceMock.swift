@@ -19,15 +19,13 @@ import Alamofire
 import Then
 
 class OAuthServiceMock: OAuthServiceType {
+
     var sessionStateChanged: ((Bool) -> Void)?
     var redirectURL: URL = URL(string: "example.com")!
     var clientId: String = ""
 
-    func should(_ manager: SessionManager,
-                retry request: Request,
-                with error: Error,
-                completion: @escaping RequestRetryCompletion) {
-        completion(false, 0.0)
+    func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+        completion(.doNotRetry)
     }
 
     func handleRedirect(url: URL) {
