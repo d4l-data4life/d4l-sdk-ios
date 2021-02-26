@@ -52,9 +52,9 @@ Update AppStore and GCSDK version number in project plists
 fastlane ios build_framework_binary
 ```
 Build universal binary
-### ios build_framework_appstore
+### ios archive_xcframework
 ```
-fastlane ios build_framework_appstore
+fastlane ios archive_xcframework
 ```
 Build slim binary for AppStore submission, includes Bitcode and dSYM
 ### ios lint
