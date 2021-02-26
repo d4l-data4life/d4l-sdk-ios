@@ -167,17 +167,29 @@ platform :ios do
   desc "Build slim binary for AppStore submission, includes Bitcode and dSYM"
   lane :archive_xcframework do
     create_xcframework(
-    project: 'HCSDK.xcodeproj',
-    scheme: 'HCSDK',
-    destinations: ['iOS'],
-    xcframework_output_directory: 'build',
-    remove_xcarchives: true,
-    include_debug_symbols: true,
-    include_dSYMs: true,
-    include_BCSymbolMaps: true,
-    enable_bitcode: true,
-    product_name: 'Data4LifeSDK'
-  )
+      project: 'HCSDK.xcodeproj',
+      scheme: 'HCSDK',
+      destinations: ['iOS'],
+      xcframework_output_directory: 'build',
+      remove_xcarchives: true,
+      include_debug_symbols: true,
+      include_dSYMs: true,
+      include_BCSymbolMaps: true,
+      enable_bitcode: true,
+      product_name: 'Data4LifeSDK'
+    )
+    create_xcframework(
+      project: 'HCSDK.xcodeproj',
+      scheme: 'HCCrypto',
+      destinations: ['iOS'],
+      xcframework_output_directory: 'build',
+      remove_xcarchives: true,
+      include_debug_symbols: true,
+      include_dSYMs: true,
+      include_BCSymbolMaps: true,
+      enable_bitcode: true,
+      product_name: 'Data4LifeCrypto'
+    )
   end
 
   desc "Lint sources using swiftlint and check the license headers"

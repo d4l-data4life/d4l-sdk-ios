@@ -93,6 +93,7 @@
 		36882BFF25E80E8200BDA715 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
 		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
+		36882C4F25E9561500BDA715 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -712,6 +713,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36882C4F25E9561500BDA715 /* CryptoSwift.xcframework in Frameworks */,
 				36882BCA25E8045E00BDA715 /* Data4LifeFHIR.xcframework in Frameworks */,
 				36882BFF25E80E8200BDA715 /* Data4LifeCrypto.framework in Frameworks */,
 				36882BCB25E8045E00BDA715 /* ModelsR4.xcframework in Frameworks */,
