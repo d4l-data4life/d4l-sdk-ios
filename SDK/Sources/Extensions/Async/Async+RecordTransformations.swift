@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+@_implementationOnly import Then
 import Data4LifeFHIR
 
 extension Promise where T == FhirRecord<DocumentReference> {

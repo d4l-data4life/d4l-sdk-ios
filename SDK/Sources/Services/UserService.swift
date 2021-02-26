@@ -13,9 +13,10 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Then
 import Data4LifeCrypto
-import Alamofire
+
+@_implementationOnly import Then
+@_implementationOnly import Alamofire
 
 protocol UserServiceType {
     func fetchUserInfo() -> Async<Void>

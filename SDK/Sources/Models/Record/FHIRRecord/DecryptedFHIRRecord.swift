@@ -16,7 +16,7 @@
 import Foundation
 import Data4LifeCrypto
 import ModelsR4
-import Then
+@_implementationOnly import Then
 
 struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
     var id: String

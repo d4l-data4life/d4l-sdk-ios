@@ -15,7 +15,7 @@
 
 import Foundation
 import Data4LifeCrypto
-import Then
+@_implementationOnly import Then
 import CryptoSwift
 
 struct DecryptedAppDataRecord: DecryptedRecord {

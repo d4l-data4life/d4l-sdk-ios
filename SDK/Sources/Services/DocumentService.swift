@@ -15,8 +15,8 @@
 
 import Foundation
 import Data4LifeCrypto
-import Then
-import Alamofire
+@_implementationOnly import Then
+@_implementationOnly import Alamofire
 
 protocol DocumentServiceType {
     func create(document: Document, key: Key) -> Promise<Document>

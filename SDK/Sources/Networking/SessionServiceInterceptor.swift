@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Alamofire
+@_implementationOnly import Alamofire
 
 protocol RequestInterceptorType: RequestInterceptor {
     func setRetrier(_ retrier: RequestRetrier)

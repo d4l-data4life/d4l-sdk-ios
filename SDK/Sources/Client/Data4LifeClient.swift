@@ -15,7 +15,7 @@
 
 import Foundation
 import Data4LifeCrypto
-import Then
+@_implementationOnly import Then
 
 /// Returns either an error or an object
 public typealias ResultBlock<Value> = (Result<Value, Error>) -> Void

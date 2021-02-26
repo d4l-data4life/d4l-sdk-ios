@@ -16,7 +16,7 @@
 import Foundation
 import Data4LifeFHIR
 import Data4LifeCrypto
-import Then
+@_implementationOnly import Then
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],

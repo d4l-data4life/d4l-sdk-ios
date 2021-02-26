@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+@_implementationOnly import Then
 
 extension FhirService {
     func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],

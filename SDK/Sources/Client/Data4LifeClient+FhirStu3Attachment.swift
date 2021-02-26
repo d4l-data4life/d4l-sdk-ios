@@ -14,9 +14,10 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+@_implementationOnly import Then
 import Data4LifeFHIR
 import ModelsR4
+
 extension Data4LifeClient {
     /**
      Downloads record with FHIR resource and all of the attachments data if available

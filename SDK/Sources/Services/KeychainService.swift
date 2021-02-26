@@ -15,7 +15,7 @@
 
 import Foundation
 import Security
-import Then
+@_implementationOnly import Then
 
 protocol KeychainServiceType {
     subscript(key: KeychainKey) -> String? { get set }

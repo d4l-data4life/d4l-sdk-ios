@@ -15,8 +15,10 @@
 
 import Foundation
 import Data4LifeFHIR
-import Then
 import struct Data4LifeCrypto.Key
+
+@_implementationOnly
+import Then
 
 protocol HasAttachmentOperationsDependencies {
     var attachmentService: AttachmentServiceType { get }

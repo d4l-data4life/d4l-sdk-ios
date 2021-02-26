@@ -14,8 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Alamofire
-import Then
+@_implementationOnly import Alamofire
+@_implementationOnly import Then
 
 public typealias Parameters = [String : Any]
 

@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+@_implementationOnly import Then
 
 protocol FhirSingleOperations {
     func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
