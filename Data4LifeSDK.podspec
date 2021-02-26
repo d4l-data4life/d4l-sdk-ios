@@ -14,8 +14,8 @@ Pod::Spec.new do |s|
   s.source_files = 'SDK/Sources/**/*.{swift,h,m}'
   s.resources = 'SDK/Sources/Certificates/*.cer', 'SDK/Sources/Certificates/*.der', 'SDK/Sources/Data4LifeSDK-Version.plist'
 
-  s.dependency 'Alamofire', '~> 4.9.1'
-  s.dependency 'thenPromise', '~> 5.1.1'
+  s.dependency 'Alamofire', '~> 5.4.1'
+  s.dependency 'thenPromise', '~> 5.1.3'
   s.dependency 'AppAuth', '~> 1.0.0'
   s.dependency 'Data4LifeSDKUtils', '~> 0.3.0'
   s.dependency 'Data4LifeCrypto', '~> 1.4.0'
