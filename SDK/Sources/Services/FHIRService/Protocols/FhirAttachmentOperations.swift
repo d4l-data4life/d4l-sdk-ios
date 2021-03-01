@@ -15,7 +15,7 @@
 
 import Foundation
 import Data4LifeFHIR
-import struct Data4LifeCrypto.Key
+import Data4LifeCrypto
 
 @_implementationOnly
 import Then
