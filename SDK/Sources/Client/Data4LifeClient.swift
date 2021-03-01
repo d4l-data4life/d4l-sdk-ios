@@ -248,6 +248,22 @@ extension Data4LifeClient {
     }
 
     /**
+     Refresh data tokens
+
+     - parameter completion: Completion closure to be called after the token have been refreshed
+     */
+    public func refreshedAccessToken(completion: @escaping ResultBlock<String?>) {
+        oAuthService.refreshTokens { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success:
+                completion(.success(self.keychainService[.accessToken]))
+            }
+        }
+    }
+
+    /**
      Returns a boolean indicating session state change. It's possible to register only one listener.
 
      - parameter completion: Completion that returns boolean representing current state
