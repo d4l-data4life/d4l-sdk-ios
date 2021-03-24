@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.12.3] - 2021-02-23
+### Changed
+- Updated crypto dependency to be public 
+
 ## [1.12.2] - 2021-02-23
 ### Fixed
 - Fix for unfiltered search/count methods
