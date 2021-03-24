@@ -150,8 +150,7 @@ class SessionServiceTests: XCTestCase {
                 .responseData()
                 .onError { error in
                     let nsError = error as NSError
-                    XCTAssertNotEqual(nsError.code, -999)
-                    XCTAssertNotEqual(nsError.localizedDescription, "cancelled")
+                    XCTAssertNotEqual(nsError.code, 11)
                     XCTAssertTrue((error as? AFError)?.responseCode == 404)
                 }.finally {
                     asyncExpectation.fulfill()

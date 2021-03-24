@@ -164,7 +164,7 @@ platform :ios do
     end
   end
 
-  desc "Build slim binary for AppStore submission, includes Bitcode and dSYM"
+  desc "Build xcframework for distribution"
   lane :archive_xcframework do
     create_xcframework(
       project: 'HCSDK.xcodeproj',
