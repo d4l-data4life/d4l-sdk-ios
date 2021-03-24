@@ -6,7 +6,7 @@ framework_binary_path = "build/" + project + ".framework.zip"
 sdk_podspec_path = '../Data4LifeSDK.podspec'
 crypto_podspec_path = '../Data4LifeCrypto.podspec'
 private_podspec_repo_name = 'd4l-data4life'
-private_podspect_repo_url = 'git@github.com:d4l-data4life/d4l-cocoapods-specs'
+private_podspect_repo_url = 'https://github.com/d4l-data4life/d4l-cocoapods-specs'
 device = "iPhone 11"
 
 platform :ios do
@@ -261,7 +261,7 @@ platform :ios do
 
     # pod_push fastlane action does not support private switch
     # pod_push(path: "./Data4LifeSDK.podspec", repo: "gesundheitscloud", allow_warnings: true)
-    sh "bundle exec pod repo push #{private_podspec_repo_name} ../Data4LifeSDK.podspec --private --allow-warnings"
+    sh "bundle exec pod repo push #{private_podspec_repo_name} ../Data4LifeSDK.podspec --allow-warnings"
   end
 
   desc "Push new Data4LifeCrypto podspec files to private spec repo"
@@ -271,7 +271,7 @@ platform :ios do
      sh "bundle exec pod repo add #{private_podspec_repo_name} #{private_podspect_repo_url}"
     end
 
-    sh "bundle exec pod repo push #{private_podspec_repo_name} ../Data4LifeCrypto.podspec --private --allow-warnings"
+    sh "bundle exec pod repo push #{private_podspec_repo_name} ../Data4LifeCrypto.podspec --allow-warnings"
   end
 
   desc "Generate docs per version using Asciidoctor"
