@@ -17,7 +17,7 @@ import Foundation
 import Then
 
 class LoginViewModel {
-    let client: Data4LifeClient
+    private let client: Data4LifeClient
 
     init(client: Data4LifeClient) {
         self.client = client
