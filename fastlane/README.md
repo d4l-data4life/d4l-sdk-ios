@@ -42,21 +42,16 @@ Package and release framework
  * **`skip_git_pull`**: Skips pulling the git remote. Defaults to false
 
  * **`is_prerelease`**: Marks GitHub release as Pre-release. Defaults to false
+### ios build_xcframework
+```
+fastlane ios build_xcframework
+```
+Build xcframework for distribution
 ### ios update_plist_versions
 ```
 fastlane ios update_plist_versions
 ```
 Update AppStore and GCSDK version number in project plists
-### ios build_framework_binary
-```
-fastlane ios build_framework_binary
-```
-Build universal binary
-### ios archive_xcframework
-```
-fastlane ios archive_xcframework
-```
-Build slim binary for AppStore submission, includes Bitcode and dSYM
 ### ios lint
 ```
 fastlane ios lint

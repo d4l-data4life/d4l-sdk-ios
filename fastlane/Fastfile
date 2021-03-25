@@ -1,26 +1,32 @@
 default_platform :ios
 
 project = "HCSDK"
-repository = "gesundheitscloud/hc-sdk-ios"
-framework_binary_path = "build/" + project + ".framework.zip"
+sdkScheme = "HCSDK"
+cryptoScheme = "HCCrypto"
+sdkName = "Data4LifeSDK"
+cryptoName = "Data4LifeCrypto"
+
+repository = "d4l-data4life/d4l-sdk-ios"
+
 sdk_podspec_path = '../Data4LifeSDK.podspec'
 crypto_podspec_path = '../Data4LifeCrypto.podspec'
 podspecs_repo_name = 'd4l-data4life'
 podspecs_repo_url = 'https://github.com/d4l-data4life/d4l-cocoapods-specs'
+
 device = "iPhone 11"
 
 platform :ios do
   desc "Run unit tests and upload code coverage"
   lane :test do
-    Dir.chdir("..") do
-      sh "./wcarthage.sh bootstrap --platform ios --cache-builds --use-ssh"
-    end
-
     scan(
       scheme: "Example",
       derived_data_path: "build/DerivedData",
       devices: device
     )
+
+    Dir.chdir("..") do
+      sh("pod spec lint --sources='https://github.com/d4l-data4life/d4l-cocoapods-specs,https://github.com/CocoaPods/Specs'")
+    end
   end
 
   desc "Package and release framework"
@@ -92,7 +98,7 @@ platform :ios do
       )
 
       # Build fat library for GitHub release page
-      build_framework_binary
+      build_xcframework(version: version)
 
       # Push latest changes
       push_to_git_remote(
@@ -119,6 +125,81 @@ platform :ios do
       # push_sdk_podspec
     else
       Helper.log.info "When finished, commit your changes.".red
+    end
+  end
+
+  desc "Build xcframework for distribution"
+  lane :build_xcframework do |options|
+    if options[:version] == nil
+        raise "Missing release version".red
+    end
+
+    Dir.chdir("..") do
+      sdkName = "Data4LifeSDK"
+      cryptoName = "Data4LifeCrypto"
+      root = Dir.pwd
+      configuration = "Release"
+      buildPath = "xcbuild"
+
+      sdkFrameworkPath = "#{sdkName}.xcframework"
+      cryptoFrameworkPath = "#{cryptoName}.xcframework"
+
+      archiveAllFrameworksPath = allXcFrameworksArchivePath(options[:version])
+      archiveSDKPath = sdkFrameworkArchivePath(options[:version])
+      archiveCryptoPath = cryptoFrameworkArchivePath(options[:version])
+
+      if File.exist?(buildPath)
+        sh "rm -rf #{buildPath}"
+      end
+      if File.exist?(sdkFrameworkPath)
+        sh "rm -rf #{sdkFrameworkPath}"
+      end
+      if File.exist?(cryptoFrameworkPath)
+        sh "rm -rf #{cryptoFrameworkPath}"
+      end
+
+      if File.exist?(archiveAllFrameworksPath)
+        sh "rm #{archiveAllFrameworksPath}"
+      end
+      if File.exist?(archiveSDKPath)
+        sh "rm #{archiveSDKPath}"
+      end
+      if File.exist?(archiveCryptoPath)
+        sh "rm #{archiveCryptoPath}"
+      end
+
+      sh "rm -rf #{buildPath}"
+      sh "rm -rf #{sdkFrameworkPath}"
+      sh "xcodebuild archive -scheme #{sdkScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{sdkName}-iphonesimulator.xcarchive -destination 'generic/platform=iOS Simulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      sh "xcodebuild archive -scheme #{sdkScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive -destination 'generic/platform=iOS' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      symbolMapUUIDFile = Dir.children("./#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/BCSymbolMaps/").first()
+      sh "xcodebuild -create-xcframework \
+          -framework #{buildPath}/#{configuration}/#{sdkName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{sdkName}.framework \
+          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphonesimulator.xcarchive/dSYMs/#{sdkName}.framework.dSYM' \
+          -framework #{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/Products/Library/Frameworks/#{sdkName}.framework \
+          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/dSYMs/#{sdkName}.framework.dSYM' \
+          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile}' \
+          -output #{sdkFrameworkPath}"
+
+
+      sh "rm -rf #{buildPath}"
+      sh "rm -rf #{cryptoFrameworkPath}"
+      sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive -destination 'generic/platform=iOS Simulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive -destination 'generic/platform=iOS' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      symbolMapUUIDFile = Dir.children("./#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/").first()
+      sh "xcodebuild -create-xcframework \
+          -framework #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
+          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
+          -framework #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
+          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
+          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile}' \
+          -output #{cryptoFrameworkPath}"
+
+        sh "zip -r #{archiveAllFrameworksPath} #{sdkFrameworkPath} #{cryptoFrameworkPath} LICENSE"
+        sh "zip -r #{archiveSDKPath} #{sdkFrameworkPath}"
+        sh "zip -r #{archiveCryptoPath} #{cryptoFrameworkPath}"
+        sh "rm -rf #{sdkFrameworkPath}"
+        sh "rm -rf #{cryptoFrameworkPath}"
     end
   end
 
@@ -153,43 +234,6 @@ platform :ios do
         end
       )
     }
-  end
-
-  desc "Build universal binary"
-  lane :build_framework_binary do
-    Dir.chdir("..") do
-      sh "rm -rf build"
-      sh "./wcarthage.sh build --platform ios --cache-builds --no-skip-current"
-      sh "./wcarthage.sh archive --output #{framework_binary_path}"
-    end
-  end
-
-  desc "Build xcframework for distribution"
-  lane :archive_xcframework do
-    create_xcframework(
-      project: 'HCSDK.xcodeproj',
-      scheme: 'HCSDK',
-      destinations: ['iOS'],
-      xcframework_output_directory: 'build',
-      remove_xcarchives: true,
-      include_debug_symbols: true,
-      include_dSYMs: true,
-      include_BCSymbolMaps: true,
-      enable_bitcode: true,
-      product_name: 'Data4LifeSDK'
-    )
-    create_xcframework(
-      project: 'HCSDK.xcodeproj',
-      scheme: 'HCCrypto',
-      destinations: ['iOS'],
-      xcframework_output_directory: 'build',
-      remove_xcarchives: true,
-      include_debug_symbols: true,
-      include_dSYMs: true,
-      include_BCSymbolMaps: true,
-      enable_bitcode: true,
-      product_name: 'Data4LifeCrypto'
-    )
   end
 
   desc "Lint sources using swiftlint and check the license headers"
@@ -312,5 +356,17 @@ platform :ios do
     sh "rm -rf #{output_folder_path}"
     sh "mkdir #{output_folder_path}"
     sh "bundle exec asciidoctor -b html5 -d book -o #{output_final_path} -a #{arguments} #{input_path} "
+  end
+
+  def allXcFrameworksArchivePath(version)
+     return "XCFrameworks-#{version}.zip"
+  end
+
+  def sdkFrameworkArchivePath(version)
+     return "#{sdkName}-xcframework-#{version}.zip"
+  end
+
+  def cryptoFrameworkArchivePath(version)
+     return "#{cryptoName}-xcframework-#{version}.zip"
   end
 end
