@@ -1,0 +1,1204 @@
+BCSymbolMap Version: 2.0
+Apple clang version 12.0.0 (clang-1200.0.32.29)
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.4.sdk
+iPhoneOS14.4.sdk
+/Users/alessio.borraccino/Library/Caches/org.carthage.CarthageKit/DerivedData/12.4_12D4e/AppAuth-iOS/1.0.0/Build/Intermediates.noindex/ArchiveIntermediates/AppAuth_iOS/IntermediateBuildFilesPath/AppAuth.build/Release-iphoneos/AppAuth_iOS.build/DerivedSources/AppAuth_vers.c
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS
+-[OIDExternalUserAgentIOS initWithPresentingViewController:]
+-[OIDExternalUserAgentIOS presentExternalUserAgentRequest:session:]
+___67-[OIDExternalUserAgentIOS presentExternalUserAgentRequest:session:]_block_invoke
+___copy_helper_block_e8_32w
+___destroy_helper_block_e8_32w
+___67-[OIDExternalUserAgentIOS presentExternalUserAgentRequest:session:]_block_invoke.17
+-[OIDExternalUserAgentIOS dismissExternalUserAgentAnimated:completion:]
+-[OIDExternalUserAgentIOS cleanUp]
+-[OIDExternalUserAgentIOS safariViewControllerDidFinish:]
+-[OIDExternalUserAgentIOS .cxx_destruct]
+___clang_at_available_requires_core_foundation_framework
+_OBJC_SELECTOR_REFERENCES_
+_OBJC_SELECTOR_REFERENCES_.2
+_OBJC_SELECTOR_REFERENCES_.4
+_OBJC_CLASSLIST_REFERENCES_$_
+_OBJC_SELECTOR_REFERENCES_.6
+_OBJC_CLASSLIST_REFERENCES_$_.7
+_OBJC_SELECTOR_REFERENCES_.9
+_OBJC_SELECTOR_REFERENCES_.11
+___block_descriptor_40_e8_32w_e27_v24?0"NSURL"8"NSError"16l
+_OBJC_SELECTOR_REFERENCES_.13
+_OBJC_SELECTOR_REFERENCES_.15
+_OBJC_CLASSLIST_REFERENCES_$_.16
+_OBJC_CLASSLIST_REFERENCES_$_.19
+_OBJC_SELECTOR_REFERENCES_.21
+_OBJC_SELECTOR_REFERENCES_.23
+_OBJC_SELECTOR_REFERENCES_.25
+_OBJC_CLASSLIST_REFERENCES_$_.26
+_OBJC_SELECTOR_REFERENCES_.28
+_OBJC_SELECTOR_REFERENCES_.30
+_OBJC_SELECTOR_REFERENCES_.32
+_OBJC_SELECTOR_REFERENCES_.36
+_OBJC_SELECTOR_REFERENCES_.38
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_NSObject
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_OPT_NSObject
+__OBJC_$_PROP_LIST_NSObject
+__OBJC_$_PROTOCOL_METHOD_TYPES_NSObject
+__OBJC_PROTOCOL_$_NSObject
+__OBJC_LABEL_PROTOCOL_$_NSObject
+__OBJC_$_PROTOCOL_REFS_SFSafariViewControllerDelegate
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_OPT_SFSafariViewControllerDelegate
+__OBJC_$_PROTOCOL_METHOD_TYPES_SFSafariViewControllerDelegate
+__OBJC_PROTOCOL_$_SFSafariViewControllerDelegate
+__OBJC_LABEL_PROTOCOL_$_SFSafariViewControllerDelegate
+__OBJC_$_PROTOCOL_REFS_OIDExternalUserAgent
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_OIDExternalUserAgent
+__OBJC_$_PROTOCOL_METHOD_TYPES_OIDExternalUserAgent
+__OBJC_PROTOCOL_$_OIDExternalUserAgent
+__OBJC_LABEL_PROTOCOL_$_OIDExternalUserAgent
+__OBJC_CLASS_PROTOCOLS_$_OIDExternalUserAgentIOS
+__OBJC_METACLASS_RO_$_OIDExternalUserAgentIOS
+__OBJC_$_INSTANCE_METHODS_OIDExternalUserAgentIOS
+_OBJC_IVAR_$_OIDExternalUserAgentIOS._presentingViewController
+_OBJC_IVAR_$_OIDExternalUserAgentIOS._externalUserAgentFlowInProgress
+_OBJC_IVAR_$_OIDExternalUserAgentIOS._session
+_OBJC_IVAR_$_OIDExternalUserAgentIOS._safariVC
+_OBJC_IVAR_$_OIDExternalUserAgentIOS._authenticationVC
+_OBJC_IVAR_$_OIDExternalUserAgentIOS._webAuthenticationVC
+__OBJC_$_INSTANCE_VARIABLES_OIDExternalUserAgentIOS
+__OBJC_$_PROP_LIST_OIDExternalUserAgentIOS
+__OBJC_CLASS_RO_$_OIDExternalUserAgentIOS
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/iOS/OIDExternalUserAgentIOS.m
+Source/iOS/OIDExternalUserAgentIOS.m
+__67-[OIDExternalUserAgentIOS presentExternalUserAgentRequest:session:]_block_invoke.17
+__destroy_helper_block_e8_32w
+__copy_helper_block_e8_32w
+__67-[OIDExternalUserAgentIOS presentExternalUserAgentRequest:session:]_block_invoke
+-[OIDFieldMapping init]
+-[OIDFieldMapping initWithName:type:]
+-[OIDFieldMapping initWithName:type:conversion:]
++[OIDFieldMapping remainingParametersWithMap:parameters:instance:]
++[OIDFieldMapping encodeWithCoder:map:instance:]
++[OIDFieldMapping decodeWithCoder:map:instance:]
++[OIDFieldMapping JSONTypes]
++[OIDFieldMapping URLConversion]
+___32+[OIDFieldMapping URLConversion]_block_invoke
++[OIDFieldMapping dateSinceNowConversion]
+___41+[OIDFieldMapping dateSinceNowConversion]_block_invoke
++[OIDFieldMapping dateEpochConversion]
+___38+[OIDFieldMapping dateEpochConversion]_block_invoke
+-[OIDFieldMapping name]
+-[OIDFieldMapping expectedType]
+-[OIDFieldMapping conversion]
+-[OIDFieldMapping .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.3
+_OBJC_SELECTOR_REFERENCES_.7
+_OBJC_CLASSLIST_REFERENCES_$_.12
+_OBJC_SELECTOR_REFERENCES_.14
+_OBJC_SELECTOR_REFERENCES_.16
+_OBJC_SELECTOR_REFERENCES_.18
+_OBJC_SELECTOR_REFERENCES_.20
+_OBJC_SELECTOR_REFERENCES_.22
+_OBJC_SELECTOR_REFERENCES_.24
+_OBJC_SELECTOR_REFERENCES_.26
+_OBJC_SELECTOR_REFERENCES_.34
+_OBJC_CLASSLIST_REFERENCES_$_.37
+_OBJC_CLASSLIST_REFERENCES_$_.38
+_OBJC_SELECTOR_REFERENCES_.40
+_OBJC_CLASSLIST_REFERENCES_$_.41
+_OBJC_CLASSLIST_REFERENCES_$_.42
+_OBJC_SELECTOR_REFERENCES_.44
+_OBJC_SELECTOR_REFERENCES_.46
+___block_descriptor_32_e18_16?0"NSObject"8l
+___block_literal_global
+_OBJC_CLASSLIST_REFERENCES_$_.48
+_OBJC_SELECTOR_REFERENCES_.50
+___block_literal_global.51
+_OBJC_CLASSLIST_REFERENCES_$_.52
+_OBJC_SELECTOR_REFERENCES_.54
+_OBJC_SELECTOR_REFERENCES_.56
+___block_literal_global.57
+_OBJC_SELECTOR_REFERENCES_.59
+__OBJC_$_CLASS_METHODS_OIDFieldMapping
+__OBJC_METACLASS_RO_$_OIDFieldMapping
+__OBJC_$_INSTANCE_METHODS_OIDFieldMapping
+_OBJC_IVAR_$_OIDFieldMapping._name
+_OBJC_IVAR_$_OIDFieldMapping._expectedType
+_OBJC_IVAR_$_OIDFieldMapping._conversion
+__OBJC_$_INSTANCE_VARIABLES_OIDFieldMapping
+__OBJC_$_PROP_LIST_OIDFieldMapping
+__OBJC_CLASS_RO_$_OIDFieldMapping
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDFieldMapping.m
+Source/OIDFieldMapping.m
+Source/OIDFieldMapping.h
+__38+[OIDFieldMapping dateEpochConversion]_block_invoke
+__41+[OIDFieldMapping dateSinceNowConversion]_block_invoke
+__32+[OIDFieldMapping URLConversion]_block_invoke
+-[OIDIDToken initWithIDTokenString:]
++[OIDIDToken fieldMap]
+___22+[OIDIDToken fieldMap]_block_invoke
+___22+[OIDIDToken fieldMap]_block_invoke_2
+___22+[OIDIDToken fieldMap]_block_invoke_3
+___22+[OIDIDToken fieldMap]_block_invoke_4
++[OIDIDToken parseJWTSection:]
++[OIDIDToken base64urlNoPaddingDecode:]
+-[OIDIDToken header]
+-[OIDIDToken claims]
+-[OIDIDToken issuer]
+-[OIDIDToken subject]
+-[OIDIDToken audience]
+-[OIDIDToken expiresAt]
+-[OIDIDToken issuedAt]
+-[OIDIDToken nonce]
+-[OIDIDToken .cxx_destruct]
+_fieldMap.fieldMap
+_fieldMap.onceToken
+___block_descriptor_32_e5_v8?0l
+_OBJC_CLASSLIST_REFERENCES_$_.28
+_OBJC_CLASSLIST_REFERENCES_$_.33
+_OBJC_SELECTOR_REFERENCES_.35
+_OBJC_SELECTOR_REFERENCES_.37
+_OBJC_SELECTOR_REFERENCES_.39
+_OBJC_CLASSLIST_REFERENCES_$_.47
+___block_literal_global.49
+_OBJC_SELECTOR_REFERENCES_.51
+_OBJC_SELECTOR_REFERENCES_.53
+_OBJC_CLASSLIST_REFERENCES_$_.56
+_OBJC_CLASSLIST_REFERENCES_$_.58
+_OBJC_SELECTOR_REFERENCES_.60
+_OBJC_SELECTOR_REFERENCES_.62
+___block_literal_global.65
+_OBJC_SELECTOR_REFERENCES_.69
+_OBJC_CLASSLIST_REFERENCES_$_.70
+_OBJC_SELECTOR_REFERENCES_.72
+_OBJC_CLASSLIST_REFERENCES_$_.75
+_OBJC_SELECTOR_REFERENCES_.77
+_OBJC_SELECTOR_REFERENCES_.79
+_OBJC_SELECTOR_REFERENCES_.85
+_OBJC_SELECTOR_REFERENCES_.93
+_OBJC_CLASSLIST_REFERENCES_$_.94
+_OBJC_SELECTOR_REFERENCES_.96
+__OBJC_$_CLASS_METHODS_OIDIDToken
+__OBJC_METACLASS_RO_$_OIDIDToken
+__OBJC_$_INSTANCE_METHODS_OIDIDToken
+_OBJC_IVAR_$_OIDIDToken._header
+_OBJC_IVAR_$_OIDIDToken._claims
+_OBJC_IVAR_$_OIDIDToken._issuer
+_OBJC_IVAR_$_OIDIDToken._subject
+_OBJC_IVAR_$_OIDIDToken._audience
+_OBJC_IVAR_$_OIDIDToken._expiresAt
+_OBJC_IVAR_$_OIDIDToken._issuedAt
+_OBJC_IVAR_$_OIDIDToken._nonce
+__OBJC_$_INSTANCE_VARIABLES_OIDIDToken
+__OBJC_$_PROP_LIST_OIDIDToken
+__OBJC_CLASS_RO_$_OIDIDToken
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDIDToken.m
+Source/OIDIDToken.m
+Source/OIDIDToken.h
+NSMakeRange
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.4.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSRange.h
+__22+[OIDIDToken fieldMap]_block_invoke_4
+__22+[OIDIDToken fieldMap]_block_invoke_3
+__22+[OIDIDToken fieldMap]_block_invoke_2
+__22+[OIDIDToken fieldMap]_block_invoke
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.4.sdk/usr/include/dispatch/once.h
+-[OIDAuthStatePendingAction initWithAction:andDispatchQueue:]
+-[OIDAuthStatePendingAction action]
+-[OIDAuthStatePendingAction dispatchQueue]
+-[OIDAuthStatePendingAction .cxx_destruct]
++[OIDAuthState authStateByPresentingAuthorizationRequest:externalUserAgent:callback:]
+___85+[OIDAuthState authStateByPresentingAuthorizationRequest:externalUserAgent:callback:]_block_invoke
+___85+[OIDAuthState authStateByPresentingAuthorizationRequest:externalUserAgent:callback:]_block_invoke_2
+___copy_helper_block_e8_32s40b
+___destroy_helper_block_e8_32s40s
+-[OIDAuthState init]
+-[OIDAuthState initWithAuthorizationResponse:]
+-[OIDAuthState initWithAuthorizationResponse:tokenResponse:]
+-[OIDAuthState initWithRegistrationResponse:]
+-[OIDAuthState initWithAuthorizationResponse:tokenResponse:registrationResponse:]
+-[OIDAuthState description]
++[OIDAuthState supportsSecureCoding]
+-[OIDAuthState initWithCoder:]
+-[OIDAuthState encodeWithCoder:]
+-[OIDAuthState accessToken]
+-[OIDAuthState tokenType]
+-[OIDAuthState accessTokenExpirationDate]
+-[OIDAuthState idToken]
+-[OIDAuthState isAuthorized]
+-[OIDAuthState updateWithRegistrationResponse:]
+-[OIDAuthState updateWithAuthorizationResponse:error:]
+-[OIDAuthState updateWithTokenResponse:error:]
+-[OIDAuthState updateWithAuthorizationError:]
+-[OIDAuthState tokenRefreshRequest]
+-[OIDAuthState tokenRefreshRequestWithAdditionalParameters:]
+-[OIDAuthState didChangeState]
+-[OIDAuthState setNeedsTokenRefresh]
+-[OIDAuthState performActionWithFreshTokens:]
+-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:]
+-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]
+___87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke
+___copy_helper_block_e8_32b40s
+___87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke.146
+___87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke_2
+___87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke_3
+___copy_helper_block_e8_32s40s48s
+___destroy_helper_block_e8_32s40s48s
+___copy_helper_block_e8_32s
+___destroy_helper_block_e8_32s
+-[OIDAuthState isTokenFresh]
+-[OIDAuthState refreshToken]
+-[OIDAuthState scope]
+-[OIDAuthState lastAuthorizationResponse]
+-[OIDAuthState lastTokenResponse]
+-[OIDAuthState lastRegistrationResponse]
+-[OIDAuthState authorizationError]
+-[OIDAuthState stateChangeDelegate]
+-[OIDAuthState setStateChangeDelegate:]
+-[OIDAuthState errorDelegate]
+-[OIDAuthState setErrorDelegate:]
+-[OIDAuthState .cxx_destruct]
+__OBJC_METACLASS_RO_$_OIDAuthStatePendingAction
+__OBJC_$_INSTANCE_METHODS_OIDAuthStatePendingAction
+_OBJC_IVAR_$_OIDAuthStatePendingAction._action
+_OBJC_IVAR_$_OIDAuthStatePendingAction._dispatchQueue
+__OBJC_$_INSTANCE_VARIABLES_OIDAuthStatePendingAction
+__OBJC_$_PROP_LIST_OIDAuthStatePendingAction
+__OBJC_CLASS_RO_$_OIDAuthStatePendingAction
+_OBJC_SELECTOR_REFERENCES_.29
+_OBJC_SELECTOR_REFERENCES_.31
+_OBJC_SELECTOR_REFERENCES_.33
+_OBJC_CLASSLIST_REFERENCES_$_.34
+___block_descriptor_48_e8_32s40bs_e38_v24?0"OIDTokenResponse"8"NSError"16l
+_OBJC_SELECTOR_REFERENCES_.41
+___block_descriptor_48_e8_32s40bs_e46_v24?0"OIDAuthorizationResponse"8"NSError"16l
+_OBJC_CLASSLIST_REFERENCES_$_.45
+_OBJC_SELECTOR_REFERENCES_.49
+_OBJC_CLASSLIST_REFERENCES_$_.50
+_OBJC_SELECTOR_REFERENCES_.64
+_OBJC_SELECTOR_REFERENCES_.68
+_OBJC_SELECTOR_REFERENCES_.70
+_OBJC_SELECTOR_REFERENCES_.81
+_OBJC_SELECTOR_REFERENCES_.83
+_OBJC_CLASSLIST_REFERENCES_$_.84
+_OBJC_SELECTOR_REFERENCES_.86
+_OBJC_CLASSLIST_REFERENCES_$_.87
+_OBJC_CLASSLIST_REFERENCES_$_.88
+_OBJC_SELECTOR_REFERENCES_.90
+_OBJC_SELECTOR_REFERENCES_.92
+_OBJC_SELECTOR_REFERENCES_.94
+_OBJC_SELECTOR_REFERENCES_.98
+_OBJC_SELECTOR_REFERENCES_.100
+_OBJC_SELECTOR_REFERENCES_.102
+_OBJC_SELECTOR_REFERENCES_.104
+_OBJC_SELECTOR_REFERENCES_.106
+_OBJC_SELECTOR_REFERENCES_.108
+_OBJC_SELECTOR_REFERENCES_.110
+_OBJC_SELECTOR_REFERENCES_.112
+_OBJC_SELECTOR_REFERENCES_.114
+_OBJC_SELECTOR_REFERENCES_.118
+_OBJC_SELECTOR_REFERENCES_.120
+_OBJC_CLASSLIST_REFERENCES_$_.121
+_OBJC_SELECTOR_REFERENCES_.123
+_OBJC_CLASSLIST_REFERENCES_$_.124
+_OBJC_SELECTOR_REFERENCES_.126
+_OBJC_SELECTOR_REFERENCES_.128
+_OBJC_SELECTOR_REFERENCES_.130
+_OBJC_SELECTOR_REFERENCES_.132
+_OBJC_SELECTOR_REFERENCES_.134
+_OBJC_SELECTOR_REFERENCES_.136
+_OBJC_SELECTOR_REFERENCES_.138
+_OBJC_SELECTOR_REFERENCES_.140
+___block_descriptor_48_e8_32bs40s_e5_v8?0l
+_OBJC_SELECTOR_REFERENCES_.145
+_OBJC_CLASSLIST_REFERENCES_$_.147
+_OBJC_SELECTOR_REFERENCES_.148
+_OBJC_SELECTOR_REFERENCES_.150
+_OBJC_CLASSLIST_REFERENCES_$_.151
+_OBJC_SELECTOR_REFERENCES_.153
+_OBJC_SELECTOR_REFERENCES_.155
+_OBJC_SELECTOR_REFERENCES_.157
+_OBJC_SELECTOR_REFERENCES_.159
+_OBJC_SELECTOR_REFERENCES_.160
+_OBJC_SELECTOR_REFERENCES_.161
+___block_descriptor_56_e8_32s40s48s_e5_v8?0l
+___block_descriptor_40_e8_32s_e38_v24?0"OIDTokenResponse"8"NSError"16l
+_OBJC_SELECTOR_REFERENCES_.163
+__OBJC_$_CLASS_METHODS_OIDAuthState
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_NSCoding
+__OBJC_$_PROTOCOL_METHOD_TYPES_NSCoding
+__OBJC_PROTOCOL_$_NSCoding
+__OBJC_LABEL_PROTOCOL_$_NSCoding
+__OBJC_$_PROTOCOL_REFS_NSSecureCoding
+__OBJC_$_PROTOCOL_CLASS_METHODS_NSSecureCoding
+__OBJC_$_PROTOCOL_METHOD_TYPES_NSSecureCoding
+__OBJC_PROTOCOL_$_NSSecureCoding
+__OBJC_LABEL_PROTOCOL_$_NSSecureCoding
+__OBJC_CLASS_PROTOCOLS_$_OIDAuthState
+__OBJC_METACLASS_RO_$_OIDAuthState
+__OBJC_$_INSTANCE_METHODS_OIDAuthState
+_OBJC_IVAR_$_OIDAuthState._pendingActions
+_OBJC_IVAR_$_OIDAuthState._pendingActionsSyncObject
+_OBJC_IVAR_$_OIDAuthState._needsTokenRefresh
+_OBJC_IVAR_$_OIDAuthState._refreshToken
+_OBJC_IVAR_$_OIDAuthState._scope
+_OBJC_IVAR_$_OIDAuthState._lastAuthorizationResponse
+_OBJC_IVAR_$_OIDAuthState._lastTokenResponse
+_OBJC_IVAR_$_OIDAuthState._lastRegistrationResponse
+_OBJC_IVAR_$_OIDAuthState._authorizationError
+_OBJC_IVAR_$_OIDAuthState._stateChangeDelegate
+_OBJC_IVAR_$_OIDAuthState._errorDelegate
+__OBJC_$_INSTANCE_VARIABLES_OIDAuthState
+__OBJC_$_PROP_LIST_OIDAuthState
+__OBJC_CLASS_RO_$_OIDAuthState
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDAuthState.m
+Source/OIDAuthState.m
+Source/OIDAuthState.h
+__destroy_helper_block_e8_32s
+__copy_helper_block_e8_32s
+__destroy_helper_block_e8_32s40s48s
+__copy_helper_block_e8_32s40s48s
+__87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke_3
+__87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke_2
+__87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke.146
+__copy_helper_block_e8_32b40s
+__87-[OIDAuthState performActionWithFreshTokens:additionalRefreshParameters:dispatchQueue:]_block_invoke
+__destroy_helper_block_e8_32s40s
+__copy_helper_block_e8_32s40b
+__85+[OIDAuthState authStateByPresentingAuthorizationRequest:externalUserAgent:callback:]_block_invoke_2
+__85+[OIDAuthState authStateByPresentingAuthorizationRequest:externalUserAgent:callback:]_block_invoke
++[OIDAuthState(IOS) authStateByPresentingAuthorizationRequest:presentingViewController:callback:]
+__OBJC_$_CATEGORY_CLASS_METHODS_OIDAuthState_$_IOS
+__OBJC_$_CATEGORY_OIDAuthState_$_IOS
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/iOS/OIDAuthState+IOS.m
+Source/iOS/OIDAuthState+IOS.m
++[OIDTokenResponse fieldMap]
+___28+[OIDTokenResponse fieldMap]_block_invoke
+-[OIDTokenResponse init]
+-[OIDTokenResponse initWithRequest:parameters:]
+-[OIDTokenResponse copyWithZone:]
++[OIDTokenResponse supportsSecureCoding]
+-[OIDTokenResponse initWithCoder:]
+-[OIDTokenResponse encodeWithCoder:]
+-[OIDTokenResponse description]
+-[OIDTokenResponse request]
+-[OIDTokenResponse accessToken]
+-[OIDTokenResponse accessTokenExpirationDate]
+-[OIDTokenResponse tokenType]
+-[OIDTokenResponse idToken]
+-[OIDTokenResponse refreshToken]
+-[OIDTokenResponse scope]
+-[OIDTokenResponse additionalParameters]
+-[OIDTokenResponse .cxx_destruct]
+_OBJC_SELECTOR_REFERENCES_.55
+_OBJC_SELECTOR_REFERENCES_.57
+_OBJC_CLASSLIST_REFERENCES_$_.60
+_OBJC_CLASSLIST_REFERENCES_$_.63
+_OBJC_SELECTOR_REFERENCES_.65
+_OBJC_SELECTOR_REFERENCES_.67
+_OBJC_SELECTOR_REFERENCES_.71
+_OBJC_SELECTOR_REFERENCES_.73
+_OBJC_SELECTOR_REFERENCES_.75
+_OBJC_CLASSLIST_REFERENCES_$_.78
+_OBJC_SELECTOR_REFERENCES_.80
+__OBJC_$_CLASS_METHODS_OIDTokenResponse
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_NSCopying
+__OBJC_$_PROTOCOL_METHOD_TYPES_NSCopying
+__OBJC_PROTOCOL_$_NSCopying
+__OBJC_LABEL_PROTOCOL_$_NSCopying
+__OBJC_CLASS_PROTOCOLS_$_OIDTokenResponse
+__OBJC_METACLASS_RO_$_OIDTokenResponse
+__OBJC_$_INSTANCE_METHODS_OIDTokenResponse
+_OBJC_IVAR_$_OIDTokenResponse._request
+_OBJC_IVAR_$_OIDTokenResponse._accessToken
+_OBJC_IVAR_$_OIDTokenResponse._accessTokenExpirationDate
+_OBJC_IVAR_$_OIDTokenResponse._tokenType
+_OBJC_IVAR_$_OIDTokenResponse._idToken
+_OBJC_IVAR_$_OIDTokenResponse._refreshToken
+_OBJC_IVAR_$_OIDTokenResponse._scope
+_OBJC_IVAR_$_OIDTokenResponse._additionalParameters
+__OBJC_$_INSTANCE_VARIABLES_OIDTokenResponse
+__OBJC_$_PROP_LIST_OIDTokenResponse
+__OBJC_CLASS_RO_$_OIDTokenResponse
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDTokenResponse.m
+Source/OIDTokenResponse.m
+Source/OIDTokenResponse.h
+__28+[OIDTokenResponse fieldMap]_block_invoke
++[OIDErrorUtilities errorWithCode:underlyingError:description:]
++[OIDErrorUtilities isOAuthErrorDomain:]
++[OIDErrorUtilities resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:]
++[OIDErrorUtilities OAuthErrorWithDomain:OAuthResponse:underlyingError:]
++[OIDErrorUtilities HTTPErrorWithHTTPResponse:data:]
++[OIDErrorUtilities OAuthErrorCodeFromString:]
++[OIDErrorUtilities raiseException:]
++[OIDErrorUtilities raiseException:message:]
+_OBJC_SELECTOR_REFERENCES_.5
+_OBJC_CLASSLIST_REFERENCES_$_.10
+_OBJC_SELECTOR_REFERENCES_.12
+_OBJC_CLASSLIST_REFERENCES_$_.21
+_OBJC_SELECTOR_REFERENCES_.27
+_OBJC_SELECTOR_REFERENCES_.74
+__OBJC_$_CLASS_METHODS_OIDErrorUtilities
+__OBJC_METACLASS_RO_$_OIDErrorUtilities
+__OBJC_CLASS_RO_$_OIDErrorUtilities
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDErrorUtilities.m
+Source/OIDErrorUtilities.m
+-[OIDURLQueryComponent init]
+-[OIDURLQueryComponent initWithURL:]
+-[OIDURLQueryComponent parameters]
+-[OIDURLQueryComponent dictionaryValue]
+-[OIDURLQueryComponent valuesForParameter:]
+-[OIDURLQueryComponent addParameter:value:]
+-[OIDURLQueryComponent addParameters:]
+-[OIDURLQueryComponent queryItems]
++[OIDURLQueryComponent URLParamValueAllowedCharacters]
+-[OIDURLQueryComponent percentEncodedQueryString]
+-[OIDURLQueryComponent URLEncodedParameters]
+-[OIDURLQueryComponent URLByReplacingQueryInURL:]
+-[OIDURLQueryComponent description]
+-[OIDURLQueryComponent .cxx_destruct]
+_OBJC_SELECTOR_REFERENCES_.17
+_OBJC_SELECTOR_REFERENCES_.19
+_OBJC_SELECTOR_REFERENCES_.43
+_OBJC_SELECTOR_REFERENCES_.45
+_OBJC_SELECTOR_REFERENCES_.47
+_OBJC_CLASSLIST_REFERENCES_$_.54
+_OBJC_SELECTOR_REFERENCES_.58
+_OBJC_CLASSLIST_REFERENCES_$_.59
+_OBJC_SELECTOR_REFERENCES_.61
+_OBJC_CLASSLIST_REFERENCES_$_.62
+_OBJC_SELECTOR_REFERENCES_.66
+_OBJC_SELECTOR_REFERENCES_.87
+_OBJC_SELECTOR_REFERENCES_.89
+_OBJC_SELECTOR_REFERENCES_.91
+__OBJC_$_CLASS_METHODS_OIDURLQueryComponent
+__OBJC_METACLASS_RO_$_OIDURLQueryComponent
+__OBJC_$_INSTANCE_METHODS_OIDURLQueryComponent
+_OBJC_IVAR_$_OIDURLQueryComponent._parameters
+__OBJC_$_INSTANCE_VARIABLES_OIDURLQueryComponent
+__OBJC_$_PROP_LIST_OIDURLQueryComponent
+__OBJC_CLASS_RO_$_OIDURLQueryComponent
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDURLQueryComponent.m
+Source/OIDURLQueryComponent.m
+-[OIDAuthorizationRequest init]
++[OIDAuthorizationRequest isSupportedResponseType:]
+-[OIDAuthorizationRequest initWithConfiguration:clientId:clientSecret:scope:redirectURL:responseType:state:nonce:codeVerifier:codeChallenge:codeChallengeMethod:additionalParameters:]
+-[OIDAuthorizationRequest initWithConfiguration:clientId:clientSecret:scopes:redirectURL:responseType:additionalParameters:]
+-[OIDAuthorizationRequest initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:]
+-[OIDAuthorizationRequest copyWithZone:]
++[OIDAuthorizationRequest supportsSecureCoding]
+-[OIDAuthorizationRequest initWithCoder:]
+-[OIDAuthorizationRequest encodeWithCoder:]
+-[OIDAuthorizationRequest description]
++[OIDAuthorizationRequest generateCodeVerifier]
++[OIDAuthorizationRequest generateState]
++[OIDAuthorizationRequest codeChallengeS256ForVerifier:]
+-[OIDAuthorizationRequest authorizationRequestURL]
+-[OIDAuthorizationRequest externalUserAgentRequestURL]
+-[OIDAuthorizationRequest redirectScheme]
+-[OIDAuthorizationRequest configuration]
+-[OIDAuthorizationRequest responseType]
+-[OIDAuthorizationRequest clientID]
+-[OIDAuthorizationRequest clientSecret]
+-[OIDAuthorizationRequest scope]
+-[OIDAuthorizationRequest redirectURL]
+-[OIDAuthorizationRequest state]
+-[OIDAuthorizationRequest nonce]
+-[OIDAuthorizationRequest codeVerifier]
+-[OIDAuthorizationRequest codeChallenge]
+-[OIDAuthorizationRequest codeChallengeMethod]
+-[OIDAuthorizationRequest additionalParameters]
+-[OIDAuthorizationRequest .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.31
+_OBJC_CLASSLIST_REFERENCES_$_.36
+_OBJC_SELECTOR_REFERENCES_.42
+_OBJC_SELECTOR_REFERENCES_.48
+_OBJC_SELECTOR_REFERENCES_.52
+_OBJC_CLASSLIST_REFERENCES_$_.53
+_OBJC_CLASSLIST_REFERENCES_$_.69
+_OBJC_CLASSLIST_REFERENCES_$_.72
+_OBJC_CLASSLIST_REFERENCES_$_.73
+_OBJC_SELECTOR_REFERENCES_.88
+_OBJC_CLASSLIST_REFERENCES_$_.91
+_OBJC_SELECTOR_REFERENCES_.95
+_OBJC_SELECTOR_REFERENCES_.97
+_OBJC_SELECTOR_REFERENCES_.99
+_OBJC_SELECTOR_REFERENCES_.101
+_OBJC_SELECTOR_REFERENCES_.103
+_OBJC_SELECTOR_REFERENCES_.105
+__OBJC_$_CLASS_METHODS_OIDAuthorizationRequest
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_OIDExternalUserAgentRequest
+__OBJC_$_PROTOCOL_METHOD_TYPES_OIDExternalUserAgentRequest
+__OBJC_PROTOCOL_$_OIDExternalUserAgentRequest
+__OBJC_LABEL_PROTOCOL_$_OIDExternalUserAgentRequest
+__OBJC_CLASS_PROTOCOLS_$_OIDAuthorizationRequest
+__OBJC_METACLASS_RO_$_OIDAuthorizationRequest
+__OBJC_$_INSTANCE_METHODS_OIDAuthorizationRequest
+_OBJC_IVAR_$_OIDAuthorizationRequest._configuration
+_OBJC_IVAR_$_OIDAuthorizationRequest._responseType
+_OBJC_IVAR_$_OIDAuthorizationRequest._clientID
+_OBJC_IVAR_$_OIDAuthorizationRequest._clientSecret
+_OBJC_IVAR_$_OIDAuthorizationRequest._scope
+_OBJC_IVAR_$_OIDAuthorizationRequest._redirectURL
+_OBJC_IVAR_$_OIDAuthorizationRequest._state
+_OBJC_IVAR_$_OIDAuthorizationRequest._nonce
+_OBJC_IVAR_$_OIDAuthorizationRequest._codeVerifier
+_OBJC_IVAR_$_OIDAuthorizationRequest._codeChallenge
+_OBJC_IVAR_$_OIDAuthorizationRequest._codeChallengeMethod
+_OBJC_IVAR_$_OIDAuthorizationRequest._additionalParameters
+__OBJC_$_INSTANCE_VARIABLES_OIDAuthorizationRequest
+__OBJC_$_PROP_LIST_OIDAuthorizationRequest
+__OBJC_CLASS_RO_$_OIDAuthorizationRequest
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDAuthorizationRequest.m
+Source/OIDAuthorizationRequest.m
+Source/OIDAuthorizationRequest.h
+-[OIDAuthorizationSession initWithRequest:]
+-[OIDAuthorizationSession presentAuthorizationWithExternalUserAgent:callback:]
+-[OIDAuthorizationSession cancel]
+___33-[OIDAuthorizationSession cancel]_block_invoke
+-[OIDAuthorizationSession shouldHandleURL:]
+-[OIDAuthorizationSession resumeExternalUserAgentFlowWithURL:]
+___62-[OIDAuthorizationSession resumeExternalUserAgentFlowWithURL:]_block_invoke
+-[OIDAuthorizationSession failExternalUserAgentFlowWithError:]
+-[OIDAuthorizationSession didFinishWithResponse:error:]
+-[OIDAuthorizationSession .cxx_destruct]
++[OIDAuthorizationService discoverServiceConfigurationForIssuer:completion:]
++[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]
+___82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke
+___82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke_2
+___82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke.145
+___82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke_2.151
+___82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke_3
++[OIDAuthorizationService presentAuthorizationRequest:externalUserAgent:callback:]
++[OIDAuthorizationService performTokenRequest:callback:]
++[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_2
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_3
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_4
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_5
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_6
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_7
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_8
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_9
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_10
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_11
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_12
+___86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_13
+___copy_helper_block_e8_32s40b48s56s
+___destroy_helper_block_e8_32s40s48s56s
++[OIDAuthorizationService performRegistrationRequest:completion:]
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_2
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_3
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_4
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_5
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_6
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_7
+___65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_8
+___copy_helper_block_e8_32s40b48s
+-[OIDAuthorizationService configuration]
+-[OIDAuthorizationService .cxx_destruct]
+_OBJC_SELECTOR_REFERENCES_.8
+_OBJC_SELECTOR_REFERENCES_.10
+___block_descriptor_40_e8_32s_e5_v8?0l
+_OBJC_CLASSLIST_REFERENCES_$_.57
+_OBJC_SELECTOR_REFERENCES_.63
+_OBJC_CLASSLIST_REFERENCES_$_.64
+__OBJC_$_PROTOCOL_REFS_OIDExternalUserAgentSession
+__OBJC_$_PROTOCOL_INSTANCE_METHODS_OIDExternalUserAgentSession
+__OBJC_$_PROTOCOL_METHOD_TYPES_OIDExternalUserAgentSession
+__OBJC_PROTOCOL_$_OIDExternalUserAgentSession
+__OBJC_LABEL_PROTOCOL_$_OIDExternalUserAgentSession
+__OBJC_CLASS_PROTOCOLS_$_OIDAuthorizationSession
+__OBJC_METACLASS_RO_$_OIDAuthorizationSession
+__OBJC_$_INSTANCE_METHODS_OIDAuthorizationSession
+_OBJC_IVAR_$_OIDAuthorizationSession._request
+_OBJC_IVAR_$_OIDAuthorizationSession._externalUserAgent
+_OBJC_IVAR_$_OIDAuthorizationSession._pendingauthorizationFlowCallback
+__OBJC_$_INSTANCE_VARIABLES_OIDAuthorizationSession
+__OBJC_$_PROP_LIST_OIDAuthorizationSession
+__OBJC_CLASS_RO_$_OIDAuthorizationSession
+_OBJC_SELECTOR_REFERENCES_.129
+_OBJC_SELECTOR_REFERENCES_.131
+_OBJC_CLASSLIST_REFERENCES_$_.132
+_OBJC_SELECTOR_REFERENCES_.142
+_OBJC_CLASSLIST_REFERENCES_$_.146
+_OBJC_CLASSLIST_REFERENCES_$_.152
+_OBJC_SELECTOR_REFERENCES_.154
+___block_descriptor_48_e8_32s40bs_e46_v32?0"NSData"8"NSURLResponse"16"NSError"24l
+_OBJC_CLASSLIST_REFERENCES_$_.160
+_OBJC_SELECTOR_REFERENCES_.162
+_OBJC_SELECTOR_REFERENCES_.164
+_OBJC_SELECTOR_REFERENCES_.166
+_OBJC_SELECTOR_REFERENCES_.170
+_OBJC_CLASSLIST_REFERENCES_$_.171
+_OBJC_SELECTOR_REFERENCES_.173
+_OBJC_CLASSLIST_REFERENCES_$_.178
+_OBJC_SELECTOR_REFERENCES_.182
+_OBJC_CLASSLIST_REFERENCES_$_.183
+_OBJC_SELECTOR_REFERENCES_.185
+_OBJC_SELECTOR_REFERENCES_.189
+_OBJC_SELECTOR_REFERENCES_.191
+_OBJC_SELECTOR_REFERENCES_.193
+_OBJC_SELECTOR_REFERENCES_.197
+_OBJC_SELECTOR_REFERENCES_.199
+_OBJC_SELECTOR_REFERENCES_.201
+_OBJC_SELECTOR_REFERENCES_.205
+_OBJC_SELECTOR_REFERENCES_.207
+_OBJC_SELECTOR_REFERENCES_.211
+_OBJC_SELECTOR_REFERENCES_.215
+_OBJC_SELECTOR_REFERENCES_.217
+___block_descriptor_64_e8_32s40bs48s56s_e46_v32?0"NSData"8"NSURLResponse"16"NSError"24l
+_OBJC_SELECTOR_REFERENCES_.221
+_OBJC_CLASSLIST_REFERENCES_$_.230
+___block_descriptor_56_e8_32s40bs48s_e46_v32?0"NSData"8"NSURLResponse"16"NSError"24l
+__OBJC_$_CLASS_METHODS_OIDAuthorizationService
+__OBJC_METACLASS_RO_$_OIDAuthorizationService
+__OBJC_$_INSTANCE_METHODS_OIDAuthorizationService
+_OBJC_IVAR_$_OIDAuthorizationService._configuration
+__OBJC_$_INSTANCE_VARIABLES_OIDAuthorizationService
+__OBJC_$_PROP_LIST_OIDAuthorizationService
+__OBJC_CLASS_RO_$_OIDAuthorizationService
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDAuthorizationService.m
+Source/OIDAuthorizationService.m
+Source/OIDAuthorizationService.h
+__copy_helper_block_e8_32s40b48s
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_8
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_7
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_6
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_5
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_4
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_3
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke_2
+__65+[OIDAuthorizationService performRegistrationRequest:completion:]_block_invoke
+__destroy_helper_block_e8_32s40s48s56s
+__copy_helper_block_e8_32s40b48s56s
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_13
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_12
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_11
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_10
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_9
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_8
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_7
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_6
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_5
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_4
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_3
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke_2
+__86+[OIDAuthorizationService performTokenRequest:originalAuthorizationResponse:callback:]_block_invoke
+__82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke_3
+__82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke_2.151
+__82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke.145
+__82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke_2
+__82+[OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:completion:]_block_invoke
+__62-[OIDAuthorizationSession resumeExternalUserAgentFlowWithURL:]_block_invoke
+__33-[OIDAuthorizationSession cancel]_block_invoke
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDClientMetadataParameters.m
++[OIDTokenUtilities encodeBase64urlNoPadding:]
++[OIDTokenUtilities randomURLSafeStringWithSize:]
++[OIDTokenUtilities sha256:]
++[OIDTokenUtilities redact:]
++[OIDTokenUtilities formUrlEncode:]
+__OBJC_$_CLASS_METHODS_OIDTokenUtilities
+__OBJC_METACLASS_RO_$_OIDTokenUtilities
+__OBJC_CLASS_RO_$_OIDTokenUtilities
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDTokenUtilities.m
+Source/OIDTokenUtilities.m
+-[OIDServiceDiscovery init]
+-[OIDServiceDiscovery initWithJSON:error:]
+-[OIDServiceDiscovery initWithJSONData:error:]
+-[OIDServiceDiscovery initWithDictionary:error:]
++[OIDServiceDiscovery dictionaryHasRequiredFields:error:]
+-[OIDServiceDiscovery copyWithZone:]
++[OIDServiceDiscovery supportsSecureCoding]
+-[OIDServiceDiscovery initWithCoder:]
+-[OIDServiceDiscovery encodeWithCoder:]
+-[OIDServiceDiscovery discoveryDictionary]
+-[OIDServiceDiscovery issuer]
+-[OIDServiceDiscovery authorizationEndpoint]
+-[OIDServiceDiscovery tokenEndpoint]
+-[OIDServiceDiscovery userinfoEndpoint]
+-[OIDServiceDiscovery jwksURL]
+-[OIDServiceDiscovery registrationEndpoint]
+-[OIDServiceDiscovery scopesSupported]
+-[OIDServiceDiscovery responseTypesSupported]
+-[OIDServiceDiscovery responseModesSupported]
+-[OIDServiceDiscovery grantTypesSupported]
+-[OIDServiceDiscovery acrValuesSupported]
+-[OIDServiceDiscovery subjectTypesSupported]
+-[OIDServiceDiscovery IDTokenSigningAlgorithmValuesSupported]
+-[OIDServiceDiscovery IDTokenEncryptionAlgorithmValuesSupported]
+-[OIDServiceDiscovery IDTokenEncryptionEncodingValuesSupported]
+-[OIDServiceDiscovery userinfoSigningAlgorithmValuesSupported]
+-[OIDServiceDiscovery userinfoEncryptionAlgorithmValuesSupported]
+-[OIDServiceDiscovery userinfoEncryptionEncodingValuesSupported]
+-[OIDServiceDiscovery requestObjectSigningAlgorithmValuesSupported]
+-[OIDServiceDiscovery requestObjectEncryptionAlgorithmValuesSupported]
+-[OIDServiceDiscovery requestObjectEncryptionEncodingValuesSupported]
+-[OIDServiceDiscovery tokenEndpointAuthMethodsSupported]
+-[OIDServiceDiscovery tokenEndpointAuthSigningAlgorithmValuesSupported]
+-[OIDServiceDiscovery displayValuesSupported]
+-[OIDServiceDiscovery claimTypesSupported]
+-[OIDServiceDiscovery claimsSupported]
+-[OIDServiceDiscovery serviceDocumentation]
+-[OIDServiceDiscovery claimsLocalesSupported]
+-[OIDServiceDiscovery UILocalesSupported]
+-[OIDServiceDiscovery claimsParameterSupported]
+-[OIDServiceDiscovery requestParameterSupported]
+-[OIDServiceDiscovery requestURIParameterSupported]
+-[OIDServiceDiscovery requireRequestURIRegistration]
+-[OIDServiceDiscovery OPPolicyURI]
+-[OIDServiceDiscovery OPTosURI]
+-[OIDServiceDiscovery .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.82
+_OBJC_SELECTOR_REFERENCES_.84
+_OBJC_CLASSLIST_REFERENCES_$_.85
+_OBJC_CLASSLIST_REFERENCES_$_.102
+_OBJC_CLASSLIST_REFERENCES_$_.109
+_OBJC_SELECTOR_REFERENCES_.111
+_OBJC_CLASSLIST_REFERENCES_$_.112
+_OBJC_SELECTOR_REFERENCES_.116
+__OBJC_$_CLASS_METHODS_OIDServiceDiscovery
+__OBJC_CLASS_PROTOCOLS_$_OIDServiceDiscovery
+__OBJC_METACLASS_RO_$_OIDServiceDiscovery
+__OBJC_$_INSTANCE_METHODS_OIDServiceDiscovery
+_OBJC_IVAR_$_OIDServiceDiscovery._discoveryDictionary
+__OBJC_$_INSTANCE_VARIABLES_OIDServiceDiscovery
+__OBJC_$_PROP_LIST_OIDServiceDiscovery
+__OBJC_CLASS_RO_$_OIDServiceDiscovery
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDServiceDiscovery.m
+Source/OIDServiceDiscovery.m
+-[OIDTokenRequest init]
+-[OIDTokenRequest initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:clientSecret:scopes:refreshToken:codeVerifier:additionalParameters:]
+-[OIDTokenRequest initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:clientSecret:scope:refreshToken:codeVerifier:additionalParameters:]
+-[OIDTokenRequest copyWithZone:]
++[OIDTokenRequest supportsSecureCoding]
+-[OIDTokenRequest initWithCoder:]
+-[OIDTokenRequest encodeWithCoder:]
+-[OIDTokenRequest description]
+-[OIDTokenRequest tokenRequestURL]
+-[OIDTokenRequest tokenRequestBody]
+-[OIDTokenRequest URLRequest]
+-[OIDTokenRequest configuration]
+-[OIDTokenRequest grantType]
+-[OIDTokenRequest authorizationCode]
+-[OIDTokenRequest redirectURL]
+-[OIDTokenRequest clientID]
+-[OIDTokenRequest clientSecret]
+-[OIDTokenRequest scope]
+-[OIDTokenRequest refreshToken]
+-[OIDTokenRequest codeVerifier]
+-[OIDTokenRequest additionalParameters]
+-[OIDTokenRequest .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.23
+_OBJC_CLASSLIST_REFERENCES_$_.35
+_OBJC_CLASSLIST_REFERENCES_$_.44
+_OBJC_CLASSLIST_REFERENCES_$_.49
+_OBJC_CLASSLIST_REFERENCES_$_.51
+_OBJC_SELECTOR_REFERENCES_.76
+_OBJC_SELECTOR_REFERENCES_.78
+_OBJC_CLASSLIST_REFERENCES_$_.98
+_OBJC_CLASSLIST_REFERENCES_$_.99
+_OBJC_SELECTOR_REFERENCES_.107
+_OBJC_SELECTOR_REFERENCES_.113
+_OBJC_SELECTOR_REFERENCES_.115
+_OBJC_SELECTOR_REFERENCES_.117
+_OBJC_SELECTOR_REFERENCES_.119
+_OBJC_SELECTOR_REFERENCES_.121
+__OBJC_$_CLASS_METHODS_OIDTokenRequest
+__OBJC_CLASS_PROTOCOLS_$_OIDTokenRequest
+__OBJC_METACLASS_RO_$_OIDTokenRequest
+__OBJC_$_INSTANCE_METHODS_OIDTokenRequest
+_OBJC_IVAR_$_OIDTokenRequest._configuration
+_OBJC_IVAR_$_OIDTokenRequest._grantType
+_OBJC_IVAR_$_OIDTokenRequest._authorizationCode
+_OBJC_IVAR_$_OIDTokenRequest._redirectURL
+_OBJC_IVAR_$_OIDTokenRequest._clientID
+_OBJC_IVAR_$_OIDTokenRequest._clientSecret
+_OBJC_IVAR_$_OIDTokenRequest._scope
+_OBJC_IVAR_$_OIDTokenRequest._refreshToken
+_OBJC_IVAR_$_OIDTokenRequest._codeVerifier
+_OBJC_IVAR_$_OIDTokenRequest._additionalParameters
+__OBJC_$_INSTANCE_VARIABLES_OIDTokenRequest
+__OBJC_$_PROP_LIST_OIDTokenRequest
+__OBJC_CLASS_RO_$_OIDTokenRequest
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDTokenRequest.m
+Source/OIDTokenRequest.m
+Source/OIDTokenRequest.h
++[OIDExternalUserAgentIOSCustomBrowser CustomBrowserChrome]
++[OIDExternalUserAgentIOSCustomBrowser CustomBrowserFirefox]
++[OIDExternalUserAgentIOSCustomBrowser CustomBrowserOpera]
++[OIDExternalUserAgentIOSCustomBrowser CustomBrowserSafari]
+___59+[OIDExternalUserAgentIOSCustomBrowser CustomBrowserSafari]_block_invoke
++[OIDExternalUserAgentIOSCustomBrowser URLTransformationSchemeSubstitutionHTTPS:HTTP:]
+___86+[OIDExternalUserAgentIOSCustomBrowser URLTransformationSchemeSubstitutionHTTPS:HTTP:]_block_invoke
+___copy_helper_block_e8_32s40s
++[OIDExternalUserAgentIOSCustomBrowser URLTransformationSchemeConcatPrefix:]
+___76+[OIDExternalUserAgentIOSCustomBrowser URLTransformationSchemeConcatPrefix:]_block_invoke
+-[OIDExternalUserAgentIOSCustomBrowser initWithURLTransformation:]
+-[OIDExternalUserAgentIOSCustomBrowser initWithURLTransformation:canOpenURLScheme:appStoreURL:]
+-[OIDExternalUserAgentIOSCustomBrowser presentExternalUserAgentRequest:session:]
+-[OIDExternalUserAgentIOSCustomBrowser dismissExternalUserAgentAnimated:completion:]
+-[OIDExternalUserAgentIOSCustomBrowser URLTransformation]
+-[OIDExternalUserAgentIOSCustomBrowser canOpenURLScheme]
+-[OIDExternalUserAgentIOSCustomBrowser appStoreURL]
+-[OIDExternalUserAgentIOSCustomBrowser .cxx_destruct]
+___block_descriptor_32_e22_"NSURL"16?0"NSURL"8l
+___block_descriptor_48_e8_32s40s_e22_"NSURL"16?0"NSURL"8l
+___block_descriptor_40_e8_32s_e22_"NSURL"16?0"NSURL"8l
+_OBJC_CLASSLIST_REFERENCES_$_.66
+__OBJC_$_CLASS_METHODS_OIDExternalUserAgentIOSCustomBrowser
+__OBJC_CLASS_PROTOCOLS_$_OIDExternalUserAgentIOSCustomBrowser
+__OBJC_METACLASS_RO_$_OIDExternalUserAgentIOSCustomBrowser
+__OBJC_$_INSTANCE_METHODS_OIDExternalUserAgentIOSCustomBrowser
+_OBJC_IVAR_$_OIDExternalUserAgentIOSCustomBrowser._URLTransformation
+_OBJC_IVAR_$_OIDExternalUserAgentIOSCustomBrowser._canOpenURLScheme
+_OBJC_IVAR_$_OIDExternalUserAgentIOSCustomBrowser._appStoreURL
+__OBJC_$_INSTANCE_VARIABLES_OIDExternalUserAgentIOSCustomBrowser
+__OBJC_$_PROP_LIST_OIDExternalUserAgentIOSCustomBrowser
+__OBJC_CLASS_RO_$_OIDExternalUserAgentIOSCustomBrowser
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/iOS/OIDExternalUserAgentIOSCustomBrowser.m
+Source/iOS/OIDExternalUserAgentIOSCustomBrowser.m
+Source/iOS/OIDExternalUserAgentIOSCustomBrowser.h
+__76+[OIDExternalUserAgentIOSCustomBrowser URLTransformationSchemeConcatPrefix:]_block_invoke
+__copy_helper_block_e8_32s40s
+__86+[OIDExternalUserAgentIOSCustomBrowser URLTransformationSchemeSubstitutionHTTPS:HTTP:]_block_invoke
+__59+[OIDExternalUserAgentIOSCustomBrowser CustomBrowserSafari]_block_invoke
++[OIDAuthorizationService(IOS) presentAuthorizationRequest:presentingViewController:callback:]
+__OBJC_$_CATEGORY_CLASS_METHODS_OIDAuthorizationService_$_IOS
+__OBJC_$_CATEGORY_OIDAuthorizationService_$_IOS
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/iOS/OIDAuthorizationService+IOS.m
+Source/iOS/OIDAuthorizationService+IOS.m
+-[OIDServiceConfiguration init]
+-[OIDServiceConfiguration initWithAuthorizationEndpoint:tokenEndpoint:issuer:registrationEndpoint:discoveryDocument:]
+-[OIDServiceConfiguration initWithAuthorizationEndpoint:tokenEndpoint:]
+-[OIDServiceConfiguration initWithAuthorizationEndpoint:tokenEndpoint:registrationEndpoint:]
+-[OIDServiceConfiguration initWithAuthorizationEndpoint:tokenEndpoint:issuer:]
+-[OIDServiceConfiguration initWithAuthorizationEndpoint:tokenEndpoint:issuer:registrationEndpoint:]
+-[OIDServiceConfiguration initWithDiscoveryDocument:]
+-[OIDServiceConfiguration copyWithZone:]
++[OIDServiceConfiguration supportsSecureCoding]
+-[OIDServiceConfiguration initWithCoder:]
+-[OIDServiceConfiguration encodeWithCoder:]
+-[OIDServiceConfiguration description]
+-[OIDServiceConfiguration authorizationEndpoint]
+-[OIDServiceConfiguration tokenEndpoint]
+-[OIDServiceConfiguration issuer]
+-[OIDServiceConfiguration registrationEndpoint]
+-[OIDServiceConfiguration discoveryDocument]
+-[OIDServiceConfiguration .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.13
+_OBJC_CLASSLIST_REFERENCES_$_.32
+__OBJC_$_CLASS_METHODS_OIDServiceConfiguration
+__OBJC_CLASS_PROTOCOLS_$_OIDServiceConfiguration
+__OBJC_METACLASS_RO_$_OIDServiceConfiguration
+__OBJC_$_INSTANCE_METHODS_OIDServiceConfiguration
+_OBJC_IVAR_$_OIDServiceConfiguration._authorizationEndpoint
+_OBJC_IVAR_$_OIDServiceConfiguration._tokenEndpoint
+_OBJC_IVAR_$_OIDServiceConfiguration._issuer
+_OBJC_IVAR_$_OIDServiceConfiguration._registrationEndpoint
+_OBJC_IVAR_$_OIDServiceConfiguration._discoveryDocument
+__OBJC_$_INSTANCE_VARIABLES_OIDServiceConfiguration
+__OBJC_$_PROP_LIST_OIDServiceConfiguration
+__OBJC_CLASS_RO_$_OIDServiceConfiguration
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDServiceConfiguration.m
+Source/OIDServiceConfiguration.m
+Source/OIDServiceConfiguration.h
++[OIDRegistrationResponse fieldMap]
+___35+[OIDRegistrationResponse fieldMap]_block_invoke
+-[OIDRegistrationResponse init]
+-[OIDRegistrationResponse initWithRequest:parameters:]
+-[OIDRegistrationResponse copyWithZone:]
++[OIDRegistrationResponse supportsSecureCoding]
+-[OIDRegistrationResponse initWithCoder:]
+-[OIDRegistrationResponse encodeWithCoder:]
+-[OIDRegistrationResponse description]
+-[OIDRegistrationResponse request]
+-[OIDRegistrationResponse clientID]
+-[OIDRegistrationResponse clientIDIssuedAt]
+-[OIDRegistrationResponse clientSecret]
+-[OIDRegistrationResponse clientSecretExpiresAt]
+-[OIDRegistrationResponse registrationAccessToken]
+-[OIDRegistrationResponse registrationClientURI]
+-[OIDRegistrationResponse tokenEndpointAuthenticationMethod]
+-[OIDRegistrationResponse additionalParameters]
+-[OIDRegistrationResponse .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.65
+_OBJC_CLASSLIST_REFERENCES_$_.68
+_OBJC_CLASSLIST_REFERENCES_$_.83
+__OBJC_$_CLASS_METHODS_OIDRegistrationResponse
+__OBJC_CLASS_PROTOCOLS_$_OIDRegistrationResponse
+__OBJC_METACLASS_RO_$_OIDRegistrationResponse
+__OBJC_$_INSTANCE_METHODS_OIDRegistrationResponse
+_OBJC_IVAR_$_OIDRegistrationResponse._request
+_OBJC_IVAR_$_OIDRegistrationResponse._clientID
+_OBJC_IVAR_$_OIDRegistrationResponse._clientIDIssuedAt
+_OBJC_IVAR_$_OIDRegistrationResponse._clientSecret
+_OBJC_IVAR_$_OIDRegistrationResponse._clientSecretExpiresAt
+_OBJC_IVAR_$_OIDRegistrationResponse._registrationAccessToken
+_OBJC_IVAR_$_OIDRegistrationResponse._registrationClientURI
+_OBJC_IVAR_$_OIDRegistrationResponse._tokenEndpointAuthenticationMethod
+_OBJC_IVAR_$_OIDRegistrationResponse._additionalParameters
+__OBJC_$_INSTANCE_VARIABLES_OIDRegistrationResponse
+__OBJC_$_PROP_LIST_OIDRegistrationResponse
+__OBJC_CLASS_RO_$_OIDRegistrationResponse
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDRegistrationResponse.m
+Source/OIDRegistrationResponse.m
+Source/OIDRegistrationResponse.h
+__35+[OIDRegistrationResponse fieldMap]_block_invoke
++[OIDURLSessionProvider session]
++[OIDURLSessionProvider setSession:]
+_gURLSession
+__OBJC_$_CLASS_METHODS_OIDURLSessionProvider
+__OBJC_METACLASS_RO_$_OIDURLSessionProvider
+__OBJC_CLASS_RO_$_OIDURLSessionProvider
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDURLSessionProvider.m
+Source/OIDURLSessionProvider.m
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDScopes.m
++[OIDScopeUtilities disallowedScopeCharacters]
+___46+[OIDScopeUtilities disallowedScopeCharacters]_block_invoke
++[OIDScopeUtilities scopesWithArray:]
++[OIDScopeUtilities scopesArrayWithString:]
+_disallowedScopeCharacters.disallowedCharacters
+_disallowedScopeCharacters.onceToken
+__OBJC_$_CLASS_METHODS_OIDScopeUtilities
+__OBJC_METACLASS_RO_$_OIDScopeUtilities
+__OBJC_CLASS_RO_$_OIDScopeUtilities
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDScopeUtilities.m
+Source/OIDScopeUtilities.m
+__46+[OIDScopeUtilities disallowedScopeCharacters]_block_invoke
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDGrantTypes.m
+-[OIDRegistrationRequest init]
+-[OIDRegistrationRequest initWithConfiguration:redirectURIs:responseTypes:grantTypes:subjectType:tokenEndpointAuthMethod:additionalParameters:]
+-[OIDRegistrationRequest initWithConfiguration:redirectURIs:responseTypes:grantTypes:subjectType:tokenEndpointAuthMethod:initialAccessToken:additionalParameters:]
+-[OIDRegistrationRequest copyWithZone:]
++[OIDRegistrationRequest supportsSecureCoding]
+-[OIDRegistrationRequest initWithCoder:]
+-[OIDRegistrationRequest encodeWithCoder:]
+-[OIDRegistrationRequest description]
+-[OIDRegistrationRequest URLRequest]
+-[OIDRegistrationRequest JSONString]
+-[OIDRegistrationRequest configuration]
+-[OIDRegistrationRequest initialAccessToken]
+-[OIDRegistrationRequest applicationType]
+-[OIDRegistrationRequest redirectURIs]
+-[OIDRegistrationRequest responseTypes]
+-[OIDRegistrationRequest grantTypes]
+-[OIDRegistrationRequest subjectType]
+-[OIDRegistrationRequest tokenEndpointAuthenticationMethod]
+-[OIDRegistrationRequest additionalParameters]
+-[OIDRegistrationRequest .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.17
+_OBJC_SELECTOR_REFERENCES_.82
+__OBJC_$_CLASS_METHODS_OIDRegistrationRequest
+__OBJC_CLASS_PROTOCOLS_$_OIDRegistrationRequest
+__OBJC_METACLASS_RO_$_OIDRegistrationRequest
+__OBJC_$_INSTANCE_METHODS_OIDRegistrationRequest
+_OBJC_IVAR_$_OIDRegistrationRequest._configuration
+_OBJC_IVAR_$_OIDRegistrationRequest._initialAccessToken
+_OBJC_IVAR_$_OIDRegistrationRequest._applicationType
+_OBJC_IVAR_$_OIDRegistrationRequest._redirectURIs
+_OBJC_IVAR_$_OIDRegistrationRequest._responseTypes
+_OBJC_IVAR_$_OIDRegistrationRequest._grantTypes
+_OBJC_IVAR_$_OIDRegistrationRequest._subjectType
+_OBJC_IVAR_$_OIDRegistrationRequest._tokenEndpointAuthenticationMethod
+_OBJC_IVAR_$_OIDRegistrationRequest._additionalParameters
+__OBJC_$_INSTANCE_VARIABLES_OIDRegistrationRequest
+__OBJC_$_PROP_LIST_OIDRegistrationRequest
+__OBJC_CLASS_RO_$_OIDRegistrationRequest
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDRegistrationRequest.m
+Source/OIDRegistrationRequest.m
+Source/OIDRegistrationRequest.h
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDResponseTypes.m
++[OIDAuthorizationResponse fieldMap]
+___36+[OIDAuthorizationResponse fieldMap]_block_invoke
+___36+[OIDAuthorizationResponse fieldMap]_block_invoke_2
+-[OIDAuthorizationResponse init]
+-[OIDAuthorizationResponse initWithRequest:parameters:]
+-[OIDAuthorizationResponse copyWithZone:]
++[OIDAuthorizationResponse supportsSecureCoding]
+-[OIDAuthorizationResponse initWithCoder:]
+-[OIDAuthorizationResponse encodeWithCoder:]
+-[OIDAuthorizationResponse description]
+-[OIDAuthorizationResponse tokenExchangeRequest]
+-[OIDAuthorizationResponse tokenExchangeRequestWithAdditionalParameters:]
+-[OIDAuthorizationResponse request]
+-[OIDAuthorizationResponse authorizationCode]
+-[OIDAuthorizationResponse state]
+-[OIDAuthorizationResponse accessToken]
+-[OIDAuthorizationResponse accessTokenExpirationDate]
+-[OIDAuthorizationResponse tokenType]
+-[OIDAuthorizationResponse idToken]
+-[OIDAuthorizationResponse scope]
+-[OIDAuthorizationResponse additionalParameters]
+-[OIDAuthorizationResponse .cxx_destruct]
+_OBJC_CLASSLIST_REFERENCES_$_.20
+___block_literal_global.38
+_OBJC_CLASSLIST_REFERENCES_$_.39
+_OBJC_CLASSLIST_REFERENCES_$_.76
+__OBJC_$_CLASS_METHODS_OIDAuthorizationResponse
+__OBJC_CLASS_PROTOCOLS_$_OIDAuthorizationResponse
+__OBJC_METACLASS_RO_$_OIDAuthorizationResponse
+__OBJC_$_INSTANCE_METHODS_OIDAuthorizationResponse
+_OBJC_IVAR_$_OIDAuthorizationResponse._request
+_OBJC_IVAR_$_OIDAuthorizationResponse._authorizationCode
+_OBJC_IVAR_$_OIDAuthorizationResponse._state
+_OBJC_IVAR_$_OIDAuthorizationResponse._accessToken
+_OBJC_IVAR_$_OIDAuthorizationResponse._accessTokenExpirationDate
+_OBJC_IVAR_$_OIDAuthorizationResponse._tokenType
+_OBJC_IVAR_$_OIDAuthorizationResponse._idToken
+_OBJC_IVAR_$_OIDAuthorizationResponse._scope
+_OBJC_IVAR_$_OIDAuthorizationResponse._additionalParameters
+__OBJC_$_INSTANCE_VARIABLES_OIDAuthorizationResponse
+__OBJC_$_PROP_LIST_OIDAuthorizationResponse
+__OBJC_CLASS_RO_$_OIDAuthorizationResponse
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDAuthorizationResponse.m
+Source/OIDAuthorizationResponse.m
+Source/OIDAuthorizationResponse.h
+__36+[OIDAuthorizationResponse fieldMap]_block_invoke_2
+__36+[OIDAuthorizationResponse fieldMap]_block_invoke
+/Users/alessio.borraccino/Documents/workspace/d4l-sdk-ios/Carthage/Checkouts/AppAuth-iOS/Source/OIDError.m
+__ZL15__ARCLite__loadv
+__ZL58__arclite_NSMutableDictionary__setObject_forKeyedSubscriptP19NSMutableDictionaryP13objc_selectorP11objc_objectS4_
+__ZL22add_image_hook_swiftV1PK11mach_headerl
+__ZL42__arclite_NSUndoManagerProxy_isKindOfClassP11objc_objectP13objc_selectorP10objc_class
+__ZL30__arclite_NSManagedObject_initP11objc_objectP13objc_selector
+__ZL41__arclite_NSManagedObject_allocWithEntityP11objc_objectP13objc_selectorS0_
+__ZL36__arclite_NSManagedObject_allocBatchP11objc_objectP13objc_selectorPS0_S0_j
+__ZL37__arclite_NSKKMS_fastIndexForKnownKeyP11objc_objectP13objc_selectorS0_
+__ZL28__arclite_NSKKMS_indexForKeyP11objc_objectP13objc_selectorS0_
+__ZL29__arclite_NSKKsD_objectForKeyP11objc_objectP13objc_selectorS0_
+__ZL35__arclite_NSKKsD_removeObjectForKeyP11objc_objectP13objc_selectorS0_
+__ZL33__arclite_NSKKsD_setObject_forKeyP11objc_objectP13objc_selectorS0_S0_
+__ZL41__arclite_NSKKsD_addEntriesFromDictionaryP11objc_objectP13objc_selectorP12NSDictionary
+__ZL28__arclite_objc_readClassPairP10objc_classPK15objc_image_info
+__ZL32__arclite_objc_allocateClassPairP10objc_classPKcm
+__ZL32__arclite_object_getIndexedIvarsP11objc_object
+__ZL23__arclite_objc_getClassPKc
+__ZL27__arclite_objc_getMetaClassPKc
+__ZL31__arclite_objc_getRequiredClassPKc
+__ZL26__arclite_objc_lookUpClassPKc
+__ZL26__arclite_objc_getProtocolPKc
+__ZL23__arclite_class_getNameP10objc_class
+__ZL26__arclite_protocol_getNameP8Protocol
+__ZL37__arclite_objc_copyClassNamesForImagePKcPj
+__ZL17transcribeMethodsP10objc_classP15glue_class_ro_t
+__ZL19transcribeProtocolsP10objc_classP15glue_class_ro_t
+__ZL20transcribePropertiesP10objc_classP15glue_class_ro_t
+__ZL14initialize_impP11objc_objectP13objc_selector
+__ZL18allocateMaybeSwiftP18glue_swift_class_tm
+__ZL22copySwiftV1MangledNamePKcb
+__ZL13demangledNamePKcb
+__ZL16scanMangledFieldRPKcS0_S1_Ri
+__ZL30arclite_uninitialized_functionv
+__ZL12cxxConstructP11objc_object
+__ZL20fixStringForCoreDataP11objc_object
+_OBJC_METACLASS_$___ARCLite__
+__ZL24OBJC_CLASS_$___ARCLite__
+__ZL31OBJC_METACLASS_RO_$___ARCLite__
+__non_lazy_classes
+__ZL27OBJC_CLASS_RO_$___ARCLite__
+__ZL11_class_name
+__ZL32OBJC_$_CLASS_METHODS___ARCLite__
+__ZL17_load_method_name
+__ZL17_load_method_type
+__OBJC_$_PROTOCOL_INSTANCE_METHODS___ARCLiteKeyedSubscripting__
+__OBJC_$_PROTOCOL_METHOD_TYPES___ARCLiteKeyedSubscripting__
+__OBJC_PROTOCOL_$___ARCLiteKeyedSubscripting__
+__OBJC_LABEL_PROTOCOL_$___ARCLiteKeyedSubscripting__
+__OBJC_PROTOCOL_REFERENCE_$___ARCLiteKeyedSubscripting__
+__ZL30NSUndoManagerProxy_targetClass
+__ZL29original_NSManagedObject_init
+__ZL40original_NSManagedObject_allocWithEntity
+__ZL35original_NSManagedObject_allocBatch
+__ZL25NSMutableDictionary_class
+__ZL22NSConstantString_class
+__ZL14NSString_class
+__ZL36original_NSKKMS_fastIndexForKnownKey
+__ZL27original_NSKKMS_indexForKey
+__ZL28original_NSKKsD_objectForKey
+__ZL34original_NSKKsD_removeObjectForKey
+__ZL32original_NSKKsD_setObject_forKey
+__ZL40original_NSKKsD_addEntriesFromDictionary
+__ZZL22add_image_hook_swiftV1PK11mach_headerlE7patches
+__ZGVZL22add_image_hook_swiftV1PK11mach_headerlE7patches
+__ZL31original_objc_allocateClassPair
+__ZL31original_object_getIndexedIvars
+__ZL22original_objc_getClass
+__ZL26original_objc_getMetaClass
+__ZL30original_objc_getRequiredClass
+__ZL25original_objc_lookUpClass
+__ZL25original_objc_getProtocol
+__ZL22original_class_getName
+__ZL25original_protocol_getName
+__ZL36original_objc_copyClassNamesForImage
+__ZL12demangleLock
+__ZL9Demangled
+Apple clang version 12.0.0 (clang-1200.0.32.28)
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c++ --target=arm64-apple-ios4.3 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -std=c++11 -Wno-trigraphs -fno-exceptions -fno-rtti -fno-sanitize=vptr -mpascal-strings -Os -Wno-missing-field-initializers -Wmissing-prototypes -Wno-implicit-atomic-properties -Wno-objc-interface-ivars -Wno-arc-repeated-use-of-weak -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-float-conversion -Wno-non-literal-null-conversion -Wno-objc-literal-conversion -Wshorten-64-to-32 -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -Wno-c++11-extensions -D NDEBUG=1 -D OBJC_OLD_DISPATCH_PROTOTYPES=0 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.2.Internal.sdk -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -Winvalid-offsetof -g -fno-threadsafe-statics -Wno-sign-conversion -Wno-infinite-recursion -Wno-move -Wno-comma -Wno-block-capture-autoreleasing -Wno-strict-prototypes -Wno-range-loop-analysis -Wno-semicolon-before-method-body -fembed-bitcode=all -iquote /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/arclite_iphoneos-generated-files.hmap -I /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/arclite_iphoneos-own-target-headers.hmap -I /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/arclite_iphoneos-all-target-headers.hmap -iquote /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/arclite_iphoneos-project-headers.hmap -I /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/Symbols/BuiltProducts/include -I /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/DerivedSources-normal/arm64 -I /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/DerivedSources/arm64 -I /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/DerivedSources -F/Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/Symbols/BuiltProducts -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.2.Internal.sdk/System/Library/PrivateFrameworks -Wall -Wextra -Wno-gcc-compat -Wno-error=incomplete-umbrella -Wno-error=invalid-ios-deployment-target -Wno-error=deprecated-declarations -Wno-error=documentation -Wno-error=incomplete-umbrella -Wno-error=invalid-ios-deployment-target -Wno-error=deprecated-declarations -Wno-error=documentation -MMD -MT dependencies -MF /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/Objects-normal/arm64/arclite.d --serialize-diagnostics /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/Objects-normal/arm64/arclite.dia -c /Library/Caches/com.apple.xbs/Sources/arclite_iOS/arclite-76/source/arclite.mm -o /Library/Caches/com.apple.xbs/Binaries/arclite_iOS/install/TempContent/Objects/arclite.build/arclite_iOS.build/Objects-normal/arm64/arclite.o -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -mlinker-version=609.8
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.2.Internal.sdk
+iPhoneOS14.2.Internal.sdk
+/Library/Caches/com.apple.xbs/Sources/arclite_iOS/arclite-76/source/arclite.mm
+/Library/Caches/com.apple.xbs/Sources/arclite_iOS/arclite-76
+fixStringForCoreData
+source/arclite.mm
+cxxConstruct
+arclite_uninitialized_function
+scanMangledField
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.2.Internal.sdk/usr/include/_ctype.h
+__isctype
+demangledName
+copySwiftV1DemangledName
+copySwiftV1MangledName
+allocateMaybeSwift
+word_align
+isSwift
+initialize_imp
+transcribeProperties
+property_list_nth
+transcribeProtocols
+transcribeMethods
+data
+method_list_nth
+__arclite_objc_copyClassNamesForImage
+__arclite_protocol_getName
+__arclite_class_getName
+__arclite_objc_getProtocol
+__arclite_objc_lookUpClass
+__arclite_objc_getRequiredClass
+__arclite_objc_getMetaClass
+__arclite_objc_getClass
+__arclite_object_getIndexedIvars
+__arclite_objc_allocateClassPair
+metaclass
+__arclite_objc_readClassPair
+transcribeIvars
+ivar_list_nth
+max
+alignment
+ro
+fastFlags
+__arclite_NSKKsD_addEntriesFromDictionary
+__arclite_NSKKsD_setObject_forKey
+__arclite_NSKKsD_removeObjectForKey
+__arclite_NSKKsD_objectForKey
+__arclite_NSKKMS_indexForKey
+__arclite_NSKKMS_fastIndexForKnownKey
+__arclite_NSManagedObject_allocBatch
+__arclite_NSManagedObject_allocWithEntity
+__arclite_NSManagedObject_init
+__arclite_NSUndoManagerProxy_isKindOfClass
+add_image_hook_swiftV1
+patch_lazy_pointers
+patch_t<const char **(const char *, unsigned int *)>
+patch_t<const char *(Protocol *)>
+patch_t<const char *(Class)>
+patch_t<Protocol *(const char *)>
+patch_t<Class (const char *)>
+patch_t<void *(id)>
+patch_t<Class (Class, const char *, unsigned long)>
+patch_t<Class (Class, const objc_image_info *)>
+__arclite_NSMutableDictionary__setObject_forKeyedSubscript
+__ARCLite__load
+install_swiftV1
+replaceMethod
+install_dict_nil_value
+addOrReplaceMethod
+keyedGetter

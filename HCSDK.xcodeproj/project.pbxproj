@@ -82,7 +82,6 @@
 		3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */; };
 		36882BD525E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; };
 		36882BD625E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		36882BFF25E80E8200BDA715 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
 		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
 		36882C6025ECEE8D00BDA715 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */; };
@@ -94,6 +93,8 @@
 		36882C6E25ECEEBA00BDA715 /* ModelsR4.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC325E8045E00BDA715 /* ModelsR4.xcframework */; };
 		36882C6F25ECEEBA00BDA715 /* SVProgressHUD.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */; };
 		36882C7025ECEEBA00BDA715 /* Then.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC825E8045E00BDA715 /* Then.xcframework */; };
+		36882C8925EE98A500BDA715 /* Data4LifeCrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882C7B25EE984E00BDA715 /* Data4LifeCrypto.xcframework */; };
+		36882C9325EE994300BDA715 /* Data4LifeCrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882C9225EE994300BDA715 /* Data4LifeCrypto.xcframework */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -298,7 +299,6 @@
 		CD841E5E225CBF2D002656D5 /* Data4LifeSDK-Version.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */; };
 		CD841E5F225CC20D002656D5 /* Bundle+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10919B225B8A0A00325389 /* Bundle+JSON.swift */; };
 		CD841E60225CC211002656D5 /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10919D225B8A0A00325389 /* KeyFactory.swift */; };
-		CD841E61225CC57B002656D5 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		CD841E66225CC738002656D5 /* asymPrivateExchangeKeyPKCS8.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918A225B8A0A00325389 /* asymPrivateExchangeKeyPKCS8.json */; };
 		CD841E68225CC74D002656D5 /* symTagExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918C225B8A0A00325389 /* symTagExchangeKey.json */; };
 		CD841E69225CC755002656D5 /* encryptedCommonTekKeys.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109196225B8A0A00325389 /* encryptedCommonTekKeys.json */; };
@@ -334,13 +334,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 839E81381E86DE5300C42094;
 			remoteInfo = Example;
-		};
-		36882C0125E80E8200BDA715 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CD108FF0225B88BE00325389;
-			remoteInfo = Data4LifeCrypto;
 		};
 		9173D35A1F82234A00EDB609 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -482,6 +475,8 @@
 		36882BC825E8045E00BDA715 /* Then.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Then.xcframework; path = Carthage/Build/Then.xcframework; sourceTree = "<group>"; };
 		36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionServiceInterceptor.swift; sourceTree = "<group>"; };
 		36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptorMock.swift; sourceTree = "<group>"; };
+		36882C7B25EE984E00BDA715 /* Data4LifeCrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeCrypto.xcframework; path = build/Data4LifeCrypto.xcframework; sourceTree = "<group>"; };
+		36882C9225EE994300BDA715 /* Data4LifeCrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeCrypto.xcframework; path = xcframeworks/Data4LifeCrypto.xcframework; sourceTree = "<group>"; };
 		3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+AppData.swift"; sourceTree = "<group>"; };
 		3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasMainRecordOperations.swift; sourceTree = "<group>"; };
 		3689D7F324EAB2DF004295D9 /* AppDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataService.swift; sourceTree = "<group>"; };
@@ -713,6 +708,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36882C9325EE994300BDA715 /* Data4LifeCrypto.xcframework in Frameworks */,
 				36882C6925ECEEBA00BDA715 /* Alamofire.xcframework in Frameworks */,
 				36882C6A25ECEEBA00BDA715 /* AppAuth.xcframework in Frameworks */,
 				36882C6B25ECEEBA00BDA715 /* CryptoSwift.xcframework in Frameworks */,
@@ -721,7 +717,6 @@
 				36882C6E25ECEEBA00BDA715 /* ModelsR4.xcframework in Frameworks */,
 				36882C6F25ECEEBA00BDA715 /* SVProgressHUD.xcframework in Frameworks */,
 				36882C7025ECEEBA00BDA715 /* Then.xcframework in Frameworks */,
-				36882BFF25E80E8200BDA715 /* Data4LifeCrypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,7 +724,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD841E61225CC57B002656D5 /* Data4LifeCrypto.framework in Frameworks */,
+				36882C8925EE98A500BDA715 /* Data4LifeCrypto.xcframework in Frameworks */,
 				837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1046,6 +1041,8 @@
 		837463D11E85663300AB500F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				36882C7B25EE984E00BDA715 /* Data4LifeCrypto.xcframework */,
+				36882C9225EE994300BDA715 /* Data4LifeCrypto.xcframework */,
 				36882BC425E8045E00BDA715 /* Alamofire.xcframework */,
 				36882BC625E8045E00BDA715 /* AppAuth.xcframework */,
 				36882BC125E8045D00BDA715 /* AppAuthCore.xcframework */,
@@ -1858,7 +1855,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				36882C0225E80E8200BDA715 /* PBXTargetDependency */,
 			);
 			name = Data4LifeSDK;
 			packageProductDependencies = (
@@ -2405,11 +2401,6 @@
 			isa = PBXTargetDependency;
 			target = 839E81381E86DE5300C42094 /* Example */;
 			targetProxy = 36185286257015F8005D15A5 /* PBXContainerItemProxy */;
-		};
-		36882C0225E80E8200BDA715 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CD108FF0225B88BE00325389 /* Data4LifeCrypto */;
-			targetProxy = 36882C0125E80E8200BDA715 /* PBXContainerItemProxy */;
 		};
 		837463B21E854E7500AB500F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
