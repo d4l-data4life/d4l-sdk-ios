@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Data4LifeSDK"
-  s.version          = "1.12.2"
+  s.version          = "1.12.3"
   s.summary          = "iOS SDK for interacting with the Gesundheitscloud health data backend."
   s.homepage         = "https://github.com/d4l-data4life/d4l-sdk-ios/"
   s.license          = 'Private License'
@@ -17,10 +17,10 @@ Pod::Spec.new do |s|
   s.dependency 'Alamofire', '~> 4.9.1'
   s.dependency 'thenPromise', '~> 5.1.1'
   s.dependency 'AppAuth', '~> 1.0.0'
-  s.dependency 'Data4LifeSDKUtils', '~> 0.3.0'
-  s.dependency 'Data4LifeCrypto', '~> 1.4.0'
+  s.dependency 'Data4LifeSDKUtils', '~> 0.3.1'
+  s.dependency 'Data4LifeCrypto', '~> 1.4.1'
   s.dependency 'SVProgressHUD', '2.2.5'
 
-  s.dependency 'Data4LifeFHIR', '~> 0.18.0'
-  s.dependency 'ModelsR4', '~> 0.18.0'
+  s.dependency 'Data4LifeFHIR', '~> 0.18.1'
+  s.dependency 'ModelsR4', '~> 0.18.1'
 end
