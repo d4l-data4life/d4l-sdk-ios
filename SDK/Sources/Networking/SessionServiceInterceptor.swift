@@ -16,21 +16,30 @@
 import Foundation
 import Alamofire
 
-protocol SessionAdapterType: RequestAdapter {}
+protocol RequestInterceptorType: RequestInterceptor {
+    func setRetrier(_ retrier: RequestRetrier)
+}
 
-final class SessionAdapter: SessionAdapterType {
+final class SessionServiceInterceptor: RequestInterceptorType {
+
     private let keychainService: KeychainServiceType
     private let sdkVersion: String
+    private var retrier: RequestRetrier?
 
     init(keychainService: KeychainServiceType, sdkVersion: String) {
         self.keychainService = keychainService
         self.sdkVersion = sdkVersion
     }
 
-    func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
+    func setRetrier(_ retrier: RequestRetrier) {
+        self.retrier = retrier
+    }
+
+    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         guard let urlString = urlRequest.url?.absoluteString,
             urlString.hasPrefix(Router.baseUrl) else {
-                return urlRequest
+            completion(.success(urlRequest))
+            return
         }
 
         var urlRequest = urlRequest
@@ -38,10 +47,18 @@ final class SessionAdapter: SessionAdapterType {
 
         guard let accessToken = keychainService[.accessToken],
             urlRequest.allHTTPHeaderFields?["Authorization"]?.isEmpty == true else {
-            return urlRequest
+            completion(.success(urlRequest))
+            return
         }
 
         urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        return urlRequest
+        return completion(.success(urlRequest))
+    }
+
+    public func retry(_ request: Request,
+                      for session: Session,
+                      dueTo error: Error,
+                      completion: @escaping (RetryResult) -> Void) {
+        retrier?.retry(request, for: session, dueTo: error, completion: completion)
     }
 }

@@ -189,16 +189,16 @@ class StubbedURLProtocol: URLProtocol {
 extension SessionService {
     static func stubbedSessionService(versionValidator: SDKVersionValidatorType,
                                       networkManager: ReachabilityType = Reachability(NetworkReachabilityManager()),
-                                      serverTrustPolicyManager: ServerTrustPolicyManager? = nil,
-                                      adapter: SessionAdapterType? = nil)
-        -> SessionService {
-            let configuration = URLSessionConfiguration.default
-            configuration.protocolClasses = [StubbedURLProtocol.self]
+                                      serverTrustManager: ServerTrustManager? = nil,
+                                      interceptor: RequestInterceptorType? = nil)
+    -> SessionService {
+        let configuration = URLSessionConfiguration.default
+        configuration.protocolClasses = [StubbedURLProtocol.self]
 
-            return SessionService(configuration: configuration,
-                                  versionValidator: versionValidator,
-                                  serverTrustPolicyManager: serverTrustPolicyManager,
-                                  networkManager: networkManager,
-                                  adapter: adapter)
+        return SessionService(configuration: configuration,
+                              versionValidator: versionValidator,
+                              serverTrustManager: serverTrustManager,
+                              networkManager: networkManager,
+                              interceptor: interceptor)
     }
 }

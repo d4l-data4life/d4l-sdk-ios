@@ -37,8 +37,8 @@ class OAuthServiceTests: XCTestCase {
             let payload = try? bundle.json(named: "authStateTokenResponseSuccess"),
             let stringData =  payload["data"] as? String,
             let mockedTokenResponse = try? NSKeyedUnarchiver.unarchivedObject(ofClass: OIDTokenResponse.self, from: Data(base64Encoded: stringData)!)
-            else {
-                fatalError("Could not load mocked payload data")
+        else {
+            fatalError("Could not load mocked payload data")
         }
         return mockedTokenResponse
     }
@@ -103,7 +103,7 @@ class OAuthServiceTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -139,7 +139,7 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.authNetworkError)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -174,7 +174,7 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.authServerError)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -209,7 +209,7 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.appAuth(authError))
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -247,12 +247,12 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.userCanceledAuthFlow)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testShouldRetryOnUnauthorized() {
+    func testShouldRetryOnUnauthorized() throws {
         let url = URL(string: Router.baseUrl)!
         stub("GET", url.path, with: [], code: 401)
 
@@ -263,19 +263,21 @@ class OAuthServiceTests: XCTestCase {
         let refreshToken = UUID().uuidString
         authState.performActionWithAdditionalResult = (accessToken, refreshToken, nil)
 
-        let stateData = try! NSKeyedArchiver.archivedData(withRootObject: authState!, requiringSecureCoding: false)
+        let stateData = try NSKeyedArchiver.archivedData(withRootObject: authState!, requiringSecureCoding: false)
         keychainService[.authState] = stateData.base64EncodedString()
 
         let asyncExpectation = self.expectation(description: "should retry")
-        let request = sessionService.request(url)
+        let request = try sessionService.request(url: url, method: .get)
         request.response { result in
             guard result.response?.statusCode == 401 else {
                 XCTFail("Status code should be 401")
                 return
             }
-            self.oAuthService.should(self.sessionService, retry: request, with: Data4LifeSDKError.timeout) { (retry, _) in
+
+            self.oAuthService.retry(request, for: self.sessionService.session, dueTo: Data4LifeSDKError.timeout) { (retryResult) -> Void in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertTrue(retry)
+                XCTAssertTrue(retryResult.isRetry)
+
                 XCTAssertEqual(self.keychainService[.accessToken], accessToken)
                 XCTAssertEqual(self.keychainService[.refreshToken], refreshToken)
             }
@@ -284,78 +286,76 @@ class OAuthServiceTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testShouldRetryOnTimeout() {
+    func testShouldRetryOnTimeout() throws {
         let url = URL(string: Router.baseUrl)!
         let error = Data4LifeSDKError.timeout
         stub("GET", url.path, with: [], code: 408)
         var retryCount = 0
 
         let asyncExpectation = self.expectation(description: "should retry number of times")
-        let request = sessionService.request(url)
+        let request = try sessionService.request(url: url, method: .get)
         request.response { result in
             guard result.response?.statusCode == 408 else {
                 XCTFail("Status code should be 408")
                 return
             }
 
-            self.oAuthService.should(self.sessionService, retry: request, with: error)
-                .then { retry in
-                    XCTAssertTrue(retry)
+            self.oAuthService.retry(request, for: self.sessionService.session, dueTo: error) { (retryResult) -> Void in
+
+                XCTAssertTrue(retryResult.isRetry)
+                retryCount += 1
+
+                self.oAuthService.retry(request, for: self.sessionService.session, dueTo: error) { (retryResult) -> Void in
                     retryCount += 1
+                    XCTAssertTrue(retryResult.isRetry)
+                    XCTAssertEqual(retryCount, self.numberOfRetries)
 
-                    self.oAuthService.should(self.sessionService, retry: request, with: error)
-                        .then { retry in
-                            retryCount += 1
-                            XCTAssertTrue(retry)
-                            XCTAssertEqual(retryCount, self.numberOfRetries)
-
-                            self.oAuthService.should(self.sessionService, retry: request, with: error)
-                                .then { retry in
-                                    defer { asyncExpectation.fulfill() }
-                                    XCTAssertFalse(retry)
-                                    XCTAssertEqual(self.oAuthService.currentRetryCount, 0)
-                            }
+                    self.oAuthService.retry(request, for: self.sessionService.session, dueTo: error) { (retryResult) -> Void in
+                        defer { asyncExpectation.fulfill() }
+                        XCTAssertFalse(retryResult.isRetry)
+                        XCTAssertEqual(self.oAuthService.currentRetryCount, 0)
                     }
+                }
             }
         }
         waitForExpectations(timeout: 5)
     }
 
-    func testShouldClearKeychainWhenRefreshFails() {
-        let url = URL(string: Router.baseUrl)!
-        stub("GET", url.path, with: [], code: 401)
-        let accessToken = UUID().uuidString
-        let refreshToken = UUID().uuidString
+        func testShouldClearKeychainWhenRefreshFails() throws {
+            let url = URL(string: Router.baseUrl)!
+            stub("GET", url.path, with: [], code: 401)
+            let accessToken = UUID().uuidString
+            let refreshToken = UUID().uuidString
 
-        let refreshError = OIDErrorUtilities.error(with: OIDErrorCode.tokenRefreshError,
-                                                   underlyingError: nil,
-                                                   description: nil)
-        authState.performActionWithAdditionalResult = (nil, nil, refreshError)
-        let stateData = try! NSKeyedArchiver.archivedData(withRootObject: authState!, requiringSecureCoding: false)
+            let refreshError = OIDErrorUtilities.error(with: OIDErrorCode.tokenRefreshError,
+                                                       underlyingError: nil,
+                                                       description: nil)
+            authState.performActionWithAdditionalResult = (nil, nil, refreshError)
+            let stateData = try NSKeyedArchiver.archivedData(withRootObject: authState!, requiringSecureCoding: false)
 
-        keychainService[.refreshToken] = refreshToken
-        keychainService[.accessToken] = accessToken
-        keychainService[.authState] = stateData.base64EncodedString()
+            keychainService[.refreshToken] = refreshToken
+            keychainService[.accessToken] = accessToken
+            keychainService[.authState] = stateData.base64EncodedString()
 
-        let asyncExpectation = self.expectation(description: "should clear keychain on error")
-        let request = sessionService.request(url)
-        request.response { result in
-            guard result.response?.statusCode == 401 else {
-                XCTFail("Status code should be 401")
-                return
+            let asyncExpectation = self.expectation(description: "should clear keychain on error")
+            let request = try sessionService.request(url: url, method: .get)
+            request.response { result in
+                guard result.response?.statusCode == 401 else {
+                    XCTFail("Status code should be 401")
+                    return
+                }
+                self.oAuthService.retry(request, for: self.sessionService.session, dueTo: Data4LifeSDKError.timeout) { (retryResult) -> Void in
+                    defer { asyncExpectation.fulfill() }
+                    XCTAssertFalse(retryResult.isRetry)
+                    XCTAssertEqual(self.keychainService[.accessToken], nil)
+                    XCTAssertEqual(self.keychainService[.refreshToken], nil)
+                    XCTAssertEqual(self.keychainService[.authState], nil)
+                    XCTAssertTrue(self.keychainService.clearCalled)
+                }
             }
-            self.oAuthService.should(self.sessionService, retry: request, with: Data4LifeSDKError.timeout) { (retry, _) in
-                defer { asyncExpectation.fulfill() }
-                XCTAssertFalse(retry)
-                XCTAssertEqual(self.keychainService[.accessToken], nil)
-                XCTAssertEqual(self.keychainService[.refreshToken], nil)
-                XCTAssertEqual(self.keychainService[.authState], nil)
-                XCTAssertTrue(self.keychainService.clearCalled)
-            }
+
+            waitForExpectations(timeout: 5)
         }
-
-        waitForExpectations(timeout: 5)
-    }
 
     func testLogout() {
         let refreshToken = UUID().uuidString
@@ -378,9 +378,9 @@ class OAuthServiceTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testIsSessionActiveSuccess() {
+    func testIsSessionActiveSuccess() throws {
         authState.lastTokenResponseResult = mockedTokenReponse
-        let stateData = try! NSKeyedArchiver.archivedData(withRootObject: authState!, requiringSecureCoding: false)
+        let stateData = try NSKeyedArchiver.archivedData(withRootObject: authState!, requiringSecureCoding: false)
         keychainService[.authState] = stateData.base64EncodedString()
 
         stub("GET", "/userinfo", with: [], code: 200)
@@ -393,7 +393,7 @@ class OAuthServiceTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -409,7 +409,7 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -428,21 +428,30 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertRouteCalled("GET", "/userinfo")
             }.finally {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testSaveAuthState() {
+    func testSaveAuthState() throws {
         XCTAssertNil(keychainService[.accessToken])
         XCTAssertNil(keychainService[.refreshToken])
         XCTAssertNil(keychainService[.authState])
 
         authState.lastTokenResponseResult = mockedTokenReponse
-        oAuthService.saveAuthState(authState)
+        try oAuthService.saveAuthState(authState)
 
         XCTAssertNotNil(keychainService[.accessToken])
         XCTAssertNotNil(keychainService[.refreshToken])
         XCTAssertNotNil(keychainService[.authState])
+    }
+}
+
+extension RetryResult {
+    var isRetry: Bool {
+        switch self {
+        case .retry: return true
+        default: return false
+        }
     }
 }

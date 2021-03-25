@@ -20,9 +20,11 @@ import Then
 
 class SessionAdapterTests: XCTestCase {
     var sessionService: SessionService!
-    var sessionAdapter: SessionAdapterType!
+    var interceptor: RequestInterceptorType!
     var keychainService: KeychainServiceMock!
     var versionValidator: SDKVersionValidatorMock!
+    var oAuthService: OAuthServiceType!
+
     let sdkVersion = UUID().uuidString
 
     override func setUp() {
@@ -31,48 +33,74 @@ class SessionAdapterTests: XCTestCase {
         Router.baseUrl = "http://example.com"
         keychainService = KeychainServiceMock()
         versionValidator = SDKVersionValidatorMock()
-        sessionAdapter = SessionAdapter(keychainService: keychainService,
-                                        sdkVersion: sdkVersion)
-        sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator, adapter: sessionAdapter)
+        oAuthService = OAuthServiceMock()
+
+        interceptor = SessionServiceInterceptor(keychainService: keychainService,
+                                                sdkVersion: sdkVersion)
+        interceptor.setRetrier(oAuthService)
+        sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator, interceptor: interceptor)
     }
 
-    func testAdaptRequestDomainPinning() {
+        func testAdaptableRequestDomainPinning() {
+            let adaptedRequestExpectation = expectation(description: "adaptedRequest")
+            let accessToken = UUID().uuidString
+            keychainService[.accessToken] = accessToken
+
+            // Test the path with same baseURl gets adapted
+            let url = URL(string: Router.baseUrl)!.appendingPathComponent("/somepath")
+            let urlRequest = URLRequest(url: url)
+            interceptor.adapt(urlRequest, for: sessionService.session, completion: { [weak self] (result) in
+                guard let self = self else { return }
+                XCTAssertEqual(result.value?.allHTTPHeaderFields?["hc-sdk-version"], "ios-\(self.sdkVersion)")
+                adaptedRequestExpectation.fulfill()
+            })
+
+            waitForExpectations(timeout: 0.5, handler: nil)
+        }
+
+    func testNonAdaptableRequestDomainPinning() {
+        let adaptedRequestExpectation = expectation(description: "adaptedRequest")
         let accessToken = UUID().uuidString
         keychainService[.accessToken] = accessToken
-
-        // Test the path with same baseURl gets adapted
-        let url = URL(string: Router.baseUrl)!.appendingPathComponent("/somepath")
-        let urlRequest = URLRequest(url: url)
-        let adaptedUrlRequest = try? sessionAdapter.adapt(urlRequest)
-        XCTAssertEqual(adaptedUrlRequest?.allHTTPHeaderFields?["hc-sdk-version"], "ios-\(sdkVersion)")
-
         // Test that any other request will not be adapted
         let arbitaryUrl = URL(string: "https://someotherdomain.com/something")!
         let arbitaryUrlRequest = URLRequest(url: arbitaryUrl)
-        let arbitaryAdaptedUrlRequest = try? sessionAdapter.adapt(arbitaryUrlRequest)
-        XCTAssertNil(arbitaryAdaptedUrlRequest?.allHTTPHeaderFields?["GC-SDK-Version"], sdkVersion)
+        interceptor.adapt(arbitaryUrlRequest, for: sessionService.session, completion: { [weak self] (result) in
+            guard let self = self else { return }
+            XCTAssertNil(result.value?.allHTTPHeaderFields?["GC-SDK-Version"], self.sdkVersion)
+            adaptedRequestExpectation.fulfill()
+        })
+        waitForExpectations(timeout: 0.5, handler: nil)
     }
 
-    func testAdaptRequestUnauthorized() {
-        let accessToken = UUID().uuidString
+        func testAdaptRequestUnauthorized() {
+            let adaptedRequestExpectation = expectation(description: "adaptedRequest")
+            let accessToken = UUID().uuidString
 
-        keychainService[.accessToken] = accessToken
-        let urlRequest = try! Router.authorize.asURLRequest()
-        let adaptedUrlRequest = try? sessionAdapter.adapt(urlRequest)
+            keychainService[.accessToken] = accessToken
+            let urlRequest = try! Router.authorize.asURLRequest()
+            interceptor.adapt(urlRequest, for: sessionService.session, completion: { (result) in
+                let adaptedAuthorizatioHeaderValue = result.value?.allHTTPHeaderFields?["Authorization"]
+                XCTAssertNil(adaptedAuthorizatioHeaderValue)
+                adaptedRequestExpectation.fulfill()
+            })
 
-        let adaptedAuthorizatioHeaderValue = adaptedUrlRequest?.allHTTPHeaderFields?["Authorization"]
-        XCTAssertNil(adaptedAuthorizatioHeaderValue)
-    }
+            waitForExpectations(timeout: 0.5, handler: nil)
+        }
 
-    func testAdaptRequestAuthorized() {
-        let accessToken = UUID().uuidString
-        keychainService[.accessToken] = accessToken
+        func testAdaptRequestAuthorized() {
+            let accessToken = UUID().uuidString
+            let adaptedRequestExpectation = expectation(description: "adaptedRequest")
+            keychainService[.accessToken] = accessToken
 
-        let urlRequest = try! Router.userInfo.asURLRequest()
-        let adaptedUrlRequest = try? sessionAdapter.adapt(urlRequest)
+            let urlRequest = try! Router.userInfo.asURLRequest()
+            interceptor.adapt(urlRequest, for: sessionService.session, completion: { (result) in
+                let adaptedAuthorizatioHeaderValue = result.value?.allHTTPHeaderFields?["Authorization"]
+                XCTAssertNotNil(adaptedAuthorizatioHeaderValue)
+                XCTAssertEqual("Bearer \(accessToken)", adaptedAuthorizatioHeaderValue)
+                adaptedRequestExpectation.fulfill()
+            })
 
-        let adaptedAuthorizatioHeaderValue = adaptedUrlRequest?.allHTTPHeaderFields?["Authorization"]
-        XCTAssertNotNil(adaptedAuthorizatioHeaderValue)
-        XCTAssertEqual("Bearer \(accessToken)", adaptedAuthorizatioHeaderValue)
-    }
+            waitForExpectations(timeout: 0.5, handler: nil)
+        }
 }

@@ -23,14 +23,14 @@ class ResultTests: XCTestCase {
     let value = 1
 
     func testValue() {
-        let success = Result.success(value)
+        let success = Result<Int,MockError>.success(value)
         XCTAssertEqual(success.value, value)
         XCTAssertNil(success.error)
     }
 
     func testError() {
-        let failure = Result<Int>.failure(MockError())
-        XCTAssertNotNil(failure.error as? MockError)
+        let failure = Result<Int,MockError>.failure(MockError())
+        XCTAssertNotNil(failure.error)
         XCTAssertNil(failure.value)
     }
 }

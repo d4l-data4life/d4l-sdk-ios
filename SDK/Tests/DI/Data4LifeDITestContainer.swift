@@ -40,8 +40,8 @@ extension Data4LifeDITestContainer {
             CryptoServiceMock()
         }.register(scope: .containerInstance) { (_) -> FhirServiceType in
             FhirServiceMock<DecryptedFhirStu3Record<DocumentReference>, Attachment>()
-        }.register(scope: .containerInstance) { (_) -> SessionAdapterType in
-            SessionAdapterMock()
+        }.register(scope: .containerInstance) { (_) -> RequestInterceptorType in
+            RequestInterceptorMock()
         }.register(scope: .containerInstance) { (_) -> DocumentServiceType in
             DocumentServiceMock()
         }.register(scope: .containerInstance) { (_) -> TaggingServiceType in

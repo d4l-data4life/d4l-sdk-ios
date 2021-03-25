@@ -19,61 +19,59 @@ import Then
 
 public typealias Parameters = [String : Any]
 
-class SessionService: SessionManager {
+final class SessionService {
 
-    private var policyManager: ServerTrustPolicyManager?
     private var networkReachabilityManager: ReachabilityType
-    private var handler: (DefaultDataResponse) -> Void = { _ in }
     private var versionValidator: SDKVersionValidatorType
-
-    init(hostname: String,
-         sdkBundle: Bundle,
-         versionValidator: SDKVersionValidatorType,
-         networkManager: ReachabilityType = Reachability(),
-         adapter: SessionAdapterType? = nil) {
-        let publicKeys = ServerTrustPolicy.publicKeys(in: sdkBundle)
-        self.versionValidator = versionValidator
-
-        let serverTrustPolicy = ServerTrustPolicy.pinPublicKeys(
-            publicKeys: publicKeys,
-            validateCertificateChain: true,
-            validateHost: true
-        )
-        let serverTrustPolicyManager = ServerTrustPolicyManager(policies: [hostname: serverTrustPolicy])
-
-        self.policyManager = serverTrustPolicyManager
-        self.networkReachabilityManager = networkManager
-
-        super.init(serverTrustPolicyManager: serverTrustPolicyManager)
-        self.adapter = adapter
-    }
+    private(set) var session: Session
+    private var serverTrustManager: ServerTrustManager?
+    private var interceptor: RequestInterceptorType?
 
     init(configuration: URLSessionConfiguration,
          versionValidator: SDKVersionValidatorType,
-         serverTrustPolicyManager: ServerTrustPolicyManager?,
+         serverTrustManager: ServerTrustManager?,
          networkManager: ReachabilityType = Reachability(),
-         adapter: SessionAdapterType?) {
+         interceptor: RequestInterceptorType?) {
+
         self.versionValidator = versionValidator
         self.networkReachabilityManager = networkManager
-        super.init(configuration: configuration, serverTrustPolicyManager: serverTrustPolicyManager)
-        self.adapter = adapter
+        self.serverTrustManager = serverTrustManager
+        self.interceptor = interceptor
+        self.session = Session(configuration: configuration, interceptor: interceptor, serverTrustManager: serverTrustManager)
     }
 
+    convenience init(hostname: String,
+                     sdkBundle: Bundle,
+                     versionValidator: SDKVersionValidatorType,
+                     networkManager: ReachabilityType = Reachability(),
+                     interceptor: RequestInterceptorType? = nil) {
+
+        let publicKeys = sdkBundle.af.publicKeys
+        let serverTrustPolicy = PublicKeysTrustEvaluator(keys: publicKeys, performDefaultValidation: true, validateHost: true)
+        let serverTrustManager = ServerTrustManager(evaluators: [hostname: serverTrustPolicy])
+        self.init(configuration: URLSessionConfiguration.af.default,
+                  versionValidator: versionValidator,
+                  serverTrustManager: serverTrustManager,
+                  networkManager: networkManager,
+                  interceptor: interceptor)
+    }
+}
+
+extension SessionService {
     func request(route: Router) throws -> DataRequest {
         guard networkReachabilityManager.isReachable else {
-             throw Data4LifeSDKError.networkUnavailable
+            throw Data4LifeSDKError.networkUnavailable
         }
 
         if route.needsVersionValidation {
             try await(validateSDKVersion())
         }
 
-        return request(route)
+        return session.request(route, interceptor: interceptor)
             .logged
             .validate()
             .response(completionHandler: { [weak self] response in
                 self?.log(response)
-                self?.handler(response)
             })
     }
 
@@ -84,12 +82,11 @@ class SessionService: SessionManager {
 
         try await(validateSDKVersion())
 
-        return request(url, method: method)
+        return session.request(url, method: method, interceptor: interceptor)
             .logged
             .validate()
             .response(completionHandler: {  [weak self] response in
                 self?.log(response)
-                self?.handler(response)
             })
     }
 
@@ -102,18 +99,17 @@ class SessionService: SessionManager {
             try await(validateSDKVersion())
         }
 
-        return upload(data, with: route)
+        return session.upload(data, with: route, interceptor: interceptor)
             .logged
             .response(completionHandler: { [weak self] response in
                 self?.log(response)
-                self?.handler(response)
             })
     }
 }
 
 private extension SessionService {
 
-    func log(_ response: DefaultDataResponse) {
+    func log(_ response: AFDataResponse<Data?>) {
 
         if let httpUrlResponseDescription = response.response?.description {
             logDebug("Response Headers: \(httpUrlResponseDescription)")
@@ -160,7 +156,7 @@ private extension SessionService {
 
 private extension DataRequest {
     var logged: DataRequest {
-        logDebug("Request cURL: \(self.debugDescription)")
+        logDebug("Request cURL: \(self.description)")
         return self
     }
 }
