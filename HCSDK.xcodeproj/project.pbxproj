@@ -415,7 +415,6 @@
 		0AA4559624167197008B788C /* SDKFileManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFileManagerMock.swift; sourceTree = "<group>"; };
 		0AA455982417A21B008B788C /* InfoServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoServiceMock.swift; sourceTree = "<group>"; };
 		0AA4559B2417D027008B788C /* SDKFileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFileManagerTests.swift; sourceTree = "<group>"; };
-		0AB7C16B233BB091004A3789 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 		0ABC454F23D9441800682359 /* FhirStu3ServiceTests+Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Patient.swift"; sourceTree = "<group>"; };
 		0ABC455323D99CE600682359 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
 		0AC728D523A2706800A8E453 /* CommonKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonKeyServiceTests.swift; sourceTree = "<group>"; };
@@ -1048,7 +1047,6 @@
 				365D76FE25553783004F37E9 /* ModelsR4.framework */,
 				36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */,
 				36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */,
-				0AB7C16B233BB091004A3789 /* SVProgressHUD.framework */,
 				CD3720E62031ECDC007B536A /* AppAuth.framework */,
 				83B276BB1F7FE57900E4D418 /* then.framework */,
 				9173D3541F7BF64500EDB609 /* CryptoSwift.framework */,
@@ -2141,7 +2139,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Then.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ModelsR4.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
 			);
 			name = "Copy Frameworks";
 			outputPaths = (
