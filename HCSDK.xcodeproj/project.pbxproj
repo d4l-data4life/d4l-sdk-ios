@@ -80,21 +80,8 @@
 		3685D45F2592262300F97F9E /* FhirR4ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */; };
 		3685D4692592297700F97F9E /* r4-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4682592297700F97F9E /* r4-questionnaire-response.json */; };
 		3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */; };
-		36882BD525E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; };
-		36882BD625E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
 		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
-		36882C6025ECEE8D00BDA715 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */; };
-		36882C6925ECEEBA00BDA715 /* Alamofire.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC425E8045E00BDA715 /* Alamofire.xcframework */; };
-		36882C6A25ECEEBA00BDA715 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC625E8045E00BDA715 /* AppAuth.xcframework */; };
-		36882C6B25ECEEBA00BDA715 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */; };
-		36882C6C25ECEEBA00BDA715 /* Data4LifeFHIR.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC225E8045E00BDA715 /* Data4LifeFHIR.xcframework */; };
-		36882C6D25ECEEBA00BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */; };
-		36882C6E25ECEEBA00BDA715 /* ModelsR4.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC325E8045E00BDA715 /* ModelsR4.xcframework */; };
-		36882C6F25ECEEBA00BDA715 /* SVProgressHUD.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */; };
-		36882C7025ECEEBA00BDA715 /* Then.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882BC825E8045E00BDA715 /* Then.xcframework */; };
-		36882C8925EE98A500BDA715 /* Data4LifeCrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882C7B25EE984E00BDA715 /* Data4LifeCrypto.xcframework */; };
-		36882C9325EE994300BDA715 /* Data4LifeCrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36882C9225EE994300BDA715 /* Data4LifeCrypto.xcframework */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
 		3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */; };
 		3689D7F524EAB2F4004295D9 /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7F324EAB2DF004295D9 /* AppDataService.swift */; };
@@ -113,6 +100,16 @@
 		36AE95322583790400B1A2D7 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE95312583790400B1A2D7 /* Attachment.swift */; };
 		36AE953C2583791200B1A2D7 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE953B2583791200B1A2D7 /* Document.swift */; };
 		36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */; };
+		36B6E9CD260CD09F00CA3250 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9CC260CD09F00CA3250 /* Data4LifeFHIR */; };
+		36B6E9CF260CD09F00CA3250 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9CE260CD09F00CA3250 /* ModelsR4 */; };
+		36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9D5260CD10300CA3250 /* Alamofire */; };
+		36B6E9DD260CD17800CA3250 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9DC260CD17800CA3250 /* Then */; };
+		36B6E9E8260CD1DB00CA3250 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9E7260CD1DB00CA3250 /* AppAuth */; };
+		36B6E9ED260CD22300CA3250 /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
+		36B6E9EE260CD22300CA3250 /* Data4LifeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		36B6E9F2260CD23300CA3250 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F1260CD23300CA3250 /* CryptoSwift */; };
+		36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */; };
+		36B6E9FE260CD28900CA3250 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9FD260CD28900CA3250 /* CryptoSwift */; };
 		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
 		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
 		36D96130256FF759004D69CA /* Data4LifeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */; };
@@ -304,8 +301,6 @@
 		CD841E69225CC755002656D5 /* encryptedCommonTekKeys.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109196225B8A0A00325389 /* encryptedCommonTekKeys.json */; };
 		CD841E6A225CC792002656D5 /* symCommonExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109190225B8A0A00325389 /* symCommonExchangeKey.json */; };
 		CD841E6B225CC837002656D5 /* symCommonEncrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109192225B8A0A00325389 /* symCommonEncrypt.json */; };
-		CD92FE0C2284405A00DA7024 /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
-		CD92FE0D2284405A00DA7024 /* Data4LifeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CD92FE0E2284406300DA7024 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		CD92FE0F2284406300DA7024 /* Data4LifeCrypto.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CDA407A622E5E2A100B29A0D /* DocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA407A522E5E2A100B29A0D /* DocumentService.swift */; };
@@ -335,6 +330,13 @@
 			remoteGlobalIDString = 839E81381E86DE5300C42094;
 			remoteInfo = Example;
 		};
+		36B6E9EF260CD22300CA3250 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 837463A51E854E7500AB500F;
+			remoteInfo = Data4LifeSDK;
+		};
 		9173D35A1F82234A00EDB609 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
@@ -356,13 +358,6 @@
 			remoteGlobalIDString = 839E81381E86DE5300C42094;
 			remoteInfo = Example;
 		};
-		CD92FE05228420E400DA7024 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 837463A51E854E7500AB500F;
-			remoteInfo = HCSDK;
-		};
 		CD92FE102284406300DA7024 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
@@ -379,9 +374,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				36B6E9EE260CD22300CA3250 /* Data4LifeSDK.framework in Embed Frameworks */,
 				CD92FE0F2284406300DA7024 /* Data4LifeCrypto.framework in Embed Frameworks */,
-				36882BD625E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Embed Frameworks */,
-				CD92FE0D2284405A00DA7024 /* Data4LifeSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,19 +458,8 @@
 		3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Patient.swift"; sourceTree = "<group>"; };
 		3685D4682592297700F97F9E /* r4-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire-response.json"; sourceTree = "<group>"; };
 		3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
-		36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CryptoSwift.xcframework; path = Carthage/Build/CryptoSwift.xcframework; sourceTree = "<group>"; };
-		36882BC125E8045D00BDA715 /* AppAuthCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuthCore.xcframework; path = Carthage/Build/AppAuthCore.xcframework; sourceTree = "<group>"; };
-		36882BC225E8045E00BDA715 /* Data4LifeFHIR.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeFHIR.xcframework; path = Carthage/Build/Data4LifeFHIR.xcframework; sourceTree = "<group>"; };
-		36882BC325E8045E00BDA715 /* ModelsR4.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ModelsR4.xcframework; path = Carthage/Build/ModelsR4.xcframework; sourceTree = "<group>"; };
-		36882BC425E8045E00BDA715 /* Alamofire.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Alamofire.xcframework; path = Carthage/Build/Alamofire.xcframework; sourceTree = "<group>"; };
-		36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeSDKUtils.xcframework; path = Carthage/Build/Data4LifeSDKUtils.xcframework; sourceTree = "<group>"; };
-		36882BC625E8045E00BDA715 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuth.xcframework; path = Carthage/Build/AppAuth.xcframework; sourceTree = "<group>"; };
-		36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SVProgressHUD.xcframework; path = Carthage/Build/SVProgressHUD.xcframework; sourceTree = "<group>"; };
-		36882BC825E8045E00BDA715 /* Then.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Then.xcframework; path = Carthage/Build/Then.xcframework; sourceTree = "<group>"; };
 		36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionServiceInterceptor.swift; sourceTree = "<group>"; };
 		36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptorMock.swift; sourceTree = "<group>"; };
-		36882C7B25EE984E00BDA715 /* Data4LifeCrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeCrypto.xcframework; path = build/Data4LifeCrypto.xcframework; sourceTree = "<group>"; };
-		36882C9225EE994300BDA715 /* Data4LifeCrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Data4LifeCrypto.xcframework; path = xcframeworks/Data4LifeCrypto.xcframework; sourceTree = "<group>"; };
 		3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+AppData.swift"; sourceTree = "<group>"; };
 		3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasMainRecordOperations.swift; sourceTree = "<group>"; };
 		3689D7F324EAB2DF004295D9 /* AppDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataService.swift; sourceTree = "<group>"; };
@@ -708,15 +691,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36882C9325EE994300BDA715 /* Data4LifeCrypto.xcframework in Frameworks */,
-				36882C6925ECEEBA00BDA715 /* Alamofire.xcframework in Frameworks */,
-				36882C6A25ECEEBA00BDA715 /* AppAuth.xcframework in Frameworks */,
-				36882C6B25ECEEBA00BDA715 /* CryptoSwift.xcframework in Frameworks */,
-				36882C6C25ECEEBA00BDA715 /* Data4LifeFHIR.xcframework in Frameworks */,
-				36882C6D25ECEEBA00BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */,
-				36882C6E25ECEEBA00BDA715 /* ModelsR4.xcframework in Frameworks */,
-				36882C6F25ECEEBA00BDA715 /* SVProgressHUD.xcframework in Frameworks */,
-				36882C7025ECEEBA00BDA715 /* Then.xcframework in Frameworks */,
+				36B6E9E8260CD1DB00CA3250 /* AppAuth in Frameworks */,
+				36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */,
+				36B6E9CF260CD09F00CA3250 /* ModelsR4 in Frameworks */,
+				36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */,
+				36B6E9CD260CD09F00CA3250 /* Data4LifeFHIR in Frameworks */,
+				36B6E9DD260CD17800CA3250 /* Then in Frameworks */,
+				36B6E9F2260CD23300CA3250 /* CryptoSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,7 +705,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36882C8925EE98A500BDA715 /* Data4LifeCrypto.xcframework in Frameworks */,
 				837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -734,8 +714,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD92FE0E2284406300DA7024 /* Data4LifeCrypto.framework in Frameworks */,
-				36882BD525E8077200BDA715 /* Data4LifeSDKUtils.xcframework in Frameworks */,
-				CD92FE0C2284405A00DA7024 /* Data4LifeSDK.framework in Frameworks */,
+				36B6E9ED260CD22300CA3250 /* Data4LifeSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,7 +722,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36882C6025ECEE8D00BDA715 /* CryptoSwift.xcframework in Frameworks */,
+				36B6E9FE260CD28900CA3250 /* CryptoSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1041,17 +1020,6 @@
 		837463D11E85663300AB500F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				36882C7B25EE984E00BDA715 /* Data4LifeCrypto.xcframework */,
-				36882C9225EE994300BDA715 /* Data4LifeCrypto.xcframework */,
-				36882BC425E8045E00BDA715 /* Alamofire.xcframework */,
-				36882BC625E8045E00BDA715 /* AppAuth.xcframework */,
-				36882BC125E8045D00BDA715 /* AppAuthCore.xcframework */,
-				36882BC225E8045E00BDA715 /* Data4LifeFHIR.xcframework */,
-				36882BC525E8045E00BDA715 /* Data4LifeSDKUtils.xcframework */,
-				36882BC325E8045E00BDA715 /* ModelsR4.xcframework */,
-				36882BC725E8045E00BDA715 /* SVProgressHUD.xcframework */,
-				36882BC825E8045E00BDA715 /* Then.xcframework */,
-				36882BBB25E8044200BDA715 /* CryptoSwift.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1858,6 +1826,13 @@
 			);
 			name = Data4LifeSDK;
 			packageProductDependencies = (
+				36B6E9CC260CD09F00CA3250 /* Data4LifeFHIR */,
+				36B6E9CE260CD09F00CA3250 /* ModelsR4 */,
+				36B6E9D5260CD10300CA3250 /* Alamofire */,
+				36B6E9DC260CD17800CA3250 /* Then */,
+				36B6E9E7260CD1DB00CA3250 /* AppAuth */,
+				36B6E9F1260CD23300CA3250 /* CryptoSwift */,
+				36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */,
 			);
 			productName = HCKit;
 			productReference = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */;
@@ -1894,8 +1869,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				CD92FE06228420E400DA7024 /* PBXTargetDependency */,
 				CD92FE112284406300DA7024 /* PBXTargetDependency */,
+				36B6E9F0260CD22300CA3250 /* PBXTargetDependency */,
 			);
 			name = Example;
 			packageProductDependencies = (
@@ -1918,6 +1893,9 @@
 			dependencies = (
 			);
 			name = Data4LifeCrypto;
+			packageProductDependencies = (
+				36B6E9FD260CD28900CA3250 /* CryptoSwift */,
+			);
 			productName = HCKit;
 			productReference = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1992,6 +1970,11 @@
 			);
 			mainGroup = 8374639C1E854E7500AB500F;
 			packageReferences = (
+				36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
+				36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
+				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
+				36B6E9E6260CD1DB00CA3250 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 			);
 			productRefGroup = 837463A71E854E7500AB500F /* Products */;
 			projectDirPath = "";
@@ -2402,6 +2385,11 @@
 			target = 839E81381E86DE5300C42094 /* Example */;
 			targetProxy = 36185286257015F8005D15A5 /* PBXContainerItemProxy */;
 		};
+		36B6E9F0260CD22300CA3250 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
+			targetProxy = 36B6E9EF260CD22300CA3250 /* PBXContainerItemProxy */;
+		};
 		837463B21E854E7500AB500F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
@@ -2416,11 +2404,6 @@
 			isa = PBXTargetDependency;
 			target = 839E81381E86DE5300C42094 /* Example */;
 			targetProxy = CD841DB0225CBA8D002656D5 /* PBXContainerItemProxy */;
-		};
-		CD92FE06228420E400DA7024 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
-			targetProxy = CD92FE05228420E400DA7024 /* PBXContainerItemProxy */;
 		};
 		CD92FE112284406300DA7024 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2774,7 +2757,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCrypto;
 				PRODUCT_NAME = Data4LifeCrypto;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2809,7 +2792,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCrypto;
 				PRODUCT_NAME = Data4LifeCrypto;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2935,6 +2918,92 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:d4l-data4life/d4l-utils-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.4.0;
+			};
+		};
+		36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.19.0;
+			};
+		};
+		36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.4.1;
+			};
+		};
+		36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/freshOS/Then";
+			requirement = {
+				kind = exactVersion;
+				version = 5.1.4;
+			};
+		};
+		36B6E9E6260CD1DB00CA3250 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36B6E9CC260CD09F00CA3250 /* Data4LifeFHIR */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = Data4LifeFHIR;
+		};
+		36B6E9CE260CD09F00CA3250 /* ModelsR4 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = ModelsR4;
+		};
+		36B6E9D5260CD10300CA3250 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		36B6E9DC260CD17800CA3250 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		36B6E9E7260CD1DB00CA3250 /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9E6260CD1DB00CA3250 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
+		};
+		36B6E9F1260CD23300CA3250 /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
+			productName = CryptoSwift;
+		};
+		36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
+			productName = Data4LifeSDKUtils;
+		};
+		36B6E9FD260CD28900CA3250 /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
+			productName = CryptoSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8374639D1E854E7500AB500F /* Project object */;
 }

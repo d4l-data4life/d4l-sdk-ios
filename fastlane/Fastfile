@@ -5,8 +5,8 @@ repository = "gesundheitscloud/hc-sdk-ios"
 framework_binary_path = "build/" + project + ".framework.zip"
 sdk_podspec_path = '../Data4LifeSDK.podspec'
 crypto_podspec_path = '../Data4LifeCrypto.podspec'
-private_podspec_repo_name = 'd4l-data4life'
-private_podspect_repo_url = 'git@github.com:d4l-data4life/d4l-cocoapods-specs'
+podspecs_repo_name = 'd4l-data4life'
+podspecs_repo_url = 'https://github.com/d4l-data4life/d4l-cocoapods-specs'
 device = "iPhone 11"
 
 platform :ios do
@@ -277,23 +277,23 @@ platform :ios do
 
     # Check if local CocoaPods include private podspec, otherwise try to add it
     repo_list = sh "bundle exec pod repo list"
-    if !repo_list.include? private_podspec_repo_name
-     sh "bundle exec pod repo add #{private_podspec_repo_name} #{private_podspect_repo_url}"
+    if !repo_list.include? podspecs_repo_name
+     sh "bundle exec pod repo add #{podspecs_repo_name} #{podspecs_repo_url}"
     end
 
     # pod_push fastlane action does not support private switch
     # pod_push(path: "./Data4LifeSDK.podspec", repo: "gesundheitscloud", allow_warnings: true)
-    sh "bundle exec pod repo push #{private_podspec_repo_name} ../Data4LifeSDK.podspec --private --allow-warnings"
+    sh "bundle exec pod repo push #{podspecs_repo_name} ../Data4LifeSDK.podspec --allow-warnings"
   end
 
   desc "Push new Data4LifeCrypto podspec files to private spec repo"
   lane :push_crypto_podspec do
     repo_list = sh "bundle exec pod repo list"
-    if !repo_list.include? private_podspec_repo_name
-     sh "bundle exec pod repo add #{private_podspec_repo_name} #{private_podspect_repo_url}"
+    if !repo_list.include? podspecs_repo_name
+     sh "bundle exec pod repo add #{podspecs_repo_name} #{podspecs_repo_url}"
     end
 
-    sh "bundle exec pod repo push #{private_podspec_repo_name} ../Data4LifeCrypto.podspec --private --allow-warnings"
+    sh "bundle exec pod repo push #{podspecs_repo_name} ../Data4LifeCrypto.podspec --allow-warnings"
   end
 
   desc "Generate docs per version using Asciidoctor"

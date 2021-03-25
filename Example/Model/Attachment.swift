@@ -45,7 +45,7 @@ enum AttachmentType {
 
 extension Data4LifeFHIR.DocumentReference {
     static func make(titled title: String, attachments: [Data4LifeFHIR.Attachment]) -> Data4LifeFHIR.DocumentReference {
-        let document = DocumentReference()
+        let document = Data4LifeFHIR.DocumentReference()
         document.description_fhir = title
         document.attachments = attachments
         document.indexed = .now

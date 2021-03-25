@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.12.3] - 2021-02-23
+### Changed
+- Updated crypto dependency to be public
+
 ## [1.12.2] - 2021-02-23
 ### Fixed
 - Fix for unfiltered search/count methods
@@ -414,10 +418,11 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.2...main
-[1.12.2]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.1...1.12.2
-[1.12.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.12.0...1.12.1
-[1.12.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.1...1.12.0
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.3...main
+[1.12.3]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.2...1.12.3
+[1.12.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.1...1.12.2
+[1.12.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.0...1.12.1
+[1.12.0]: https://github.com/d4l-data4life/d4l-sdk-ios/releases/tag/1.12.0
 [1.11.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.11.0...1.11.1
 [1.11.0]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.10.1...1.11.0
 [1.10.1]: https://github.com/gesundheitscloud/hc-sdk-ios/compare/1.10.0...1.10.1

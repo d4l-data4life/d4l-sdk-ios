@@ -48,6 +48,7 @@ final class DocumentListInteractor {
 }
 
 extension DocumentListInteractor {
+
     func viewDidLoad() {
         d4lClient.sessionStateDidChange { [weak self] currentState in
             DispatchQueue.main.async { [weak self] in

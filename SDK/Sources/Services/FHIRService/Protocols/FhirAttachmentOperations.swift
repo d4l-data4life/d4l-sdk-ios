@@ -17,8 +17,7 @@ import Foundation
 import Data4LifeFHIR
 import Data4LifeCrypto
 
-@_implementationOnly
-import Then
+@_implementationOnly import Then
 
 protocol HasAttachmentOperationsDependencies {
     var attachmentService: AttachmentServiceType { get }
