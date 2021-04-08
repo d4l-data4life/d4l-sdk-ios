@@ -110,6 +110,7 @@
 		36B6E9F2260CD23300CA3250 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F1260CD23300CA3250 /* CryptoSwift */; };
 		36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */; };
 		36B6E9FE260CD28900CA3250 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9FD260CD28900CA3250 /* CryptoSwift */; };
+		36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
 		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
 		36D96130256FF759004D69CA /* Data4LifeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */; };
@@ -336,6 +337,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 837463A51E854E7500AB500F;
 			remoteInfo = Data4LifeSDK;
+		};
+		36B6EA1D260DD5D600CA3250 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CD108FF0225B88BE00325389;
+			remoteInfo = Data4LifeCrypto;
 		};
 		9173D35A1F82234A00EDB609 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -695,6 +703,7 @@
 				36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */,
 				36B6E9CF260CD09F00CA3250 /* ModelsR4 in Frameworks */,
 				36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */,
+				36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */,
 				36B6E9CD260CD09F00CA3250 /* Data4LifeFHIR in Frameworks */,
 				36B6E9DD260CD17800CA3250 /* Then in Frameworks */,
 				36B6E9F2260CD23300CA3250 /* CryptoSwift in Frameworks */,
@@ -1819,10 +1828,12 @@
 				837463A31E854E7500AB500F /* Headers */,
 				837463A41E854E7500AB500F /* Resources */,
 				CDB889C61FB30516000C76C0 /* Run Swiftlint */,
+				362F78A9261E027100CC968C /* Remove symbol maps from packages */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				36B6EA1E260DD5D600CA3250 /* PBXTargetDependency */,
 			);
 			name = Data4LifeSDK;
 			packageProductDependencies = (
@@ -2086,6 +2097,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		362F78A9261E027100CC968C /* Remove symbol maps from packages */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Remove symbol maps from packages";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nfor file in $(find ${BUILD_DIR}/../../SourcePackages/artifacts -mindepth 5 -maxdepth 5 | grep .bcsymbolmap); \ndo\n    echo \"removing $file\"\n    rm $file\ndone\n";
+		};
 		CDB889C61FB30516000C76C0 /* Run Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2390,6 +2419,11 @@
 			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
 			targetProxy = 36B6E9EF260CD22300CA3250 /* PBXContainerItemProxy */;
 		};
+		36B6EA1E260DD5D600CA3250 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD108FF0225B88BE00325389 /* Data4LifeCrypto */;
+			targetProxy = 36B6EA1D260DD5D600CA3250 /* PBXContainerItemProxy */;
+		};
 		837463B21E854E7500AB500F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
@@ -2570,10 +2604,17 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = YES;
+				EXPORTED_SYMBOLS_FILE = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				INFOPLIST_FILE = SDK/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				KEEP_PRIVATE_EXTERNS = NO;
+				LD_GENERATE_MAP_FILE = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2583,7 +2624,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REEXPORTED_LIBRARY_NAMES = "";
+				REEXPORTED_LIBRARY_PATHS = "";
+				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
+				STRIP_STYLE = debugging;
+				STRIP_SWIFT_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -2607,10 +2653,17 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = YES;
+				EXPORTED_SYMBOLS_FILE = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				INFOPLIST_FILE = SDK/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				KEEP_PRIVATE_EXTERNS = NO;
+				LD_GENERATE_MAP_FILE = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2620,11 +2673,18 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REEXPORTED_FRAMEWORK_NAMES = "";
+				REEXPORTED_LIBRARY_NAMES = "";
+				REEXPORTED_LIBRARY_PATHS = "";
+				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
+				STRIP_STYLE = debugging;
+				STRIP_SWIFT_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				"UNEXPORTED_SYMBOLS_FILE[sdk=iphoneos*]" = "";
 				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;

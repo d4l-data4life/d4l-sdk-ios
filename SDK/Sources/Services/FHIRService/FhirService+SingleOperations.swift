@@ -16,7 +16,7 @@
 import Foundation
 @_implementationOnly import Then
 import Data4LifeFHIR
-import struct Data4LifeCrypto.Key
+import Data4LifeCrypto
 
 extension FhirService {
     func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,

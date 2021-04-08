@@ -16,7 +16,7 @@
 import Foundation
 import Data4LifeFHIR
 @_implementationOnly import Then
-import struct Data4LifeCrypto.Key
+import Data4LifeCrypto
 
 extension FhirService {
 

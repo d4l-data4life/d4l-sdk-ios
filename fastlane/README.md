@@ -47,6 +47,11 @@ Package and release framework
 fastlane ios build_xcframework
 ```
 Build xcframework for distribution
+### ios gh_release
+```
+fastlane ios gh_release
+```
+Upload to a github release
 ### ios update_plist_versions
 ```
 fastlane ios update_plist_versions
