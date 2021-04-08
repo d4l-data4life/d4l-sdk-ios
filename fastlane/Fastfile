@@ -47,6 +47,10 @@ platform :ios do
       raise "No version specified!".red
     end
 
+    if !options[:crypto_version]
+      raise "No crypto version specified!".red
+    end
+
     if !options[:api_token]
       raise "No api_token specified!".red
     end
@@ -113,7 +117,7 @@ platform :ios do
       # Post new release to GitHub
       archiveAllFrameworksPath = allXcFrameworksArchivePath(version)
       archiveSDKPath = sdkFrameworkArchivePath(version)
-      archiveCryptoPath = cryptoFrameworkArchivePath(version)
+      archiveCryptoPath = cryptoFrameworkArchivePath(options[:crypto_version])
 
       # Post new release to GitHub
       gh_release(
@@ -139,6 +143,10 @@ platform :ios do
         raise "Missing release version".red
     end
 
+    if options[:crypto_version] == nil
+        raise "Missing release version".red
+    end
+
     Dir.chdir("..") do
       root = Dir.pwd
       configuration = "Release"
@@ -149,7 +157,7 @@ platform :ios do
 
       archiveAllFrameworksPath = allXcFrameworksArchivePath(options[:version])
       archiveSDKPath = sdkFrameworkArchivePath(options[:version])
-      archiveCryptoPath = cryptoFrameworkArchivePath(options[:version])
+      archiveCryptoPath = cryptoFrameworkArchivePath(options[:crypto_version])
 
       if File.exist?(buildPath)
         sh "rm -rf #{buildPath}"
