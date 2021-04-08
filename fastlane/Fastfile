@@ -190,7 +190,6 @@ platform :ios do
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/dSYMs/ModelsR4.framework.dSYM' \
           -output #{sdkFrameworkPath}"
 
-
       sh "rm -rf #{buildPath}"
       sh "rm -rf #{cryptoFrameworkPath}"
       sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive -destination 'generic/platform=iOS Simulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
