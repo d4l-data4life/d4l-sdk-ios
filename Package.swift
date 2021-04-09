@@ -64,16 +64,16 @@ let package = Package(
                              condition: .when(platforms: [.iOS])),
                     .byName(name: "AppAuth")
                 ],
-                path: "SDKSPMFrameworks"), 
+                path: "SDKSPMFrameworks"),
         .binaryTarget(
             name: "Data4LifeSDK",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "a3a43e6031057bbb87bbff94b6a18cf1314b0419c0823333a4b87c1e37653a9a"
+            checksum: "60174b334a5df4e7d057e77979fe57af439019d8ccf1b96c59e6620ea677ff3e"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
             url: "https://github.com/d4l-data4life/d4l-fhir-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
-            checksum: "970a999a9ab63991f4ac59c90e260658decc14e41f62bae15bfe6afcdd4421cb"
+            checksum: "4395f344958388d393e3a87c2988104da6af0f036f48472b1ca1864ac0849ae6"
         ),
         .testTarget(name: "Data4LifeSDKTests",
                     dependencies: ["Data4LifeSDKFrameworks","Data4LifeCryptoFrameworks"],
