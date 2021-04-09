@@ -14,7 +14,7 @@ let package = Package(
             targets: ["Data4LifeSDKFrameworks"]),
         .library(
             name: "Data4LifeCrypto",
-            targets: ["Data4LifeCrypto"]),
+            targets: ["Data4LifeCryptoFrameworks"]),
     ],
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
@@ -32,20 +32,18 @@ let package = Package(
                  .upToNextMinor(from: "1.4.0"))
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .binaryTarget(
-            name: "Data4LifeSDK",
-            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "498c58323b8d752eac3b7184a0327fe8e7bdc5587bf3bc15de241500b599d991"
-        ),
-        .binaryTarget(
-            name: "Data4LifeCrypto",
-            url: "https://github.com/d4l-data4life/d4l-fhir-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
-            checksum: "e97a5548952d616bbe8cf609ff767da108a2021586c7c05807d7886e770989a7"
-        ),
+        .target(name: "Data4LifeCryptoFrameworks",
+                dependencies: [
+                    .target(name: "Data4LifeCrypto"),
+                    .product(name: "CryptoSwift",
+                             package: "Data4LifeSDKUtils",
+                             condition: .when(platforms: [.iOS]))
+                ],
+                path: "CryptoSPMFrameworks"),
         .target(name: "Data4LifeSDKFrameworks",
                 dependencies: [
+                    .target(name: "Data4LifeSDK"),
+                    .target(name: "Data4LifeCrypto"),
                     .product(name: "CryptoSwift",
                              package: "Data4LifeSDKUtils",
                              condition: .when(platforms: [.iOS])),
@@ -64,13 +62,21 @@ let package = Package(
                     .product(name: "Alamofire",
                              package: "Alamofire",
                              condition: .when(platforms: [.iOS])),
-                    .byName(name: "AppAuth"),
-                    .target(name: "Data4LifeSDK"),
-                    .target(name: "Data4LifeCrypto")
+                    .byName(name: "AppAuth")
                 ],
                 path: "SDKSPMFrameworks"),
+        .binaryTarget(
+            name: "Data4LifeSDK",
+            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
+            checksum: "a3a43e6031057bbb87bbff94b6a18cf1314b0419c0823333a4b87c1e37653a9a"
+        ),
+        .binaryTarget(
+            name: "Data4LifeCrypto",
+            url: "https://github.com/d4l-data4life/d4l-fhir-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
+            checksum: "970a999a9ab63991f4ac59c90e260658decc14e41f62bae15bfe6afcdd4421cb"
+        ),
         .testTarget(name: "Data4LifeSDKTests",
-                    dependencies: ["Data4LifeSDKFrameworks"],
+                    dependencies: ["Data4LifeSDKFrameworks","Data4LifeCryptoFrameworks"],
                     path: "SDK/Tests",
                     exclude: ["Info.plist","Data4LifeSDK-Version.plist"],
                     resources: [.process("Resources"),.process("BenchmarkClient/SubbedResponses")])
