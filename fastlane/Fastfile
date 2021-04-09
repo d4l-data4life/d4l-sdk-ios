@@ -211,7 +211,7 @@ platform :ios do
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile}' \
           -output #{cryptoFrameworkPath}"
 
-        sh "zip -r #{archiveAllFrameworksPath} #{sdkFrameworkPath} #{cryptoFrameworkPath} LICENSE"
+        sh "zip -r #{archiveAllFrameworksPath} #{sdkFrameworkPath} #{cryptoFrameworkPath} LICENSE SDK/Sources/Certificates/*.hpsgc.de.cer SDK/Sources/Certificates/data4life.care.der SDK/Sources/Data4LifeSDK-Version.plist"
         sh "zip -r #{archiveSDKPath} #{sdkFrameworkPath}"
         sh "zip -r #{archiveCryptoPath} #{cryptoFrameworkPath}"
         sh "rm -rf #{sdkFrameworkPath}"

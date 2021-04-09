@@ -64,7 +64,7 @@ let package = Package(
                              condition: .when(platforms: [.iOS])),
                     .byName(name: "AppAuth")
                 ],
-                path: "SDKSPMFrameworks"),
+                path: "SDKSPMFrameworks"), 
         .binaryTarget(
             name: "Data4LifeSDK",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
