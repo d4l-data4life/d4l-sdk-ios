@@ -15,14 +15,14 @@
 
 import Foundation
 
-public typealias Byte = (UInt8)
-public extension Array where Element == Byte {
+typealias Byte = (UInt8)
+extension Array where Element == Byte {
     var asData: Data {
         return Data(self)
     }
 }
 
-public extension Data {
+extension Data {
     var asBytes: [UInt8] {
         Array(self)
     }

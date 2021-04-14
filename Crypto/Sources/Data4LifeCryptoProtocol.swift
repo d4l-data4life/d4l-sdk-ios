@@ -14,9 +14,9 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import CryptoSwift
+@_implementationOnly import CryptoSwift
 
-public protocol Data4LifeCryptoProtocol {
+protocol Data4LifeCryptoProtocol {
     static func symEncrypt(key: Key, data: Data, iv: Data) throws -> Data
     static func symDecrypt(key: Key, data: Data, iv: Data) throws -> Data
     static func asymEncrypt(key: KeyPair, data: Data) throws -> Data

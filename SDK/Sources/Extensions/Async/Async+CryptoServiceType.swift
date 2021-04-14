@@ -42,7 +42,7 @@ extension CryptoServiceType {
         }
     }
 
-    func generateGCKey(_ type: KeyType) -> Async<Key> {
+    func generateGCKey(_ type: KeyType) -> Async<CryptoKey> {
         return Async { resolve, reject in
             do {
                 let key = try self.generateGCKey(type)

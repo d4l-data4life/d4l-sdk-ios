@@ -47,7 +47,7 @@ extension Key: Decodable {
         self.keySize = keyExchangeFormat.size
 
         let keyBase64Value = try values.decode(String.self, forKey: .value)
-        guard let keyData = SymmetricKey(base64Encoded: keyBase64Value) else {
+        guard let keyData = Data(base64Encoded: keyBase64Value) else {
             throw Data4LifeCryptoError.couldNotReadBase64EncodedData
         }
 

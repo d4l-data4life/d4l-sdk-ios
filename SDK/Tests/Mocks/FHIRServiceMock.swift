@@ -59,9 +59,9 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
     var downloadGenericRecordResult: Promise<FhirRecord<FhirStu3Resource>>?
     var downloadSpecificRecordResult: Promise<FhirRecord<MDR.Resource>>?
     var uploadAttachmentsCreatingCalledWith: (MDR.Resource)?
-    var uploadAttachmentsCreatingResult: Async<(resource: MDR.Resource, key: Key?)>?
+    var uploadAttachmentsCreatingResult: Async<(resource: MDR.Resource, key: CryptoKey?)>?
     var uploadAttachmentsUpdatingCalledWith: (MDR.Resource)?
-    var uploadAttachmentsUpdatingResult: Async<(resource: MDR.Resource, key: Key?)>?
+    var uploadAttachmentsUpdatingResult: Async<(resource: MDR.Resource, key: CryptoKey?)>?
     var downloadAttachmentCalledWith: (String, String, DownloadType, Progress)?
     var downloadAttachmentResult: Promise<MA>?
     var downloadAttachmentsCalledWith: ([String], String, DownloadType, Progress)?
@@ -129,14 +129,14 @@ extension FhirServiceMock {
         }
     }
 
-    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: Key?)> {
+    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: CryptoKey?)> {
         uploadAttachmentsCreatingCalledWith = resource as? MDR.Resource
-        return uploadAttachmentsCreatingResult as? Async<(resource: R, key: Key?)> ?? Async.reject()
+        return uploadAttachmentsCreatingResult as? Async<(resource: R, key: CryptoKey?)> ?? Async.reject()
     }
 
-    func uploadAttachments<R: FhirSDKResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type) -> Promise<(resource: R,  key: Key?)> {
+    func uploadAttachments<R: FhirSDKResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type) -> Promise<(resource: R,  key: CryptoKey?)> {
         uploadAttachmentsUpdatingCalledWith = resource as? MDR.Resource
-        return uploadAttachmentsUpdatingResult as? Async<(resource: R, key: Key?)> ?? Async.reject()
+        return uploadAttachmentsUpdatingResult as? Async<(resource: R, key: CryptoKey?)> ?? Async.reject()
     }
 
     func downloadAttachments<A: AttachmentType, DR: DecryptedRecord>(of type: A.Type,

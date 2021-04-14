@@ -14,8 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-@testable import Data4LifeCrypto
-import CryptoSwift
+import Data4LifeCrypto
 
 class KeyPairTests: XCTestCase {
     func testGenerateLoadAndDestroyKeyPair() {

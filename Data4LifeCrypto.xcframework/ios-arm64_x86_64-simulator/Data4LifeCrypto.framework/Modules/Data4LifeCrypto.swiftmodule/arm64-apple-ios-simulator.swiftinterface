@@ -1,0 +1,234 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Data4LifeCrypto
+@_exported import Data4LifeCrypto
+import Foundation
+import Swift
+extension KeyPair : Encodable {
+  public func encode(to encoder: Encoder) throws
+}
+extension KeyPair : Decodable {
+  public init(from decoder: Decoder) throws
+}
+public enum KeyType : String, CaseIterable {
+  case tag
+  case common
+  case data
+  case attachment
+  case appPrivate
+  case appPublic
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [Data4LifeCrypto.KeyType]
+  public static var allCases: [Data4LifeCrypto.KeyType] {
+    get
+  }
+}
+public enum AsymmetricKeyType : String {
+  case `public`
+  case `private`
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct AsymmetricKey {
+  public let value: SecKey
+  public let type: AsymmetricKeyType
+  public func asData() throws -> Data
+  public func asBase64EncodedString() throws -> String
+  public func asSPKIBase64EncodedString() throws -> String
+}
+public struct CryptoKey {
+  public let value: Data
+  public var algorithm: AlgorithmType
+  public let keySize: KeySize
+  public let type: KeyType
+  public static func generate(keySize: KeySize, algorithm: AlgorithmType, type: KeyType) throws -> CryptoKey
+}
+extension CryptoKey : Equatable {
+  public static func == (lhs: CryptoKey, rhs: CryptoKey) -> Bool
+}
+extension CryptoKey {
+  public var ivSize: Int {
+    get
+  }
+}
+public protocol AESKeyServiceType {
+  func randomIvData(of size: Int) -> Data
+}
+final public class AESKeyService : AESKeyServiceType {
+  final public func randomIvData(of size: Int) -> Data
+  public init()
+  @objc deinit
+}
+public struct Data4LifeCrypto {
+  public static func symEncrypt(key: CryptoKey, data: Data, iv: Data) throws -> Data
+  public static func symDecrypt(key: CryptoKey, data: Data, iv: Data) throws -> Data
+  public static func asymEncrypt(key: KeyPair, data: Data) throws -> Data
+  public static func asymDecrypt(key: KeyPair, data: Data) throws -> Data
+  public static func generateAsymKeyPair(algorithm: AlgorithmType, options: KeyOptions) throws -> KeyPair
+  public static func generateSymKey(algorithm: AlgorithmType, options: KeyOptions, type: KeyType) throws -> CryptoKey
+}
+public typealias KeySize = Int
+public struct KeyOptions {
+  public let size: KeySize
+  public let tag: String?
+  public init(size: KeySize, tag: String? = nil)
+}
+public struct RSAAlgorithm : AlgorithmType {
+  public var cipher: CipherType
+  public var padding: Padding
+  public var blockMode: BlockMode?
+  public var hash: HashType?
+  public var iv: String?
+  public init()
+}
+public enum Data4LifeCryptoError : LocalizedError {
+  case couldNotReadPublicKey
+  case couldNotReadPrivateKey
+  case couldNotReadKeyAttributes
+  case couldNotReadKeySize
+  case couldNotReadBase64EncodedData
+  case couldNotReadKeyPair(String)
+  case couldNotDeleteKeyPair(String)
+  case couldNotCopySecureRandomBytes
+  case keyDoesNotMatchExpectedSize
+  case keyIsNotRSAKey
+  case keyIsNotPublicKey
+  case invalidKeyType(String)
+  case invalidKeyAlgorithmVersion(String)
+  case missingHeaderBytesForKeySize(Int)
+  case missingKeyPairTagOption
+  case unsupportedAlgorithmCombination
+}
+extension Data4LifeCryptoError : CustomStringConvertible {
+  public var description: String {
+    get
+  }
+}
+extension Data4LifeCryptoError {
+  public var errorDescription: String? {
+    get
+  }
+  public var failureReason: String? {
+    get
+  }
+  public var recoverySuggestion: String? {
+    get
+  }
+}
+extension Data4LifeCryptoError : Equatable {
+  public static func == (lhs: Data4LifeCryptoError, rhs: Data4LifeCryptoError) -> Bool
+  public static func == (lhs: Error, rhs: Data4LifeCryptoError) -> Bool
+}
+public typealias KeyExchangeFormat = (algorithm: AlgorithmType, size: KeySize)
+public struct KeyExhangeFactory {
+  public static func create(type: KeyType, version: Int = 1) throws -> KeyExchangeFormat
+}
+public protocol KeyPairType {
+  var publicKey: AsymmetricKey { get }
+  var privateKey: AsymmetricKey { get }
+  var algorithm: AlgorithmType { get }
+  var keySize: KeySize { get }
+  static func generate(tag: String, keySize: Int, algorithm: AlgorithmType) throws -> Self
+  static func load(tag: String, algorithm: AlgorithmType) throws -> Self
+  static func destroy(tag: String) throws
+}
+public struct KeyPair : KeyPairType {
+  public let privateKey: AsymmetricKey
+  public let publicKey: AsymmetricKey
+  public let keySize: KeySize
+  public let algorithm: AlgorithmType
+  public static func load(tag: String, algorithm: AlgorithmType) throws -> KeyPair
+  public static func destroy(tag: String) throws
+  public static func generate(tag: String, keySize: Int, algorithm: AlgorithmType) throws -> KeyPair
+}
+public protocol AlgorithmType {
+  var cipher: CipherType { get }
+  var padding: Padding { get }
+  var blockMode: BlockMode? { get }
+  var hash: HashType? { get }
+}
+public enum BlockMode : String, CaseIterable {
+  case cbc
+  case gcm
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+  public typealias AllCases = [Data4LifeCrypto.BlockMode]
+  public static var allCases: [Data4LifeCrypto.BlockMode] {
+    get
+  }
+}
+public enum CipherType : String, CaseIterable {
+  case aes
+  case rsa
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+  public typealias AllCases = [Data4LifeCrypto.CipherType]
+  public static var allCases: [Data4LifeCrypto.CipherType] {
+    get
+  }
+}
+public enum Padding : String, CaseIterable {
+  case noPadding
+  case pkcs1
+  case pkcs5
+  case pkcs7
+  case oaep
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+  public typealias AllCases = [Data4LifeCrypto.Padding]
+  public static var allCases: [Data4LifeCrypto.Padding] {
+    get
+  }
+}
+public enum HashType : String, CaseIterable {
+  case sha256
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+  public typealias AllCases = [Data4LifeCrypto.HashType]
+  public static var allCases: [Data4LifeCrypto.HashType] {
+    get
+  }
+}
+extension CryptoKey : Encodable {
+  public func encode(to encoder: Encoder) throws
+}
+extension CryptoKey : Decodable {
+  public init(from decoder: Decoder) throws
+}
+extension Data4LifeCrypto.KeyType : Swift.Equatable {}
+extension Data4LifeCrypto.KeyType : Swift.Hashable {}
+extension Data4LifeCrypto.KeyType : Swift.RawRepresentable {}
+extension Data4LifeCrypto.AsymmetricKeyType : Swift.Equatable {}
+extension Data4LifeCrypto.AsymmetricKeyType : Swift.Hashable {}
+extension Data4LifeCrypto.AsymmetricKeyType : Swift.RawRepresentable {}
+extension Data4LifeCrypto.BlockMode : Swift.Equatable {}
+extension Data4LifeCrypto.BlockMode : Swift.Hashable {}
+extension Data4LifeCrypto.BlockMode : Swift.RawRepresentable {}
+extension Data4LifeCrypto.CipherType : Swift.Equatable {}
+extension Data4LifeCrypto.CipherType : Swift.Hashable {}
+extension Data4LifeCrypto.CipherType : Swift.RawRepresentable {}
+extension Data4LifeCrypto.Padding : Swift.Equatable {}
+extension Data4LifeCrypto.Padding : Swift.Hashable {}
+extension Data4LifeCrypto.Padding : Swift.RawRepresentable {}
+extension Data4LifeCrypto.HashType : Swift.Equatable {}
+extension Data4LifeCrypto.HashType : Swift.Hashable {}
+extension Data4LifeCrypto.HashType : Swift.RawRepresentable {}

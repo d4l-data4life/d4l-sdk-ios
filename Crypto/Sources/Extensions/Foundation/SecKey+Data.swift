@@ -15,7 +15,7 @@
 
 import Foundation
 
-public extension SecKey {
+extension SecKey {
     func asData() throws -> Data {
         var error:Unmanaged<CFError>?
         guard let cfdata = SecKeyCopyExternalRepresentation(self, &error) else {

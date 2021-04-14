@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 
 struct AsymCryptoTestModel: Decodable {
     var inputData: Data

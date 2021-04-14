@@ -24,8 +24,8 @@ class CommonKeyServiceMock: CommonKeyServiceType {
     var currentKey: Key?
 
     var fetchKeyCalledWith: String?
-    var fetchKeyResult: Async<Key>?
-    func fetchKey(with commonKeyId: String) -> Async<Key> {
+    var fetchKeyResult: Async<CryptoKey>?
+    func fetchKey(with commonKeyId: String) -> Async<CryptoKey> {
         fetchKeyCalledWith = commonKeyId
         return fetchKeyResult ?? Promise.reject()
     }

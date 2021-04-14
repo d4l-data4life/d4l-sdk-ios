@@ -15,7 +15,6 @@
 
 import XCTest
 @testable import Data4LifeCrypto
-import CryptoSwift
 
 class Data4LifeCryptoProtocolTests: XCTestCase {
     var bundle: Bundle!
