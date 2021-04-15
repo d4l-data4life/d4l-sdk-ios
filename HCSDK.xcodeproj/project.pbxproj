@@ -49,7 +49,7 @@
 		36080C37237DB12900085476 /* Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C36237DB12900085476 /* Wrapper.swift */; };
 		36080C39237DB14200085476 /* DIResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C38237DB14200085476 /* DIResolver.swift */; };
 		36080C3B2382F74E00085476 /* Data4LifeFHIR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */; };
-		36238DB2252F3CE200923F22 /* AESKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* AESKeyService.swift */; };
+		36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */; };
 		36238DBB252F3E7800923F22 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
 		36238DBC252F3E7800923F22 /* Data4LifeSDKUtils.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36238DC1252F3EEF00923F22 /* Data4LifeSDKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36647AC123D1A42D00DCA962 /* Data4LifeSDKUtils.framework */; };
@@ -436,7 +436,7 @@
 		36080C36237DB12900085476 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		36080C38237DB14200085476 /* DIResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIResolver.swift; sourceTree = "<group>"; };
 		36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Data4LifeFHIR.framework; path = Carthage/Build/iOS/Data4LifeFHIR.framework; sourceTree = "<group>"; };
-		36238DB1252F3CE200923F22 /* AESKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESKeyService.swift; sourceTree = "<group>"; };
+		36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationVectorGenerator.swift; sourceTree = "<group>"; };
 		36238E7A2530B8E400923F22 /* donorKey.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = donorKey.json; sourceTree = "<group>"; };
 		3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordServiceTests+AppData.swift"; sourceTree = "<group>"; };
 		3634699724ED5A26001EEE66 /* AppDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataServiceTests.swift; sourceTree = "<group>"; };
@@ -1074,7 +1074,7 @@
 				CD1090B0225B893A00325389 /* Data4LifeCrypto.h */,
 				CD1090B2225B893A00325389 /* CryptorProtocol.swift */,
 				CD1090AE225B893A00325389 /* Data4LifeCryptoError.swift */,
-				36238DB1252F3CE200923F22 /* AESKeyService.swift */,
+				36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */,
 				CD1090A6225B893A00325389 /* RSACipher.swift */,
 				CD10909F225B893A00325389 /* Key */,
 				CD109098225B893A00325389 /* KeyPair */,
@@ -2399,7 +2399,7 @@
 				CD1090D0225B893A00325389 /* KeyType.swift in Sources */,
 				CD1090B8225B893A00325389 /* AsymmetricKey.swift in Sources */,
 				CD1090C7225B893A00325389 /* Key.swift in Sources */,
-				36238DB2252F3CE200923F22 /* AESKeyService.swift in Sources */,
+				36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */,
 				CD1090F0225B893A00325389 /* CryptorProtocol.swift in Sources */,
 				CD1090C4225B893A00325389 /* KeyOptions.swift in Sources */,
 				CD1090D3225B893A00325389 /* RSACipher.swift in Sources */,

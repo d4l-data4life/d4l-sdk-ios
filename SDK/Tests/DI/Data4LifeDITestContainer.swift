@@ -60,8 +60,8 @@ extension Data4LifeDITestContainer {
             CommonKeyServiceMock()
         }.register(scope: .containerInstance) { (_) -> AppDataServiceType in
             AppDataServiceMock()
-        }.register(scope: .containerInstance) { (_) -> AESKeyServiceType in
-            AESKeyService()
+        }.register(scope: .containerInstance) { (_) -> InitializationVectorGeneratorProtocol in
+            InitializationVectorGenerator()
         }
     }
 }

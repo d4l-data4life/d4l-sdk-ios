@@ -84,8 +84,8 @@ extension Data4LifeDIContainer {
                 FhirService(container: container)
             }.register(scope: .containerInstance) { (container) -> AppDataServiceType in
                 AppDataService(container: container)
-            }.register(scope: .containerInstance) { (_) -> AESKeyServiceType in
-                AESKeyService()
+            }.register(scope: .containerInstance) { (_) -> InitializationVectorGeneratorProtocol in
+                InitializationVectorGenerator()
             }
         } catch {
             fatalError(error.localizedDescription)

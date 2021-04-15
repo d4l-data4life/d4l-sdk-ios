@@ -40,7 +40,7 @@ protocol CryptoServiceType {
 
 final class CryptoService: CryptoServiceType {
 
-    private var aesKeyService: AESKeyServiceType
+    private var ivGenerator: InitializationVectorGeneratorProtocol
     private var keychainService: KeychainServiceType
     private(set) var keyPairTag: String
 
@@ -68,7 +68,7 @@ final class CryptoService: CryptoServiceType {
     init(container: DIContainer, keyPairTag: String) {
         do {
             self.keychainService = try container.resolve()
-            self.aesKeyService = try container.resolve()
+            self.ivGenerator = try container.resolve()
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -78,7 +78,7 @@ final class CryptoService: CryptoServiceType {
 
     // MARK: Helpers around symmetric crypto operations that handle IV for easier usage
     func encrypt(data: Data, key: Key) throws -> Data {
-        let iv = aesKeyService.randomIvData(of: key.ivSize)
+        let iv = ivGenerator.randomIVData(of: key.ivSize)
         let encryptedData = try Data4LifeCryptor.symEncrypt(key: key, data: data, iv: iv)
         return iv + encryptedData
     }
