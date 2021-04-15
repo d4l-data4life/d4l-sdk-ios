@@ -16,10 +16,10 @@ Pod::Spec.new do |s|
   s.preserve_paths      = 'Data4LifeSDK.xcframework', 'Data4LifeSDK.dSYMs/Data4LifeSDK.framework.ios-arm64.dSYM', 'Data4LifeSDK.dSYMs/Data4LifeSDK.framework.ios-arm64_x86_64-simulator.dSYM'
 
   s.dependency 'Alamofire', '~> 5.4.1'
-  s.dependency 'thenPromise', '~> 5.1.3'
+  s.dependency 'thenPromise', '~> 5.1.2'
   s.dependency 'AppAuth', '~> 1.4.0'
-  s.dependency 'Data4LifeSDKUtils', '~> 0.4.0'
+  s.dependency 'Data4LifeSDKUtils', '~> 0.5.0'
   s.dependency 'Data4LifeCrypto', '~> 1.5.0'
-  s.dependency 'Data4LifeFHIR', '~> 0.19.0'
-  s.dependency 'ModelsR4', '~> 0.19.0'
+  s.dependency 'Data4LifeFHIR', '~> 0.20.0'
+  s.dependency 'ModelsR4', '~> 0.20.0'
 end

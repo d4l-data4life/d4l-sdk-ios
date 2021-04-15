@@ -1821,7 +1821,6 @@
 				837463A31E854E7500AB500F /* Headers */,
 				837463A41E854E7500AB500F /* Resources */,
 				CDB889C61FB30516000C76C0 /* Run Swiftlint */,
-				362F78A9261E027100CC968C /* Remove symbol maps from packages */,
 			);
 			buildRules = (
 			);
@@ -2088,24 +2087,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		362F78A9261E027100CC968C /* Remove symbol maps from packages */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Remove symbol maps from packages";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nfor file in $(find ${BUILD_DIR}/../../SourcePackages/artifacts -mindepth 5 -maxdepth 5 | grep .bcsymbolmap); \ndo\n    echo \"removing $file\"\n    rm $file\ndone\n";
-		};
 		CDB889C61FB30516000C76C0 /* Run Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
