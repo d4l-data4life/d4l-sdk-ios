@@ -13,8 +13,6 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import CryptoSwift
-
 public protocol AESKeyServiceType {
     func randomIvData(of size: Int) -> Data
 }
@@ -22,8 +20,12 @@ public protocol AESKeyServiceType {
 public final class AESKeyService: AESKeyServiceType {
 
     public func randomIvData(of size: Int) -> Data {
-        AES.randomIV(size).asData
+        return Self.randomIV(size).asData
     }
 
     public init() {}
+
+    private static func randomIV(_ count: Int) -> [UInt8] {
+        (0..<count).map({ _ in UInt8.random(in: 0...UInt8.max) })
+    }
 }

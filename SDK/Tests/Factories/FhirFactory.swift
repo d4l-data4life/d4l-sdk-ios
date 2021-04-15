@@ -43,7 +43,7 @@ struct FhirFactory {
     }
 
     static func createStu3QuestionnaireItem(id: String? = nil, initial: Data4LifeFHIR.Attachment? = nil, items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.QuestionnaireItem {
-        let item = QuestionnaireItem()
+        let item = Data4LifeFHIR.QuestionnaireItem()
         item.id = id
         item.item = items
         item.initialAttachment = initial
@@ -64,7 +64,7 @@ struct FhirFactory {
     static func createStu3QuestionnaireResponseItem(id: String = UUID().uuidString,
                                                     answers: [Data4LifeFHIR.QuestionnaireResponseItemAnswer]? = nil,
                                                     nestedItems: [Data4LifeFHIR.QuestionnaireResponseItem]? = nil) -> Data4LifeFHIR.QuestionnaireResponseItem {
-        let responseItem = QuestionnaireResponseItem()
+        let responseItem = Data4LifeFHIR.QuestionnaireResponseItem()
         responseItem.id = id
         if let answers = answers {
             responseItem.answer = answers
