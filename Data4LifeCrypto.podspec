@@ -12,6 +12,4 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Crypto/Sources/**/*.{swift,h,m}'
-
-  s.dependency 'CryptoSwift', '1.3.7'
 end
