@@ -21,12 +21,12 @@ public final class InitializationVectorGenerator: InitializationVectorGeneratorP
     public init() {}
 
     public func randomIVData(of size: Int) -> Data {
-        return Self.randomIV(size).asData
+        return randomIV(of: size).asData
     }
 }
 
 extension InitializationVectorGenerator {
-    private static func randomIV(_ count: Int) -> [UInt8] {
-        (0..<count).map({ _ in UInt8.random(in: 0...UInt8.max) })
+    private func randomIV(of size: Int) -> [UInt8] {
+        (0..<size).map({ _ in UInt8.random(in: 0...UInt8.max) })
     }
 }
