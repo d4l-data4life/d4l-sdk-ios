@@ -22,7 +22,7 @@ protocol CommonKeyServiceType {
     var currentId: String? { get }
     var currentKey: Key? { get }
 
-    func fetchKey(with: String) -> Async<CryptoKey>
+    func fetchKey(with: String) -> Async<Key>
     func storeKey(_ key: Key, id: String, isCurrent: Bool)
 }
 
@@ -70,7 +70,7 @@ class CommonKeyService: CommonKeyServiceType {
         }
     }
 
-    func fetchKey(with commonKeyId: String) -> Async<CryptoKey> {
+    func fetchKey(with commonKeyId: String) -> Async<Key> {
         return async {
             if !self.hasCommonKey(id: commonKeyId) {
                 try await(self.fetchKeyRemotely(with: commonKeyId))
@@ -116,7 +116,7 @@ class CommonKeyService: CommonKeyServiceType {
 
             let keyPair = try self.cryptoService.fetchOrGenerateKeyPair()
             let decryptedCommonKeyData = try self.cryptoService.decrypt(data: eckData, keypair: keyPair)
-            let commonKey: CryptoKey = try JSONDecoder().decode(CryptoKey.self, from: decryptedCommonKeyData)
+            let commonKey: Key = try JSONDecoder().decode(Key.self, from: decryptedCommonKeyData)
 
             self.storeKey(commonKey, id: id, isCurrent: false)
         }

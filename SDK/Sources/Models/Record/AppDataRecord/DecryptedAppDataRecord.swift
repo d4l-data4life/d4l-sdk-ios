@@ -16,7 +16,6 @@
 import Foundation
 import Data4LifeCrypto
 @_implementationOnly import Then
-import CryptoSwift
 
 struct DecryptedAppDataRecord: DecryptedRecord {
     var id: String

@@ -53,13 +53,13 @@ class UserService: UserServiceType {
 
             let keyPair = try self.cryptoService.fetchOrGenerateKeyPair()
             let decryptedCommonKeyData = try self.cryptoService.decrypt(data: eckData, keypair: keyPair)
-            let commonKey: CryptoKey = try JSONDecoder().decode(CryptoKey.self, from: decryptedCommonKeyData)
+            let commonKey: Key = try JSONDecoder().decode(Key.self, from: decryptedCommonKeyData)
 
             let commonKeyId = response.commonKeyId ?? CommonKeyService.initialId
             self.commonKeyService.storeKey(commonKey, id: commonKeyId, isCurrent: true)
 
             let decryptedTekData = try self.cryptoService.decrypt(data: tekData, key: commonKey)
-            let tagKey: CryptoKey = try JSONDecoder().decode(CryptoKey.self, from: decryptedTekData)
+            let tagKey: Key = try JSONDecoder().decode(Key.self, from: decryptedTekData)
             self.cryptoService.tek = tagKey
 
             try await(self.keychainService.set(response.userId, forKey: .userId))

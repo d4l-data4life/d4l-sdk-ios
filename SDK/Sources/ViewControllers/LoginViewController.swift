@@ -24,7 +24,7 @@ final class LoginViewController: UIViewController {
     private let notificationCenter: NotificationCenter = NotificationCenter.default
 
     private lazy var loadingIndicator: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .gray)
+        let view = UIActivityIndicatorView(style: .medium)
         view.hidesWhenStopped = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.startAnimating()

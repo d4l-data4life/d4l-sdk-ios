@@ -44,7 +44,7 @@ extension FhirService {
         }
     }
 
-    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: CryptoKey?)> {
+    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: Key?)> {
         return async {
             guard let resourceWithAttachments = resource as? HasAttachments else {
                 return (resource, nil)
@@ -68,14 +68,14 @@ extension FhirService {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
                 return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
-            } else {
+            } else { 
                 return (resource, generatedKey)
             }
         }
     }
 
     func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource,
-                                                decryptedRecordType: DR.Type = DR.self) -> Promise<(resource: DR.Resource, key: CryptoKey?)> where DR.Resource: FhirSDKResource {
+                                                decryptedRecordType: DR.Type = DR.self) -> Promise<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource {
         return async {
             let userId = try await(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
