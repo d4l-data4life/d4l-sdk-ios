@@ -3,8 +3,8 @@ Swift framework for handling all of the crypto operation for HCSDK.
 
 ## Usage
 ### Requirements
-* Xcode 13.0+
-* iOS 12.0+
+* Xcode 12.0+
+* iOS 13.0+
 * Swift 5.3+
 
 ### Install package manager and build frameworks
