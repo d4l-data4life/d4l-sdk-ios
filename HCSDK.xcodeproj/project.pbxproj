@@ -513,7 +513,6 @@
 		839E81451E86DE5300C42094 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		839E81471E86DE5300C42094 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83B276BB1F7FE57900E4D418 /* then.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = then.framework; path = Carthage/Build/iOS/then.framework; sourceTree = "<group>"; };
-		9173D3541F7BF64500EDB609 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 		CD109095225B88BE00325389 /* Data4LifeCrypto.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeCrypto.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD109099225B893A00325389 /* KeyPair+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyPair+Codable.swift"; sourceTree = "<group>"; };
 		CD10909B225B893A00325389 /* AsymmetricKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsymmetricKey.swift; sourceTree = "<group>"; };
@@ -1045,7 +1044,6 @@
 				36080C3A2382F74E00085476 /* Data4LifeFHIR.framework */,
 				CD3720E62031ECDC007B536A /* AppAuth.framework */,
 				83B276BB1F7FE57900E4D418 /* then.framework */,
-				9173D3541F7BF64500EDB609 /* CryptoSwift.framework */,
 				837463D41E85663400AB500F /* Alamofire.framework */,
 			);
 			name = Frameworks;
