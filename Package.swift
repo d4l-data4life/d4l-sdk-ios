@@ -35,12 +35,12 @@ let package = Package(
         .binaryTarget(
             name: "Data4LifeSDK",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "ac6e3608831c4e392df910edbc2996b0b94aab05304137d3c57ca87ce6c7304e"
+            checksum: "aa2c87adf1ee3660c8fb6f8529fd29d45dbe081fb65687925777a4d422211c4c"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
-            checksum: "422e46c4b58b4adb3df4f19ef29128576309d7e4e531d7c66e088fcca32e249a"
+            checksum: "c694e407a1391a6ff69135be571a3c6eeb5d0907a526a3ba9acb797aa5ca2364"
         ),
         .target(name: "Data4LifeSDKFrameworks",
                 dependencies: [
@@ -69,10 +69,5 @@ let package = Package(
                     .target(name: "Data4LifeCrypto"),
                 ],
                 path: "SDKSPMFrameworks"),
-        .testTarget(name: "Data4LifeSDKTests",
-                    dependencies: ["Data4LifeSDKFrameworks","Data4LifeCrypto"],
-                    path: "SDK/Tests",
-                    exclude: ["Info.plist","Data4LifeSDK-Version.plist"],
-                    resources: [.process("Resources"),.process("BenchmarkClient/SubbedResponses")]),
     ]
 )
