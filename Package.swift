@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDK","Data4LifeSDKFrameworks"]),
+            targets: ["Data4LifeSDK","Data4LifeCrypto","Data4LifeSDKFrameworks"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
