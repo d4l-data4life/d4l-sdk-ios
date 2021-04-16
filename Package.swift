@@ -30,7 +30,6 @@ let package = Package(
         .package(name: "AppAuth",
                  url: "https://github.com/openid/AppAuth-iOS.git",
                  .branch("master"))
-            
     ],
     targets: [
         .binaryTarget(
