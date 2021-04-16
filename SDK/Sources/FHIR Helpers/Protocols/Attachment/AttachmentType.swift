@@ -18,7 +18,7 @@ import ModelsR4
 import ModelIO
 import Data4LifeCrypto
 
-protocol AttachmentType: AnyObject, NSCopying {
+protocol AttachmentType: NSCopying {
     var attachmentId: String? { get set }
     var attachmentContentType: String? { get set }
     var attachmentDataString: String? { get set }

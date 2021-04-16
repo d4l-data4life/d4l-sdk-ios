@@ -41,7 +41,7 @@ extension ModelsR4.Identifier: FhirIdentifierType {
     }
 }
 
-public protocol CustomIdentifierMutable: class {
+public protocol CustomIdentifierMutable: AnyObject {
     func addAdditionalId(_ id: String)
     func setAdditionalIds(_ ids: [String])
     func getAdditionalIds() -> [String]?

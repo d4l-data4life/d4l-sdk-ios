@@ -15,7 +15,7 @@
 
 import UIKit
 
-protocol FilePickerDelegate: class {
+protocol FilePickerDelegate: AnyObject {
     func filePickerDidSelect(files: [FileData])
 }
 
