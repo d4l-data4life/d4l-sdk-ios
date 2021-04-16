@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDKFrameworks"]),
+            targets: ["Data4LifeSDK","Data4LifeSDKFrameworks"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
@@ -29,7 +29,8 @@ let package = Package(
                  .upToNextMinor(from: "5.1.4")),
         .package(name: "AppAuth",
                  url: "https://github.com/openid/AppAuth-iOS.git",
-                 .upToNextMinor(from: "1.4.0"))
+                 .branch("master"))
+            
     ],
     targets: [
         .binaryTarget(
@@ -59,14 +60,9 @@ let package = Package(
                     .product(name: "Alamofire",
                              package: "Alamofire",
                              condition: .when(platforms: [.iOS])),
-                    .product(name: "AppAuthCore",
-                             package: "AppAuth",
-                             condition: .when(platforms: [.iOS])),
                     .product(name: "AppAuth",
                              package: "AppAuth",
                              condition: .when(platforms: [.iOS])),
-                    .target(name: "Data4LifeSDK"),
-                    .target(name: "Data4LifeCrypto"),
                 ],
                 path: "SDKSPMFrameworks"),
     ]
