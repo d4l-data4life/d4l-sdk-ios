@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(url: "https://github.com/freshOS/Then",
-                 .upToNextMinor(from: "5.1.4")),
+                 .upToNextMinor(from: "5.1.2")),
         .package(name: "AppAuth",
                  url: "https://github.com/openid/AppAuth-iOS.git",
                  .branch("master"))
