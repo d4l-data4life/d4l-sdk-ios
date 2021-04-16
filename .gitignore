@@ -13,6 +13,7 @@ Data4LifeCrypto-xcframework*
 Data4LifeSDK-xcframework*
 XCFrameworks*
 xcframeworks
+prebuild.log
 
 ## Various settings
 *.pbxuser

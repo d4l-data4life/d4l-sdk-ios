@@ -15,7 +15,6 @@
 
 import Data4LifeCrypto
 
-
 struct KeyFactory {
     static func createKey(_ type: KeyType = .common) -> Key {
         let exchangeFormat = try! KeyExhangeFactory.create(type: type)

@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;for file in $(find ${BUILD_DIR}/../../SourcePackages/artifacts | grep .bcsymbolmap); &#10;do&#10;    echo &quot;removing $file&quot;&#10;    rm $file&#10;done&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; &quot;${PROJECT_DIR}/prebuild.log&quot; 2&gt;&amp;1&#10;&#10;for file in $(find ${BUILD_DIR}/../../SourcePackages/artifacts | grep .bcsymbolmap); &#10;do&#10;    echo &quot;removing $file&quot;&#10;    rm $file&#10;done&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

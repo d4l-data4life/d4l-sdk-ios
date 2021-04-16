@@ -13,7 +13,7 @@ crypto_podspec_path = '../Data4LifeCrypto.podspec'
 podspecs_repo_name = 'd4l-data4life'
 podspecs_repo_url = 'https://github.com/d4l-data4life/d4l-cocoapods-specs'
 
-device = "iPhone 11"
+device = "iPhone 12"
 
 platform :ios do
   desc "Run unit tests and upload code coverage"
@@ -185,7 +185,7 @@ platform :ios do
       sh "xcodebuild archive -scheme #{sdkScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive -destination 'generic/platform=iOS' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
       symbolMapUUIDFile1 = Dir.children("./#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/BCSymbolMaps/").first()
       symbolMapUUIDFile2 = Dir.children("./#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/BCSymbolMaps/").last()
-      sh "xcodebuild -create-xcframework \
+      sh "xcodebuild -verbose -create-xcframework \
           -framework #{buildPath}/#{configuration}/#{sdkName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{sdkName}.framework \
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphonesimulator.xcarchive/dSYMs/#{sdkName}.framework.dSYM' \
           -framework #{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/Products/Library/Frameworks/#{sdkName}.framework \
@@ -203,7 +203,7 @@ platform :ios do
       sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive -destination 'generic/platform=iOS Simulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
       sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive -destination 'generic/platform=iOS' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
       symbolMapUUIDFile = Dir.children("./#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/").first()
-      sh "xcodebuild -create-xcframework \
+      sh "xcodebuild -verbose -create-xcframework \
           -framework #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
           -framework #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \

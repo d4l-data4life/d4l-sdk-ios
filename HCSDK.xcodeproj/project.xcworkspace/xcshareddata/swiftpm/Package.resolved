@@ -14,9 +14,9 @@
         "package": "AppAuth",
         "repositoryURL": "https://github.com/openid/AppAuth-iOS.git",
         "state": {
-          "branch": null,
-          "revision": "01131d68346c8ae552961c768d583c715fbe1410",
-          "version": "1.4.0"
+          "branch": "master",
+          "revision": "e191b1beadf3041259652e6e464eaceff16e5fbb",
+          "version": null
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/freshOS/Then",
         "state": {
           "branch": null,
-          "revision": "2a0fe0720b979360820e871717855b894e76e562",
-          "version": "5.1.4"
+          "revision": "32c1a928650fafbd083a9ea2daa952ea1695f755",
+          "version": "5.1.2"
         }
       }
     ]
