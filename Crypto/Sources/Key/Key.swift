@@ -15,10 +15,8 @@
 
 import Foundation
 
-public typealias SymmetricKey = Data
-
 public struct Key {
-    public let value: SymmetricKey
+    public let value: Data
     public var algorithm: AlgorithmType
     public let keySize: KeySize
     public let type: KeyType
@@ -31,7 +29,7 @@ public struct Key {
             throw Data4LifeCryptoError.couldNotCopySecureRandomBytes
         }
 
-        return Key(value: SymmetricKey(randomBytes), algorithm: algorithm, keySize: keySize, type: type)
+        return Key(value: Data(randomBytes), algorithm: algorithm, keySize: keySize, type: type)
     }
 }
 

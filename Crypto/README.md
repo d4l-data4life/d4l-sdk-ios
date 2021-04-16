@@ -4,11 +4,8 @@ Swift framework for handling all of the crypto operation for HCSDK.
 ## Usage
 ### Requirements
 * Xcode 12.0+
-* iOS 12.0+
+* iOS 13.0+
 * Swift 5.3+
-
-### Dependencies
-* [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift)
 
 ### Install package manager and build frameworks
 Check information in the main [README](https://github.com/gesundheitscloud/hc-sdk-ios#install-carthage) of the project.
@@ -20,7 +17,7 @@ Check information in the main [README](https://github.com/gesundheitscloud/hc-sd
 * `AES-SHA256-CBC-PKCS7`
 * `AES-SHA256-GCM-NOPADDING`
 
-*Note*: Provided by CryptoSwift framework
+*Note*: Provided by Apple Common Crypto and Cryptokit frameworks
 
 #### Supported asymmetric algorithms
 `Data4LifeCrypto` supports one mode of asymmetric crypto operations:
@@ -85,7 +82,7 @@ let key = try Key.generate(keySize: keyExchangeFormat.size, algorithm: keyExchan
 let iv = Data(bytes: [...]) // generate random IV
 
 let plaintext: Data = Data(bytes: [0x00, 0x01, 0x02])
-let ciphertext: Data = HCCrypto.symEncrypt(key: key, data: plaintext, iv: iv)
+let ciphertext: Data = Data4LifeCryptor.symEncrypt(key: key, data: plaintext, iv: iv)
 // Store ciphertext, iv and key in a safe way
 ```
 
@@ -94,7 +91,7 @@ Decrypt the data
 let key: Key =  ... // fetch key from storage
 let iv: Data = ... // fetch iv from storage
 let ciphertext: Data =  ... // fetch ciphertext from storage
-let plaintext: Data = try HCCrypto.symDecrypt(key: key, data: ciphertext, iv: iv)
+let plaintext: Data = try Data4LifeCryptor.symDecrypt(key: key, data: ciphertext, iv: iv)
 ```
 
 #### KeyPair (asymmetric)
@@ -131,7 +128,7 @@ let keyExchangeFormat = try KeyExhangeFactory.create(type: type)
 let keypair = try KeyPair.generate(tag: tag, keySize: keyExchangeFormat.size, algorithm: keyExchangeFormat.algorithm)
 
 let plaintext: Data = Data(bytes: [0x00, 0x01, 0x02])
-let ciphertext: Data = try HCCrypto.asymEncrypt(key: keypair, data: plaintext)
+let ciphertext: Data = try Data4LifeCryptor.asymEncrypt(key: keypair, data: plaintext)
 ```
 
 Decrypt the data
@@ -142,5 +139,5 @@ let keyExchangeFormat = KeyExhangeFactory.create(type: type)
 let keypair = try KeyPair.load(tag: tag, algorithm: keyExchangeFormat.algorithm)
 
 let ciphertext: Data = ... // fetch ciphertext from storage
-let plaintext: Data = try HCCrypto.asymDecrypt(key: keypair, data: ciphertext)
+let plaintext: Data = try Data4LifeCryptor.asymDecrypt(key: keypair, data: ciphertext)
 ```

@@ -24,6 +24,8 @@ public enum Data4LifeCryptoError: LocalizedError {
     case couldNotReadKeyPair(String)
     case couldNotDeleteKeyPair(String)
     case couldNotCopySecureRandomBytes
+    case couldNotEncryptData
+    case couldNotDecryptData
     case keyDoesNotMatchExpectedSize
     case keyIsNotRSAKey
     case keyIsNotPublicKey
@@ -69,6 +71,10 @@ extension Data4LifeCryptoError: CustomStringConvertible {
             return "Unsupported algorithm combination"
         case .missingKeyPairTagOption:
             return "KeyPair operations required a tag to be provided in the options"
+        case .couldNotEncryptData:
+            return "Could not encrypt data"
+        case .couldNotDecryptData:
+            return "Could not decrypt data"
         }
     }
 }

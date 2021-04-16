@@ -15,7 +15,6 @@
 
 import XCTest
 @testable import Data4LifeCrypto
-import CryptoSwift
 
 class KeyPairTests: XCTestCase {
     func testGenerateLoadAndDestroyKeyPair() {

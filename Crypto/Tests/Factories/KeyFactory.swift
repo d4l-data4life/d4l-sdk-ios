@@ -14,7 +14,6 @@
 //  contact D4L by email to help@data4life.care.
 
 @testable import Data4LifeCrypto
-import CryptoSwift
 
 struct KeyFactory {
     static func createKey(_ type: KeyType = .common) -> Key {
