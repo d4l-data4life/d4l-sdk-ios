@@ -96,7 +96,7 @@ extension Data4LifeClientFhirStu3Tests {
         secondResource.id = secondId
         let secondRecord = RecordFactory.create(secondResource)
 
-        let records: [FhirRecord<DocumentReference>] = [firstRecord, secondRecord]
+        let records: [FhirRecord<Data4LifeFHIR.DocumentReference>] = [firstRecord, secondRecord]
         let resources: [DocumentReference]  = [firstResource, secondResource]
 
         fhirService.updateFhirRecordsResult = Promise.resolve((records, []))
@@ -125,7 +125,7 @@ extension Data4LifeClientFhirStu3Tests {
         fhirService.downloadSpecificRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.downloadFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        client.downloadFhirStu3Record(withId: resourceId, of: Data4LifeFHIR.DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

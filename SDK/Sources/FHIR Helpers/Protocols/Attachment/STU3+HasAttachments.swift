@@ -13,11 +13,11 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Data4LifeFHIR
+@_exported import Data4LifeFHIR
 import Data4LifeCrypto
 
 // MARK: DocumentReference
-extension DocumentReference: HasAttachments {
+extension Data4LifeFHIR.DocumentReference: HasAttachments {
 
     var schema: AttachmentSchema {
         return .list(content?.compactMap { $0.attachment })
@@ -29,7 +29,7 @@ extension DocumentReference: HasAttachments {
         }
 
         content = filledAttachments?.compactMap { attachment in
-            guard let attachment = attachment as? Attachment else {
+            guard let attachment = attachment as? Data4LifeFHIR.Attachment else {
                 return nil
             }
             return DocumentReferenceContent(attachment: attachment)
@@ -38,7 +38,7 @@ extension DocumentReference: HasAttachments {
 }
 
 // MARK: DiagnosticReport
-extension DiagnosticReport: HasAttachments {
+extension Data4LifeFHIR.DiagnosticReport: HasAttachments {
     var schema: AttachmentSchema {
         return .list(presentedForm)
     }
@@ -47,12 +47,12 @@ extension DiagnosticReport: HasAttachments {
         guard case let .list(filledAttachments) = filledSchema else {
             fatalError("Attachment Schema should be generic")
         }
-        presentedForm = filledAttachments as? [Attachment]
+        presentedForm = filledAttachments as? [Data4LifeFHIR.Attachment]
     }
 }
 
 // MARK: Medication
-extension Medication: HasAttachments {
+extension Data4LifeFHIR.Medication: HasAttachments {
     var schema: AttachmentSchema {
         return .list(image)
     }
@@ -61,12 +61,12 @@ extension Medication: HasAttachments {
         guard case let .list(filledAttachments) = filledSchema else {
             fatalError("Attachment Schema should be generic")
         }
-        image = filledAttachments as? [Attachment]
+        image = filledAttachments as? [Data4LifeFHIR.Attachment]
     }
 }
 
 // MARK: Practitioner
-extension Practitioner: HasAttachments {
+extension Data4LifeFHIR.Practitioner: HasAttachments {
     var schema: AttachmentSchema {
         return .list(photo)
     }
@@ -75,12 +75,12 @@ extension Practitioner: HasAttachments {
         guard case let .list(filledAttachments) = filledSchema else {
             fatalError("Attachment Schema should be generic")
         }
-        photo = filledAttachments as? [Attachment]
+        photo = filledAttachments as? [Data4LifeFHIR.Attachment]
     }
 }
 
 // MARK: Patient
-extension Patient: HasAttachments {
+extension Data4LifeFHIR.Patient: HasAttachments {
     var schema: AttachmentSchema {
         return .list(photo)
     }
@@ -89,12 +89,12 @@ extension Patient: HasAttachments {
         guard case let .list(filledAttachments) = filledSchema else {
             fatalError("Attachment Schema should be generic")
         }
-        photo = filledAttachments as? [Attachment]
+        photo = filledAttachments as? [Data4LifeFHIR.Attachment]
     }
 }
 
 // MARK: ObservationComponent
-extension ObservationComponent: HasAttachments {
+extension Data4LifeFHIR.ObservationComponent: HasAttachments {
     var schema: AttachmentSchema {
         .single(valueAttachment)
     }
@@ -103,13 +103,13 @@ extension ObservationComponent: HasAttachments {
         guard case let .single(attachment) = filledSchema else {
             fatalError("Attachment Schema should be generic")
         }
-        self.valueAttachment = attachment as? Attachment
+        self.valueAttachment = attachment as? Data4LifeFHIR.Attachment
     }
 }
 
 // MARK: - Implementation for resources with nested resources with attachments
 // MARK: Observation
-extension Observation: HasAttachments {
+extension Data4LifeFHIR.Observation: HasAttachments {
     var schema: AttachmentSchema {
         return .observation(value: valueAttachment, components: component)
     }
@@ -119,7 +119,7 @@ extension Observation: HasAttachments {
             fatalError("Attachment Schema should be generic")
         }
 
-        self.valueAttachment = valueAttachment  as? Attachment
+        self.valueAttachment = valueAttachment as? Data4LifeFHIR.Attachment
         self.component = components
     }
 
@@ -137,7 +137,7 @@ extension Observation: HasAttachments {
 }
 
 // MARK: Questionnaire
-extension Questionnaire: HasAttachments {
+extension Data4LifeFHIR.Questionnaire: HasAttachments {
     var schema: AttachmentSchema {
         return .questionnaire(items: item)
     }
@@ -163,7 +163,7 @@ extension Questionnaire: HasAttachments {
 }
 
 // MARK: QuestionnaireItem
-extension QuestionnaireItem: HasAttachments {
+extension Data4LifeFHIR.QuestionnaireItem: HasAttachments {
     var schema: AttachmentSchema {
         .questionnaireItem(initial: initialAttachment, nestedItems: item)
     }
@@ -172,7 +172,7 @@ extension QuestionnaireItem: HasAttachments {
         guard case let .questionnaireItem(initial, nestedItems) = filledSchema else {
             fatalError("Attachment Schema should be questionnaire item")
         }
-        self.initialAttachment = initial as? Attachment
+        self.initialAttachment = initial as? Data4LifeFHIR.Attachment
         self.item = nestedItems
     }
 
@@ -190,7 +190,7 @@ extension QuestionnaireItem: HasAttachments {
 }
 
 // MARK: QuestionnaireResponse
-extension QuestionnaireResponse: HasAttachments {
+extension Data4LifeFHIR.QuestionnaireResponse: HasAttachments {
     var schema: AttachmentSchema {
         return .questionnaireResponse(items: item)
     }
@@ -216,7 +216,7 @@ extension QuestionnaireResponse: HasAttachments {
 }
 
 // MARK: QuestionnaireResponseItem
-extension QuestionnaireResponseItem: HasAttachments {
+extension Data4LifeFHIR.QuestionnaireResponseItem: HasAttachments {
     var schema: AttachmentSchema {
         .questionnaireResponseItem(answers: answer, nestedItems: item)
     }
@@ -243,7 +243,7 @@ extension QuestionnaireResponseItem: HasAttachments {
 }
 
 // MARK: QuestionnaireResponseItemAnswer
-extension QuestionnaireResponseItemAnswer: HasAttachments {
+extension Data4LifeFHIR.QuestionnaireResponseItemAnswer: HasAttachments {
     var schema: AttachmentSchema {
         .questionnaireResponseItemAnswer(value: valueAttachment, nestedItems: item)
     }
@@ -252,7 +252,7 @@ extension QuestionnaireResponseItemAnswer: HasAttachments {
         guard case let .questionnaireResponseItemAnswer(value, nestedItems) = filledSchema else {
             fatalError("Attachment Schema should be questionnaire response item answer")
         }
-        self.valueAttachment = value as? Attachment
+        self.valueAttachment = value as? Data4LifeFHIR.Attachment
         self.item = nestedItems
     }
 

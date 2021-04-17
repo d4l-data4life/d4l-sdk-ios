@@ -26,7 +26,7 @@ protocol SDKVersionValidatorType {
 class SDKVersionValidator: SDKVersionValidatorType {
 
     private var infoService: InfoServiceType
-    private var sdkBundle: Bundle
+    private var sdkBundle: Foundation.Bundle
     private let sdkFileManager: SDKFileManagerType
     weak var sessionService: SessionService?
 

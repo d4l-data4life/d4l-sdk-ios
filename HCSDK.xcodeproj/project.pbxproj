@@ -1366,7 +1366,6 @@
 			isa = PBXGroup;
 			children = (
 				CD10920F225B901E00325389 /* Alamofire */,
-				CD109211225B901E00325389 /* UIKit */,
 				CD109213225B901E00325389 /* Async */,
 				CD109219225B901E00325389 /* Foundation */,
 			);
@@ -1379,13 +1378,6 @@
 				CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */,
 			);
 			path = Alamofire;
-			sourceTree = "<group>";
-		};
-		CD109211225B901E00325389 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIKit;
 			sourceTree = "<group>";
 		};
 		CD109213225B901E00325389 /* Async */ = {

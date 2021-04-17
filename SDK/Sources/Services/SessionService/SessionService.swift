@@ -41,7 +41,7 @@ final class SessionService {
     }
 
     convenience init(hostname: String,
-                     sdkBundle: Bundle,
+                     sdkBundle: Foundation.Bundle,
                      versionValidator: SDKVersionValidatorType,
                      networkManager: ReachabilityType = Reachability(),
                      interceptor: RequestInterceptorType? = nil) {

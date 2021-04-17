@@ -15,9 +15,9 @@
 
 import Foundation
 @_implementationOnly import Then
-import Data4LifeFHIR
+@_exported import Data4LifeFHIR
 
-extension Promise where T == FhirRecord<DocumentReference> {
+extension Promise where T == FhirRecord<Data4LifeFHIR.DocumentReference> {
     func transformRecord<R: FhirSDKResource>(to valueType: R.Type) -> Promise<FhirRecord<R>> {
         return async {
             let value = try await(self)
@@ -27,7 +27,7 @@ extension Promise where T == FhirRecord<DocumentReference> {
     }
 }
 
-extension Promise where T == BatchResult<FhirRecord<DocumentReference>, DocumentReference> {
+extension Promise where T == BatchResult<FhirRecord<Data4LifeFHIR.DocumentReference>, Data4LifeFHIR.DocumentReference> {
     func transformRecords<R: FhirSDKResource>(to valueType: R.Type) -> Promise<BatchResult<FhirRecord<R>, R>> {
         return async {
             let value = try await(self)

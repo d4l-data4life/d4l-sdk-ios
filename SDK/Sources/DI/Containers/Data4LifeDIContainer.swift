@@ -24,7 +24,7 @@ extension Data4LifeDIContainer {
 
         do {
             try registerGlobalDependencies(using: clientConfiguration.loggerConfiguration)
-            try register(scope: .transientInstance) { (_) -> Bundle in
+            try register(scope: .transientInstance) { (_) -> Foundation.Bundle in
                 Bundle(for: Data4LifeDIContainer.self)
             }.register(scope: .transientInstance) { (_) -> PropertyListDecoder in
                 PropertyListDecoder()

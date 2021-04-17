@@ -29,7 +29,7 @@ extension FhirStu3ServiceTests {
         recordService.createRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, fhirResource)
@@ -55,8 +55,8 @@ extension FhirStu3ServiceTests {
         recordService.fetchRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.fetchFhirRecord(withId: resourceId, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
-            .then { (result: FhirRecord<CarePlan>) in
+        fhirService.fetchFhirRecord(withId: resourceId, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
+            .then { (result: FhirRecord<Data4LifeFHIR.CarePlan>) in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(fhirResource, result.fhirResource)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId)
@@ -76,7 +76,7 @@ extension FhirStu3ServiceTests {
         let fhirResource = FhirFactory.createStu3CarePlanResource()
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
-        let updateResource = fhirResource.copy() as! CarePlan // swiftlint:disable:this force_cast
+        let updateResource = fhirResource.copy() as! Data4LifeFHIR.CarePlan // swiftlint:disable:this force_cast
         updateResource.language = UUID().uuidString
         let updatedRecord = record.copy(with: updateResource)
 
@@ -84,7 +84,7 @@ extension FhirStu3ServiceTests {
         recordService.updateRecordResult = Async.resolve(updatedRecord)
 
         let asyncExpectation = expectation(description: "should update language property")
-        fhirService.updateFhirRecord(updateResource, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.updateFhirRecord(updateResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertNotEqual(result.fhirResource, fhirResource)
@@ -106,7 +106,7 @@ extension FhirStu3ServiceTests {
         keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should throw an error")
-        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
             .then { _ in
                 XCTFail("Should throw an error")
             }.onError { error in
@@ -154,8 +154,8 @@ extension FhirStu3ServiceTests {
         recordService.searchRecordsResult = Async.resolve([record])
 
         let asyncExpectation = expectation(description: "should return resources")
-        fhirService.fetchRecords(decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self,
-                                 recordType: FhirRecord<CarePlan>.self,
+        fhirService.fetchRecords(decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self,
+                                 recordType: FhirRecord<Data4LifeFHIR.CarePlan>.self,
                                  annotations: [],
                                  from: from,
                                  to: to,
@@ -186,7 +186,7 @@ extension FhirStu3ServiceTests {
         recordService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return count of resources")
-        fhirService.countRecords(of: CarePlan.self, annotations: [])
+        fhirService.countRecords(of: Data4LifeFHIR.CarePlan.self, annotations: [])
             .then { result in
                 XCTAssertEqual(count, result)
                 XCTAssertTrue(self.recordService.countRecordsCalledWith?.1 == CarePlan.self)

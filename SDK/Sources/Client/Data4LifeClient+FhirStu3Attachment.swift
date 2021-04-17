@@ -15,8 +15,6 @@
 
 import Foundation
 @_implementationOnly import Then
-import Data4LifeFHIR
-import ModelsR4
 
 extension Data4LifeClient {
     /**
@@ -107,7 +105,7 @@ extension Data4LifeClient {
 
         let task = makeProgressTask(fileCount: identifiers.count, onProgressUpdated)
         fhirService
-            .downloadAttachments(of: Attachment.self,
+            .downloadAttachments(of: Data4LifeFHIR.Attachment.self,
                                  decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
                                  withIds: identifiers,
                                  recordId: recordId,

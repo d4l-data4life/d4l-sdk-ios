@@ -15,7 +15,6 @@
 
 import Foundation
 @_implementationOnly import Then
-import Data4LifeFHIR
 
 extension Data4LifeClient {
     /**

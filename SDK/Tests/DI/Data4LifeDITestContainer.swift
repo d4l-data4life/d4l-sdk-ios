@@ -31,7 +31,7 @@ extension Data4LifeDITestContainer {
         }.register(scope: .containerInstance) { (_) -> KeychainServiceType in
             KeychainServiceMock()
         }.register(scope: .containerInstance) { (_) -> RecordServiceType in
-            RecordServiceMock<DocumentReference, DecryptedFhirStu3Record<DocumentReference>>()
+            RecordServiceMock<Data4LifeFHIR.DocumentReference, DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>()
         }.register(scope: .containerInstance) { (_) -> OAuthServiceType in
             OAuthServiceMock()
         }.register(scope: .containerInstance) { (_) -> UserServiceType in
@@ -39,7 +39,7 @@ extension Data4LifeDITestContainer {
         }.register(scope: .containerInstance) { (_) -> CryptoServiceType in
             CryptoServiceMock()
         }.register(scope: .containerInstance) { (_) -> FhirServiceType in
-            FhirServiceMock<DecryptedFhirStu3Record<DocumentReference>, Attachment>()
+            FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>()
         }.register(scope: .containerInstance) { (_) -> RequestInterceptorType in
             RequestInterceptorMock()
         }.register(scope: .containerInstance) { (_) -> DocumentServiceType in

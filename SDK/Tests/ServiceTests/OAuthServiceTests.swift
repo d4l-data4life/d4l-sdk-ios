@@ -31,7 +31,7 @@ class OAuthServiceTests: XCTestCase {
     var authState: AuthStateMock!
     var versionValidator: SDKVersionValidatorMock!
     var numberOfRetries: Int!
-    var bundle: Bundle { return Bundle(for: type(of: self)) }
+    var bundle: Foundation.Bundle { return Bundle(for: type(of: self)) }
     var mockedTokenReponse: OIDTokenResponse {
         guard
             let payload = try? bundle.json(named: "authStateTokenResponseSuccess"),

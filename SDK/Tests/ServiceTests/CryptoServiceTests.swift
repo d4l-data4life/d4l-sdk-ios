@@ -21,7 +21,7 @@ class CryptoServiceTests: XCTestCase {
 
     var crypto: CryptoService!
     var keychainService: KeychainServiceMock!
-    var bundle: Bundle!
+    var bundle: Foundation.Bundle!
     let keyPairTag = "crypto.tests.keypair"
 
     override func setUp() {

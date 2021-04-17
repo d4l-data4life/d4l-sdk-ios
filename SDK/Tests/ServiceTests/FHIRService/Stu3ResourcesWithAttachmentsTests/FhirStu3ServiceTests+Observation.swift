@@ -68,11 +68,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResultWithId = expectedObservation.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
         // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = fixtureObservation.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
 
         expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
@@ -132,11 +132,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResult = expectedObservation.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
         // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = observation.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
 
         // expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
@@ -195,11 +195,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
         let uploadAttachmentsResultWithId = expectedObservation.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
         // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = fixtureObservation.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
 
         expectedObservation.allAttachments?.forEach { $0.attachmentDataString = nil }
@@ -331,7 +331,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let updatedRecord = record.copy(with: updatedResource)
 
         keychainService[.userId] = userId
-        let uploadedAttachment = attachment.copy() as! Attachment // swiftlint:disable:this force_cast
+        let uploadedAttachment = attachment.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment.id = UUID().uuidString
         attachmentService.uploadAttachmentsResult = Async.resolve([(uploadedAttachment, additionalIds)])
         recordService.fetchRecordResult = Async.resolve(record)
@@ -709,7 +709,7 @@ extension FhirStu3ServiceObservationTests {
         expectedResource.id = createdRecord.id
         fixtureResource.id = createdRecord.id
 
-        let uploadedAttachment = fixtureAttachment.copy() as! Attachment // swiftlint:disable:this force_cast
+        let uploadedAttachment = fixtureAttachment.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment.id = expectedAttachmentId
         keychainService[.userId] = userId
         recordService.createRecordResult = Async.resolve(createdRecord)

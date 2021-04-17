@@ -59,7 +59,7 @@ extension AttachmentSchema: Equatable {
 class HasAttachmentsProtocolTests: XCTestCase {
 
     func testDocumentReferencHasAttachments() throws {
-        let documentReference = DocumentReference()
+        let documentReference = Data4LifeFHIR.DocumentReference()
         XCTAssertNil(documentReference.allAttachments)
         let expectedIdentifier = UUID().uuidString
         let expectedAttachment = FhirFactory.createStu3AttachmentElement()
@@ -67,7 +67,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         documentReference.content = [DocumentReferenceContent(attachment: expectedAttachment)]
         documentReference.addAdditionalId(expectedIdentifier)
 
-        XCTAssertEqual(expectedAttachment, documentReference.allAttachments?.first as? Attachment, "Result differs from expected attachments")
+        XCTAssertEqual(expectedAttachment, documentReference.allAttachments?.first as? Data4LifeFHIR.Attachment, "Result differs from expected attachments")
         XCTAssertTrue((documentReference as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false, "Result differs from expected identifiers")
 
         // AttachmentSchema Test
@@ -83,11 +83,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         documentReference.content = nil
         let exampleSchema = AttachmentSchema.list([expectedAttachment])
         documentReference.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(documentReference.allAttachments as? [Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
+        XCTAssertEqual(documentReference.allAttachments as? [Data4LifeFHIR.Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testDiagnosticReportHasAttachments() throws {
-        let report = DiagnosticReport()
+        let report = Data4LifeFHIR.DiagnosticReport()
         XCTAssertNil(report.allAttachments)
         let expectedIdentifier = UUID().uuidString
         let expectedAttachment = FhirFactory.createStu3AttachmentElement()
@@ -95,7 +95,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         report.presentedForm = [expectedAttachment]
         report.addAdditionalId(expectedIdentifier)
 
-        XCTAssertEqual(expectedAttachment, report.allAttachments?.first as? Attachment)
+        XCTAssertEqual(expectedAttachment, report.allAttachments?.first as? Data4LifeFHIR.Attachment)
         XCTAssertTrue((report as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
@@ -113,17 +113,17 @@ class HasAttachmentsProtocolTests: XCTestCase {
         report.presentedForm = nil
         let exampleSchema = AttachmentSchema.list([expectedAttachment])
         report.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(report.allAttachments as? [Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
+        XCTAssertEqual(report.allAttachments as? [Data4LifeFHIR.Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testMedicationHasAttachments() throws {
-        let medication = Medication()
+        let medication = Data4LifeFHIR.Medication()
         XCTAssertNil(medication.allAttachments)
 
         let expectedAttachment = FhirFactory.createStu3ImageAttachmentElement()
         medication.image = [expectedAttachment]
 
-        XCTAssertEqual(expectedAttachment, medication.allAttachments?.first as? Attachment)
+        XCTAssertEqual(expectedAttachment, medication.allAttachments?.first as? Data4LifeFHIR.Attachment)
 
         // AttachmentSchema Test
         XCTAssertEqual(medication.schema, AttachmentSchema.list([expectedAttachment]), "The attachment schema is wrong")
@@ -138,11 +138,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         medication.image = nil
         let exampleSchema = AttachmentSchema.list([expectedAttachment])
         medication.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(medication.allAttachments as? [Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
+        XCTAssertEqual(medication.allAttachments as? [Data4LifeFHIR.Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testPatientHasAttachments() throws {
-        let patient = Patient()
+        let patient = Data4LifeFHIR.Patient()
         XCTAssertNil(patient.allAttachments)
         let expectedIdentifier = UUID().uuidString
         let expectedAttachment = FhirFactory.createStu3AttachmentElement()
@@ -150,7 +150,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         patient.photo = [expectedAttachment]
         patient.addAdditionalId(expectedIdentifier)
 
-        XCTAssertEqual(expectedAttachment, patient.allAttachments?.first as? Attachment)
+        XCTAssertEqual(expectedAttachment, patient.allAttachments?.first as? Data4LifeFHIR.Attachment)
         XCTAssertTrue((patient as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
@@ -166,11 +166,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         patient.photo = nil
         let exampleSchema = AttachmentSchema.list([expectedAttachment])
         patient.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(patient.allAttachments as? [Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
+        XCTAssertEqual(patient.allAttachments as? [Data4LifeFHIR.Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testPractitionerHasAttachments() throws {
-        let practitioner = Practitioner()
+        let practitioner = Data4LifeFHIR.Practitioner()
         XCTAssertNil(practitioner.allAttachments)
         let expectedIdentifier = UUID().uuidString
         let expectedAttachment = FhirFactory.createStu3AttachmentElement()
@@ -178,7 +178,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         practitioner.photo = [expectedAttachment]
         practitioner.addAdditionalId(expectedIdentifier)
 
-        XCTAssertEqual(expectedAttachment, practitioner.allAttachments?.first as? Attachment)
+        XCTAssertEqual(expectedAttachment, practitioner.allAttachments?.first as? Data4LifeFHIR.Attachment)
         XCTAssertTrue((practitioner as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
@@ -194,17 +194,17 @@ class HasAttachmentsProtocolTests: XCTestCase {
         practitioner.photo = nil
         let exampleSchema = AttachmentSchema.list([expectedAttachment])
         practitioner.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(practitioner.allAttachments as? [Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
+        XCTAssertEqual(practitioner.allAttachments as? [Data4LifeFHIR.Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testObservationComponentHasAttachments() throws {
-        let component = ObservationComponent()
+        let component = Data4LifeFHIR.ObservationComponent()
         XCTAssertNil(component.allAttachments)
         let expectedAttachment = FhirFactory.createStu3AttachmentElement()
 
         component.valueAttachment = expectedAttachment
 
-        XCTAssertEqual(expectedAttachment, component.allAttachments?.first as? Attachment)
+        XCTAssertEqual(expectedAttachment, component.allAttachments?.first as? Data4LifeFHIR.Attachment)
 
         // AttachmentSchema Test
         XCTAssertEqual(component.schema, AttachmentSchema.single(expectedAttachment), "The attachment schema is wrong")
@@ -218,11 +218,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         component.valueAttachment = nil
         let exampleSchema = AttachmentSchema.single(expectedAttachment)
         component.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(component.allAttachments as? [Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
+        XCTAssertEqual(component.allAttachments as? [Data4LifeFHIR.Attachment], [expectedAttachment], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testObservationHasAttachments() throws {
-        let observation = Observation()
+        let observation = Data4LifeFHIR.Observation()
         XCTAssertNil(observation.allAttachments)
         let expectedIdentifier = UUID().uuidString
         let observationAttachment = FhirFactory.createStu3AttachmentElement()
@@ -233,7 +233,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         observation.component = [observationComponent]
         observation.addAdditionalId(expectedIdentifier)
 
-        XCTAssertEqual([observationAttachment, observationComponentAttachment], observation.allAttachments as? [Attachment])
+        XCTAssertEqual([observationAttachment, observationComponentAttachment], observation.allAttachments as? [Data4LifeFHIR.Attachment])
         XCTAssertTrue((observation as CustomIdentifierProtocol).customIdentifiers?.first?.valueString?.contains(expectedIdentifier) ?? false)
 
         // AttachmentSchema Test
@@ -241,7 +241,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         let expectedObservationAttachmentWithId = observationAttachment.copyWithId(UUID().uuidString)
         let expectedComponentAttachmentWithId = observationComponentAttachment.copyWithId(UUID().uuidString)
-        let expectedComponentWithIdInAttachment = observationComponent.copy() as! ObservationComponent // swiftlint:disable:this force_cast
+        let expectedComponentWithIdInAttachment = observationComponent.copy() as! Data4LifeFHIR.ObservationComponent // swiftlint:disable:this force_cast
         expectedComponentWithIdInAttachment.valueAttachment = expectedComponentAttachmentWithId
 
         let notExpectedAttachment = FhirFactory.createStu3SampleImageAttachment()
@@ -257,13 +257,13 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         let exampleSchema = AttachmentSchema.observation(value: observationAttachment, components: [observationComponent])
         observation.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(observation.allAttachments as? [Attachment],
+        XCTAssertEqual(observation.allAttachments as? [Data4LifeFHIR.Attachment],
                        [observationAttachment, observationComponentAttachment],
                        "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testQuestionnaireHasAttachments() throws {
-        let questionnaire = Questionnaire()
+        let questionnaire = Data4LifeFHIR.Questionnaire()
         XCTAssertNil(questionnaire.allAttachments)
 
         let questionnaireItemAttachment1 = FhirFactory.createStu3AttachmentElement()
@@ -275,7 +275,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         item2.item = [nestedItem3]
         questionnaire.item = [item1, item2]
 
-        XCTAssertEqual([questionnaireItemAttachment1, questionnaireItemAttachment2, nestedQuestionnaireItemAttachment3], questionnaire.allAttachments as? [Attachment])
+        XCTAssertEqual([questionnaireItemAttachment1, questionnaireItemAttachment2, nestedQuestionnaireItemAttachment3], questionnaire.allAttachments as? [Data4LifeFHIR.Attachment])
 
         // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaire(items: [item1, item2])
@@ -285,11 +285,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedItemAttachmentWithId2 = questionnaireItemAttachment2.copyWithId(UUID().uuidString)
         let expectedNestedItemAttachmentWithId3 = nestedQuestionnaireItemAttachment3.copyWithId(UUID().uuidString)
 
-        let expectedItemWithIdInAttachment1 = item1.copy() as! QuestionnaireItem // swiftlint:disable:this force_cast
+        let expectedItemWithIdInAttachment1 = item1.copy() as! Data4LifeFHIR.QuestionnaireItem // swiftlint:disable:this force_cast
         expectedItemWithIdInAttachment1.initialAttachment = expectedItemAttachmentWithId1
-        let expectedItemWithIdInAttachment2 = item2.copy() as! QuestionnaireItem // swiftlint:disable:this force_cast
+        let expectedItemWithIdInAttachment2 = item2.copy() as! Data4LifeFHIR.QuestionnaireItem // swiftlint:disable:this force_cast
         expectedItemWithIdInAttachment2.initialAttachment = expectedItemAttachmentWithId2
-        let expectedItemWithIdInAttachment3 = nestedItem3.copy() as! QuestionnaireItem // swiftlint:disable:this force_cast
+        let expectedItemWithIdInAttachment3 = nestedItem3.copy() as! Data4LifeFHIR.QuestionnaireItem // swiftlint:disable:this force_cast
         expectedItemWithIdInAttachment3.initialAttachment = expectedNestedItemAttachmentWithId3
         expectedItemWithIdInAttachment2.item = [expectedItemWithIdInAttachment3]
 
@@ -302,7 +302,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         questionnaire.item = nil
         let exampleSchema = AttachmentSchema.questionnaire(items: [item1, item2])
         questionnaire.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(questionnaire.allAttachments as? [Attachment],
+        XCTAssertEqual(questionnaire.allAttachments as? [Data4LifeFHIR.Attachment],
                        [questionnaireItemAttachment1,
                         questionnaireItemAttachment2,
                         nestedQuestionnaireItemAttachment3],
@@ -310,7 +310,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
     }
 
     func testQuestionnaireItemHasAttachments() throws {
-        let mainQuestionnaireItem = QuestionnaireItem()
+        let mainQuestionnaireItem = Data4LifeFHIR.QuestionnaireItem()
         XCTAssertNil(mainQuestionnaireItem.allAttachments)
         let initialAttachment = FhirFactory.createUploadedAttachmentElement()
         initialAttachment.id = nil
@@ -323,7 +323,8 @@ class HasAttachmentsProtocolTests: XCTestCase {
         item2.item = [nestedItem3]
         mainQuestionnaireItem.initialAttachment = initialAttachment
         mainQuestionnaireItem.item = [item1, item2]
-        XCTAssertEqual([initialAttachment, questionnaireItemAttachment1, questionnaireItemAttachment2, nestedQuestionnaireItemAttachment3], mainQuestionnaireItem.allAttachments as? [Attachment])
+        XCTAssertEqual([initialAttachment, questionnaireItemAttachment1, questionnaireItemAttachment2, nestedQuestionnaireItemAttachment3],
+                       mainQuestionnaireItem.allAttachments as? [Data4LifeFHIR.Attachment])
 
         // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireItem(initial: initialAttachment, nestedItems: [item1, item2])
@@ -334,11 +335,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedItemAttachmentWithId2 = questionnaireItemAttachment2.copyWithId(UUID().uuidString)
         let expectedNestedItemAttachmentWithId3 = nestedQuestionnaireItemAttachment3.copyWithId(UUID().uuidString)
 
-        let expectedItemWithIdInAttachment1 = item1.copy() as! QuestionnaireItem // swiftlint:disable:this force_cast
+        let expectedItemWithIdInAttachment1 = item1.copy() as! Data4LifeFHIR.QuestionnaireItem // swiftlint:disable:this force_cast
         expectedItemWithIdInAttachment1.initialAttachment = expectedItemAttachmentWithId1
-        let expectedItemWithIdInAttachment2 = item2.copy() as! QuestionnaireItem // swiftlint:disable:this force_cast
+        let expectedItemWithIdInAttachment2 = item2.copy() as! Data4LifeFHIR.QuestionnaireItem // swiftlint:disable:this force_cast
         expectedItemWithIdInAttachment2.initialAttachment = expectedItemAttachmentWithId2
-        let expectedItemWithIdInAttachment3 = nestedItem3.copy() as! QuestionnaireItem // swiftlint:disable:this force_cast
+        let expectedItemWithIdInAttachment3 = nestedItem3.copy() as! Data4LifeFHIR.QuestionnaireItem // swiftlint:disable:this force_cast
         expectedItemWithIdInAttachment3.initialAttachment = expectedNestedItemAttachmentWithId3
         expectedItemWithIdInAttachment2.item = [expectedItemWithIdInAttachment3]
 
@@ -356,14 +357,14 @@ class HasAttachmentsProtocolTests: XCTestCase {
         mainQuestionnaireItem.item = nil
         let exampleSchema = AttachmentSchema.questionnaireItem(initial: initialAttachment, nestedItems: [item1, item2])
         mainQuestionnaireItem.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(mainQuestionnaireItem.allAttachments as? [Attachment], [initialAttachment,
+        XCTAssertEqual(mainQuestionnaireItem.allAttachments as? [Data4LifeFHIR.Attachment], [initialAttachment,
                                                                                questionnaireItemAttachment1,
                                                                                questionnaireItemAttachment2,
                                                                                nestedQuestionnaireItemAttachment3], "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testQuestionnaireResponseHasAttachments() throws {
-        let questionnaireResponse = QuestionnaireResponse()
+        let questionnaireResponse = Data4LifeFHIR.QuestionnaireResponse()
         XCTAssertNil(questionnaireResponse.allAttachments)
 
         let answer1Attachment = FhirFactory.createStu3AttachmentElement()
@@ -381,7 +382,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let item2 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer2])
         questionnaireResponse.item = [item1, item2]
 
-        XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], questionnaireResponse.allAttachments as? [Attachment])
+        XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], questionnaireResponse.allAttachments as? [Data4LifeFHIR.Attachment])
 
         // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireResponse(items: [item1, item2])
@@ -391,11 +392,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedAnswer2Attachment = answer2Attachment.copyWithId(UUID().uuidString)
         let expectedAnswer4Attachment = answer4Attachment.copyWithId(UUID().uuidString)
 
-        let expectedItem1 = item1.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedItem1 = item1.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedItem1.answer?.first?.valueAttachment = expectedAnswer1Attachment
-        let expectedItem2 = item2.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedItem2 = item2.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedItem2.answer?.first?.valueAttachment = expectedAnswer2Attachment
-        let expectedItem4 = item4NestedInAnswer2.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedItem4 = item4NestedInAnswer2.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedItem4.answer?.first?.valueAttachment = expectedAnswer4Attachment
         expectedItem2.answer?.first?.item = [expectedItem4]
 
@@ -410,13 +411,13 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         let exampleSchema = AttachmentSchema.questionnaireResponse(items: [item1, item2])
         questionnaireResponse.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(questionnaireResponse.allAttachments as? [Attachment],
+        XCTAssertEqual(questionnaireResponse.allAttachments as? [Data4LifeFHIR.Attachment],
                        [answer1Attachment, answer2Attachment, answer4Attachment],
                        "After updating the attachments the expected attachments are not the one expected")
     }
 
     func testQuestionnaireResponseItemHasAttachments() throws {
-        let mainQuestionnaireResponseItem = QuestionnaireResponseItem()
+        let mainQuestionnaireResponseItem = Data4LifeFHIR.QuestionnaireResponseItem()
         XCTAssertNil(mainQuestionnaireResponseItem.allAttachments)
 
         let answer1Attachment = FhirFactory.createStu3AttachmentElement()
@@ -434,7 +435,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let item2 = FhirFactory.createStu3QuestionnaireResponseItem(answers: [answer2])
         mainQuestionnaireResponseItem.item = [item1, item2]
 
-        XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], mainQuestionnaireResponseItem.allAttachments as? [Attachment])
+        XCTAssertEqual([answer1Attachment, answer2Attachment, answer4Attachment], mainQuestionnaireResponseItem.allAttachments as? [Data4LifeFHIR.Attachment])
 
         // AttachmentSchema Test
         let expectedSchema = AttachmentSchema.questionnaireResponseItem(answers: nil, nestedItems: [item1, item2])
@@ -444,11 +445,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedAnswer2Attachment = answer2Attachment.copyWithId(UUID().uuidString)
         let expectedAnswer4Attachment = answer4Attachment.copyWithId(UUID().uuidString)
 
-        let expectedItem1 = item1.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedItem1 = item1.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedItem1.answer?.first?.valueAttachment = expectedAnswer1Attachment
-        let expectedItem2 = item2.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedItem2 = item2.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedItem2.answer?.first?.valueAttachment = expectedAnswer2Attachment
-        let expectedItem4 = item4NestedInAnswer2.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedItem4 = item4NestedInAnswer2.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedItem4.answer?.first?.valueAttachment = expectedAnswer4Attachment
         expectedItem2.answer?.first?.item = [expectedItem4]
 
@@ -463,7 +464,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
 
         let exampleSchema = AttachmentSchema.questionnaireResponseItem(answers: nil, nestedItems: [item1, item2])
         mainQuestionnaireResponseItem.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(mainQuestionnaireResponseItem.allAttachments as? [Attachment],
+        XCTAssertEqual(mainQuestionnaireResponseItem.allAttachments as? [Data4LifeFHIR.Attachment],
                        [answer1Attachment, answer2Attachment, answer4Attachment],
                        "After updating the attachments the expected attachments are not the one expected")
     }
@@ -484,11 +485,11 @@ class HasAttachmentsProtocolTests: XCTestCase {
             questionnaireResponseItem1Answer1,
             questionnaireResponseItem1Answer2
         ], nestedItems: [questionnaireResponseItem1Item1])
-        let mainQuestionnaireResponseItemAnswer = QuestionnaireResponseItemAnswer()
+        let mainQuestionnaireResponseItemAnswer = Data4LifeFHIR.QuestionnaireResponseItemAnswer()
         XCTAssertNil(mainQuestionnaireResponseItemAnswer.allAttachments)
         mainQuestionnaireResponseItemAnswer.valueAttachment = valueAttachment
         mainQuestionnaireResponseItemAnswer.item = [item1]
-        XCTAssertEqual(mainQuestionnaireResponseItemAnswer.allAttachments as? [Attachment],
+        XCTAssertEqual(mainQuestionnaireResponseItemAnswer.allAttachments as? [Data4LifeFHIR.Attachment],
                        [valueAttachment,
                         questionnaireResponseItem1Answer1Attachment,
                         questionnaireResponseItem1Answer2Attachment,
@@ -503,7 +504,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         let expectedItem1Answer2AttachmentWithId = questionnaireResponseItem1Answer2Attachment.copyWithId(UUID().uuidString)
         let expectedItem1Item1Answer1AttachmentWithId = questionnaireResponseItem1Item1Answer1Attachment.copyWithId(UUID().uuidString)
 
-        let expectedFilledItem = item1.copy() as! QuestionnaireResponseItem // swiftlint:disable:this force_cast
+        let expectedFilledItem = item1.copy() as! Data4LifeFHIR.QuestionnaireResponseItem // swiftlint:disable:this force_cast
         expectedFilledItem.answer?[0].valueAttachment = expectedItem1Answer1AttachmentWithId
         expectedFilledItem.answer?[1].valueAttachment = expectedItem1Answer2AttachmentWithId
         expectedFilledItem.item?[0].answer?[0].valueAttachment = expectedItem1Item1Answer1AttachmentWithId
@@ -521,7 +522,7 @@ class HasAttachmentsProtocolTests: XCTestCase {
         mainQuestionnaireResponseItemAnswer.item = nil
         let exampleSchema = AttachmentSchema.questionnaireResponseItemAnswer(value: valueAttachment, nestedItems: [item1])
         mainQuestionnaireResponseItemAnswer.updateAttachments(from: exampleSchema)
-        XCTAssertEqual(mainQuestionnaireResponseItemAnswer.allAttachments as? [Attachment], [valueAttachment,
+        XCTAssertEqual(mainQuestionnaireResponseItemAnswer.allAttachments as? [Data4LifeFHIR.Attachment], [valueAttachment,
                                                                                              questionnaireResponseItem1Answer1Attachment,
                                                                                              questionnaireResponseItem1Answer2Attachment,
                                                                                              questionnaireResponseItem1Item1Answer1Attachment],

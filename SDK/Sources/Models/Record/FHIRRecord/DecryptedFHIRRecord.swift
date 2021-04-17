@@ -15,7 +15,6 @@
 
 import Foundation
 import Data4LifeCrypto
-import ModelsR4
 @_implementationOnly import Then
 
 struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {

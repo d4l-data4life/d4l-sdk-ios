@@ -20,7 +20,7 @@ protocol InfoServiceType {
 }
 
 struct InfoService: InfoServiceType {
-    let sdkBundle: Bundle
+    let sdkBundle: Foundation.Bundle
     let decoder: PropertyListDecoder
 
     enum FileKeys: String {

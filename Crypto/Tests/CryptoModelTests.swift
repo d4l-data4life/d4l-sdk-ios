@@ -17,7 +17,7 @@ import XCTest
 import Data4LifeCrypto
 
 class CryptoModelTests: XCTestCase {
-    var bundle: Bundle!
+    var bundle: Foundation.Bundle!
 
     override func setUp() {
         super.setUp()

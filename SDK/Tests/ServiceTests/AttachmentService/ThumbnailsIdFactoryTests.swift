@@ -124,7 +124,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let attachmentId = UUID().uuidString
         attachment.id = attachmentId
         fhirResource.content = [DocumentReferenceContent(attachment: attachment)]
-        let expectedResource = fhirResource.copy() as! DocumentReference // swiftlint:disable:this force_cast
+        let expectedResource = fhirResource.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
 
         let additionalIdToUpdate = "d4l_f_p_t#\(attachmentId)#addId1#addId2"
         let additionalIdToRemove = "d4l_f_p_t#\(UUID().uuidString)#addId1#addId2"

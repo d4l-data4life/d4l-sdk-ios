@@ -136,7 +136,7 @@ struct FhirFactory {
     }
 
     static func createUploadedAttachmentElement() -> Data4LifeFHIR.Attachment {
-        let attachment = try! Attachment.with(title: UUID().uuidString,
+        let attachment = try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
                                               creationDate: .now,
                                               contentType: UUID().uuidString,
                                               data: Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))
@@ -145,14 +145,14 @@ struct FhirFactory {
     }
 
     static func createStu3ImageAttachmentElement(imageData: Data? = nil) -> Data4LifeFHIR.Attachment {
-        return try! Attachment.with(title: UUID().uuidString,
+        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
                                     creationDate: .now,
                                     contentType: UUID().uuidString,
                                     data: imageData ?? Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))
     }
 
     static func createStu3AttachmentElement() -> Data4LifeFHIR.Attachment {
-        return try! Attachment.with(title: UUID().uuidString,
+        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
                                     creationDate: .now,
                                     contentType: UUID().uuidString,
                                     data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
@@ -161,7 +161,7 @@ struct FhirFactory {
     static func createStu3SampleImageAttachment() -> Data4LifeFHIR.Attachment {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let data = bundle.data(forResource: "sample", withExtension: "jpg")!
-        return try! Attachment.with(title: UUID().uuidString, creationDate: .now, contentType: UUID().uuidString, data: data)
+        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString, creationDate: .now, contentType: UUID().uuidString, data: data)
     }
 }
 
@@ -241,18 +241,18 @@ extension FhirFactory {
     static func createR4SampleImageAttachment() -> ModelsR4.Attachment {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let data = bundle.data(forResource: "sample", withExtension: "jpg")!
-        return try! Attachment.with(title: UUID().uuidString, creationDate: Date(), contentType: UUID().uuidString, data: data)
+        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString, creationDate: Date(), contentType: UUID().uuidString, data: data)
     }
 
     static func createR4AttachmentElement() -> ModelsR4.Attachment {
-        return try! Attachment.with(title: UUID().uuidString,
+        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
                                     creationDate: Date(),
                                     contentType: UUID().uuidString,
                                     data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
     }
 
     static func createR4ImageAttachmentElement(imageData: Data? = nil) -> ModelsR4.Attachment {
-        return try! Attachment.with(title: UUID().uuidString,
+        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
                                     creationDate: Date(),
                                     contentType: UUID().uuidString,
                                     data: imageData ?? Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))

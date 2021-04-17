@@ -29,10 +29,10 @@ class Data4LifeClientFhirStu3Tests: XCTestCase {
     var userService: UserServiceMock!
     var cryptoService: CryptoServiceMock!
     var commonKeyService: CommonKeyServiceMock!
-    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<DocumentReference>, Attachment>!
+    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Data4LifeFHIR.Attachment>!
     var appDataService: AppDataServiceMock!
     var keychainService: KeychainServiceMock!
-    var recordService: RecordServiceMock<DocumentReference,DecryptedFhirStu3Record<DocumentReference>>!
+    var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
     var environment: D4LEnvironment!
     var versionValidator: SDKVersionValidatorMock!
 
@@ -130,7 +130,7 @@ extension Data4LifeClientFhirStu3Tests {
         fhirService.fetchRecordWithIdResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.fetchFhirStu3Record(withId: resourceId, of: DocumentReference.self) { result in
+        client.fetchFhirStu3Record(withId: resourceId, of: Data4LifeFHIR.DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -165,7 +165,7 @@ extension Data4LifeClientFhirStu3Tests {
         fhirService.fetchRecordsResult = Async.resolve(records)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.fetchFhirStu3Records(of: DocumentReference.self, annotations: annotations) { result in
+        client.fetchFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard ProcessInfo.processInfo.environment.contains(where: { $0.key == "XCTestConfigurationFilePath" }) == false else {
             return UIViewController(nibName: nil, bundle: nil) // don't load Example app UI in case tests are running
         }
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let storyboard = UIStoryboard(name: "Main", bundle: Foundation.Bundle.main)
         guard let initialViewController = storyboard.instantiateInitialViewController() else {
             fatalError("Could not load inital view controller")
         }
