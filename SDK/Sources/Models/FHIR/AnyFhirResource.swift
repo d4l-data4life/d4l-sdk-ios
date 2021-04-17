@@ -20,7 +20,7 @@ public typealias FhirStu3Resource = Data4LifeFHIR.DomainResource
 public typealias FhirResource = FhirStu3Resource
 public typealias FhirR4Resource = ModelsR4.DomainResource
 
-public protocol AnyFhirResource: AnyObject {}
+public protocol AnyFhirResource {}
 
 extension FhirStu3Resource: AnyFhirResource {}
 extension FhirR4Resource: AnyFhirResource {}

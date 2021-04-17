@@ -21,7 +21,7 @@ class ClientConfigurationTests: XCTestCase {
 
         let id = UUID().uuidString
         let redirectUrlString = "scheme://host.com"
-        let environment = Environment.staging
+        let environment = D4LEnvironment.staging
         let config = ClientConfiguration.test(id: id, redirectUrlString: redirectUrlString, environment: environment)
 
         XCTAssertEqual(try config.partnerId(), id, "It should return the correct partner id")
@@ -36,7 +36,7 @@ class ClientConfigurationTests: XCTestCase {
 
         let id = UUID().uuidString
         let redirectUrlString = "invalid scheme"
-        let environment = Environment.staging
+        let environment = D4LEnvironment.staging
         let config = ClientConfiguration.test(id: id, platform: nil, redirectUrlString: redirectUrlString, environment: environment)
 
         XCTAssertThrowsError(try config.partnerId(), "It should throw an error", { error in
@@ -78,7 +78,7 @@ fileprivate extension ClientConfiguration {
                      redirectUrlString: String = "scheme://host.com",
                      keychainGroup: String? = "keychain.group",
                      appGroup: String? = "app.group",
-                     environment: Environment = .staging) -> ClientConfiguration {
+                     environment: D4LEnvironment = .staging) -> ClientConfiguration {
         let clientId = [id, platform]
             .compactMap { $0 }
             .joined(separator: "#")

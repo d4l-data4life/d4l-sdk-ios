@@ -74,8 +74,7 @@ public class Data4LifeClient {
     /**
      Initialize a client.
      */
-    private init() {
-
+    init() {
         guard let clientConfiguration = Data4LifeClient.clientConfiguration else {
             fatalError("Data4LifeClient is not configured, call `Data4LifeClient.configure(with: ...)` before using the SDK")
         }
@@ -97,7 +96,33 @@ public class Data4LifeClient {
         } catch {
             fatalError(error.localizedDescription)
         }
+        configureDependencies()
+    }
 
+    /**
+     This should only be used for testing purposes by dependency injection.
+     */
+    init(container: DIContainer, environment: D4LEnvironment) {
+
+        Router.baseUrl = environment.apiBaseURL.absoluteString
+
+        self.container = container
+        do {
+            self.sessionService = try container.resolve()
+            self.sessionServiceInterceptor = try container.resolve()
+            self.oAuthService = try container.resolve()
+            self.cryptoService = try container.resolve()
+            self.commonKeyService = try container.resolve()
+            self.userService = try container.resolve()
+            self.fhirService = try container.resolve()
+            self.versionValidator = try container.resolve()
+            self.keychainService = try container.resolve()
+            self.appDataService = try container.resolve()
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+
+        // Calling this method provide a way to test that the dependencies were configured properly
         configureDependencies()
     }
 
@@ -123,32 +148,7 @@ public class Data4LifeClient {
         }
     }
 
-    /**
-     This should only be used for testing purposes by dependency injection.
-     */
-    init(container: DIContainer, environment: Environment) {
-
-        Router.baseUrl = environment.apiBaseURL.absoluteString
-
-        self.container = container
-        do {
-            self.sessionService = try container.resolve()
-            self.sessionServiceInterceptor = try container.resolve()
-            self.oAuthService = try container.resolve()
-            self.cryptoService = try container.resolve()
-            self.commonKeyService = try container.resolve()
-            self.userService = try container.resolve()
-            self.fhirService = try container.resolve()
-            self.versionValidator = try container.resolve()
-            self.keychainService = try container.resolve()
-            self.appDataService = try container.resolve()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-
-        // Calling this method provide a way to test that the dependencies were configured properly
-        configureDependencies()
-    }
+    deinit { }
 }
 
 extension Data4LifeClient {
@@ -171,7 +171,7 @@ extension Data4LifeClient {
     public static func configureWith(clientId: String,
                                      clientSecret: String,
                                      redirectURLString: String,
-                                     environment: Environment,
+                                     environment: D4LEnvironment,
                                      keychainGroupId: String? = nil,
                                      appGroupId: String? = nil) {
 

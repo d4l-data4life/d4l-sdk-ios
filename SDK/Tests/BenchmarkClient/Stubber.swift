@@ -26,7 +26,7 @@ public class Stubber {
     }
 
     public init() {
-        let environment = Environment.staging
+        let environment = D4LEnvironment.staging
         Router.baseUrl = environment.apiBaseString
 
         let clientConfig = ClientConfiguration(clientId: "xxxxxx",

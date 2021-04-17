@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
+import Data4LifeSDK
 
 func XCTAssertEqual(_ lhr: [Any], _ rhr: [Any], file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(lhr.count, rhr.count, file: file, line: line)
@@ -59,5 +60,19 @@ func XCTAssertEqual(_ lhr: [String: Any], _ rhr: [String: Any],
         } else {
             XCTFail(file: file, line: line)
         }
+    }
+}
+
+extension Data4LifeSDKError: Equatable {
+    public static func == (lhs: Data4LifeSDKError, rhs: Data4LifeSDKError) -> Bool {
+        return lhs.description == rhs.description
+    }
+
+    public static func == (lhs: Error, rhs: Data4LifeSDKError) -> Bool {
+        guard let hcError = lhs as? Data4LifeSDKError else {
+            return false
+        }
+
+        return hcError == rhs
     }
 }

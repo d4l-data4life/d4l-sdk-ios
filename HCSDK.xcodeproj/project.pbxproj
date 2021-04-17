@@ -181,7 +181,7 @@
 		CD10923B225B901E00325389 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D4225B901E00325389 /* Router.swift */; };
 		CD10923C225B901E00325389 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D5225B901E00325389 /* Serialization.swift */; };
 		CD10923E225B901E00325389 /* *.hpsgc.de.cer in Resources */ = {isa = PBXBuildFile; fileRef = CD1091D8225B901E00325389 /* *.hpsgc.de.cer */; };
-		CD10923F225B901E00325389 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091DB225B901E00325389 /* Environment.swift */; };
+		CD10923F225B901E00325389 /* D4LEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091DB225B901E00325389 /* D4LEnvironment.swift */; };
 		CD109240225B901E00325389 /* VersionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091DC225B901E00325389 /* VersionInfo.swift */; };
 		CD109241225B901E00325389 /* ClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091DD225B901E00325389 /* ClientConfiguration.swift */; };
 		CD109242225B901E00325389 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091DF225B901E00325389 /* Metadata.swift */; };
@@ -562,7 +562,7 @@
 		CD1091D4225B901E00325389 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		CD1091D5225B901E00325389 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		CD1091D8225B901E00325389 /* *.hpsgc.de.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "*.hpsgc.de.cer"; sourceTree = "<group>"; };
-		CD1091DB225B901E00325389 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		CD1091DB225B901E00325389 /* D4LEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = D4LEnvironment.swift; sourceTree = "<group>"; };
 		CD1091DC225B901E00325389 /* VersionInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionInfo.swift; sourceTree = "<group>"; };
 		CD1091DD225B901E00325389 /* ClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConfiguration.swift; sourceTree = "<group>"; };
 		CD1091DF225B901E00325389 /* Metadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
@@ -1292,7 +1292,7 @@
 			isa = PBXGroup;
 			children = (
 				0A3934B22403C71E00DDCE2B /* VersionRangesConfig.swift */,
-				CD1091DB225B901E00325389 /* Environment.swift */,
+				CD1091DB225B901E00325389 /* D4LEnvironment.swift */,
 				CD1091DC225B901E00325389 /* VersionInfo.swift */,
 				CD1091DD225B901E00325389 /* ClientConfiguration.swift */,
 				368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */,
@@ -2118,7 +2118,7 @@
 				0A64853423A0E98100B00E7A /* CommonKeyService.swift in Sources */,
 				0A8D847623C5ABF300D7DDD3 /* HasAttachmentsProtocol.swift in Sources */,
 				36080C39237DB14200085476 /* DIResolver.swift in Sources */,
-				CD10923F225B901E00325389 /* Environment.swift in Sources */,
+				CD10923F225B901E00325389 /* D4LEnvironment.swift in Sources */,
 				CD109240225B901E00325389 /* VersionInfo.swift in Sources */,
 				CD10927A225B901E00325389 /* AttachmentService.swift in Sources */,
 				CD109281225B901E00325389 /* FhirService+SingleOperations.swift in Sources */,
@@ -2602,6 +2602,7 @@
 				STRIP_STYLE = debugging;
 				STRIP_SWIFT_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
@@ -2652,6 +2653,7 @@
 				STRIP_STYLE = debugging;
 				STRIP_SWIFT_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

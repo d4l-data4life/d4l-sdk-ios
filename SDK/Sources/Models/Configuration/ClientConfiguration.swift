@@ -22,14 +22,14 @@ struct ClientConfiguration {
     let redirectURLString: String
     let keychainGroupId: String?
     let appGroupId: String?
-    let environment: Environment
+    let environment: D4LEnvironment
     let loggerConfiguration: LoggerConfiguration = LoggerConfiguration.console
 
     private let partnerIdDelimiter: Character = "#"
 
     init(clientId: String, secret: String,
          redirectURLString: String, keychainGroupId: String? = nil, appGroupId: String? = nil,
-         environment: Environment) {
+         environment: D4LEnvironment) {
         self.clientId = clientId
         self.secret = secret
         self.redirectURLString = redirectURLString
