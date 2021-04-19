@@ -22,7 +22,7 @@ let package = Package(
                  .upToNextMinor(from: "0.5.0")),
         .package(name: "Data4LifeFHIR",
                  url: "git@github.com:d4l-data4life/d4l-fhir-ios.git",
-                 .upToNextMinor(from: "0.20.0")),
+                 .branch("feature/update-public-types"),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(url: "https://github.com/freshOS/Then",
@@ -35,18 +35,21 @@ let package = Package(
         .binaryTarget(
             name: "Data4LifeSDK",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "3423811e2d82579f08f4d671fb58c5f89bde4a291eb4e424a1e2137b533fb6e9"
+            checksum: "5c9ebe9e69dc6ab280f1e6c6c150bb67dbbb0fe7ccbde2110c2549320d9fbb01"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
-            checksum: "b20c6fba218693b0ed9e73e139925e30fc1a97f56bdd02499a49b19a74cc918d"
+            checksum: "a7097f3e78d632e1066b494b93fcac96a87d7f73827ea57b230f34c9aad6e7c9"
         ),
         .target(name: "Data4LifeSDKFrameworks",
                 dependencies: [
                     .product(name: "Data4LifeSDKUtils",
                              package: "Data4LifeSDKUtils",
                              condition: .when(platforms: [.iOS])),
+                             .product(name: "Data4LifeFHIRCore",
+                                      package: "Data4LifeFHIR",
+                                      condition: .when(platforms: [.iOS])),
                     .product(name: "Data4LifeFHIR",
                              package: "Data4LifeFHIR",
                              condition: .when(platforms: [.iOS])),
