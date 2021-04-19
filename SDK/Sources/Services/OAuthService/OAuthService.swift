@@ -15,7 +15,7 @@
 
 @_implementationOnly import Alamofire
 @_implementationOnly import Then
-import AppAuth
+@_implementationOnly import AppAuth
 
 protocol OAuthServiceType: RequestRetrier {
     var clientId: String { get }

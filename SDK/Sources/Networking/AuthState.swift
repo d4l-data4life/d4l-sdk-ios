@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import AppAuth
+@_implementationOnly import AppAuth
 
 protocol AuthStateType {
     var lastTokenResponse: OIDTokenResponse? { get }
