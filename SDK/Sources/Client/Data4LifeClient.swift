@@ -237,7 +237,7 @@ extension Data4LifeClient {
      - parameter completion: Completion that returns boolean representing current state
      */
     public func isUserLoggedIn(queue: DispatchQueue = responseQueue,
-                               _ completion: @escaping DefaultResultBlock) {
+                               _ completion: @escaping ResultBlock<Data>) {
         guard commonKeyService.currentKey != nil, cryptoService.tek != nil else {
             completion(.failure(Data4LifeSDKError.notLoggedIn))
             return

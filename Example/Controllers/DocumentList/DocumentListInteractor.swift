@@ -63,8 +63,11 @@ extension DocumentListInteractor {
     }
 
     func viewDidAppear() {
-        d4lClient.isUserLoggedIn { [weak self] result in
+        checkLoggedInStatus()
+    }
 
+    private func checkLoggedInStatus() {
+        d4lClient.isUserLoggedIn { [weak self] result in
             var state: Bool = true
             if case .failure = result {
                 state = false
@@ -73,7 +76,6 @@ extension DocumentListInteractor {
             self?.view?.updateUI(state: state)
         }
     }
-
     var countDescription: String {
         var stu3Descriptions = [String]()
         var r4Descriptions = [String]()
