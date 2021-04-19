@@ -22,7 +22,7 @@ let package = Package(
                  .upToNextMinor(from: "0.5.0")),
         .package(name: "Data4LifeFHIR",
                  url: "git@github.com:d4l-data4life/d4l-fhir-ios.git",
-                 .branch("feature/update-public-types"),
+                 .branch("feature/update-public-types")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(url: "https://github.com/freshOS/Then",
