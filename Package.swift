@@ -28,7 +28,7 @@ let package = Package(
         .package(url: "https://github.com/freshOS/Then",
                  .upToNextMinor(from: "5.1.2")),
         .package(name: "AppAuth",
-                 url: "https://github.com/openid/AppAuth-iOS.git",
+                 url: "git@github.com:d4l-data4life/AppAuth-iOS.git",
                  .branch("master"))
     ],
     targets: [

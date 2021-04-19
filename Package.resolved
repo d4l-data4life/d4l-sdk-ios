@@ -12,10 +12,10 @@
       },
       {
         "package": "AppAuth",
-        "repositoryURL": "https://github.com/openid/AppAuth-iOS.git",
+        "repositoryURL": "git@github.com:d4l-data4life/AppAuth-iOS.git",
         "state": {
           "branch": "master",
-          "revision": "e191b1beadf3041259652e6e464eaceff16e5fbb",
+          "revision": "9974f4b20d6084c48edd3c8f5f79719427fa63e6",
           "version": null
         }
       },
