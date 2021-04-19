@@ -13,9 +13,7 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
-
-extension CustomIdentifierProtocol {
+extension CustomIdentifiable {
     func updateIdentifiers(additionalIds: [String]) {
         if !additionalIds.isEmpty {
             self.setAdditionalIds(additionalIds)

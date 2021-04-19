@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Data4LifeCrypto
+@_implementationOnly import Data4LifeCrypto
 @_implementationOnly import Then
 @_implementationOnly import Alamofire
 

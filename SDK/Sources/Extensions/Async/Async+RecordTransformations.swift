@@ -15,7 +15,7 @@
 
 import Foundation
 @_implementationOnly import Then
-@_exported import Data4LifeFHIR
+import Data4LifeFHIR
 
 extension Promise where T == FhirRecord<Data4LifeFHIR.DocumentReference> {
     func transformRecord<R: FhirSDKResource>(to valueType: R.Type) -> Promise<FhirRecord<R>> {

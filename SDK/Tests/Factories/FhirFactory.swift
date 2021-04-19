@@ -241,21 +241,21 @@ extension FhirFactory {
     static func createR4SampleImageAttachment() -> ModelsR4.Attachment {
         let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let data = bundle.data(forResource: "sample", withExtension: "jpg")!
-        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString, creationDate: Date(), contentType: UUID().uuidString, data: data)
+        return try! ModelsR4.Attachment.with(title: UUID().uuidString, creationDate: Date(), contentType: UUID().uuidString, data: data)
     }
 
     static func createR4AttachmentElement() -> ModelsR4.Attachment {
-        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
+        return try! ModelsR4.Attachment.with(title: UUID().uuidString,
                                     creationDate: Date(),
                                     contentType: UUID().uuidString,
                                     data: Data([0x25, 0x50, 0x44, 0x46, 0x2d]))
     }
 
     static func createR4ImageAttachmentElement(imageData: Data? = nil) -> ModelsR4.Attachment {
-        return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString,
-                                    creationDate: Date(),
-                                    contentType: UUID().uuidString,
-                                    data: imageData ?? Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))
+        return try! ModelsR4.Attachment.with(title: UUID().uuidString,
+                                             creationDate: Date(),
+                                             contentType: UUID().uuidString,
+                                             data: imageData ?? Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x02]))
     }
 }
 

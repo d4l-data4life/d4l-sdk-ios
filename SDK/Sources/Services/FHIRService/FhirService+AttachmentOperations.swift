@@ -15,7 +15,7 @@
 
 import Foundation
 @_implementationOnly import Then
-import Data4LifeCrypto
+@_implementationOnly import Data4LifeCrypto
 
 extension FhirService {
 
@@ -63,7 +63,7 @@ extension FhirService {
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
-            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
+            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
                 return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
@@ -105,7 +105,7 @@ extension FhirService {
             // We don't wanna upload base64 encoded data (in case of old downloaded attachments)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
-            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
+            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) })
                 let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
                                                                                                     attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])

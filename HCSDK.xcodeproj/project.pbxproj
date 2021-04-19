@@ -101,14 +101,15 @@
 		36AE95322583790400B1A2D7 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE95312583790400B1A2D7 /* Attachment.swift */; };
 		36AE953C2583791200B1A2D7 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE953B2583791200B1A2D7 /* Document.swift */; };
 		36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */; };
-		36B6E9CD260CD09F00CA3250 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9CC260CD09F00CA3250 /* Data4LifeFHIR */; };
-		36B6E9CF260CD09F00CA3250 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9CE260CD09F00CA3250 /* ModelsR4 */; };
 		36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9D5260CD10300CA3250 /* Alamofire */; };
 		36B6E9DD260CD17800CA3250 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9DC260CD17800CA3250 /* Then */; };
 		36B6E9ED260CD22300CA3250 /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
 		36B6E9EE260CD22300CA3250 /* Data4LifeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */; };
 		36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
+		36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */; };
+		36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E429262D8B7A00824D45 /* Data4LifeFHIR */; };
+		36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E42B262D8B7A00824D45 /* ModelsR4 */; };
 		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
 		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
 		36D96130256FF759004D69CA /* Data4LifeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */; };
@@ -190,11 +191,10 @@
 		CD109245225B901E00325389 /* FHIRRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E2225B901E00325389 /* FHIRRecord.swift */; };
 		CD109246225B901E00325389 /* Data4LifeSDKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E3225B901E00325389 /* Data4LifeSDKError.swift */; };
 		CD109247225B901E00325389 /* FHIRElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E5225B901E00325389 /* FHIRElement.swift */; };
-		CD109248225B901E00325389 /* AnyFhirResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E6225B901E00325389 /* AnyFhirResource.swift */; };
 		CD109249225B901E00325389 /* FHIRModelVersionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091E7225B901E00325389 /* FHIRModelVersionType.swift */; };
 		CD10924C225B901E00325389 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091EB225B901E00325389 /* Resource.swift */; };
 		CD10924F225B901E00325389 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091EF225B901E00325389 /* LoginViewController.swift */; };
-		CD109264225B901E00325389 /* CustomIdentifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10920B225B901E00325389 /* CustomIdentifierProtocol.swift */; };
+		CD109264225B901E00325389 /* PartnerId+CustomIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */; };
 		CD109266225B901E00325389 /* Data4LifeSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = CD10920D225B901E00325389 /* Data4LifeSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CD109267225B901E00325389 /* Alamofire+BackgroundQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */; };
 		CD109269225B901E00325389 /* Async+Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109214225B901E00325389 /* Async+Chain.swift */; };
@@ -571,11 +571,10 @@
 		CD1091E2225B901E00325389 /* FHIRRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRRecord.swift; sourceTree = "<group>"; };
 		CD1091E3225B901E00325389 /* Data4LifeSDKError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeSDKError.swift; sourceTree = "<group>"; };
 		CD1091E5225B901E00325389 /* FHIRElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRElement.swift; sourceTree = "<group>"; };
-		CD1091E6225B901E00325389 /* AnyFhirResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyFhirResource.swift; sourceTree = "<group>"; };
 		CD1091E7225B901E00325389 /* FHIRModelVersionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRModelVersionType.swift; sourceTree = "<group>"; };
 		CD1091EB225B901E00325389 /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		CD1091EF225B901E00325389 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		CD10920B225B901E00325389 /* CustomIdentifierProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomIdentifierProtocol.swift; sourceTree = "<group>"; };
+		CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PartnerId+CustomIdentifiable.swift"; sourceTree = "<group>"; };
 		CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Data4LifeSDK-Version.plist"; sourceTree = "<group>"; };
 		CD10920D225B901E00325389 /* Data4LifeSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data4LifeSDK.h; sourceTree = "<group>"; };
 		CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire+BackgroundQueue.swift"; sourceTree = "<group>"; };
@@ -696,10 +695,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */,
-				36B6E9CF260CD09F00CA3250 /* ModelsR4 in Frameworks */,
+				36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */,
+				36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */,
+				36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */,
 				36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */,
 				36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */,
-				36B6E9CD260CD09F00CA3250 /* Data4LifeFHIR in Frameworks */,
 				36AC31732629DC0300EAC272 /* AppAuth in Frameworks */,
 				36B6E9DD260CD17800CA3250 /* Then in Frameworks */,
 			);
@@ -1319,7 +1319,6 @@
 			isa = PBXGroup;
 			children = (
 				CD1091E5225B901E00325389 /* FHIRElement.swift */,
-				CD1091E6225B901E00325389 /* AnyFhirResource.swift */,
 				CD1091E7225B901E00325389 /* FHIRModelVersionType.swift */,
 			);
 			path = FHIR;
@@ -1357,7 +1356,7 @@
 			isa = PBXGroup;
 			children = (
 				365525EC250F641000DF6DF7 /* Attachment */,
-				CD10920B225B901E00325389 /* CustomIdentifierProtocol.swift */,
+				CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1821,12 +1820,13 @@
 			);
 			name = Data4LifeSDK;
 			packageProductDependencies = (
-				36B6E9CC260CD09F00CA3250 /* Data4LifeFHIR */,
-				36B6E9CE260CD09F00CA3250 /* ModelsR4 */,
 				36B6E9D5260CD10300CA3250 /* Alamofire */,
 				36B6E9DC260CD17800CA3250 /* Then */,
 				36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */,
 				36AC31722629DC0300EAC272 /* AppAuth */,
+				36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */,
+				36D1E429262D8B7A00824D45 /* Data4LifeFHIR */,
+				36D1E42B262D8B7A00824D45 /* ModelsR4 */,
 			);
 			productName = HCKit;
 			productReference = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */;
@@ -1964,10 +1964,10 @@
 			mainGroup = 8374639C1E854E7500AB500F;
 			packageReferences = (
 				36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
-				36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
 				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
 				36AC31712629DC0300EAC272 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+				36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
 			);
 			productRefGroup = 837463A71E854E7500AB500F /* Products */;
 			projectDirPath = "";
@@ -2117,7 +2117,7 @@
 				CD10927D225B901E00325389 /* InfoService.swift in Sources */,
 				365525EB250F637500DF6DF7 /* STU3+HasAttachments.swift in Sources */,
 				3689D80624EACCA0004295D9 /* AppDataService+SingleOperations.swift in Sources */,
-				CD109264225B901E00325389 /* CustomIdentifierProtocol.swift in Sources */,
+				CD109264225B901E00325389 /* PartnerId+CustomIdentifiable.swift in Sources */,
 				CD109239225B901E00325389 /* AuthState.swift in Sources */,
 				3607BCCE2379B8C3004C45F3 /* DIContainer.swift in Sources */,
 				CD109282225B901E00325389 /* FhirService+BatchOperations.swift in Sources */,
@@ -2146,7 +2146,6 @@
 				0AF4C09322DDD18900C5CD67 /* ImageResizer.swift in Sources */,
 				CD109279225B901E00325389 /* OAuthService.swift in Sources */,
 				0A4EB42623EA850D00D0A4AA /* HasIdentifiableAttachments.swift in Sources */,
-				CD109248225B901E00325389 /* AnyFhirResource.swift in Sources */,
 				CD109241225B901E00325389 /* ClientConfiguration.swift in Sources */,
 				366A445B2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift in Sources */,
 				CDCB9DE0225F5309004A565F /* CryptoService.swift in Sources */,
@@ -2963,14 +2962,6 @@
 				minimumVersion = 0.5.0;
 			};
 		};
-		36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.20.0;
-			};
-		};
 		36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -2987,6 +2978,14 @@
 				version = 5.1.2;
 			};
 		};
+		36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
+			requirement = {
+				branch = "feature/update-public-types";
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2994,16 +2993,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36AC31712629DC0300EAC272 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
-		};
-		36B6E9CC260CD09F00CA3250 /* Data4LifeFHIR */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = Data4LifeFHIR;
-		};
-		36B6E9CE260CD09F00CA3250 /* ModelsR4 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9CB260CD09F00CA3250 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = ModelsR4;
 		};
 		36B6E9D5260CD10300CA3250 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3019,6 +3008,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
 			productName = Data4LifeSDKUtils;
+		};
+		36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = Data4LifeFHIRCore;
+		};
+		36D1E429262D8B7A00824D45 /* Data4LifeFHIR */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = Data4LifeFHIR;
+		};
+		36D1E42B262D8B7A00824D45 /* ModelsR4 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = ModelsR4;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

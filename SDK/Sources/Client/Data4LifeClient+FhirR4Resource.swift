@@ -15,6 +15,7 @@
 
 import Foundation
 @_implementationOnly import Then
+import ModelsR4
 
 extension Data4LifeClient {
     /**

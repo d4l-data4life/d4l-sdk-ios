@@ -15,8 +15,8 @@
 
 import Foundation
 
-struct Resource {
-    static var partnerId: String!
+@usableFromInline struct Resource {
+    @usableFromInline static var partnerId: String = ""
 }
 
 extension Resource {

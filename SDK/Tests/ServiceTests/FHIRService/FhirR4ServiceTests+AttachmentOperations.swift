@@ -80,7 +80,7 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments)
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [ModelsR4.Attachment], documentReference.allAttachments as? [ModelsR4.Attachment])
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [ModelsR4.Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [ModelsR4.Identifier],
                                documentReference.identifier)
 
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])
@@ -129,7 +129,7 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments)
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [ModelsR4.Attachment], fixturePatient.allAttachments as? [ModelsR4.Attachment])
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [ModelsR4.Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [ModelsR4.Identifier],
                                fixturePatient.identifier)
 
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])

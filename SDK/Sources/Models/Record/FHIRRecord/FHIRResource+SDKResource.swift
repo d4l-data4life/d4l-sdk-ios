@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+import ModelsR4
 
 protocol SDKResource: ModelVersionInformation, Codable {
     static var searchTags: [String: String] { get }
@@ -35,6 +36,22 @@ extension FhirSDKResource {
         tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         tags.lowercased()
         return tags
+    }
+}
+
+extension FhirSDKResource {
+    func map<R: FhirSDKResource>(to type: R.Type) throws -> R {
+        guard let mapped = self as? R else {
+            throw Data4LifeSDKError.invalidResourceCouldNotConvertToType(String(describing: type))
+        }
+        return mapped
+    }
+}
+
+extension Optional where Wrapped == FhirSDKResource {
+    func map<R: FhirSDKResource>(to type: R.Type) throws -> R {
+        guard let resource = self else { throw Data4LifeSDKError.invalidRecordMissingResource }
+        return try resource.map(to: R.self)
     }
 }
 

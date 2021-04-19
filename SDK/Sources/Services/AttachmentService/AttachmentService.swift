@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Data4LifeCrypto
+@_implementationOnly import Data4LifeCrypto
 @_implementationOnly import Then
 
 protocol AttachmentServiceType {
@@ -86,7 +86,7 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 var selectedDocumentId: String?
-                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifierProtocol,
+                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifiable,
                     downloadType.isThumbnailType {
                     selectedDocumentId = try self.selectDocumentId(resourceWithIdentifiableAttachments, downloadType: downloadType, for: attachmentId)
                     attachment.attachmentId = ThumbnailsIdFactory.displayAttachmentId(attachmentId, for: selectedDocumentId)
@@ -154,7 +154,7 @@ final class AttachmentService: AttachmentServiceType {
         }
     }
 
-    private func selectDocumentId(_ resourceWithIdentifiableAttachments: CustomIdentifierProtocol, downloadType: DownloadType,
+    private func selectDocumentId(_ resourceWithIdentifiableAttachments: CustomIdentifiable, downloadType: DownloadType,
                                   for attachmentId: String) throws -> String? {
         guard let identifiers = resourceWithIdentifiableAttachments.customIdentifiers else { return attachmentId }
 

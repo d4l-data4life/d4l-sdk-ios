@@ -13,8 +13,8 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-@_exported import Data4LifeFHIR
-import Data4LifeCrypto
+import Data4LifeFHIR
+@_implementationOnly import Data4LifeCrypto
 
 // MARK: DocumentReference
 extension Data4LifeFHIR.DocumentReference: HasAttachments {
