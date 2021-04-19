@@ -107,7 +107,6 @@
 		36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */; };
 		36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		36C2E8A9262DAE1300D5F467 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36C2E8A8262DAE1300D5F467 /* AppAuth */; };
-		36C2E8AB262DAE1300D5F467 /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36C2E8AA262DAE1300D5F467 /* AppAuthCore */; };
 		36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */; };
 		36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E429262D8B7A00824D45 /* Data4LifeFHIR */; };
 		36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E42B262D8B7A00824D45 /* ModelsR4 */; };
@@ -697,7 +696,6 @@
 			files = (
 				36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */,
 				36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */,
-				36C2E8AB262DAE1300D5F467 /* AppAuthCore in Frameworks */,
 				36C2E8A9262DAE1300D5F467 /* AppAuth in Frameworks */,
 				36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */,
 				36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */,
@@ -1829,7 +1827,6 @@
 				36D1E429262D8B7A00824D45 /* Data4LifeFHIR */,
 				36D1E42B262D8B7A00824D45 /* ModelsR4 */,
 				36C2E8A8262DAE1300D5F467 /* AppAuth */,
-				36C2E8AA262DAE1300D5F467 /* AppAuthCore */,
 			);
 			productName = HCKit;
 			productReference = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */;
@@ -3011,11 +3008,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
-		};
-		36C2E8AA262DAE1300D5F467 /* AppAuthCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
-			productName = AppAuthCore;
 		};
 		36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */ = {
 			isa = XCSwiftPackageProductDependency;
