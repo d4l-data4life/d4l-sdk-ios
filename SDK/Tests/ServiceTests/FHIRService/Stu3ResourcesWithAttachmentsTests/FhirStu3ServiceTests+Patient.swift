@@ -565,8 +565,10 @@ extension FhirStu3ServiceAttachmentOperationsTests {
             .then { result in
                 XCTAssertNotNil(result, "The result should be not nil")
                 XCTAssertEqual(fhirResource, result.fhirResource, "The expected resource doesn't match the result of the test")
-                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment, attachment, "The resource's attachment doesn't match the result of expected one")
-                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment, attachment, "The resource's attachment doesn't match the result of expected one")
+                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment, attachment,
+                               "The resource's attachment doesn't match the result of expected one")
+                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment, attachment,
+                               "The resource's attachment doesn't match the result of expected one")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId, "A param in the method doesn't match the expectation")
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments, "A param in the method doesn't match the expectation")

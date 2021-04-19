@@ -66,7 +66,7 @@ extension DocumentListInteractor {
         d4lClient.isUserLoggedIn { [weak self] result in
 
             var state: Bool = true
-            if case .failure(_) = result {
+            if case .failure = result {
                 state = false
             }
 

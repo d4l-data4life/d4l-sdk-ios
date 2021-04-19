@@ -94,7 +94,6 @@
 		368AFB0C23744D56004AE88F /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0B23744D56004AE88F /* LoggerService.swift */; };
 		368AFB0E23744DF5004AE88F /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */; };
 		368AFB1023747853004AE88F /* LoggerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0F23747853004AE88F /* LoggerServiceTests.swift */; };
-		36AC31732629DC0300EAC272 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36AC31722629DC0300EAC272 /* AppAuth */; };
 		36AE9503257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */; };
 		36AE9514257E3F7400B1A2D7 /* DocumentSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9513257E3F7400B1A2D7 /* DocumentSectionHeader.swift */; };
 		36AE9526257F8CE000B1A2D7 /* DocumentListSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */; };
@@ -107,6 +106,8 @@
 		36B6E9EE260CD22300CA3250 /* Data4LifeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */; };
 		36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
+		36C2E8A9262DAE1300D5F467 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36C2E8A8262DAE1300D5F467 /* AppAuth */; };
+		36C2E8AB262DAE1300D5F467 /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36C2E8AA262DAE1300D5F467 /* AppAuthCore */; };
 		36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */; };
 		36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E429262D8B7A00824D45 /* Data4LifeFHIR */; };
 		36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E42B262D8B7A00824D45 /* ModelsR4 */; };
@@ -696,11 +697,12 @@
 			files = (
 				36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */,
 				36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */,
+				36C2E8AB262DAE1300D5F467 /* AppAuthCore in Frameworks */,
+				36C2E8A9262DAE1300D5F467 /* AppAuth in Frameworks */,
 				36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */,
 				36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */,
 				36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */,
 				36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */,
-				36AC31732629DC0300EAC272 /* AppAuth in Frameworks */,
 				36B6E9DD260CD17800CA3250 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1823,10 +1825,11 @@
 				36B6E9D5260CD10300CA3250 /* Alamofire */,
 				36B6E9DC260CD17800CA3250 /* Then */,
 				36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */,
-				36AC31722629DC0300EAC272 /* AppAuth */,
 				36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */,
 				36D1E429262D8B7A00824D45 /* Data4LifeFHIR */,
 				36D1E42B262D8B7A00824D45 /* ModelsR4 */,
+				36C2E8A8262DAE1300D5F467 /* AppAuth */,
+				36C2E8AA262DAE1300D5F467 /* AppAuthCore */,
 			);
 			productName = HCKit;
 			productReference = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */;
@@ -1966,8 +1969,8 @@
 				36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
 				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
-				36AC31712629DC0300EAC272 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
+				36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 			);
 			productRefGroup = 837463A71E854E7500AB500F /* Products */;
 			projectDirPath = "";
@@ -2946,14 +2949,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		36AC31712629DC0300EAC272 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:d4l-data4life/d4l-utils-ios.git";
@@ -2978,6 +2973,14 @@
 				version = 5.1.2;
 			};
 		};
+		36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:d4l-data4life/AppAuth-iOS.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
@@ -2989,11 +2992,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		36AC31722629DC0300EAC272 /* AppAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36AC31712629DC0300EAC272 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
-			productName = AppAuth;
-		};
 		36B6E9D5260CD10300CA3250 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -3008,6 +3006,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
 			productName = Data4LifeSDKUtils;
+		};
+		36C2E8A8262DAE1300D5F467 /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
+		};
+		36C2E8AA262DAE1300D5F467 /* AppAuthCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuthCore;
 		};
 		36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */ = {
 			isa = XCSwiftPackageProductDependency;
