@@ -33,7 +33,7 @@ class Data4LifeClientUserTests: XCTestCase {
     var appDataService: AppDataServiceMock!
     var keychainService: KeychainServiceMock!
     var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
-    var environment: D4LEnvironment!
+    var environment: Environment!
     var versionValidator: SDKVersionValidatorMock!
 
     override func setUp() {
@@ -284,7 +284,7 @@ extension Data4LifeClientUserTests {
     func testLoggedInTrue() {
         cryptoService.tek = KeyFactory.createKey(.tag)
         commonKeyService.currentKey = KeyFactory.createKey(.common)
-        oAuthService.isSessionActiveResult = Async.resolve(())
+        oAuthService.isSessionActiveResult = Async.resolve(Data())
 
         let asyncExpectation = expectation(description: "should return success true")
         client.isUserLoggedIn { result  in

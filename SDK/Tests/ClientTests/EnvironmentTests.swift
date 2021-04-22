@@ -19,28 +19,28 @@ import XCTest
 class EnvironmentTests: XCTestCase {
     func testProductionEnv() {
         let envURL = URL(string: "https://api.data4life.care")!
-        let env: D4LEnvironment = .production
+        let env: Environment = .production
 
         XCTAssertEqual(env.apiBaseURL, envURL)
     }
 
     func testStagingEnv() {
         let envURL = URL(string: "https://api-staging.data4life.care")!
-        let env: D4LEnvironment = .staging
+        let env: Environment = .staging
 
         XCTAssertEqual(env.apiBaseURL, envURL)
     }
 
     func testDevelopmentEnv() {
         let envURL = URL(string: "https://api-phdp-dev.hpsgc.de")!
-        let env: D4LEnvironment = .development
+        let env: Environment = .development
 
         XCTAssertEqual(env.apiBaseURL, envURL)
     }
 
     func testDevelopmentSandboxEnv() {
         let envURL = URL(string: "https://api-phdp-sandbox.hpsgc.de")!
-        let env: D4LEnvironment = .sandbox
+        let env: Environment = .sandbox
 
         XCTAssertEqual(env.apiBaseURL, envURL)
     }

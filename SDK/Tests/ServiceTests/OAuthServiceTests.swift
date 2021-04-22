@@ -387,7 +387,7 @@ class OAuthServiceTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "Should return success")
         oAuthService.isSessionActive()
-            .then {
+            .then { _ in
                 XCTAssertRouteCalled("GET", "/userinfo")
             }.onError { error in
                 XCTFail(error.localizedDescription)
@@ -403,7 +403,7 @@ class OAuthServiceTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should return an error")
 
         oAuthService.isSessionActive()
-            .then {
+            .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
@@ -421,7 +421,7 @@ class OAuthServiceTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should return an error")
 
         oAuthService.isSessionActive()
-            .then {
+            .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)

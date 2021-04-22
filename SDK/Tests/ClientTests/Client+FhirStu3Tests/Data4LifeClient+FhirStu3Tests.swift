@@ -33,7 +33,7 @@ class Data4LifeClientFhirStu3Tests: XCTestCase {
     var appDataService: AppDataServiceMock!
     var keychainService: KeychainServiceMock!
     var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
-    var environment: D4LEnvironment!
+    var environment: Environment!
     var versionValidator: SDKVersionValidatorMock!
 
     override func setUp() {

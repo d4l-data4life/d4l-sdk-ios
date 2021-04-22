@@ -15,7 +15,7 @@
 
 import Foundation
 
-public enum D4LEnvironment: CaseIterable, Equatable, Hashable {
+public enum Environment: CaseIterable, Equatable, Hashable {
     case development, staging, production, sandbox
 
     public var apiBaseString: String {

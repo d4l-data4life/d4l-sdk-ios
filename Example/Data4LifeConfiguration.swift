@@ -40,7 +40,7 @@ struct Data4LifeConfiguration {
 }
 
 extension Data4LifeConfiguration {
-    var environment: Data4LifeSDK.D4LEnvironment {
+    var environment: Data4LifeSDK.Environment {
         let stringEnvironment: String = infoPlistValue(for: Key.environment)
         switch stringEnvironment {
         case EnvironmentValue.development.rawValue:

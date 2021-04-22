@@ -33,8 +33,8 @@ class OAuthServiceMock: OAuthServiceType {
     }
 
     var isSessionActiveCalled = false
-    var isSessionActiveResult: Async<Void>?
-    func isSessionActive() -> Promise<Void> {
+    var isSessionActiveResult: Async<Data>?
+    func isSessionActive() -> Promise<Data> {
         isSessionActiveCalled = true
         return isSessionActiveResult ?? Promise.reject()
     }

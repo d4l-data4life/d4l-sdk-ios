@@ -101,7 +101,7 @@ public class Data4LifeClient {
     /**
      This should only be used for testing purposes by dependency injection.
      */
-    init(container: DIContainer, environment: D4LEnvironment) {
+    init(container: DIContainer, environment: Environment) {
 
         Router.baseUrl = environment.apiBaseURL.absoluteString
 
@@ -170,7 +170,7 @@ extension Data4LifeClient {
     public static func configureWith(clientId: String,
                                      clientSecret: String,
                                      redirectURLString: String,
-                                     environment: D4LEnvironment,
+                                     environment: Environment,
                                      keychainGroupId: String? = nil,
                                      appGroupId: String? = nil) {
 

@@ -109,7 +109,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestURLFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        let env = D4LEnvironment.staging
+        let env = Environment.staging
         self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
@@ -141,7 +141,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestSuccessSSLPinning() {
         let bundle = Bundle(for: type(of: self))
-        let env = D4LEnvironment.staging
+        let env = Environment.staging
         let session = SessionService(hostname: env.host, sdkBundle: bundle, versionValidator: versionValidator)
 
         let asyncExpectation = expectation(description: "Should return an error")
@@ -165,7 +165,7 @@ class SessionServiceTests: XCTestCase {
     func testRequestFailsSSLPinning() {
         // development cert is not included in the test bundle so requests will fail
         let bundle = Bundle(for: type(of: self))
-        let env = D4LEnvironment.development
+        let env = Environment.development
         let session = SessionService(hostname: env.host, sdkBundle: bundle, versionValidator: versionValidator)
 
         let asyncExpectation = expectation(description: "Should return an error")
