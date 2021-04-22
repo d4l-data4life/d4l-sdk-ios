@@ -22,7 +22,7 @@ let package = Package(
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
                  url: "git@github.com:d4l-data4life/d4l-utils-ios.git",
-                 .upToNextMinor(from: "0.5.0")),
+                 .branch("remove-symbols")),
         .package(name: "Data4LifeFHIR",
                  url: "git@github.com:d4l-data4life/d4l-fhir-ios.git",
                  .branch("feature/update-public-types")),
