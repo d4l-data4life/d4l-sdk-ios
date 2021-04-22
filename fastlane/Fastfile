@@ -205,10 +205,7 @@ platform :ios do
       symbolMapUUIDFile = Dir.children("./#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/").first()
       sh "xcodebuild -verbose -create-xcframework \
           -framework #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
           -framework #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile}' \
           -output #{cryptoFrameworkPath}"
 
         sh "zip -r #{archiveAllFrameworksPath} #{sdkFrameworkPath} #{cryptoFrameworkPath} LICENSE SDK/Sources/Certificates/*.hpsgc.de.cer SDK/Sources/Certificates/data4life.care.der SDK/Sources/Data4LifeSDK-Version.plist"
@@ -242,10 +239,7 @@ platform :ios do
       symbolMapUUIDFile = Dir.children("./#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/").first()
       sh "xcodebuild -create-xcframework \
           -framework #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
           -framework #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile}' \
           -output #{cryptoFrameworkPath}"
     end
   end
