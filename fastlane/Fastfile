@@ -193,9 +193,6 @@ platform :ios do
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile1}' \
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/dSYMs/#{cryptoName}.framework.dSYM' \
           -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/BCSymbolMaps/#{symbolMapUUIDFile2}' \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/dSYMs/Data4LifeFHIR.framework.dSYM' \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/dSYMs/Data4LifeSDKUtils.framework.dSYM' \
-          -debug-symbols '#{root}/#{buildPath}/#{configuration}/#{sdkName}-iphoneos.xcarchive/dSYMs/ModelsR4.framework.dSYM' \
           -output #{sdkFrameworkPath}"
 
       sh "rm -rf #{buildPath}"
