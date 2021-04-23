@@ -41,7 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                       redirectURLString: configuration.redirectSchemeUrlString + "://oauth/",
                                       environment: configuration.environment)
         setRootViewController(initialViewController)
-
         return true
     }
 

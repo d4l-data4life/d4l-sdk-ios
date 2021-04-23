@@ -24,7 +24,7 @@ protocol OAuthServiceType: RequestRetrier {
 
     func handleRedirect(url: URL)
     func logout() -> Async<Void>
-    func isSessionActive() -> Async<Data>
+    func isSessionActive() -> Async<Void>
     func presentLogin(with userAgent: OAuthExternalUserAgentType,
                       publicKey: String,
                       scopes: [String],
@@ -201,12 +201,12 @@ class OAuthService: OAuthServiceType {
         }
     }
 
-    func isSessionActive() -> Async<Data> {
+    func isSessionActive() -> Async<Void> {
         return async {
             guard let state = self.storedAuthState, state.lastTokenResponse?.refreshToken != nil else {
                 throw Data4LifeSDKError.notLoggedIn
             }
-            return try await(self.sessionService.request(route: Router.userInfo).responseData())
+            return try await(self.sessionService.request(route: Router.userInfo).responseEmpty())
         }.bridgeError { error in
             guard (error as? AFError)?.responseCode == 401 else {
                 throw Data4LifeSDKError.network(error)

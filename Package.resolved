@@ -32,9 +32,9 @@
         "package": "Data4LifeSDKUtils",
         "repositoryURL": "git@github.com:d4l-data4life/d4l-utils-ios.git",
         "state": {
-          "branch": null,
-          "revision": "d6b031cb237ddb424f66a3b197121afa23fb67c2",
-          "version": "0.5.0"
+          "branch": "remove-symbols",
+          "revision": "570e9b7e1c071b4151ec2ddbea44b5f675d63c6a",
+          "version": null
         }
       },
       {

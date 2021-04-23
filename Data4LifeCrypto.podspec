@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
   s.cocoapods_version = '>= 1.10.0'
 
   s.vendored_frameworks = 'Data4LifeCrypto.xcframework'
-  s.preserve_paths      = 'Data4LifeCrypto.xcframework', 'Data4LifeCrypto.dSYMs/Data4LifeCrypto.framework.ios-arm64.dSYM', 'Data4LifeCrypto.dSYMs/Data4LifeCrypto.framework.ios-arm64_x86_64-simulator.dSYM'
+  s.preserve_paths      = 'Data4LifeCrypto.xcframework'
 end

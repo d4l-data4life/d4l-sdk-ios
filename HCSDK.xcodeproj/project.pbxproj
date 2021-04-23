@@ -63,6 +63,8 @@
 		36553F8B24C72B2500699A9B /* stu3-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 367B87F023F6D86200A6155E /* stu3-questionnaire.json */; };
 		36553F8C24C72B2900699A9B /* stu3-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 367B87E823F2F09300A6155E /* stu3-questionnaire-response.json */; };
 		3659BC8223D74E0A009970DA /* Attachment+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659BC8123D74E0A009970DA /* Attachment+Validation.swift */; };
+		365CCFDB26332CD700658141 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 365CCFDA26332CD700658141 /* Data4LifeFHIR */; };
+		365CCFDD26332CD700658141 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 365CCFDC26332CD700658141 /* ModelsR4 */; };
 		36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E8D253D83C100DAB5FD /* FhirSingleOperations.swift */; };
 		36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E97253D842300DAB5FD /* FhirBatchOperations.swift */; };
 		36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635EC4253DD5E000DAB5FD /* FhirAttachmentOperations.swift */; };
@@ -107,9 +109,6 @@
 		36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */; };
 		36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
 		36C2E8A9262DAE1300D5F467 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36C2E8A8262DAE1300D5F467 /* AppAuth */; };
-		36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */; };
-		36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E429262D8B7A00824D45 /* Data4LifeFHIR */; };
-		36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1E42B262D8B7A00824D45 /* ModelsR4 */; };
 		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
 		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
 		36D96130256FF759004D69CA /* Data4LifeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */; };
@@ -694,11 +693,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				365CCFDB26332CD700658141 /* Data4LifeFHIR in Frameworks */,
+				365CCFDD26332CD700658141 /* ModelsR4 in Frameworks */,
 				36B6E9D6260CD10300CA3250 /* Alamofire in Frameworks */,
-				36D1E42A262D8B7A00824D45 /* Data4LifeFHIR in Frameworks */,
 				36C2E8A9262DAE1300D5F467 /* AppAuth in Frameworks */,
-				36D1E42C262D8B7A00824D45 /* ModelsR4 in Frameworks */,
-				36D1E428262D8B7A00824D45 /* Data4LifeFHIRCore in Frameworks */,
 				36B6E9F4260CD23300CA3250 /* Data4LifeSDKUtils in Frameworks */,
 				36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */,
 				36B6E9DD260CD17800CA3250 /* Then in Frameworks */,
@@ -1823,10 +1821,9 @@
 				36B6E9D5260CD10300CA3250 /* Alamofire */,
 				36B6E9DC260CD17800CA3250 /* Then */,
 				36B6E9F3260CD23300CA3250 /* Data4LifeSDKUtils */,
-				36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */,
-				36D1E429262D8B7A00824D45 /* Data4LifeFHIR */,
-				36D1E42B262D8B7A00824D45 /* ModelsR4 */,
 				36C2E8A8262DAE1300D5F467 /* AppAuth */,
+				365CCFDA26332CD700658141 /* Data4LifeFHIR */,
+				365CCFDC26332CD700658141 /* ModelsR4 */,
 			);
 			productName = HCKit;
 			productReference = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */;
@@ -1966,8 +1963,8 @@
 				36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
 				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
-				36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
 				36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+				365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
 			);
 			productRefGroup = 837463A71E854E7500AB500F /* Products */;
 			projectDirPath = "";
@@ -2946,12 +2943,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
+			requirement = {
+				branch = "bugfix/fix-nested-framework";
+				kind = branch;
+			};
+		};
 		36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:d4l-data4life/d4l-utils-ios.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.5.0;
+				minimumVersion = 0.6.0;
 			};
 		};
 		36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
@@ -2978,17 +2983,19 @@
 				kind = branch;
 			};
 		};
-		36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
-			requirement = {
-				branch = "feature/update-public-types";
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		365CCFDA26332CD700658141 /* Data4LifeFHIR */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = Data4LifeFHIR;
+		};
+		365CCFDC26332CD700658141 /* ModelsR4 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = ModelsR4;
+		};
 		36B6E9D5260CD10300CA3250 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -3008,21 +3015,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
-		};
-		36D1E427262D8B7A00824D45 /* Data4LifeFHIRCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = Data4LifeFHIRCore;
-		};
-		36D1E429262D8B7A00824D45 /* Data4LifeFHIR */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = Data4LifeFHIR;
-		};
-		36D1E42B262D8B7A00824D45 /* ModelsR4 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36D1E426262D8B7A00824D45 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = ModelsR4;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

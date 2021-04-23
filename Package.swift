@@ -15,9 +15,6 @@ let package = Package(
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
-        .library(name: "Data4LifeSDKDependencies",
-                 type: .dynamic,
-                 targets: ["Data4LifeSDKDependencies"])
     ],
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
