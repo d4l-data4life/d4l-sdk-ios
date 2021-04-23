@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDK"]),
+            targets: ["Data4LifeSDK", "Data4LifeCrypto", "Data4LifeSDKUtilsDependency", "OtherDependencies"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
@@ -35,21 +35,22 @@ let package = Package(
         .binaryTarget(
             name: "Data4LifeSDK",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "8bd735d396ef579e29fe6314c75b354c6ce3af63e6862d3fedb5a65cf355f2a6"
+            checksum: "47cbabde2b571adf4a3ff937a4add2e4f0c1c1e1cf2ea4cab88b891635847f6e"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
-            checksum: "634c56d9ad6506bdb7c1ad63de50680a891412c80cc5ba63daa30d577025cb1d"
+            checksum: "a98aef1a5f3138f520ffc693052d8cc64a3a02aae1d20707d5b617ef254a59d0"
         ),
-        .target(name: "Data4LifeSDKDependencies",
+        .target(name: "Data4LifeSDKUtilsDependency",
                 dependencies: [
                     .product(name: "Data4LifeSDKUtils",
                              package: "Data4LifeSDKUtils",
-                             condition: .when(platforms: [.iOS])),
-                             .product(name: "Data4LifeFHIRCore",
-                                      package: "Data4LifeFHIR",
-                                      condition: .when(platforms: [.iOS])),
+                             condition: .when(platforms: [.iOS]))
+                ],
+                path: "SwiftPMDummyTargets/SDKUtilsDependency"),
+        .target(name: "OtherDependencies",
+                dependencies: [
                     .product(name: "Data4LifeFHIR",
                              package: "Data4LifeFHIR",
                              condition: .when(platforms: [.iOS])),
@@ -66,6 +67,6 @@ let package = Package(
                              package: "AppAuth",
                              condition: .when(platforms: [.iOS])),
                 ],
-                path: "SDKSPMFrameworks"),
+                path: "SwiftPMDummyTargets/OtherDependencies"),
     ]
 )
