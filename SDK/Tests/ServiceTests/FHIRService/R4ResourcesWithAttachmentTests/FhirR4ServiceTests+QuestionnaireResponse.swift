@@ -20,6 +20,7 @@ import XCTest
 import Data4LifeCrypto
 import ModelsR4
 import Then
+import Data4LifeSDKUtils
 
 class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
 
