@@ -11,13 +11,12 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDK", "Data4LifeCrypto", "Data4LifeSDKUtilsDependency", "OtherDependencies"]),
+            targets: ["Data4LifeSDK"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
         .library(name: "SDKSPMDependencies",
-                 type: .dynamic,
-                 targets: ["Data4LifeSDKUtilsDependency", "OtherDependencies"])
+                 targets: ["OtherDependencies"])
     ],
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
@@ -45,13 +44,6 @@ let package = Package(
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
             checksum: "9198b3cbec0c7440161b099b19bee49ce0d9340aafe63c0bf2fd1dd1f0b255b9"
         ),
-        .target(name: "Data4LifeSDKUtilsDependency",
-                dependencies: [
-                    .product(name: "Data4LifeSDKUtils",
-                             package: "Data4LifeSDKUtils",
-                             condition: .when(platforms: [.iOS]))
-                ],
-                path: "SwiftPMDummyTargets/SDKUtilsDependency"),
         .target(name: "OtherDependencies",
                 dependencies: [
                     .product(name: "Data4LifeFHIR",
@@ -69,6 +61,9 @@ let package = Package(
                     .product(name: "AppAuth",
                              package: "AppAuth",
                              condition: .when(platforms: [.iOS])),
+                    .product(name: "Data4LifeSDKUtils",
+                             package: "Data4LifeSDKUtils",
+                             condition: .when(platforms: [.iOS]))
                 ],
                 path: "SwiftPMDummyTargets/OtherDependencies"),
     ]
