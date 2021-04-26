@@ -6,10 +6,6 @@
 //  Copyright © 2021 HPS Gesundheitscloud gGmbH. All rights reserved.
 //
 
-import Alamofire
-import AppAuth
-import Then
-
 class SDKSPMDependencies {
 
 }

@@ -63,6 +63,6 @@ let package = Package(
                              package: "Data4LifeSDKUtils",
                              condition: .when(platforms: [.iOS]))
                 ],
-                path: "SwiftPMDummyTargets/OtherDependencies"),
+                path: "SDKSPMDependencies"),
     ]
 )
