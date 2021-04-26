@@ -35,12 +35,12 @@ let package = Package(
         .binaryTarget(
             name: "Data4LifeSDK",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "47cbabde2b571adf4a3ff937a4add2e4f0c1c1e1cf2ea4cab88b891635847f6e"
+            checksum: "b9b9f13abbc02a0454c5a5fbe46dbe4cfb21461bd1fc1419640b9b2b8bee3356"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
-            checksum: "a98aef1a5f3138f520ffc693052d8cc64a3a02aae1d20707d5b617ef254a59d0"
+            checksum: "9198b3cbec0c7440161b099b19bee49ce0d9340aafe63c0bf2fd1dd1f0b255b9"
         ),
         .target(name: "Data4LifeSDKUtilsDependency",
                 dependencies: [
