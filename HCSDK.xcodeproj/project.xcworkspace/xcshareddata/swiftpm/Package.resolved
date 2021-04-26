@@ -24,7 +24,7 @@
         "repositoryURL": "git@github.com:d4l-data4life/d4l-fhir-ios.git",
         "state": {
           "branch": "bugfix/fix-nested-framework",
-          "revision": "db15065677fb6af0b2b4b410e91897a6a7af644f",
+          "revision": "0f9c1583ec46e2e35abf8ef7f520b6278418e01b",
           "version": null
         }
       },

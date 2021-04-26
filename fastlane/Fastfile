@@ -214,7 +214,35 @@ platform :ios do
   end
 
   desc "Build xcframework for distribution"
-  lane :build_crypto_xcframework_test do |options|
+  lane :build_sdk_dependencies_xcframework do |options|
+    Dir.chdir("..") do
+      root = Dir.pwd
+      configuration = "Release"
+      buildPath = "xcbuild"
+
+      cryptoFrameworkPath = "#{cryptoName}.xcframework"
+
+      if File.exist?(buildPath)
+        sh "rm -rf #{buildPath}"
+      end
+      if File.exist?(cryptoFrameworkPath)
+        sh "rm -rf #{cryptoFrameworkPath}"
+      end
+
+      sh "rm -rf #{buildPath}"
+      sh "rm -rf #{cryptoFrameworkPath}"
+      sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive -destination 'generic/platform=iOS Simulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      sh "xcodebuild archive -scheme #{cryptoScheme} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive -destination 'generic/platform=iOS' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      symbolMapUUIDFile = Dir.children("./#{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/BCSymbolMaps/").first()
+      sh "xcodebuild -create-xcframework \
+          -framework #{buildPath}/#{configuration}/#{cryptoName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
+          -framework #{buildPath}/#{configuration}/#{cryptoName}-iphoneos.xcarchive/Products/Library/Frameworks/#{cryptoName}.framework \
+          -output #{cryptoFrameworkPath}"
+    end
+  end
+
+  desc "Build xcframework for distribution"
+  lane :build_crypto_xcframework do |options|
     Dir.chdir("..") do
       root = Dir.pwd
       configuration = "Release"
