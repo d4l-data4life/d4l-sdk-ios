@@ -15,6 +15,7 @@
 
 import Foundation
 import ModelsR4
+import Data4LifeFHIRCore
 
 protocol SDKResource: ModelVersionInformation, Codable {
     static var searchTags: [String: String] { get }

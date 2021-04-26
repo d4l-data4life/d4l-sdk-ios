@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+import Data4LifeFHIRCore
 @_implementationOnly import Then
 @_implementationOnly import Data4LifeCrypto
 

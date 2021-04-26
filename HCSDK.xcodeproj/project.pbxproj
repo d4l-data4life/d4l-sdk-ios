@@ -48,17 +48,15 @@
 		36080C35237DB05900085476 /* DIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C34237DB05900085476 /* DIError.swift */; };
 		36080C37237DB12900085476 /* Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C36237DB12900085476 /* Wrapper.swift */; };
 		36080C39237DB14200085476 /* DIResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C38237DB14200085476 /* DIResolver.swift */; };
-		360EC4A82636EF7700D8F8E9 /* SDKSPMDependencies.h in Headers */ = {isa = PBXBuildFile; fileRef = 360EC4A62636EF7700D8F8E9 /* SDKSPMDependencies.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		360EC4AB2636EF7700D8F8E9 /* SDKSPMDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */; };
-		360EC4AC2636EF7700D8F8E9 /* SDKSPMDependencies.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		360EC4B62636EF8B00D8F8E9 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC4B52636EF8B00D8F8E9 /* Data4LifeSDKUtils */; };
-		360EC4B82636EF8B00D8F8E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC4B72636EF8B00D8F8E9 /* Alamofire */; };
-		360EC4BA2636EF8B00D8F8E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC4B92636EF8B00D8F8E9 /* Then */; };
-		360EC4BC2636EF8B00D8F8E9 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC4BB2636EF8B00D8F8E9 /* AppAuth */; };
-		360EC4BE2636EF8B00D8F8E9 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC4BD2636EF8B00D8F8E9 /* Data4LifeFHIR */; };
-		360EC4C02636EF8B00D8F8E9 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC4BF2636EF8B00D8F8E9 /* ModelsR4 */; };
-		360EC4C12636EFA400D8F8E9 /* SDKSPMDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */; };
-		360EC4EF2636F0BA00D8F8E9 /* SDKSPMDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */; };
+		360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */; };
+		360EC5222636F8BF00D8F8E9 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5212636F8BF00D8F8E9 /* Data4LifeSDKUtils */; };
+		360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5232636F8BF00D8F8E9 /* Alamofire */; };
+		360EC5262636F8BF00D8F8E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5252636F8BF00D8F8E9 /* Then */; };
+		360EC5282636F8BF00D8F8E9 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5272636F8BF00D8F8E9 /* AppAuth */; };
+		360EC52A2636F8BF00D8F8E9 /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5292636F8BF00D8F8E9 /* AppAuthCore */; };
+		360EC52C2636F8BF00D8F8E9 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */; };
+		360EC52E2636F8BF00D8F8E9 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52D2636F8BF00D8F8E9 /* ModelsR4 */; };
+		360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */; };
 		36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */; };
 		3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */; };
 		3634699824ED5A26001EEE66 /* AppDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699724ED5A26001EEE66 /* AppDataServiceTests.swift */; };
@@ -325,18 +323,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		360EC4A92636EF7700D8F8E9 /* PBXContainerItemProxy */ = {
+		360EC5502636FB5400D8F8E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 360EC4A32636EF7700D8F8E9;
-			remoteInfo = SDKSPMDependencies;
-		};
-		360EC4C32636EFA400D8F8E9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 360EC4A32636EF7700D8F8E9;
+			remoteGlobalIDString = 360EC5142636F8AC00D8F8E9;
 			remoteInfo = SDKSPMDependencies;
 		};
 		36185286257015F8005D15A5 /* PBXContainerItemProxy */ = {
@@ -391,6 +382,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		360EC5132636F8AC00D8F8E9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD92FE0B2284402E00DA7024 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -399,7 +399,6 @@
 			files = (
 				36B6E9EE260CD22300CA3250 /* Data4LifeSDK.framework in Embed Frameworks */,
 				CD92FE0F2284406300DA7024 /* Data4LifeCrypto.framework in Embed Frameworks */,
-				360EC4AC2636EF7700D8F8E9 /* SDKSPMDependencies.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,9 +447,10 @@
 		36080C34237DB05900085476 /* DIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIError.swift; sourceTree = "<group>"; };
 		36080C36237DB12900085476 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		36080C38237DB14200085476 /* DIResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIResolver.swift; sourceTree = "<group>"; };
-		360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDKSPMDependencies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		360EC4A62636EF7700D8F8E9 /* SDKSPMDependencies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDKSPMDependencies.h; sourceTree = "<group>"; };
 		360EC4A72636EF7700D8F8E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDKSPMDependencies.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKSPMDependencies.swift; sourceTree = "<group>"; };
 		36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationVectorGenerator.swift; sourceTree = "<group>"; };
 		36238E7A2530B8E400923F22 /* donorKey.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = donorKey.json; sourceTree = "<group>"; };
 		3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordServiceTests+AppData.swift"; sourceTree = "<group>"; };
@@ -712,16 +712,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		360EC4A12636EF7700D8F8E9 /* Frameworks */ = {
+		360EC5122636F8AC00D8F8E9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				360EC4B62636EF8B00D8F8E9 /* Data4LifeSDKUtils in Frameworks */,
-				360EC4BA2636EF8B00D8F8E9 /* Then in Frameworks */,
-				360EC4BC2636EF8B00D8F8E9 /* AppAuth in Frameworks */,
-				360EC4B82636EF8B00D8F8E9 /* Alamofire in Frameworks */,
-				360EC4C02636EF8B00D8F8E9 /* ModelsR4 in Frameworks */,
-				360EC4BE2636EF8B00D8F8E9 /* Data4LifeFHIR in Frameworks */,
+				360EC52C2636F8BF00D8F8E9 /* Data4LifeFHIR in Frameworks */,
+				360EC52E2636F8BF00D8F8E9 /* ModelsR4 in Frameworks */,
+				360EC5222636F8BF00D8F8E9 /* Data4LifeSDKUtils in Frameworks */,
+				360EC5262636F8BF00D8F8E9 /* Then in Frameworks */,
+				360EC5282636F8BF00D8F8E9 /* AppAuth in Frameworks */,
+				360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */,
+				360EC52A2636F8BF00D8F8E9 /* AppAuthCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,8 +730,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */,
 				36B6EA1B260DD5D600CA3250 /* Data4LifeCrypto.framework in Frameworks */,
-				360EC4C12636EFA400D8F8E9 /* SDKSPMDependencies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,7 +739,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				360EC4EF2636F0BA00D8F8E9 /* SDKSPMDependencies.framework in Frameworks */,
 				837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -749,7 +749,6 @@
 			files = (
 				CD92FE0E2284406300DA7024 /* Data4LifeCrypto.framework in Frameworks */,
 				36B6E9ED260CD22300CA3250 /* Data4LifeSDK.framework in Frameworks */,
-				360EC4AB2636EF7700D8F8E9 /* SDKSPMDependencies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +872,14 @@
 			children = (
 				360EC4A62636EF7700D8F8E9 /* SDKSPMDependencies.h */,
 				360EC4A72636EF7700D8F8E9 /* Info.plist */,
+			);
+			path = SDKSPMDependencies;
+			sourceTree = "<group>";
+		};
+		360EC5162636F8AC00D8F8E9 /* SDKSPMDependencies */ = {
+			isa = PBXGroup;
+			children = (
+				360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */,
 			);
 			path = SDKSPMDependencies;
 			sourceTree = "<group>";
@@ -1044,6 +1051,7 @@
 				CD87351B225384C300DA8E5F /* SDK */,
 				CD87348E2253801F00DA8E5F /* Crypto */,
 				360EC4A52636EF7700D8F8E9 /* SDKSPMDependencies */,
+				360EC5162636F8AC00D8F8E9 /* SDKSPMDependencies */,
 				837463D11E85663300AB500F /* Frameworks */,
 				837463A71E854E7500AB500F /* Products */,
 			);
@@ -1057,7 +1065,7 @@
 				839E81391E86DE5300C42094 /* Example.app */,
 				CD109095225B88BE00325389 /* Data4LifeCrypto.framework */,
 				CD109138225B89D600325389 /* Data4LifeCryptoTests.xctest */,
-				360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */,
+				360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1826,14 +1834,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		360EC49F2636EF7700D8F8E9 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				360EC4A82636EF7700D8F8E9 /* SDKSPMDependencies.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		837463A31E854E7500AB500F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1853,37 +1853,31 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		360EC4A32636EF7700D8F8E9 /* SDKSPMDependencies */ = {
+		360EC5142636F8AC00D8F8E9 /* SDKSPMDependencies */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 360EC4AF2636EF7700D8F8E9 /* Build configuration list for PBXNativeTarget "SDKSPMDependencies" */;
+			buildConfigurationList = 360EC5192636F8AD00D8F8E9 /* Build configuration list for PBXNativeTarget "SDKSPMDependencies" */;
 			buildPhases = (
-				360EC49F2636EF7700D8F8E9 /* Headers */,
-				360EC4A02636EF7700D8F8E9 /* Sources */,
-				360EC4A12636EF7700D8F8E9 /* Frameworks */,
-				360EC4A22636EF7700D8F8E9 /* Resources */,
+				360EC5112636F8AC00D8F8E9 /* Sources */,
+				360EC5122636F8AC00D8F8E9 /* Frameworks */,
+				360EC5132636F8AC00D8F8E9 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				360EC4DF2636F04D00D8F8E9 /* PBXTargetDependency */,
-				360EC4E12636F04D00D8F8E9 /* PBXTargetDependency */,
-				360EC4E32636F04D00D8F8E9 /* PBXTargetDependency */,
-				360EC4E52636F04D00D8F8E9 /* PBXTargetDependency */,
-				360EC4E72636F04D00D8F8E9 /* PBXTargetDependency */,
-				360EC4E92636F04D00D8F8E9 /* PBXTargetDependency */,
 			);
 			name = SDKSPMDependencies;
 			packageProductDependencies = (
-				360EC4B52636EF8B00D8F8E9 /* Data4LifeSDKUtils */,
-				360EC4B72636EF8B00D8F8E9 /* Alamofire */,
-				360EC4B92636EF8B00D8F8E9 /* Then */,
-				360EC4BB2636EF8B00D8F8E9 /* AppAuth */,
-				360EC4BD2636EF8B00D8F8E9 /* Data4LifeFHIR */,
-				360EC4BF2636EF8B00D8F8E9 /* ModelsR4 */,
+				360EC5212636F8BF00D8F8E9 /* Data4LifeSDKUtils */,
+				360EC5232636F8BF00D8F8E9 /* Alamofire */,
+				360EC5252636F8BF00D8F8E9 /* Then */,
+				360EC5272636F8BF00D8F8E9 /* AppAuth */,
+				360EC5292636F8BF00D8F8E9 /* AppAuthCore */,
+				360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */,
+				360EC52D2636F8BF00D8F8E9 /* ModelsR4 */,
 			);
 			productName = SDKSPMDependencies;
-			productReference = 360EC4A42636EF7700D8F8E9 /* SDKSPMDependencies.framework */;
-			productType = "com.apple.product-type.framework";
+			productReference = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		837463A51E854E7500AB500F /* Data4LifeSDK */ = {
 			isa = PBXNativeTarget;
@@ -1899,7 +1893,7 @@
 			);
 			dependencies = (
 				36B6EA1E260DD5D600CA3250 /* PBXTargetDependency */,
-				360EC4C42636EFA400D8F8E9 /* PBXTargetDependency */,
+				360EC5512636FB5400D8F8E9 /* PBXTargetDependency */,
 			);
 			name = Data4LifeSDK;
 			packageProductDependencies = (
@@ -1941,7 +1935,6 @@
 			dependencies = (
 				CD92FE112284406300DA7024 /* PBXTargetDependency */,
 				36B6E9F0260CD22300CA3250 /* PBXTargetDependency */,
-				360EC4AA2636EF7700D8F8E9 /* PBXTargetDependency */,
 			);
 			name = Example;
 			packageProductDependencies = (
@@ -1995,11 +1988,11 @@
 		8374639D1E854E7500AB500F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "HPS Gesundheitscloud gGmbH";
 				TargetAttributes = {
-					360EC4A32636EF7700D8F8E9 = {
+					360EC5142636F8AC00D8F8E9 = {
 						CreatedOnToolsVersion = 12.4;
 					};
 					837463A51E854E7500AB500F = {
@@ -2058,19 +2051,12 @@
 				837463AE1E854E7500AB500F /* Data4LifeSDKTests */,
 				CD108FF0225B88BE00325389 /* Data4LifeCrypto */,
 				CD109137225B89D600325389 /* Data4LifeCryptoTests */,
-				360EC4A32636EF7700D8F8E9 /* SDKSPMDependencies */,
+				360EC5142636F8AC00D8F8E9 /* SDKSPMDependencies */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		360EC4A22636EF7700D8F8E9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		837463A41E854E7500AB500F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2184,10 +2170,11 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		360EC4A02636EF7700D8F8E9 /* Sources */ = {
+		360EC5112636F8AC00D8F8E9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2466,39 +2453,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		360EC4AA2636EF7700D8F8E9 /* PBXTargetDependency */ = {
+		360EC5512636FB5400D8F8E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 360EC4A32636EF7700D8F8E9 /* SDKSPMDependencies */;
-			targetProxy = 360EC4A92636EF7700D8F8E9 /* PBXContainerItemProxy */;
-		};
-		360EC4C42636EFA400D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 360EC4A32636EF7700D8F8E9 /* SDKSPMDependencies */;
-			targetProxy = 360EC4C32636EFA400D8F8E9 /* PBXContainerItemProxy */;
-		};
-		360EC4DF2636F04D00D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 360EC4DE2636F04D00D8F8E9 /* Data4LifeSDKUtils */;
-		};
-		360EC4E12636F04D00D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 360EC4E02636F04D00D8F8E9 /* Alamofire */;
-		};
-		360EC4E32636F04D00D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 360EC4E22636F04D00D8F8E9 /* Then */;
-		};
-		360EC4E52636F04D00D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 360EC4E42636F04D00D8F8E9 /* AppAuth */;
-		};
-		360EC4E72636F04D00D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 360EC4E62636F04D00D8F8E9 /* Data4LifeFHIR */;
-		};
-		360EC4E92636F04D00D8F8E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 360EC4E82636F04D00D8F8E9 /* ModelsR4 */;
+			target = 360EC5142636F8AC00D8F8E9 /* SDKSPMDependencies */;
+			targetProxy = 360EC5502636FB5400D8F8E9 /* PBXContainerItemProxy */;
 		};
 		36185287257015F8005D15A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2559,69 +2517,41 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		360EC4AD2636EF7700D8F8E9 /* Debug */ = {
+		360EC51A2636F8AD00D8F8E9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				DEVELOPMENT_TEAM = D2QJWMP9SU;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = SDKSPMDependencies/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.SDKSPMDependencies;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		360EC4AE2636EF7700D8F8E9 /* Release */ = {
+		360EC51B2636F8AD00D8F8E9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = D2QJWMP9SU;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = SDKSPMDependencies/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.SDKSPMDependencies;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3087,11 +3017,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		360EC4AF2636EF7700D8F8E9 /* Build configuration list for PBXNativeTarget "SDKSPMDependencies" */ = {
+		360EC5192636F8AD00D8F8E9 /* Build configuration list for PBXNativeTarget "SDKSPMDependencies" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				360EC4AD2636EF7700D8F8E9 /* Debug */,
-				360EC4AE2636EF7700D8F8E9 /* Release */,
+				360EC51A2636F8AD00D8F8E9 /* Debug */,
+				360EC51B2636F8AD00D8F8E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3196,62 +3126,37 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		360EC4B52636EF8B00D8F8E9 /* Data4LifeSDKUtils */ = {
+		360EC5212636F8BF00D8F8E9 /* Data4LifeSDKUtils */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
 			productName = Data4LifeSDKUtils;
 		};
-		360EC4B72636EF8B00D8F8E9 /* Alamofire */ = {
+		360EC5232636F8BF00D8F8E9 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		360EC4B92636EF8B00D8F8E9 /* Then */ = {
+		360EC5252636F8BF00D8F8E9 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
-		360EC4BB2636EF8B00D8F8E9 /* AppAuth */ = {
+		360EC5272636F8BF00D8F8E9 /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
 		};
-		360EC4BD2636EF8B00D8F8E9 /* Data4LifeFHIR */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = Data4LifeFHIR;
-		};
-		360EC4BF2636EF8B00D8F8E9 /* ModelsR4 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = ModelsR4;
-		};
-		360EC4DE2636F04D00D8F8E9 /* Data4LifeSDKUtils */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
-			productName = Data4LifeSDKUtils;
-		};
-		360EC4E02636F04D00D8F8E9 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-		360EC4E22636F04D00D8F8E9 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
-		};
-		360EC4E42636F04D00D8F8E9 /* AppAuth */ = {
+		360EC5292636F8BF00D8F8E9 /* AppAuthCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36C2E8A7262DAE1300D5F467 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
-			productName = AppAuth;
+			productName = AppAuthCore;
 		};
-		360EC4E62636F04D00D8F8E9 /* Data4LifeFHIR */ = {
+		360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
 			productName = Data4LifeFHIR;
 		};
-		360EC4E82636F04D00D8F8E9 /* ModelsR4 */ = {
+		360EC52D2636F8BF00D8F8E9 /* ModelsR4 */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
 			productName = ModelsR4;
