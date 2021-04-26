@@ -15,6 +15,9 @@ let package = Package(
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
+        .library(name: "SDKSPMDependencies",
+                 type: .dynamic,
+                 targets: ["Data4LifeSDKUtilsDependency", "OtherDependencies"])
     ],
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
