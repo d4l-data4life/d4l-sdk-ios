@@ -11,12 +11,12 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDK", "OtherDependencies"]),
+            targets: ["Data4LifeSDK"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
     ],
-    dependencies: [
+    dependencies: [ 
         .package(name: "Data4LifeSDKUtils",
                  url: "git@github.com:d4l-data4life/d4l-utils-ios.git",
                  .upToNextMinor(from: "0.6.0")),
@@ -42,7 +42,7 @@ let package = Package(
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
             checksum: "bb4ca57ff8e4349fe2a5b4c230f76dac2509b5b44b641c4a215229df61ea00f1"
         ),
-        .target(name: "OtherDependencies",
+        .target(name: "Data4LifeSDKDependencies",
                 dependencies: [
                     .product(name: "Data4LifeFHIR",
                              package: "Data4LifeFHIR",
