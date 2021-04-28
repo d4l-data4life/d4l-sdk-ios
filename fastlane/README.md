@@ -42,19 +42,24 @@ Package and release framework
  * **`skip_git_pull`**: Skips pulling the git remote. Defaults to false
 
  * **`is_prerelease`**: Marks GitHub release as Pre-release. Defaults to false
-### ios build_xcframework
+### ios build_xcframeworks
 ```
-fastlane ios build_xcframework
-```
-Build xcframework for distribution
-### ios build_sdk_dependencies_xcframework
-```
-fastlane ios build_sdk_dependencies_xcframework
+fastlane ios build_xcframeworks
 ```
 Build xcframework for distribution
+### ios build_project_xcframework
+```
+fastlane ios build_project_xcframework
+```
+Build any project xcframework
 ### ios build_crypto_xcframework
 ```
 fastlane ios build_crypto_xcframework
+```
+Build xcframework for distribution
+### ios build_sdk_xcframework
+```
+fastlane ios build_sdk_xcframework
 ```
 Build xcframework for distribution
 ### ios gh_release
