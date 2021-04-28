@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 @_implementationOnly import Alamofire
+import Foundation
 
 extension Request {
     static var backgroundQueue: DispatchQueue {

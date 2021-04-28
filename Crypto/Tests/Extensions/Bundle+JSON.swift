@@ -53,3 +53,21 @@ extension Bundle {
         return dirs.flatMap { return self.urls(forResourcesWithExtension: "json", subdirectory: $0) ?? [] }
     }
 }
+
+extension Bundle {
+    static var current: Bundle {
+        #if SWIFT_PACKAGE
+        return Bundle.module
+        #else
+        return Bundle(for: Data4LifeCryptoProtocolTests.self)
+        #endif
+    }
+
+    func data(forResource named: String, withExtension type: String) -> Data? {
+        if let url = self.url(forResource: named, withExtension: type) {
+            return try? Data(contentsOf: url)
+        } else {
+            return nil
+        }
+    }
+}

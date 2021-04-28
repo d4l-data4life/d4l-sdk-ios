@@ -14,8 +14,9 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import ModelsR4
 import Data4LifeFHIRCore
+import Data4LifeFHIR
+import ModelsR4
 
 protocol SDKResource: ModelVersionInformation, Codable {
     static var searchTags: [String: String] { get }

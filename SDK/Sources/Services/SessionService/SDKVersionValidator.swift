@@ -47,7 +47,7 @@ class SDKVersionValidator: SDKVersionValidatorType {
     func fetchCurrentVersionStatus() -> Async<VersionStatus> {
             return async {
                 let currentVersion = self.infoService.fetchSDKVersion()
-                let versionConfiguration = try await(self.fetchVersionConfigurationLocally())
+                let versionConfiguration = try `await`(self.fetchVersionConfigurationLocally())
                 return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
             }
     }
@@ -58,7 +58,7 @@ class SDKVersionValidator: SDKVersionValidatorType {
                 fatalError("Session service required to use the VersionValidator")
             }
 
-            let versionConfiguration: SDKVersionConfiguration = try await(
+            let versionConfiguration: SDKVersionConfiguration = try `await`(
                 sessionService.request(route:
                     Router.versionInfo(version: ValidatorVersion.v1.rawValue))
                     .responseDecodable())

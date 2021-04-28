@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-@testable import HCSDK
+@testable import Data4LifeSDK
 
 class ThumbnailsIdFactoryTests: XCTestCase {
     let splitChar: Character = "#"

@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 @_implementationOnly import Data4LifeSDKUtils
+import Foundation
 
 enum HashValidity {
     case valid

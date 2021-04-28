@@ -22,7 +22,7 @@ let package = Package(
                  .upToNextMinor(from: "0.6.0")),
         .package(name: "Data4LifeFHIR",
                  url: "git@github.com:d4l-data4life/d4l-fhir-ios.git",
-                 .branch("bugfix/fix-nested-framework")),
+                 .upToNextMinor(from: "0.21.1")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(url: "https://github.com/freshOS/Then",
@@ -50,6 +50,9 @@ let package = Package(
                     .product(name: "ModelsR4",
                              package: "Data4LifeFHIR",
                              condition: .when(platforms: [.iOS])),
+                    .product(name: "Data4LifeFHIRCore",
+                             package: "Data4LifeFHIR",
+                             condition: .when(platforms: [.iOS])),
                     .product(name: "Then",
                              package: "Then",
                              condition: .when(platforms: [.iOS])),
@@ -64,5 +67,11 @@ let package = Package(
                              condition: .when(platforms: [.iOS]))
                 ],
                 path: "SDKSPMDependencies"),
+        .testTarget(name: "Data4LifeCryptoTests",
+                    dependencies: ["Data4LifeCrypto"],
+                    path: "Crypto/Tests",
+                    exclude: ["Info.plist"],
+                    resources: [.process("JSON Payloads")]),
+
     ]
 )

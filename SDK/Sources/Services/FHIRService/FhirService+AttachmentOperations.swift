@@ -23,14 +23,14 @@ extension FhirService {
     func downloadFhirRecordWithAttachments<DR: DecryptedRecord>(withId identifier: String,
                                                                 decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
-            let decryptedRecord = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, decryptedRecordType: decryptedRecordType))
+            let userId = try `await`(self.keychainService.get(.userId))
+            let decryptedRecord = try `await`(self.recordService.fetchRecord(recordId: identifier, userId: userId, decryptedRecordType: decryptedRecordType))
             let record = FhirRecord<DR.Resource>(decryptedRecord: decryptedRecord)
             guard let attachmentKey = decryptedRecord.attachmentKey else { return record }
 
             if let resourceWithAttachments = record.fhirResource as? HasAttachments {
                 let ids = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId }
-                let downloadedAttachments: [AttachmentType] = try await(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+                let downloadedAttachments: [AttachmentType] = try `await`(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
                                                                                                                 attachmentIds: ids ?? [],
                                                                                                                 downloadType: .full,
                                                                                                                 key: attachmentKey,
@@ -54,9 +54,9 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            let generatedKey = try await(self.cryptoService.generateGCKey(.attachment))
+            let generatedKey = try `await`(self.cryptoService.generateGCKey(.attachment))
             let uploadedAttachmentsWithIds: [(AttachmentType, [String])] =
-                try await(self.attachmentService.uploadAttachments(validatedAttachments,
+                try `await`(self.attachmentService.uploadAttachments(validatedAttachments,
                                                                    key: generatedKey))
             var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 } as [AttachmentType]
 
@@ -77,7 +77,7 @@ extension FhirService {
     func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource,
                                                 decryptedRecordType: DR.Type = DR.self) -> Promise<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
+            let userId = try `await`(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
 
             guard
@@ -86,10 +86,10 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
+            let remoteRecord = try `await`(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
             // Gets all Attachments without data
             let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments ?? []
-            let newKey = try await(self.cryptoService.generateGCKey(.attachment))
+            let newKey = try `await`(self.cryptoService.generateGCKey(.attachment))
             let attachmentKey = remoteRecord.attachmentKey ?? newKey
 
             let classifiedAttachments = self.compareAttachments(local: attachments, remote: remoteAttachments)
@@ -97,7 +97,7 @@ extension FhirService {
 
             let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate()
 
-            let uploadedAttachmentsWithIds = try await(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
+            let uploadedAttachmentsWithIds = try `await`(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
             let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
@@ -127,7 +127,7 @@ extension FhirService {
         return async {
             if !attachments.isEmpty {
                 let updatedAttachmentsWithThumbnailsIds: [(AttachmentType, [String])] =
-                    try await(self.attachmentService.uploadAttachments(attachments,
+                    try `await`(self.attachmentService.uploadAttachments(attachments,
                                                                        key: attachmentKey))
                 return updatedAttachmentsWithThumbnailsIds
             } else {

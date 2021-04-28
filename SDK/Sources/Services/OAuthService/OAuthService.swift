@@ -87,13 +87,6 @@ class OAuthService: OAuthServiceType {
         self.keychainService = keychainService
         self.sessionService = sessionService
         self.numberOfRetriesOnTimeout = numberOfRetriesOnTimeout
-
-        migrateUnarchiverToD4L()
-    }
-
-    private func migrateUnarchiverToD4L() {
-        NSKeyedUnarchiver.setClass(Data4LifeSDK.AuthState.self, forClassName: "HCSDK.AuthState")
-        NSKeyedArchiver.setClassName("HCSDK.AuthState", for: Data4LifeSDK.AuthState.self)
     }
 
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
@@ -206,7 +199,7 @@ class OAuthService: OAuthServiceType {
             guard let state = self.storedAuthState, state.lastTokenResponse?.refreshToken != nil else {
                 throw Data4LifeSDKError.notLoggedIn
             }
-            return try await(self.sessionService.request(route: Router.userInfo).responseEmpty())
+            return try `await`(self.sessionService.request(route: Router.userInfo).responseEmpty())
         }.bridgeError { error in
             guard (error as? AFError)?.responseCode == 401 else {
                 throw Data4LifeSDKError.network(error)
@@ -229,10 +222,10 @@ class OAuthService: OAuthServiceType {
         }
 
         return async {
-            let refreshToken = try await(self.keychainService.get(.refreshToken))
+            let refreshToken = try `await`(self.keychainService.get(.refreshToken))
             let route = Router.revokeToken(parameters: ["token": refreshToken],
                                            headers: [("Authorization", "Basic \(encodedClientInfo)")])
-            _ = try await(self.sessionService.request(route: route).responseEmpty())
+            _ = try `await`(self.sessionService.request(route: route).responseEmpty())
             self.keychainService.clear()
             self.sessionStateChanged?(false)
         }

@@ -64,7 +64,7 @@ extension SessionService {
         }
 
         if route.needsVersionValidation {
-            try await(validateSDKVersion())
+            try `await`(validateSDKVersion())
         }
 
         return session.request(route, interceptor: interceptor)
@@ -80,7 +80,7 @@ extension SessionService {
             throw Data4LifeSDKError.networkUnavailable
         }
 
-        try await(validateSDKVersion())
+        try `await`(validateSDKVersion())
 
         return session.request(url, method: method, interceptor: interceptor)
             .logged
@@ -96,7 +96,7 @@ extension SessionService {
         }
 
         if route.needsVersionValidation {
-            try await(validateSDKVersion())
+            try `await`(validateSDKVersion())
         }
 
         return session.upload(data, with: route, interceptor: interceptor)
@@ -130,10 +130,10 @@ private extension SessionService {
 
     private func validateSDKVersion() -> Async<Void> {
         return async {
-            var versionStatus = try await(self.versionValidator.fetchCurrentVersionStatus())
+            var versionStatus = try `await`(self.versionValidator.fetchCurrentVersionStatus())
             if versionStatus == .unknown {
-                try await(self.versionValidator.fetchVersionConfigurationRemotely())
-                versionStatus = try await(self.versionValidator.fetchCurrentVersionStatus())
+                try `await`(self.versionValidator.fetchVersionConfigurationRemotely())
+                versionStatus = try `await`(self.versionValidator.fetchCurrentVersionStatus())
             }
 
             try self.alertIfNeeded(for: versionStatus)

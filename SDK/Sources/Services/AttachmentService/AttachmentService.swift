@@ -16,6 +16,7 @@
 import Foundation
 @_implementationOnly import Data4LifeCrypto
 @_implementationOnly import Then
+import Data4LifeFHIRCore
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],
@@ -52,12 +53,12 @@ final class AttachmentService: AttachmentServiceType {
                 do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
 
                 let document = Document(data: data)
-                let uploaded = try await(self.documentService.create(document: document, key: key))
+                let uploaded = try `await`(self.documentService.create(document: document, key: key))
 
                 var thumbnailsIds: [String]?
                 if let attachmentId = uploaded.id {
                     if self.imageResizer.isResizable(document.data) {
-                        thumbnailsIds = try await(self.createThumbnails(attachmentId: attachmentId, originalData: document.data, key: key))
+                        thumbnailsIds = try `await`(self.createThumbnails(attachmentId: attachmentId, originalData: document.data, key: key))
                     }
                 }
 
@@ -93,7 +94,7 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 let documentId: String = selectedDocumentId ?? attachmentId
-                let data = try await(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
+                let data = try `await`(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
 
                 let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
                 attachmentCopy.attachmentDataString = data.base64EncodedString()
@@ -139,7 +140,7 @@ final class AttachmentService: AttachmentServiceType {
                         return []
                     }
 
-                    let uploaded = try await(self.documentService.create(document: Document(data: resizedData), key: key))
+                    let uploaded = try `await`(self.documentService.create(document: Document(data: resizedData), key: key))
                     guard let thumbnailId = uploaded.id else {
                         // A created document should always have got an id
                         return []

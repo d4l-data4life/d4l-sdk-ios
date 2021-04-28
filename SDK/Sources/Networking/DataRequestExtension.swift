@@ -15,6 +15,7 @@
 
 @_implementationOnly import Alamofire
 @_implementationOnly import Then
+import Foundation
 
 /// Make Alamofire compatible with custom completion handler
 extension DataRequest {

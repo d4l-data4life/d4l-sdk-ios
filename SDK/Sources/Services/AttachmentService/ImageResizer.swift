@@ -14,6 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 @_implementationOnly import Data4LifeSDKUtils
+import Foundation
+import UIKit
 
 protocol Resizable {
     func isResizable(_ data: Data) -> Bool

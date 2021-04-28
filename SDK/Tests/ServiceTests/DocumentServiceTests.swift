@@ -212,7 +212,7 @@ fileprivate extension DocumentService {
         return Async { (resolve: @escaping (Document) -> Void, reject: @escaping (Error) -> Void) in
 
             do {
-                let userId = try await(self.keychainService.get(.userId))
+                let userId = try `await`(self.keychainService.get(.userId))
                 let route = Router.fetchDocument(userId: userId, documentId: identifier)
                 let request = try self.sessionService.request(route: route)
 
@@ -225,7 +225,7 @@ fileprivate extension DocumentService {
                     reject(URLError.init(URLError.cancelled))
                 }
 
-                let encryptedData = try await(request.responseData())
+                let encryptedData = try `await`(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
                     resolve(Document(id: identifier, data: decryptedData))

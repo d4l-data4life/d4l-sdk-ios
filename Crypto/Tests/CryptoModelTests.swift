@@ -17,17 +17,7 @@ import XCTest
 import Data4LifeCrypto
 
 class CryptoModelTests: XCTestCase {
-    var bundle: Foundation.Bundle!
-
-    override func setUp() {
-        super.setUp()
-        bundle = Bundle(for: type(of: self))
-    }
-
-    override func tearDown() {
-        bundle = nil
-        super.tearDown()
-    }
+    var bundle: Foundation.Bundle! = Bundle.current
 
     func testKeyCommonV1Success() {
         do {

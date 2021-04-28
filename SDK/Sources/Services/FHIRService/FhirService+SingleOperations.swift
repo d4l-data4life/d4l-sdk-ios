@@ -23,9 +23,9 @@ extension FhirService {
                                                decryptedRecordType: DR.Type = DR.self) ->
     Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
-            let resourceWithKey = try await(self.uploadAttachments(creating: resource))
-            let decryptedRecord = try await(self.recordService.createRecord(forResource: resourceWithKey.resource,
+            let userId = try `await`(self.keychainService.get(.userId))
+            let resourceWithKey = try `await`(self.uploadAttachments(creating: resource))
+            let decryptedRecord = try `await`(self.recordService.createRecord(forResource: resourceWithKey.resource,
                                                                             annotations: annotations,
                                                                             userId: userId,
                                                                             attachmentKey: resourceWithKey.key,
@@ -38,12 +38,12 @@ extension FhirService {
                                                annotations: [String]? = nil,
                                                decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
+            let userId = try `await`(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
 
-            let resourceWithKey = try await(self.uploadAttachments(updating: resource, decryptedRecordType: decryptedRecordType))
+            let resourceWithKey = try `await`(self.uploadAttachments(updating: resource, decryptedRecordType: decryptedRecordType))
 
-            let updatedRecord = try await(self.recordService.updateRecord(forResource: resourceWithKey.resource,
+            let updatedRecord = try `await`(self.recordService.updateRecord(forResource: resourceWithKey.resource,
                                                                           annotations: annotations,
                                                                           userId: userId,
                                                                           recordId: recordId,

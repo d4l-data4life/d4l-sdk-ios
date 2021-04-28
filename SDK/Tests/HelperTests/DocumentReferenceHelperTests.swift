@@ -15,7 +15,6 @@
 
 import XCTest
 import Data4LifeFHIR
-@testable import Data4LifeFHIRProfiles
 
 class DocumentReferenceHelperTests: XCTestCase {
 

@@ -15,6 +15,7 @@
 
 import Foundation
 @_implementationOnly import Then
+import UIKit
 
 /// Returns either an error or an object
 public typealias ResultBlock<Value> = (Result<Value, Error>) -> Void
@@ -154,7 +155,7 @@ extension Data4LifeClient {
     private func configureDependencies() {
         sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
-        try? await(versionValidator.fetchVersionConfigurationRemotely())
+        try? `await`(versionValidator.fetchVersionConfigurationRemotely())
     }
 }
 

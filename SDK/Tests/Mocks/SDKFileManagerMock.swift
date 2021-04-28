@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 @testable import Data4LifeSDK
+import Foundation
 
 class SDKFileManagerMock: SDKFileManagerType {
 

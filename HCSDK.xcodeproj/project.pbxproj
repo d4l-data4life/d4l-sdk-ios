@@ -55,7 +55,7 @@
 		360EC5282636F8BF00D8F8E9 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5272636F8BF00D8F8E9 /* AppAuth */; };
 		360EC52A2636F8BF00D8F8E9 /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5292636F8BF00D8F8E9 /* AppAuthCore */; };
 		360EC52C2636F8BF00D8F8E9 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */; };
-		360EC52E2636F8BF00D8F8E9 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52D2636F8BF00D8F8E9 /* ModelsR4 */; };
+		360EC52E2636F8BF00D8F8E9 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52D2636F8BF00D8F8E9 /* ModelsR4 */; settings = {ATTRIBUTES = (Weak, ); }; };
 		360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */; };
 		36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */; };
 		3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */; };
@@ -2866,7 +2866,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.example;
+				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDKIntegration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = WildcardDevelopment;
 				SKIP_INSTALL = NO;
@@ -3078,8 +3078,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
 			requirement = {
-				branch = "bugfix/fix-nested-framework";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.21.1;
 			};
 		};
 		36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */ = {

@@ -15,7 +15,7 @@
 
 import XCTest
 import Data4LifeFHIR
-@testable import Data4LifeFHIRProfiles
+import Data4LifeSDK
 
 class AttachmentHelperTests: XCTestCase {
 

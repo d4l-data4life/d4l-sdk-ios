@@ -17,6 +17,8 @@ import XCTest
 import Data4LifeCrypto
 
 class KeyPairTests: XCTestCase {
+    #if SWIFT_PACKAGE
+    #else
     func testGenerateLoadAndDestroyKeyPair() {
         do {
             let tag = UUID().uuidString
@@ -34,7 +36,7 @@ class KeyPairTests: XCTestCase {
             XCTAssertEqual(generatedKeyPair.algorithm.hash?.rawValue, loadedKeyPair.algorithm.hash?.rawValue)
 
             try KeyPair.destroy(tag: tag)
-        } catch {
+        } catch(let error) {
             XCTFail(error.localizedDescription)
         }
     }
@@ -53,6 +55,7 @@ class KeyPairTests: XCTestCase {
         }
     }
 
+    #endif
     func testGenerateKeyPairAndFailExportingAsSPKI() {
         let tag = UUID().uuidString
         let size = 1024 // there is no SPKI header for 1024 key, but it's possible to create keypair

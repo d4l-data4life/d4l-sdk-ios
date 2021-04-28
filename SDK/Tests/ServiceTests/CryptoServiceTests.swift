@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Data4LifeCrypto
+@testable import Data4LifeCrypto
 
 class CryptoServiceTests: XCTestCase {
 
