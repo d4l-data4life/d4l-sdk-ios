@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 
 class CryptoServiceTests: XCTestCase {
 
@@ -110,5 +110,16 @@ class CryptoServiceTests: XCTestCase {
         } catch {
             XCTFail("Should return SDK error type")
         }
+    }
+}
+
+struct KeyFactory {
+    static func createKey(_ type: KeyType = .common) -> Key {
+        let exchangeFormat = try! KeyExhangeFactory.create(type: type)
+        return try! Key.generate(keySize: exchangeFormat.size, algorithm: exchangeFormat.algorithm, type: type)
+    }
+
+    static func createKeyPair(tag: String) -> KeyPair {
+        return try! KeyPair.generate(tag: tag, keySize: 2048, algorithm: RSAAlgorithm())
     }
 }

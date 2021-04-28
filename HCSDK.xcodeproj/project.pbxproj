@@ -295,7 +295,6 @@
 		CD841E5A225CBE80002656D5 /* KeychainServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841E0C225CBE80002656D5 /* KeychainServiceTests.swift */; };
 		CD841E5B225CBE80002656D5 /* InfoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841E0D225CBE80002656D5 /* InfoServiceTests.swift */; };
 		CD841E5E225CBF2D002656D5 /* Data4LifeSDK-Version.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */; };
-		CD841E60225CC211002656D5 /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10919D225B8A0A00325389 /* KeyFactory.swift */; };
 		CD841E66225CC738002656D5 /* asymPrivateExchangeKeyPKCS8.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918A225B8A0A00325389 /* asymPrivateExchangeKeyPKCS8.json */; };
 		CD841E68225CC74D002656D5 /* symTagExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918C225B8A0A00325389 /* symTagExchangeKey.json */; };
 		CD841E69225CC755002656D5 /* encryptedCommonTekKeys.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109196225B8A0A00325389 /* encryptedCommonTekKeys.json */; };
@@ -2316,7 +2315,6 @@
 				CD841E56225CBE80002656D5 /* FhirStu3ServiceTests+SingleOperations.swift in Sources */,
 				CDCE7DCD22A0183A00A1D277 /* OAuthExternalUserAgentMock.swift in Sources */,
 				36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */,
-				CD841E60225CC211002656D5 /* KeyFactory.swift in Sources */,
 				36E646D32588FF3000C6B51C /* FhirR4ServiceTests+AttachmentOperations.swift in Sources */,
 				36F6F08A237C16B80054DE4A /* Data4LifeDITestContainer.swift in Sources */,
 				36E646C52588F9E100C6B51C /* FhirR4ServiceTests+SingleOperations.swift in Sources */,
@@ -2734,6 +2732,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = YES;
+				ENABLE_TESTABILITY = YES;
 				EXPORTED_SYMBOLS_FILE = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -2925,6 +2924,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Crypto/Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
