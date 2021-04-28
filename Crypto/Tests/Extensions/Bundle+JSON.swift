@@ -20,6 +20,22 @@ enum BundleError: Error {
 }
 
 extension Bundle {
+    static var current: Bundle {
+        #if SWIFT_PACKAGE
+        return Bundle.module
+        #else
+        return Bundle(for: Data4LifeCryptoProtocolTests.self)
+        #endif
+    }
+
+    func data(forResource named: String, withExtension type: String) -> Data? {
+        if let url = self.url(forResource: named, withExtension: type) {
+            return try? Data(contentsOf: url)
+        } else {
+            return nil
+        }
+    }
+
     private func decodable<T: Decodable>(fromURL url: URL) throws -> T {
         let data = try Data(contentsOf: url)
         return try JSONDecoder().decode(T.self, from: data)
@@ -51,23 +67,5 @@ extension Bundle {
 
     func jsonFiles(fromDirectories dirs: [String]) -> [URL] {
         return dirs.flatMap { return self.urls(forResourcesWithExtension: "json", subdirectory: $0) ?? [] }
-    }
-}
-
-extension Bundle {
-    static var current: Bundle {
-        #if SWIFT_PACKAGE
-        return Bundle.module
-        #else
-        return Bundle(for: Data4LifeCryptoProtocolTests.self)
-        #endif
-    }
-
-    func data(forResource named: String, withExtension type: String) -> Data? {
-        if let url = self.url(forResource: named, withExtension: type) {
-            return try? Data(contentsOf: url)
-        } else {
-            return nil
-        }
     }
 }

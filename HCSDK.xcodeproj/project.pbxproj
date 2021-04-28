@@ -295,7 +295,6 @@
 		CD841E5A225CBE80002656D5 /* KeychainServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841E0C225CBE80002656D5 /* KeychainServiceTests.swift */; };
 		CD841E5B225CBE80002656D5 /* InfoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841E0D225CBE80002656D5 /* InfoServiceTests.swift */; };
 		CD841E5E225CBF2D002656D5 /* Data4LifeSDK-Version.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */; };
-		CD841E5F225CC20D002656D5 /* Bundle+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10919B225B8A0A00325389 /* Bundle+JSON.swift */; };
 		CD841E60225CC211002656D5 /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10919D225B8A0A00325389 /* KeyFactory.swift */; };
 		CD841E66225CC738002656D5 /* asymPrivateExchangeKeyPKCS8.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918A225B8A0A00325389 /* asymPrivateExchangeKeyPKCS8.json */; };
 		CD841E68225CC74D002656D5 /* symTagExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918C225B8A0A00325389 /* symTagExchangeKey.json */; };
@@ -2362,7 +2361,6 @@
 				CD841E4A225CBE80002656D5 /* RecordFactory.swift in Sources */,
 				CD841E3F225CBE80002656D5 /* InteractiveURLProtocol.swift in Sources */,
 				36E646E82589044400C6B51C /* FhirR4ServiceTests+DocumentReference.swift in Sources */,
-				CD841E5F225CC20D002656D5 /* Bundle+JSON.swift in Sources */,
 				0AD36C97240799A100584D9B /* SDKVersionValidatorMock.swift in Sources */,
 				3634699824ED5A26001EEE66 /* AppDataServiceTests.swift in Sources */,
 				CD841E4B225CBE80002656D5 /* EncryptedRecordFactory.swift in Sources */,

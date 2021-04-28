@@ -19,13 +19,13 @@ import Data4LifeFHIRCore
 @available(iOS, deprecated: 1.9.0, message: "Renamed to FhirRecord", renamed: "FhirRecord")
 typealias Record = FhirRecord
 
-public class FhirRecord<R: AnyFhirResource> {
+public struct FhirRecord<R: AnyFhirResource> {
     public let id: String
     public let fhirResource: R
     public let metadata: Metadata
     public let annotations: [String]
 
-    required init(id: String, resource: R, metadata: Metadata, annotations: [String]) {
+    init(id: String, resource: R, metadata: Metadata, annotations: [String]) {
         self.id = id
         self.fhirResource = resource
         self.metadata = metadata
