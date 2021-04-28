@@ -14,6 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
+import Data4LifeFHIR
+
 @testable import Data4LifeSDK
 
 class ThumbnailsIdFactoryTests: XCTestCase {

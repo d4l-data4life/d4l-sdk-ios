@@ -15,6 +15,7 @@
 
 @testable import Data4LifeSDK
 import Data4LifeCrypto
+import Data4LifeFHIR
 
 final class Data4LifeDITestContainer: DIContainer {}
 extension Data4LifeDITestContainer {
