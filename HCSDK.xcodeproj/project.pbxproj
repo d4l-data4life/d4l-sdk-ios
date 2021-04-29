@@ -248,11 +248,9 @@
 		CD841E25225CBE80002656D5 /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DCB225CBE80002656D5 /* EnvironmentTests.swift */; };
 		CD841E26225CBE80002656D5 /* Data4LifeClient+FhirStu3DocumentReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DCC225CBE80002656D5 /* Data4LifeClient+FhirStu3DocumentReferenceTests.swift */; };
 		CD841E27225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DCD225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift */; };
-		CD841E28225CBE80002656D5 /* auth_state_token_response_success.json in Resources */ = {isa = PBXBuildFile; fileRef = CD841DD0225CBE80002656D5 /* auth_state_token_response_success.json */; };
 		CD841E29225CBE80002656D5 /* CarePlan.json in Resources */ = {isa = PBXBuildFile; fileRef = CD841DD1225CBE80002656D5 /* CarePlan.json */; };
 		CD841E2A225CBE80002656D5 /* Assert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD3225CBE80002656D5 /* Assert.swift */; };
 		CD841E2B225CBE80002656D5 /* StubbedURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */; };
-		CD841E2C225CBE80002656D5 /* ResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD6225CBE80002656D5 /* ResultTests.swift */; };
 		CD841E2D225CBE80002656D5 /* Async+ResultBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */; };
 		CD841E2E225CBE80002656D5 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD8225CBE80002656D5 /* StringTests.swift */; };
 		CD841E30225CBE80002656D5 /* *.gesundheitscloud.de.cer in Resources */ = {isa = PBXBuildFile; fileRef = CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */; };
@@ -646,11 +644,9 @@
 		CD841DCB225CBE80002656D5 /* EnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentTests.swift; sourceTree = "<group>"; };
 		CD841DCC225CBE80002656D5 /* Data4LifeClient+FhirStu3DocumentReferenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3DocumentReferenceTests.swift"; sourceTree = "<group>"; };
 		CD841DCD225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3Tests.swift"; sourceTree = "<group>"; };
-		CD841DD0225CBE80002656D5 /* auth_state_token_response_success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = auth_state_token_response_success.json; sourceTree = "<group>"; };
 		CD841DD1225CBE80002656D5 /* CarePlan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CarePlan.json; sourceTree = "<group>"; };
 		CD841DD3225CBE80002656D5 /* Assert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assert.swift; sourceTree = "<group>"; };
 		CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubbedURLProtocol.swift; sourceTree = "<group>"; };
-		CD841DD6225CBE80002656D5 /* ResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTests.swift; sourceTree = "<group>"; };
 		CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+ResultBlockTests.swift"; sourceTree = "<group>"; };
 		CD841DD8225CBE80002656D5 /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "*.gesundheitscloud.de.cer"; sourceTree = "<group>"; };
@@ -1598,7 +1594,6 @@
 		CD841DCE225CBE80002656D5 /* JSON Payloads */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DCF225CBE80002656D5 /* Auth */,
 				CD841DD1225CBE80002656D5 /* CarePlan.json */,
 				36238E7A2530B8E400923F22 /* donorKey.json */,
 				0A4EB42B23EA970B00D0A4AA /* ObservationComponent.json */,
@@ -1612,14 +1607,6 @@
 				0A3934B024037EB700DDCE2B /* VersionConfiguration.json */,
 			);
 			path = "JSON Payloads";
-			sourceTree = "<group>";
-		};
-		CD841DCF225CBE80002656D5 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				CD841DD0225CBE80002656D5 /* auth_state_token_response_success.json */,
-			);
-			path = Auth;
 			sourceTree = "<group>";
 		};
 		CD841DD2225CBE80002656D5 /* Helpers */ = {
@@ -1636,7 +1623,6 @@
 		CD841DD5225CBE80002656D5 /* HelperTests */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DD6225CBE80002656D5 /* ResultTests.swift */,
 				CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */,
 				CD841DD8225CBE80002656D5 /* StringTests.swift */,
 			);
@@ -2092,7 +2078,6 @@
 				0ABC455423D99CE600682359 /* Patient.json in Resources */,
 				CD841E3A225CBE80002656D5 /* create-document-reference-blob.json in Resources */,
 				CD841E1E225CBE80002656D5 /* sample.pdf in Resources */,
-				CD841E28225CBE80002656D5 /* auth_state_token_response_success.json in Resources */,
 				CD841E20225CBE80002656D5 /* sample.jpg in Resources */,
 				0ACB53FF241B9EF600928401 /* VersionConfiguration.json in Resources */,
 				CD841E1F225CBE80002656D5 /* sample.png in Resources */,
@@ -2291,7 +2276,6 @@
 				0AA455992417A21B008B788C /* InfoServiceMock.swift in Sources */,
 				CD841E18225CBE80002656D5 /* OAuthServiceMock.swift in Sources */,
 				CD5CB01A22A53A0800A91DE8 /* OAuthExternalUserAgentTests.swift in Sources */,
-				CD841E2C225CBE80002656D5 /* ResultTests.swift in Sources */,
 				CD841E16225CBE80002656D5 /* CryptoServiceMock.swift in Sources */,
 				3600188A23991125004D9048 /* RouterTests.swift in Sources */,
 				0A8D847823C5D6E300D7DDD3 /* HasAttachmentsProtocolTests.swift in Sources */,

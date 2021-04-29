@@ -20,6 +20,8 @@ import Then
 
 class SessionServiceTests: XCTestCase {
 
+    private var bundle = Foundation.Bundle.current
+    
     var sessionService: SessionService!
     var versionValidator: SDKVersionValidatorMock!
     var networkReachabilityManager: ReachabilityMock!
@@ -140,7 +142,6 @@ class SessionServiceTests: XCTestCase {
     }
 
     func testRequestSuccessSSLPinning() {
-        let bundle = Bundle(for: type(of: self))
         let env = Environment.staging
         let session = SessionService(hostname: env.host, sdkBundle: bundle, versionValidator: versionValidator)
 
@@ -164,7 +165,6 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestFailsSSLPinning() {
         // development cert is not included in the test bundle so requests will fail
-        let bundle = Bundle(for: type(of: self))
         let env = Environment.development
         let session = SessionService(hostname: env.host, sdkBundle: bundle, versionValidator: versionValidator)
 

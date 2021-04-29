@@ -21,12 +21,13 @@ import ModelsR4
 // MARK: - Stu3
 struct FhirFactory {
 
+    private static var bundle = Foundation.Bundle.current
+
     static func createStu3DomainResource() -> Data4LifeFHIR.DomainResource {
         return Data4LifeFHIR.DomainResource()
     }
 
     static func createStu3Questionnaire(items: [Data4LifeFHIR.QuestionnaireItem]? = nil) -> Data4LifeFHIR.Questionnaire {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "stu3-questionnaire")
 
         if let items = items {
@@ -37,7 +38,6 @@ struct FhirFactory {
     }
 
     static func createStu3ExpansionQuestionnaire() -> Data4LifeFHIR.Questionnaire {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let questionnaire: Data4LifeFHIR.Questionnaire = try! bundle.decodable(fromJSON: "questionnaire-expansion")
         return questionnaire
     }
@@ -51,7 +51,6 @@ struct FhirFactory {
     }
 
     static func createStu3QuestionnaireResponse(items: [Data4LifeFHIR.QuestionnaireResponseItem]? = nil) -> Data4LifeFHIR.QuestionnaireResponse {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let response: Data4LifeFHIR.QuestionnaireResponse = try! bundle.decodable(fromJSON: "stu3-questionnaire-response")
 
         if let items = items {
@@ -97,14 +96,12 @@ struct FhirFactory {
     }
 
     static func createStu3PatientResource(with attachments: [Data4LifeFHIR.Attachment]? = nil) -> Data4LifeFHIR.Patient {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let patient: Data4LifeFHIR.Patient = try! bundle.decodable(fromJSON: "Patient")
         patient.photo = attachments
         return patient
     }
 
     static func createStu3ObservationResource(valueAttachment: Data4LifeFHIR.Attachment? = nil, components: [Data4LifeFHIR.ObservationComponent]? = nil) -> Data4LifeFHIR.Observation {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let observation: Data4LifeFHIR.Observation = try! bundle.decodable(fromJSON: "ObservationFixture")
 
         if let valueAttachment = valueAttachment {
@@ -119,7 +116,6 @@ struct FhirFactory {
     }
 
     static func createStu3ObservationComponentResource(valueAttachment: Data4LifeFHIR.Attachment? = nil) -> Data4LifeFHIR.ObservationComponent {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let component: Data4LifeFHIR.ObservationComponent = try! bundle.decodable(fromJSON: "ObservationComponent")
 
         if let valueAttachment = valueAttachment {
@@ -159,7 +155,6 @@ struct FhirFactory {
     }
 
     static func createStu3SampleImageAttachment() -> Data4LifeFHIR.Attachment {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let data = bundle.data(forResource: "sample", withExtension: "jpg")!
         return try! Data4LifeFHIR.Attachment.with(title: UUID().uuidString, creationDate: .now, contentType: UUID().uuidString, data: data)
     }
@@ -178,7 +173,6 @@ extension FhirFactory {
     }
 
     static func createR4Questionnaire(items: [ModelsR4.QuestionnaireItem]? = nil) -> ModelsR4.Questionnaire {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let questionnaire: ModelsR4.Questionnaire = try! bundle.decodable(fromJSON: "r4-questionnaire")
 
         if let items = items {
@@ -198,14 +192,12 @@ extension FhirFactory {
     }
 
     static func createR4PatientResource(with attachments: [ModelsR4.Attachment]? = nil) -> ModelsR4.Patient {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let patient: ModelsR4.Patient = try! bundle.decodable(fromJSON: "Patient")
         patient.photo = attachments
         return patient
     }
 
     static func createR4QuestionnaireResponse(items: [ModelsR4.QuestionnaireResponseItem]? = nil) -> ModelsR4.QuestionnaireResponse {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let response: ModelsR4.QuestionnaireResponse = try! bundle.decodable(fromJSON: "r4-questionnaire-response")
         if let items = items {
             response.item = items
@@ -239,7 +231,6 @@ extension FhirFactory {
     }
 
     static func createR4SampleImageAttachment() -> ModelsR4.Attachment {
-        let bundle = Bundle(for: Data4LifeDITestContainer.self)
         let data = bundle.data(forResource: "sample", withExtension: "jpg")!
         return try! ModelsR4.Attachment.with(title: UUID().uuidString, creationDate: Date(), contentType: UUID().uuidString, data: data)
     }

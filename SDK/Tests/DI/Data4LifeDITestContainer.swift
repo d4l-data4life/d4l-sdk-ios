@@ -50,7 +50,7 @@ extension Data4LifeDITestContainer {
         }.register(scope: .containerInstance) { (_) -> AttachmentServiceType in
             AttachmentServiceMock()
         }.register(scope: .containerInstance) { (_) -> Bundle in
-            Bundle(for: Data4LifeDITestContainer.self)
+            Bundle.current
         }.register(scope: .containerInstance) { (_) -> Resizable in
             ImageResizerMock()
         }.register(scope: .containerInstance) { (_) -> PropertyListDecoder in

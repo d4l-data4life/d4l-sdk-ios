@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDK"]),
+            targets: ["Data4LifeSDK", "Data4LifeSDKDependencies"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
@@ -72,12 +72,5 @@ let package = Package(
                     path: "Crypto/Tests",
                     exclude: ["Info.plist"],
                     resources: [.process("JSON Payloads")]),
-        .testTarget(name: "Data4LifeSDKTests",
-                    dependencies: ["Data4LifeSDK",
-                                   "Data4LifeSDKDependencies"],
-                    path: "SDK/Tests",
-                    exclude: ["Info.plist", "Data4LifeSDK-Version.plist"],
-                    resources: [.process("BenchmarkClient/SubbedResponses"), .process("Resources")]),
-
     ]
 )

@@ -55,7 +55,7 @@ class KeyPairTests: XCTestCase {
         }
     }
 
-    #endif
+
     func testGenerateKeyPairAndFailExportingAsSPKI() {
         let tag = UUID().uuidString
         let size = 1024 // there is no SPKI header for 1024 key, but it's possible to create keypair
@@ -69,4 +69,5 @@ class KeyPairTests: XCTestCase {
             try! KeyPair.destroy(tag: tag)
         }
     }
+    #endif
 }
