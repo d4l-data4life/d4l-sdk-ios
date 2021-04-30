@@ -36,7 +36,9 @@ class OAuthServiceTests: XCTestCase {
     var mockedTokenReponse: OIDTokenResponse {
         do {
             let payload = try bundle.json(named: "authStateTokenResponseSuccess")
-            let stringData = payload?["data"] as! String
+            guard let stringData = payload?["data"] as? String else {
+                fatalError("Could not load mocked payload data")
+            }
             let mockedTokenResponse = try NSKeyedUnarchiver.unarchivedObject(ofClass: OIDTokenResponse.self, from: Data(base64Encoded: stringData)!)
             return mockedTokenResponse!
         } catch {
