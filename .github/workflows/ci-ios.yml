@@ -23,12 +23,12 @@ jobs:
         key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gem-
-    - uses: actions/cache@v2
+    - name: Cache Swift packages
+      uses: actions/cache@v2
       with:
-        path: Carthage
-        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-        restore-keys: |
-          ${{ runner.os }}-carthage-
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: ${{ runner.os }}-spm-
     - name: Display runner context
       run: hostname -s
     - run: |
