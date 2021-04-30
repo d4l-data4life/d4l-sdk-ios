@@ -28,6 +28,5 @@ class StringHelperTests: XCTestCase {
 
         XCTAssertEqual(result.0, output.key)
         XCTAssertEqual(result.1, output.value)
-
     }
 }
