@@ -21,7 +21,7 @@ import Then
 class SessionServiceTests: XCTestCase {
 
     private var bundle = Foundation.Bundle.current
-    
+
     var sessionService: SessionService!
     var versionValidator: SDKVersionValidatorMock!
     var networkReachabilityManager: ReachabilityMock!
