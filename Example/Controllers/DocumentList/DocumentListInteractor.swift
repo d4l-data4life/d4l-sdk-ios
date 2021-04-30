@@ -74,9 +74,9 @@ extension DocumentListInteractor {
             }
 
             self?.view?.updateUI(state: isLoggedIn)
-            print("user is \(isLoggedIn ? "logged in" : "logged out")")
         }
     }
+
     var countDescription: String {
         var stu3Descriptions = [String]()
         var r4Descriptions = [String]()
