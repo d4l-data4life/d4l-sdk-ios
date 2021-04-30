@@ -80,8 +80,7 @@ OR
 git@github.com:d4l-data4life/d4l-sdk-ios.git
 ----
 
-In the next step, select the latest version, and then import both the Data4LifeCrypto and Data4LifeSDK libraries in your target.
-
+In the next step, select the latest version, and then import both the `Data4LifeCrypto` and `Data4LifeSDK` libraries in your target.
 
 ==== CocoaPods
 
