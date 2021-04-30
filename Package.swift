@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDKPackage"]),
+            targets: ["Data4LifeSDK", "Data4LifeDependencies"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
@@ -42,13 +42,7 @@ let package = Package(
             url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeCrypto-xcframework-1.5.0.zip",
             checksum: "844b131a69d509863ae2a9565825e759ba8b650981e0ccea659ba55793c45cb7"
         ),
-        .target(name: "Data4LifeSDKPackage",
-                dependencies: [
-                    "Data4LifeSDK",
-                    "Data4LifeCrypto",
-                    "Data4LifeSDKDependencies"],
-                path: "Dummies/SDKWrapper"),
-        .target(name: "Data4LifeSDKDependencies",
+        .target(name: "Data4LifeDependencies",
                 dependencies: [
                     .product(name: "Data4LifeFHIR",
                              package: "Data4LifeFHIR",
@@ -59,6 +53,13 @@ let package = Package(
                     .product(name: "Data4LifeFHIRCore",
                              package: "Data4LifeFHIR",
                              condition: .when(platforms: [.iOS])),
+                    .product(name: "Data4LifeSDKUtils",
+                             package: "Data4LifeSDKUtils",
+                             condition: .when(platforms: [.iOS]))
+                ],
+                path: "Dummies/Data4LifeDependencies"),
+        .target(name: "OtherDependencies",
+                dependencies: [
                     .product(name: "Then",
                              package: "Then",
                              condition: .when(platforms: [.iOS])),
@@ -68,11 +69,8 @@ let package = Package(
                     .product(name: "AppAuth",
                              package: "AppAuth",
                              condition: .when(platforms: [.iOS])),
-                    .product(name: "Data4LifeSDKUtils",
-                             package: "Data4LifeSDKUtils",
-                             condition: .when(platforms: [.iOS]))
                 ],
-                path: "Dummies/SDKDependencies"),
+                path: "Dummies/OtherDependencies"),
         .testTarget(name: "Data4LifeCryptoTests",
                     dependencies: ["Data4LifeCrypto"],
                     path: "Crypto/Tests",
