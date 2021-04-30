@@ -18,8 +18,9 @@ Pod::Spec.new do |s|
   s.dependency 'Alamofire', '~> 5.4.1'
   s.dependency 'thenPromise', '~> 5.1.2'
   s.dependency 'AppAuth', '~> 1.4.0'
-  s.dependency 'Data4LifeSDKUtils', '~> 0.5.0'
+  s.dependency 'Data4LifeSDKUtils', '~> 0.6.0'
   s.dependency 'Data4LifeCrypto', '~> 1.5.0'
-  s.dependency 'Data4LifeFHIR', '~> 0.20.0'
-  s.dependency 'ModelsR4', '~> 0.20.0'
+  s.dependency 'Data4LifeFHIR', '~> 0.21.1'
+  s.dependency 'Data4LifeFHIRCore', '~> 0.21.1'
+  s.dependency 'ModelsR4', '~> 0.21.1'
 end
