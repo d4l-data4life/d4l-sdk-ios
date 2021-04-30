@@ -11,10 +11,14 @@ let package = Package(
     products: [
         .library(
             name: "Data4LifeSDK",
-            targets: ["Data4LifeSDK", "Data4LifeSDKDependencies"]),
+            targets: ["Data4LifeSDK"]),
         .library(
             name: "Data4LifeCrypto",
             targets: ["Data4LifeCrypto"]),
+        .library(
+            name: "Data4LifeSDKDependencies",
+            targets: [Data4LifeSDKDependencies"]
+            )
     ],
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
