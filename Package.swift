@@ -28,14 +28,14 @@ let package = Package(
         .package(url: "https://github.com/freshOS/Then",
                  .upToNextMinor(from: "5.1.2")),
         .package(name: "AppAuth",
-                 url: "git@github.com:d4l-data4life/AppAuth-iOS.git",
-                 .branch("master"))
+                 url: "https://github.com/openid/AppAuth-iOS.git",
+                 .upToNextMinor(from: "1.4.0")),
     ],
     targets: [
         .binaryTarget(
             name: "Data4LifeSDK",
-            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.0/Data4LifeSDK-xcframework-1.13.0.zip",
-            checksum: "2143f2a8d44bc5a267c84becaf5d560e7ebc79fabb610cf097d7873fbdd89613"
+            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.1/Data4LifeSDK-xcframework-1.13.1.zip",
+            checksum: "04a88b64340109e709a73f587e1bc2e23607c21dffa71b87dfa35653b011bbe3"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
