@@ -132,6 +132,7 @@ platform :ios do
       )
 
       # Update CococaPods specs
+      push_crypto_podspec
       push_sdk_podspec
     else
       Helper.log.info "When finished, commit your changes.".red

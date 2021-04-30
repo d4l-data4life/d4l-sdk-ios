@@ -4,10 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.13.0]
+### Added
+- Updated framework packaging to XCFrameworks
+- Added support for Swift Package Manager
+
 ### Removed
 - Removed support for iOS 12
 - Removed dependency with CryptoSwift in Crypto Library and SDK
+- Removes Carthage support
 
 ## [1.12.3] - 2021-02-23
 ### Changed
