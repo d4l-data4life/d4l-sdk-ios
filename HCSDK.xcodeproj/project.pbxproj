@@ -2679,6 +2679,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.13.0;
+				OTHER_SWIFT_FLAGS = "-Xfrontend -no-serialize-debugging-options";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2730,6 +2731,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.13.0;
+				OTHER_SWIFT_FLAGS = "-Xfrontend -no-serialize-debugging-options";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2879,7 +2881,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.5.0;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -module-interface-preserve-types-as-written";
+				OTHER_SWIFT_FLAGS = "-Xfrontend -no-serialize-debugging-options";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCrypto;
 				PRODUCT_NAME = Data4LifeCrypto;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2916,7 +2918,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.5.0;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -module-interface-preserve-types-as-written";
+				OTHER_SWIFT_FLAGS = "-Xfrontend -no-serialize-debugging-options";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCCrypto;
 				PRODUCT_NAME = Data4LifeCrypto;
 				PROVISIONING_PROFILE_SPECIFIER = "";
