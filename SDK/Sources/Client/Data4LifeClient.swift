@@ -13,7 +13,6 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
 @_implementationOnly import Then
 
 /// Returns either an error or an object
@@ -144,7 +143,7 @@ extension Data4LifeClient {
     private func configureDependencies() {
         sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
-        try? `await`(versionValidator.fetchVersionConfigurationRemotely())
+        try? wait(versionValidator.fetchVersionConfigurationRemotely())
     }
 }
 

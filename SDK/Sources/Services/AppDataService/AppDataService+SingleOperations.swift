@@ -52,8 +52,8 @@ extension AppDataServiceSingleOperations where Self: HasMainRecordOperations {
 extension AppDataService {
     func createAppDataRecord(_ data: Data, annotations: [String] = []) -> Promise<AppDataRecord> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            let record: DecryptedAppDataRecord = try `await`(self.recordService.createRecord(forResource: data,
+            let userId = try wait(self.keychainService.get(.userId))
+            let record: DecryptedAppDataRecord = try wait(self.recordService.createRecord(forResource: data,
                                                                                            annotations: annotations,
                                                                                            userId: userId,
                                                                                            attachmentKey: nil,
@@ -65,8 +65,8 @@ extension AppDataService {
 
     func updateAppDataRecord(_ data: Data, recordId: String, annotations: [String]? = nil) -> Promise<AppDataRecord> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            let updatedRecord = try `await`(self.recordService.updateRecord(forResource: data,
+            let userId = try wait(self.keychainService.get(.userId))
+            let updatedRecord = try wait(self.recordService.updateRecord(forResource: data,
                                                                           annotations: annotations,
                                                                           userId: userId,
                                                                           recordId: recordId,

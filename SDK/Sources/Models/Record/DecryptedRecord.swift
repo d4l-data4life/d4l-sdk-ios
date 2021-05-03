@@ -38,7 +38,7 @@ extension DecryptedRecord {
 
     static func decryptCommonKey(from encryptedRecord: EncryptedRecord, commonKeyService: CommonKeyServiceType) throws -> Key {
         let recordCommonKeyId = encryptedRecord.commonKeyId ?? CommonKeyService.initialId
-        return try `await`(commonKeyService.fetchKey(with: recordCommonKeyId))
+        return try wait(commonKeyService.fetchKey(with: recordCommonKeyId))
     }
     static func decryptDataKey(from encryptedRecord: EncryptedRecord, commonKey: Key, cryptoService: CryptoServiceType) throws -> Key {
         guard let dataKeyPayload = Data(base64Encoded: encryptedRecord.encryptedDataKey) else {
@@ -52,7 +52,7 @@ extension DecryptedRecord {
         guard let tagKey = cryptoService.tek else {
             throw Data4LifeSDKError.missingTagKey
         }
-        return try `await`(
+        return try wait(
             unwrap(TagGroup(from: cryptoService.decrypt(values: encryptedRecord.encryptedTags, key: tagKey)))
         )
     }
