@@ -21,7 +21,7 @@ import Then
 import Data4LifeFHIR
 import Data4LifeCrypto
 
-class Data4LifeClientUserModuleTests: XCTestCase {
+class Data4LifeClientUserServiceModuleTests: XCTestCase {
     private var client: Data4LifeClient!
     private var userService: UserService!
 
@@ -284,7 +284,7 @@ extension Data4LifeClientUserModuleTests {
     }
 }
 
-private extension Data4LifeClientUserModuleTests {
+private extension Data4LifeClientUserServiceModuleTests {
     func stubUserInfo(with userId: String) {
         let keypair: KeyPair = try! bundle.decodable(fromJSON: "asymPrivateExchangeKeyPKCS8")
         let commonKey: Key = try! bundle.decodable(fromJSON: "symCommonExchangeKey")
