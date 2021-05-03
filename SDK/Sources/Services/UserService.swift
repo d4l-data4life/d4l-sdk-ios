@@ -41,7 +41,7 @@ class UserService: UserServiceType {
 
     func fetchUserInfo() -> Async<Void> {
         return async {
-            let response: UserInfoResponse = try `await`(self.sessionService.request(route: Router.userInfo).responseDecodable())
+            let response: UserInfoResponse = try wait(self.sessionService.request(route: Router.userInfo).responseDecodable())
 
             guard
                 let eckData = Data(base64Encoded: response.commonKey),
@@ -61,7 +61,7 @@ class UserService: UserServiceType {
             let tagKey: Key = try JSONDecoder().decode(Key.self, from: decryptedTekData)
             self.cryptoService.tek = tagKey
 
-            try `await`(self.keychainService.set(response.userId, forKey: .userId))
+            try wait(self.keychainService.set(response.userId, forKey: .userId))
         }
     }
 }

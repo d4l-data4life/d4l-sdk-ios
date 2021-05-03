@@ -46,7 +46,7 @@ struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
             let dataKey = try decryptDataKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
             let attachmentKey = try decryptAttachmentKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
 
-            let anyResource = try `await`(cryptoService.decrypt(data: encryptedData,
+            let anyResource = try wait(cryptoService.decrypt(data: encryptedData,
                                                               to: AnyResource<T>.self,
                                                               key: dataKey))
             let meta = metaData(from: encryptedRecord)
@@ -100,7 +100,7 @@ struct DecryptedFhirR4Record<T: FhirR4Resource>: DecryptedRecord {
             let dataKey = try decryptDataKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
             let attachmentKey = try decryptAttachmentKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
 
-            let resourceProxy = try `await`(cryptoService.decrypt(data: encryptedData,
+            let resourceProxy = try wait(cryptoService.decrypt(data: encryptedData,
                                                                 to: ResourceProxy.self,
                                                                 key: dataKey))
             guard let resource = resourceProxy.get(if: T.self) else {

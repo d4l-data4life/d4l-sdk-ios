@@ -22,11 +22,11 @@ class KeychainServiceMock: KeychainServiceType {
 
     subscript(key: KeychainKey) -> String? {
         get {
-            return try? `await`(get(key))
+            return try? wait(get(key))
         }
 
         set {
-            try? `await`(set(newValue, forKey: key))
+            try? wait(set(newValue, forKey: key))
         }
     }
 

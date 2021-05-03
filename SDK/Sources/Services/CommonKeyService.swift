@@ -73,7 +73,7 @@ class CommonKeyService: CommonKeyServiceType {
     func fetchKey(with commonKeyId: String) -> Async<Key> {
         return async {
             if !self.hasCommonKey(id: commonKeyId) {
-                try `await`(self.fetchKeyRemotely(with: commonKeyId))
+                try wait(self.fetchKeyRemotely(with: commonKeyId))
             }
 
             guard let commonKey = self.fetchKeyLocally(with: commonKeyId) else {
@@ -106,9 +106,9 @@ class CommonKeyService: CommonKeyServiceType {
 
     private func fetchKeyRemotely(with id: String) -> Async<Void> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
+            let userId = try wait(self.keychainService.get(.userId))
             let route = Router.fetchCommonKey(userId: userId, commonKeyId: id)
-            let response: CommonKeyResponse = try `await`(self.sessionService.request(route: route).responseDecodable())
+            let response: CommonKeyResponse = try wait(self.sessionService.request(route: route).responseDecodable())
 
             guard let eckData = Data(base64Encoded: response.commonKey) else {
                     throw Data4LifeSDKError.couldNotReadBase64EncodedData
