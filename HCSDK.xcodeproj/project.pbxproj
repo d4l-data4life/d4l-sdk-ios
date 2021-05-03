@@ -82,6 +82,7 @@
 		3679AAA725923BF90006494F /* Data4LifeClient+FhirR4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAA625923BF90006494F /* Data4LifeClient+FhirR4Tests.swift */; };
 		3679AAB125923D560006494F /* Data4LifeClient+FhirR4AttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAB025923D560006494F /* Data4LifeClient+FhirR4AttachmentTests.swift */; };
 		3679AAB725923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAB625923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift */; };
+		3682F78F2640381E00C03F55 /* Await+Swift6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78E2640381E00C03F55 /* Await+Swift6.swift */; };
 		3685D42D25920C5C00F97F9E /* FhirR4ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */; };
 		3685D44B25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */; };
 		3685D4552592154400F97F9E /* r4-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4542592154400F97F9E /* r4-questionnaire.json */; };
@@ -473,6 +474,7 @@
 		367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTestHelpers.swift; sourceTree = "<group>"; };
 		367B87EE23F6D78800A6155E /* FhirStu3ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		367B87F023F6D86200A6155E /* stu3-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire.json"; sourceTree = "<group>"; };
+		3682F78E2640381E00C03F55 /* Await+Swift6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Await+Swift6.swift"; sourceTree = "<group>"; };
 		3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirR4ServiceTests.swift; sourceTree = "<group>"; };
 		3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		3685D4542592154400F97F9E /* r4-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire.json"; sourceTree = "<group>"; };
@@ -1419,6 +1421,7 @@
 				CD109216225B901E00325389 /* Async+RecordTransformations.swift */,
 				CD109217225B901E00325389 /* Async+ResultBlock.swift */,
 				CD109218225B901E00325389 /* Async+CryptoServiceType.swift */,
+				3682F78E2640381E00C03F55 /* Await+Swift6.swift */,
 			);
 			path = Async;
 			sourceTree = "<group>";
@@ -2234,6 +2237,7 @@
 				0A4EB42423E97F9E00D0A4AA /* AttachmentSchema.swift in Sources */,
 				36DD7A5B255ED0D600FA6EB7 /* Encodable+Data.swift in Sources */,
 				3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */,
+				3682F78F2640381E00C03F55 /* Await+Swift6.swift in Sources */,
 				36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */,
 				36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */,
 				CD109277225B901E00325389 /* RecordService.swift in Sources */,

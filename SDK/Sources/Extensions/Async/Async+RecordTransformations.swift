@@ -20,7 +20,7 @@ import Data4LifeFHIR
 extension Promise where T == FhirRecord<Data4LifeFHIR.DocumentReference> {
     func transformRecord<R: FhirSDKResource>(to valueType: R.Type) -> Promise<FhirRecord<R>> {
         return async {
-            let value = try `await`(self)
+            let value = try wait(self)
             let resource = try value.fhirResource.map(to: R.self)
             return FhirRecord(id: value.id, resource: resource, metadata: value.metadata, annotations: value.annotations)
         }
@@ -30,7 +30,7 @@ extension Promise where T == FhirRecord<Data4LifeFHIR.DocumentReference> {
 extension Promise where T == BatchResult<FhirRecord<Data4LifeFHIR.DocumentReference>, Data4LifeFHIR.DocumentReference> {
     func transformRecords<R: FhirSDKResource>(to valueType: R.Type) -> Promise<BatchResult<FhirRecord<R>, R>> {
         return async {
-            let value = try `await`(self)
+            let value = try wait(self)
             let success = try value.success.map { oldRecord -> FhirRecord<R> in
                 let resource = try oldRecord.fhirResource.map(to: R.self)
                 return FhirRecord(id: oldRecord.id, resource: resource, metadata: oldRecord.metadata, annotations: oldRecord.annotations)

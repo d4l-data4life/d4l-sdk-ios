@@ -154,7 +154,7 @@ extension Data4LifeClient {
     private func configureDependencies() {
         sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
-        try? `await`(versionValidator.fetchVersionConfigurationRemotely())
+        try? wait(versionValidator.fetchVersionConfigurationRemotely())
     }
 }
 

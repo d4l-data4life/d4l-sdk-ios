@@ -199,7 +199,7 @@ class OAuthService: OAuthServiceType {
             guard let state = self.storedAuthState, state.lastTokenResponse?.refreshToken != nil else {
                 throw Data4LifeSDKError.notLoggedIn
             }
-            return try `await`(self.sessionService.request(route: Router.userInfo).responseEmpty())
+            return try wait(self.sessionService.request(route: Router.userInfo).responseEmpty())
         }.bridgeError { error in
             guard (error as? AFError)?.responseCode == 401 else {
                 throw Data4LifeSDKError.network(error)
@@ -222,10 +222,10 @@ class OAuthService: OAuthServiceType {
         }
 
         return async {
-            let refreshToken = try `await`(self.keychainService.get(.refreshToken))
+            let refreshToken = try wait(self.keychainService.get(.refreshToken))
             let route = Router.revokeToken(parameters: ["token": refreshToken],
                                            headers: [("Authorization", "Basic \(encodedClientInfo)")])
-            _ = try `await`(self.sessionService.request(route: route).responseEmpty())
+            _ = try wait(self.sessionService.request(route: route).responseEmpty())
             self.keychainService.clear()
             self.sessionStateChanged?(false)
         }
