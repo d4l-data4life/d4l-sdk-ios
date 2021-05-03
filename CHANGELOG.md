@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### [Unreleased]
 
+## [1.13.1]
+### Fixed
+- Fixed LLDB for the SDKs
+
 ## [1.13.0]
 ### Added
 - Updated framework packaging to XCFrameworks
@@ -429,6 +433,7 @@ Fixed Cocoapod dependencies
 - Basic unit tests
 
 [Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.0...main
+[1.13.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.0...1.13.1
 [1.13.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.3...1.13.0
 [1.12.3]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.2...1.12.3
 [1.12.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.1...1.12.2
