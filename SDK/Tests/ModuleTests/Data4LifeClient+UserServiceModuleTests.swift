@@ -86,7 +86,7 @@ class Data4LifeClientUserServiceModuleTests: XCTestCase {
     }
 }
 
-extension Data4LifeClientUserModuleTests {
+extension Data4LifeClientUserServiceModuleTests {
 
     func testLoginSuccessWithDefaultScopes() {
         let userId = UUID().uuidString
