@@ -104,7 +104,6 @@ To log the currently logged-in user out of the current session, use the `logout`
 func logout(completion: @escaping DefaultResultBlock)
 ----
 
-
 ==== Checking if a user is logged in
 
 To check if a user is logged in, use the `userLoggedIn` method:
@@ -121,6 +120,15 @@ To receive updates about the session state, use the `sessionStateDidChange` meth
 [source,swift]
 ----
 func sessionStateDidChange(completion: @escaping (Bool) -> Void)
+----
+
+==== Retrieving user account identifier
+
+It is possible to retrieve the User Identifier, which is unique to the account.
+
+[source,swift]
+----
+public func getUserId(completion: @escaping ResultBlock<String>)
 ----
 
 === Using debug logging

@@ -109,6 +109,11 @@ extension Data4LifeClient {
         oAuthService.sessionStateChanged = completion
     }
 
+    /**
+     Returns the userID connected with the account, only if the account is logged in, returns a Not Logged In error otherwise.
+
+     - parameter completion:Completion that returns the userID connected with the account.
+     */
     public func getUserId(completion: @escaping ResultBlock<String>) {
         do {
             let userId = try userService.getUserId()
