@@ -22,21 +22,21 @@ import Data4LifeFHIR
 import Data4LifeCrypto
 
 class Data4LifeClientUserModuleTests: XCTestCase {
-    var client: Data4LifeClient!
-    var userService: UserService!
+    private var client: Data4LifeClient!
+    private var userService: UserService!
 
-    var bundle: Foundation.Bundle!
+    private var bundle: Foundation.Bundle!
 
-    var sessionService: SessionService!
-    var oAuthService: OAuthServiceMock!
-    var cryptoService: CryptoServiceMock!
-    var commonKeyService: CommonKeyServiceMock!
-    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>!
-    var appDataService: AppDataServiceMock!
-    var keychainService: KeychainServiceMock!
-    var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
-    var environment: Environment!
-    var versionValidator: SDKVersionValidatorMock!
+    private var sessionService: SessionService!
+    private var oAuthService: OAuthServiceMock!
+    private var cryptoService: CryptoServiceMock!
+    private var commonKeyService: CommonKeyServiceMock!
+    private var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>!
+    private var appDataService: AppDataServiceMock!
+    private var keychainService: KeychainServiceMock!
+    private var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
+    private var environment: Environment!
+    private var versionValidator: SDKVersionValidatorMock!
 
     override func setUp() {
         super.setUp()
