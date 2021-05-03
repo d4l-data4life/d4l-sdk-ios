@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+### [Unreleased]
+
 ## [1.13.0]
 ### Added
 - Updated framework packaging to XCFrameworks
@@ -426,7 +428,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.3...main
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.0...main
+[1.13.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.3...1.13.0
 [1.12.3]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.2...1.12.3
 [1.12.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.1...1.12.2
 [1.12.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.0...1.12.1
