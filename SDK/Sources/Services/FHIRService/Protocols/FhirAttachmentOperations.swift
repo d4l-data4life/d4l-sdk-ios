@@ -15,7 +15,6 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-
 @_implementationOnly import Then
 
 protocol HasAttachmentOperationsDependencies {
