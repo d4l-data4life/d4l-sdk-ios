@@ -188,7 +188,7 @@ class UserServiceTests: XCTestCase {
         let expectedError = Data4LifeSDKError.notLoggedIn
 
         do {
-            let _ = try userService.getUserId()
+            _ = try userService.getUserId()
             XCTFail("Should return an error")
         } catch (let error) {
             XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
