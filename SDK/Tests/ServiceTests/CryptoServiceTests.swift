@@ -21,7 +21,7 @@ class CryptoServiceTests: XCTestCase {
 
     var crypto: CryptoService!
     var keychainService: KeychainServiceMock!
-    var bundle: Bundle!
+    var bundle: Foundation.Bundle!
     let keyPairTag = "crypto.tests.keypair"
 
     override func setUp() {
@@ -110,5 +110,16 @@ class CryptoServiceTests: XCTestCase {
         } catch {
             XCTFail("Should return SDK error type")
         }
+    }
+}
+
+struct KeyFactory {
+    static func createKey(_ type: KeyType = .common) -> Key {
+        let exchangeFormat = try! KeyExhangeFactory.create(type: type)
+        return try! Key.generate(keySize: exchangeFormat.size, algorithm: exchangeFormat.algorithm, type: type)
+    }
+
+    static func createKeyPair(tag: String) -> KeyPair {
+        return try! KeyPair.generate(tag: tag, keySize: 2048, algorithm: RSAAlgorithm())
     }
 }

@@ -29,10 +29,10 @@ class Data4LifeClientUserTests: XCTestCase {
     var userService: UserServiceMock!
     var cryptoService: CryptoServiceMock!
     var commonKeyService: CommonKeyServiceMock!
-    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<DocumentReference>, Attachment>!
+    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>!
     var appDataService: AppDataServiceMock!
     var keychainService: KeychainServiceMock!
-    var recordService: RecordServiceMock<DocumentReference,DecryptedFhirStu3Record<DocumentReference>>!
+    var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
     var environment: Environment!
     var versionValidator: SDKVersionValidatorMock!
 
@@ -284,7 +284,7 @@ extension Data4LifeClientUserTests {
     func testLoggedInTrue() {
         cryptoService.tek = KeyFactory.createKey(.tag)
         commonKeyService.currentKey = KeyFactory.createKey(.common)
-        oAuthService.isSessionActiveResult = Async.resolve(())
+        oAuthService.isSessionActiveResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "should return success true")
         client.isUserLoggedIn { result  in
@@ -330,7 +330,7 @@ extension Data4LifeClientUserTests {
         fhirService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return count of all resources")
-        client.countFhirStu3Records(of: DocumentReference.self) { result in
+        client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertEqual(count, result.value)
@@ -348,7 +348,7 @@ extension Data4LifeClientUserTests {
         fhirService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return response with count on background thread")
-        client.countFhirStu3Records(of: DocumentReference.self, queue: queue) { result in
+        client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertEqual(result.value, count)
@@ -366,7 +366,7 @@ extension Data4LifeClientUserTests {
         fhirService.countRecordsResult = Async.resolve(count)
 
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
-        client.countFhirStu3Records(of: DocumentReference.self, queue: queue) { result in
+        client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
             XCTAssertEqual(result.value, count)

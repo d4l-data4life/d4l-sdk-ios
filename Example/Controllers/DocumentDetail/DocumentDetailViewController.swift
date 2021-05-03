@@ -182,6 +182,6 @@ extension DocumentDetailViewController {
             return nil
         }
 
-        return try? Attachment.with(title: "R4 Attachment created after update", creationDate: Date(), contentType: contentType, data: createdSampleData)
+        return try? ModelsR4.Attachment.with(title: "R4 Attachment created after update", creationDate: Date(), contentType: contentType, data: createdSampleData)
     }
 }

@@ -15,9 +15,9 @@
 
 import Foundation
 import Alamofire
-@testable import Data4LifeSDK
+import Data4LifeSDK
 
-protocol InteractiveURLProtocolDelegate: class {
+protocol InteractiveURLProtocolDelegate: AnyObject {
     func shouldRespond(to request: URLRequest) -> Data?
 }
 

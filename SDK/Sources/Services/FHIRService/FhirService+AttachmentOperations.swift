@@ -14,23 +14,23 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Data4LifeFHIR
-import Then
-import struct Data4LifeCrypto.Key
+import Data4LifeFHIRCore
+@_implementationOnly import Then
+@_implementationOnly import Data4LifeCrypto
 
 extension FhirService {
 
     func downloadFhirRecordWithAttachments<DR: DecryptedRecord>(withId identifier: String,
                                                                 decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
-            let decryptedRecord = try await(self.recordService.fetchRecord(recordId: identifier, userId: userId, decryptedRecordType: decryptedRecordType))
+            let userId = try wait(self.keychainService.get(.userId))
+            let decryptedRecord = try wait(self.recordService.fetchRecord(recordId: identifier, userId: userId, decryptedRecordType: decryptedRecordType))
             let record = FhirRecord<DR.Resource>(decryptedRecord: decryptedRecord)
             guard let attachmentKey = decryptedRecord.attachmentKey else { return record }
 
             if let resourceWithAttachments = record.fhirResource as? HasAttachments {
                 let ids = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId }
-                let downloadedAttachments: [AttachmentType] = try await(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+                let downloadedAttachments: [AttachmentType] = try wait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
                                                                                                                 attachmentIds: ids ?? [],
                                                                                                                 downloadType: .full,
                                                                                                                 key: attachmentKey,
@@ -54,9 +54,9 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            let generatedKey = try await(self.cryptoService.generateGCKey(.attachment))
+            let generatedKey = try wait(self.cryptoService.generateGCKey(.attachment))
             let uploadedAttachmentsWithIds: [(AttachmentType, [String])] =
-                try await(self.attachmentService.uploadAttachments(validatedAttachments,
+                try wait(self.attachmentService.uploadAttachments(validatedAttachments,
                                                                    key: generatedKey))
             var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 } as [AttachmentType]
 
@@ -64,7 +64,7 @@ extension FhirService {
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
-            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
+            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
                 let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
                 return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
@@ -77,7 +77,7 @@ extension FhirService {
     func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource,
                                                 decryptedRecordType: DR.Type = DR.self) -> Promise<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
+            let userId = try wait(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
 
             guard
@@ -86,10 +86,10 @@ extension FhirService {
                 return (resource, nil)
             }
 
-            let remoteRecord = try await(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
+            let remoteRecord = try wait(self.recordService.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
             // Gets all Attachments without data
             let remoteAttachments = (remoteRecord.resource as? HasAttachments)?.allAttachments ?? []
-            let newKey = try await(self.cryptoService.generateGCKey(.attachment))
+            let newKey = try wait(self.cryptoService.generateGCKey(.attachment))
             let attachmentKey = remoteRecord.attachmentKey ?? newKey
 
             let classifiedAttachments = self.compareAttachments(local: attachments, remote: remoteAttachments)
@@ -97,7 +97,7 @@ extension FhirService {
 
             let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate()
 
-            let uploadedAttachmentsWithIds = try await(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
+            let uploadedAttachmentsWithIds = try wait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
             let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
@@ -106,7 +106,7 @@ extension FhirService {
             // We don't wanna upload base64 encoded data (in case of old downloaded attachments)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
-            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifierProtocol {
+            if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) })
                 let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
                                                                                                     attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
@@ -127,7 +127,7 @@ extension FhirService {
         return async {
             if !attachments.isEmpty {
                 let updatedAttachmentsWithThumbnailsIds: [(AttachmentType, [String])] =
-                    try await(self.attachmentService.uploadAttachments(attachments,
+                    try wait(self.attachmentService.uploadAttachments(attachments,
                                                                        key: attachmentKey))
                 return updatedAttachmentsWithThumbnailsIds
             } else {

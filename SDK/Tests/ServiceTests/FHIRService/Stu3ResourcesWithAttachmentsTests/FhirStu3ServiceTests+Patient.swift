@@ -21,7 +21,7 @@ import Then
 
 class FhirStu3ServicePatientTests: XCTestCase {
 
-    var recordService: RecordServiceMock<Patient,DecryptedFhirStu3Record<Patient>>!
+    var recordService: RecordServiceMock<Data4LifeFHIR.Patient,DecryptedFhirStu3Record<Data4LifeFHIR.Patient>>!
     var keychainService: KeychainServiceMock!
     var cryptoService: CryptoServiceMock!
     var fhirService: FhirService!
@@ -33,7 +33,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let container = Data4LifeDITestContainer()
         container.registerDependencies()
         container.register(scope: .containerInstance) { (_) -> RecordServiceType in
-            RecordServiceMock<Patient,DecryptedFhirStu3Record<Patient>>()
+            RecordServiceMock<Data4LifeFHIR.Patient,DecryptedFhirStu3Record<Data4LifeFHIR.Patient>>()
         }
         fhirService = FhirService(container: container)
 
@@ -55,12 +55,12 @@ class FhirStu3ServicePatientTests: XCTestCase {
 
         let additionalIds = [String]()
 
-        let expectedPatient = fixturePatient.copy() as! Patient // swiftlint:disable:this force_cast
+        let expectedPatient = fixturePatient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
         expectedPatient.setAdditionalIds(additionalIds)
         expectedPatient.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
-        let uploadAttachmentResultWithId = expectedPatient.photo!.first!.copy() as! Attachment // swiftlint:disable:this force_cast
+        let uploadAttachmentResultWithId = expectedPatient.photo!.first!.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
 
         expectedPatient.allAttachments?.forEach { $0.attachmentDataString = nil }
 
@@ -74,7 +74,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.createRecordResult = Async.resolve(createdRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(fixturePatient, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.createFhirRecord(fixturePatient, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(expectedPatient, result.fhirResource, "The result doesn't match the expected resource")
@@ -103,7 +103,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.createRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(fhirResource, result.fhirResource, "The result doesn't match the expected resource")
@@ -136,7 +136,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.createRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { _ in
                 XCTFail("Should return an error")
         }.onError { error in
@@ -162,7 +162,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { _ in
                 XCTFail("Should return an error")
         }.onError { error in
@@ -189,9 +189,9 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let additionalIds = [String]()
         let originalRecord = DecryptedRecordFactory.create(patient)
 
-        let updatedPatient = patient.copy() as! Patient // swiftlint:disable:this force_cast
+        let updatedPatient = patient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
 
-        let expectedPatient = updatedPatient.copy() as! Patient // swiftlint:disable:this force_cast
+        let expectedPatient = updatedPatient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
         let newAttachmentId = UUID().uuidString
         let attachmentWithId = attachment.copyWithId(newAttachmentId)
         expectedPatient.photo = [attachmentWithId]
@@ -205,7 +205,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.updateRecordResult = Async.resolve(expectedUpdatedRecord)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(updatedPatient, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.updateFhirRecord(updatedPatient, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(result.fhirResource, expectedPatient, "The result doesn't match the expected resource")
@@ -237,7 +237,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.updateRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return an error")
-        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { _ in
                 XCTFail("Should throw an error")
         }.onError { error in
@@ -262,7 +262,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.fetchRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { _ in
                 XCTFail("Should return an error")
         }.onError { error in
@@ -293,7 +293,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.fetchRecordResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { _ in
                 XCTFail("Should return an error")
         }.onError { error in
@@ -328,15 +328,15 @@ class FhirStu3ServicePatientTests: XCTestCase {
 
         let additionalIds = [String]()
 
-        let updatedPatient = patient.copy() as! Patient // swiftlint:disable:this force_cast
+        let updatedPatient = patient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
 
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
-        let updatedAttachment1 = updatedPatient.allAttachments!.first! as! Attachment // swiftlint:disable:this force_cast
+        let updatedAttachment1 = updatedPatient.allAttachments!.first! as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         updatedAttachment1.attachmentDataString = newData.base64EncodedString()
         updatedAttachment1.attachmentHash = newData.sha1Hash
         updatedAttachment1.attachmentSize = newData.byteCount
 
-        let unmodifiedAttachment2 = updatedPatient.allAttachments!.last! as! Attachment // swiftlint:disable:this force_cast
+        let unmodifiedAttachment2 = updatedPatient.allAttachments!.last! as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         let newAttachment = FhirFactory.createStu3AttachmentElement()
         let creationDate = DateTime.now
         newAttachment.creation = creationDate
@@ -351,7 +351,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
                                 newAttachment,
                                 attachmentWithNonExistingId]
 
-        let expectedPatient = updatedPatient.copy() as! Patient // swiftlint:disable:this force_cast
+        let expectedPatient = updatedPatient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
         let uploadedNewAttachmentID = UUID().uuidString
         let uploadedNewAttachment = newAttachment.copyWithId(uploadedNewAttachmentID)
         expectedPatient.photo = [updatedAttachment1,
@@ -370,7 +370,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         recordService.updateRecordResult = Async.resolve(expectedRecordWithUpdatedData)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(updatedPatient, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.updateFhirRecord(updatedPatient, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.0.resource, updatedPatient, "The result doesn't match the expected resource")
@@ -411,9 +411,9 @@ class FhirStu3ServicePatientTests: XCTestCase {
 
         let additionalIds = [String]()
 
-        let updatedResource = fhirResource.copy() as! Patient // swiftlint:disable:this force_cast
+        let updatedResource = fhirResource.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
-        let updatedAttachment = updatedResource.allAttachments!.first! as! Attachment // swiftlint:disable:this force_cast
+        let updatedAttachment = updatedResource.allAttachments!.first! as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         updatedAttachment.attachmentDataString = newData.base64EncodedString()
         let newAttachment = FhirFactory.createStu3AttachmentElement()
         newAttachment.hash = "brokenHash"
@@ -423,7 +423,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
         let noneExistingId = UUID().uuidString
         newAttachmentWithId.id = noneExistingId
         updatedResource.photo = [updatedAttachment,
-                                       updatedResource.allAttachments!.last! as! Attachment, // swiftlint:disable:this force_cast
+                                       updatedResource.allAttachments!.last! as! Data4LifeFHIR.Attachment, // swiftlint:disable:this force_cast
                                        newAttachment,
                                        newAttachmentWithId]
 
@@ -437,7 +437,7 @@ class FhirStu3ServicePatientTests: XCTestCase {
                                                       Async.resolve([(newAttachmentWithId, additionalIds)])]
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { _ in
                 XCTFail("Error expected")
         }.onError { error in
@@ -466,7 +466,7 @@ extension FhirStu3ServicePatientTests {
         let additionalPayloadsIds = ["addId1", "addId2"]
         let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
 
-        let expectedPatient = fixturePatient.copy() as! Patient // swiftlint:disable:this force_cast
+        let expectedPatient = fixturePatient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
         expectedPatient.setAdditionalIds(expectedAdditionalId)
         expectedPatient.allAttachments?.forEach { $0.attachmentDataString = nil }
 
@@ -480,7 +480,7 @@ extension FhirStu3ServicePatientTests {
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record with additional id")
-        fhirService.createFhirRecord(fixturePatient, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.createFhirRecord(fixturePatient, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result should be not nil")
                 XCTAssertEqual(expectedPatient, result.fhirResource, "The expected resource doesn't match the result of the test")
@@ -508,8 +508,8 @@ extension FhirStu3ServicePatientTests {
         let additionalIds = ["addId1"]
         let expectedAdditionalIds = [String]()
 
-        let expectedPatient = fixturePatient.copy() as! Patient // swiftlint:disable:this force_cast
-        let expectedAttachment = fixtureAttachment.copy() as! Attachment // swiftlint:disable:this force_cast
+        let expectedPatient = fixturePatient.copy() as! Data4LifeFHIR.Patient // swiftlint:disable:this force_cast
+        let expectedAttachment = fixtureAttachment.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         expectedAttachment.id = UUID().uuidString
         expectedPatient.photo = [expectedAttachment]
         expectedPatient.setAdditionalIds(expectedAdditionalIds)
@@ -524,7 +524,7 @@ extension FhirStu3ServicePatientTests {
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")
-        fhirService.createFhirRecord(fixturePatient, decryptedRecordType: DecryptedFhirStu3Record<Patient>.self)
+        fhirService.createFhirRecord(fixturePatient, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.Patient>.self)
             .then { result in
                 XCTAssertNotNil(result, "The result should be not nil")
                 XCTAssertEqual(expectedPatient, result.fhirResource, "The expected resource doesn't match the result of the test")
@@ -565,14 +565,16 @@ extension FhirStu3ServiceAttachmentOperationsTests {
             .then { result in
                 XCTAssertNotNil(result, "The result should be not nil")
                 XCTAssertEqual(fhirResource, result.fhirResource, "The expected resource doesn't match the result of the test")
-                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Attachment, attachment, "The resource's attachment doesn't match the result of expected one")
-                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Attachment, attachment, "The resource's attachment doesn't match the result of expected one")
+                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment, attachment,
+                               "The resource's attachment doesn't match the result of expected one")
+                XCTAssertEqual((result.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment, attachment,
+                               "The resource's attachment doesn't match the result of expected one")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId, "A param in the method doesn't match the expectation")
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments, "A param in the method doesn't match the expectation")
-                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment],
+                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Data4LifeFHIR.Attachment],
                                fhirResource.allAttachments as? [Attachment], "A param in the method doesn't match the expectation")
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [Data4LifeFHIR.Identifier],
                                fhirResource.identifier, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1,
                                [attachmentId], "A param in the method doesn't match the expectation")
@@ -642,16 +644,16 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertNotNil(result, "The result should be not nil")
                 XCTAssertEqual(result.success.first?.fhirResource, firstResource, "The expected resource doesn't match the result of the test")
                 XCTAssertNotNil(result.failed.first, "Expected result to be not nil")
-                XCTAssertEqual((result.success.first?.fhirResource as? HasAttachments)?.allAttachments?.first as? Attachment,
+                XCTAssertEqual((result.success.first?.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment,
                                firstAttachment, "The expected attachment doesn't match the expected one")
-                XCTAssertEqual((result.success.first?.fhirResource as? HasAttachments)?.allAttachments?.first as? Attachment,
+                XCTAssertEqual((result.success.first?.fhirResource as? HasAttachments)?.allAttachments?.first as? Data4LifeFHIR.Attachment,
                                firstAttachment, "The expected attachment doesn't match the expected one")
                 XCTAssertEqual(result.failed.first?.object, secondResourceId, "The expected resource was expected to fail")
 
                 XCTAssertNotNil(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments, "A param in the method doesn't match the expectation")
-                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Attachment],
-                               firstResource.allAttachments as? [Attachment], "A param in the method doesn't match the expectation")
-                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifierProtocol)?.customIdentifiers as? [Identifier],
+                XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.0.allAttachments as? [Data4LifeFHIR.Attachment],
+                               firstResource.allAttachments as? [Data4LifeFHIR.Attachment], "A param in the method doesn't match the expectation")
+                XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [Data4LifeFHIR.Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
         }.onError { error in

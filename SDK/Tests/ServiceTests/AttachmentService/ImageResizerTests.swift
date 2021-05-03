@@ -17,6 +17,9 @@ import XCTest
 @testable import Data4LifeSDK
 
 class ImageResizerTest: XCTestCase {
+
+    private var bundle = Foundation.Bundle.current
+
     var imageResizer: ImageResizer!
 
     override func setUp() {
@@ -24,7 +27,7 @@ class ImageResizerTest: XCTestCase {
     }
 
     func testResize() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample-jfif", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample-jfif", withExtension: "jpg")!
         let image = UIImage(data: imageData)!
         let givenSize = imageResizer.getSize(.smallHeight, for: image)
 
@@ -36,7 +39,7 @@ class ImageResizerTest: XCTestCase {
     }
 
     func testResizeFailsImageSmallerThanThumbnails() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         let image = UIImage(data: imageData)!
         let givenSize = imageResizer.getSize(.smallHeight, for: image)
 
@@ -50,21 +53,21 @@ class ImageResizerTest: XCTestCase {
     }
 
     func testIsResizable() {
-        let jpgImageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let jpgImageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         XCTAssertTrue(imageResizer.isResizable(jpgImageData))
 
-        let pngImageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "png")!
+        let pngImageData = bundle.data(forResource: "sample", withExtension: "png")!
         XCTAssertTrue(imageResizer.isResizable(pngImageData))
 
-        let tiffImageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "tiff")!
+        let tiffImageData = bundle.data(forResource: "sample", withExtension: "tiff")!
         XCTAssertTrue(imageResizer.isResizable(tiffImageData))
     }
 
     func testIsResizableFails() {
-        let dcmData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "dcm")!
+        let dcmData = bundle.data(forResource: "sample", withExtension: "dcm")!
         XCTAssertFalse(imageResizer.isResizable(dcmData))
 
-        let pdfData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "pdf")!
+        let pdfData = bundle.data(forResource: "sample", withExtension: "pdf")!
         XCTAssertFalse(imageResizer.isResizable(pdfData))
     }
 
@@ -74,7 +77,7 @@ class ImageResizerTest: XCTestCase {
     }
 
     func testGetThumbnailSize() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         let image = UIImage(data: imageData)!
 
         let imageSize = imageResizer.getSize(.smallHeight, for: image)

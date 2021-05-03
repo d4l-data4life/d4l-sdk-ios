@@ -1,26 +1,33 @@
 default_platform :ios
 
 project = "HCSDK"
-repository = "gesundheitscloud/hc-sdk-ios"
-framework_binary_path = "build/" + project + ".framework.zip"
+
+sdkScheme = "HCSDK"
+sdkName = "Data4LifeSDK"
+cryptoScheme = "HCCrypto"
+cryptoName = "Data4LifeCrypto"
+
+repository = "d4l-data4life/d4l-sdk-ios"
+
 sdk_podspec_path = '../Data4LifeSDK.podspec'
 crypto_podspec_path = '../Data4LifeCrypto.podspec'
 podspecs_repo_name = 'd4l-data4life'
 podspecs_repo_url = 'https://github.com/d4l-data4life/d4l-cocoapods-specs'
-device = "iPhone 11"
+
+device = "iPhone 12"
 
 platform :ios do
   desc "Run unit tests and upload code coverage"
   lane :test do
-    Dir.chdir("..") do
-      sh "./wcarthage.sh bootstrap --platform ios --cache-builds --use-ssh"
-    end
-
     scan(
       scheme: "Example",
       derived_data_path: "build/DerivedData",
       devices: device
     )
+
+    Dir.chdir("..") do
+      sh("pod spec lint --sources='https://github.com/d4l-data4life/d4l-cocoapods-specs,https://github.com/CocoaPods/Specs'")
+    end
   end
 
   desc "Package and release framework"
@@ -39,6 +46,10 @@ platform :ios do
 
     if !options[:version]
       raise "No version specified!".red
+    end
+
+    if !options[:crypto_version]
+      raise "No crypto version specified!".red
     end
 
     if !options[:api_token]
@@ -92,7 +103,7 @@ platform :ios do
       )
 
       # Build fat library for GitHub release page
-      build_framework_binary
+      build_xcframeworks(sdk_version: version, crypto_version: crypto_version)
 
       # Push latest changes
       push_to_git_remote(
@@ -105,21 +116,171 @@ platform :ios do
       push_git_tags(tag: "#{version}")
 
       # Post new release to GitHub
-      set_github_release(
-        repository_name: repository,
-        api_token: options[:api_token],
-        name: "#{version}",
-        tag_name: version,
-        description: changelog,
+      archiveAllFrameworksPath = allXcFrameworksArchivePath(version)
+      archiveSDKPath = sdkFrameworkArchivePath(version)
+      archiveCryptoPath = cryptoFrameworkArchivePath(options[:crypto_version])
+
+      # Post new release to GitHub
+      gh_release(
+        version: version,
+        api_token:options[:api_token],
+        changelog: changelog,
         is_prerelease: is_prerelease,
-        upload_assets: [framework_binary_path]
+        asset1: archiveAllFrameworksPath,
+        asset2: archiveSDKPath,
+        asset3: archiveCryptoPath
       )
 
-      # Update private CococaPods specs
-      # push_sdk_podspec
+      # Update CococaPods specs
+      push_crypto_podspec
+      push_sdk_podspec
     else
       Helper.log.info "When finished, commit your changes.".red
     end
+  end
+
+  desc "Build xcframework for distribution"
+  lane :build_xcframeworks do |options|
+    if options[:sdk_version] == nil
+        raise "Missing sdk version".red
+    end
+
+    if options[:crypto_version] == nil
+        raise "Missing crypto version".red
+    end
+
+    sdkFrameworkPath = "#{sdkName}.xcframework"
+    cryptoFrameworkPath = "#{cryptoName}.xcframework"
+
+    build_project_xcframework(schemeName: cryptoScheme,
+                              frameworkName: cryptoName,
+                              outputPath: cryptoFrameworkPath)
+    build_project_xcframework(schemeName: sdkScheme,
+                              frameworkName: sdkName,
+                              outputPath: sdkFrameworkPath)
+
+    Dir.chdir("..") do
+      root = Dir.pwd
+      configuration = "Release"
+      buildPath = "xcbuild"
+
+      archiveAllFrameworksPath = allXcFrameworksArchivePath(options[:sdk_version])
+      archiveSDKPath = sdkFrameworkArchivePath(options[:sdk_version])
+      archiveCryptoPath = cryptoFrameworkArchivePath(options[:crypto_version])
+
+      if File.exist?(archiveAllFrameworksPath)
+        sh "rm #{archiveAllFrameworksPath}"
+      end
+      if File.exist?(archiveSDKPath)
+        sh "rm #{archiveSDKPath}"
+      end
+      if File.exist?(archiveCryptoPath)
+        sh "rm #{archiveCryptoPath}"
+      end
+
+        sh "zip -r #{archiveAllFrameworksPath} #{sdkFrameworkPath} #{cryptoFrameworkPath} LICENSE SDK/Sources/Certificates/*.hpsgc.de.cer SDK/Sources/Certificates/data4life.care.der SDK/Sources/Data4LifeSDK-Version.plist"
+        sh "zip -r #{archiveSDKPath} #{sdkFrameworkPath}"
+        sh "zip -r #{archiveCryptoPath} #{cryptoFrameworkPath}"
+
+        sh "rm -rf #{sdkFrameworkPath}"
+        sh "rm -rf #{cryptoFrameworkPath}"
+    end
+  end
+
+  desc "Build any project xcframework"
+  lane :build_project_xcframework do |options|
+    if options[:schemeName] == nil
+        raise "Missing scheme name".red
+    end
+    if options[:frameworkName] == nil
+        raise "Missing framework name".red
+    end
+    if options[:outputPath] == nil
+        raise "Missing output path".red
+    end
+
+    Dir.chdir("..") do
+      root = Dir.pwd
+      configuration = "Release"
+      buildPath = "xcbuild"
+
+      schemeName = options[:schemeName]
+      frameworkName = options[:frameworkName]
+      outputPath = options[:outputPath]
+
+      if File.exist?(buildPath)
+        sh "rm -rf #{buildPath}"
+      end
+      if File.exist?(outputPath)
+        sh "rm -rf #{outputPath}"
+      end
+
+      sh "rm -rf #{outputPath}"
+      sh "xcodebuild archive -scheme #{schemeName} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{frameworkName}-iphonesimulator.xcarchive -destination 'generic/platform=iOS Simulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES ENABLE_TESTABILITY=YES"
+      sh "xcodebuild archive -scheme #{schemeName} -configuration #{configuration} -archivePath #{buildPath}/#{configuration}/#{frameworkName}-iphoneos.xcarchive -destination 'generic/platform=iOS' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      sh "xcodebuild -create-xcframework -allow-internal-distribution \
+          -framework #{buildPath}/#{configuration}/#{frameworkName}-iphonesimulator.xcarchive/Products/Library/Frameworks/#{frameworkName}.framework \
+          -framework #{buildPath}/#{configuration}/#{frameworkName}-iphoneos.xcarchive/Products/Library/Frameworks/#{frameworkName}.framework \
+          -output #{outputPath}"
+    end
+  end
+
+  desc "Build xcframework for distribution"
+  lane :build_crypto_xcframework do |options|
+    build_project_xcframework(schemeName: cryptoScheme,
+                              frameworkName: cryptoName,
+                              outputPath: "#{cryptoName}.xcframework")
+  end
+
+  desc "Build xcframework for distribution"
+  lane :build_sdk_xcframework do |options|
+    build_project_xcframework(schemeName: sdkScheme,
+                              frameworkName: sdkName,
+                              outputPath: "#{sdkName}.xcframework")
+  end
+
+  desc "Upload to a github release"
+  lane :gh_release do |options|
+
+    if options[:version] == nil
+        raise "Missing release version".red
+    end
+
+    if options[:api_token] == nil
+        raise "Missing api token".red
+    end
+
+    if options[:asset1] == nil
+        raise "Missing asset".red
+    end
+
+    if options[:asset2] == nil
+        raise "Missing asset".red
+    end
+
+    if options[:asset3] == nil
+        raise "Missing asset".red
+    end
+
+    isPrerelease = options[:is_prerelease]
+    if isPrerelease == nil
+        isPrerelease = true
+    end
+
+    changelog = options[:changelog]
+    if changelog == nil
+       changelog = "Pre-release"
+    end
+
+    set_github_release(
+      repository_name: repository,
+      api_token: options[:api_token],
+      name: "#{options[:version]}",
+      tag_name: options[:version],
+      description: changelog,
+      is_prerelease: isPrerelease,
+      upload_assets: [options[:asset1], options[:asset2], options[:asset3]]
+    )
   end
 
   desc "Update AppStore and GCSDK version number in project plists"
@@ -153,21 +314,6 @@ platform :ios do
         end
       )
     }
-  end
-
-  desc "Build universal binary"
-  lane :build_framework_binary do
-    Dir.chdir("..") do
-      sh "rm -rf build"
-      sh "./wcarthage.sh build --platform ios --cache-builds --no-skip-current"
-      sh "./wcarthage.sh archive --output #{framework_binary_path}"
-    end
-  end
-
-  desc "Build slim binary for AppStore submission, includes Bitcode and dSYM"
-  lane :build_framework_appstore do
-    sh "rm -rf ../build"
-    sh "sh appstore_release_binary.sh"
   end
 
   desc "Lint sources using swiftlint and check the license headers"
@@ -290,5 +436,17 @@ platform :ios do
     sh "rm -rf #{output_folder_path}"
     sh "mkdir #{output_folder_path}"
     sh "bundle exec asciidoctor -b html5 -d book -o #{output_final_path} -a #{arguments} #{input_path} "
+  end
+
+  def allXcFrameworksArchivePath(version)
+     return "XCFrameworks-#{version}.zip"
+  end
+
+  def sdkFrameworkArchivePath(version)
+     return "Data4LifeSDK-xcframework-#{version}.zip"
+  end
+
+  def cryptoFrameworkArchivePath(version)
+     return "Data4LifeCrypto-xcframework-#{version}.zip"
   end
 end

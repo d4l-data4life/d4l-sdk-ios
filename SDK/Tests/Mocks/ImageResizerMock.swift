@@ -14,6 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+import UIKit
+
 @testable import Data4LifeSDK
 
 class ImageResizerMock: Resizable {

@@ -15,7 +15,7 @@
 
 import Foundation
 import SafariServices
-import AppAuth
+@_implementationOnly import AppAuth
 
 /*
  * In order to make UX better, SDK uses custom user agent for presenting controller,

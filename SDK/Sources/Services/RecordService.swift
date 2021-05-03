@@ -14,8 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Data4LifeCrypto
-import Then
+@_implementationOnly import Data4LifeCrypto
+@_implementationOnly import Then
 
 protocol RecordServiceType {
     func createRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
@@ -120,8 +120,8 @@ struct RecordService: RecordServiceType {
                                           decryptedRecordType: DR.Type = DR.self) -> Async<DR> {
         return async {
             let route = Router.fetchRecord(userId: userId, recordId: recordId)
-            let encrypted: EncryptedRecord = try await(self.sessionService.request(route: route).responseDecodable())
-            return try await(DR.from(encryptedRecord: encrypted,
+            let encrypted: EncryptedRecord = try wait(self.sessionService.request(route: route).responseDecodable())
+            return try wait(DR.from(encryptedRecord: encrypted,
                                      cryptoService: self.cryptoService,
                                      commonKeyService: self.commonKeyService))
         }
@@ -130,7 +130,7 @@ struct RecordService: RecordServiceType {
     func deleteRecord(recordId: String, userId: String) -> Async<Void> {
         return async {
             let route = Router.deleteRecord(userId: userId, recordId: recordId)
-            return try await(self.sessionService.request(route: route).responseEmpty())
+            return try wait(self.sessionService.request(route: route).responseEmpty())
         }
     }
 
@@ -162,9 +162,9 @@ extension RecordService {
                                                                              annotations: [String] = [],
                                                                              decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
         return async {
-            let tagGroup = try await(taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
+            let tagGroup = try wait(taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
             if try tagGroup.hasPercentEncodableCharacters() {
-                let decryptedRecordsWithPercentEncodedTags = try await(searchRecords(for: userId,
+                let decryptedRecordsWithPercentEncodedTags = try wait(searchRecords(for: userId,
                                                                                      from: startDate,
                                                                                      to: endDate,
                                                                                      pageSize: pageSize,
@@ -172,7 +172,7 @@ extension RecordService {
                                                                                      annotations: annotations,
                                                                                      usingPercentEncodedTags: true,
                                                                                      decryptedRecordType: decryptedRecordType))
-                let decryptedRecordsWithNonPercentEncodedTags = try await(searchRecords(for: userId,
+                let decryptedRecordsWithNonPercentEncodedTags = try wait(searchRecords(for: userId,
                                                                                         from: startDate,
                                                                                         to: endDate,
                                                                                         pageSize: pageSize,
@@ -182,7 +182,7 @@ extension RecordService {
                                                                                         decryptedRecordType: decryptedRecordType))
                 return decryptedRecordsWithPercentEncodedTags + decryptedRecordsWithNonPercentEncodedTags
             } else {
-                return try await(searchRecords(for: userId,
+                return try wait(searchRecords(for: userId,
                                                from: startDate,
                                                to: endDate,
                                                pageSize: pageSize,
@@ -196,13 +196,13 @@ extension RecordService {
 
     private func countRecordsIncludingLegacyTaggedOnes<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
         return async {
-            let tagGroup = try await(taggingService.makeTagGroup(for: resourceType, annotations: annotations))
+            let tagGroup = try wait(taggingService.makeTagGroup(for: resourceType, annotations: annotations))
             if try tagGroup.hasPercentEncodableCharacters() {
-                let countPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
-                let countNonPercentEncoded = try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: false))
+                let countPercentEncoded = try wait(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
+                let countNonPercentEncoded = try wait(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: false))
                 return countPercentEncoded + countNonPercentEncoded
             } else {
-                return try await(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
+                return try wait(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations, usingPercentEncoding: true))
             }
         }
     }
@@ -220,7 +220,7 @@ extension RecordService {
                                                    uploadRequest: @escaping (Parameters) -> Router) -> Async<DR> {
         return async {
 
-            let tagGroup = try await(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
+            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
 
             // Load crypto keys
             guard let tek = self.cryptoService.tek else {
@@ -228,7 +228,7 @@ extension RecordService {
             }
 
             // Update current common key
-            try await(self.userService.fetchUserInfo())
+            try wait(self.userService.fetchUserInfo())
 
             let commonKeyId = self.commonKeyService.currentId ?? CommonKeyService.initialId
 
@@ -240,7 +240,7 @@ extension RecordService {
             let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(), key: tek)
 
             // Encrypt Resource body
-            let encryptedResource: Data = try await(self.cryptoService.encrypt(value: resource, key: dataKey))
+            let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
             let encryptedBody = encryptedResource.base64EncodedString()
 
             // Encrypt GC keys
@@ -263,11 +263,11 @@ extension RecordService {
 
             // Create new resource
             let route = uploadRequest(params)
-            let encryptedRecord: EncryptedRecord = try await(
+            let encryptedRecord: EncryptedRecord = try wait(
                 self.sessionService.request(route: route).responseDecodable()
             )
 
-            return try await(DR.from(encryptedRecord: encryptedRecord,
+            return try wait(DR.from(encryptedRecord: encryptedRecord,
                                      cryptoService: self.cryptoService,
                                      commonKeyService: self.commonKeyService))
         }
@@ -282,8 +282,8 @@ extension RecordService {
                                                     usingPercentEncodedTags: Bool,
                                                     decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
         return async {
-            let tagGroup = try await(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
-            let params = try await(self.buildParameters(from: startDate,
+            let tagGroup = try wait(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
+            let params = try wait(self.buildParameters(from: startDate,
                                                         to: endDate,
                                                         offset: offset,
                                                         pageSize: pageSize,
@@ -291,7 +291,7 @@ extension RecordService {
                                                         usingPercentEncodedTags: usingPercentEncodedTags))
 
             let route = Router.searchRecords(userId: userId, parameters: params)
-            let encryptedRecords: [EncryptedRecord] = try await(
+            let encryptedRecords: [EncryptedRecord] = try wait(
                 self.sessionService.request(route: route).responseDecodable()
             )
 
@@ -299,7 +299,7 @@ extension RecordService {
                 return []
             }
             return try encryptedRecords.map {
-                try await(DR.from(encryptedRecord: $0,
+                try wait(DR.from(encryptedRecord: $0,
                                   cryptoService: self.cryptoService,
                                   commonKeyService: self.commonKeyService))
             }
@@ -308,10 +308,10 @@ extension RecordService {
 
     private func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String], usingPercentEncoding: Bool) -> Async<Int> {
         return async {
-            let tagGroup = try await(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
-            let params = try await(self.buildParameters(tagGroup: tagGroup, usingPercentEncodedTags: usingPercentEncoding))
+            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
+            let params = try wait(self.buildParameters(tagGroup: tagGroup, usingPercentEncodedTags: usingPercentEncoding))
             let route = Router.countRecords(userId: userId, parameters: params)
-            let headers = try await(self.sessionService.request(route: route).responseHeaders())
+            let headers = try wait(self.sessionService.request(route: route).responseHeaders())
 
             guard
                 let countString = headers["x-total-count"] as? String,

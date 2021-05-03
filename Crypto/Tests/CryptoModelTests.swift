@@ -14,20 +14,10 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 
 class CryptoModelTests: XCTestCase {
-    var bundle: Bundle!
-
-    override func setUp() {
-        super.setUp()
-        bundle = Bundle(for: type(of: self))
-    }
-
-    override func tearDown() {
-        bundle = nil
-        super.tearDown()
-    }
+    var bundle: Foundation.Bundle! = Bundle.current
 
     func testKeyCommonV1Success() {
         do {

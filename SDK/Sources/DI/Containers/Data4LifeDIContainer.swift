@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Data4LifeCrypto
+@_implementationOnly import Data4LifeCrypto
 
 final class Data4LifeDIContainer: DIContainer { }
 
@@ -24,7 +24,7 @@ extension Data4LifeDIContainer {
 
         do {
             try registerGlobalDependencies(using: clientConfiguration.loggerConfiguration)
-            try register(scope: .transientInstance) { (_) -> Bundle in
+            try register(scope: .transientInstance) { (_) -> Foundation.Bundle in
                 Bundle(for: Data4LifeDIContainer.self)
             }.register(scope: .transientInstance) { (_) -> PropertyListDecoder in
                 PropertyListDecoder()

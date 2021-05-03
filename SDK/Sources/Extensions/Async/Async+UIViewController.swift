@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import UIKit
-import Then
+@_implementationOnly import Then
 
 extension UIViewController {
     func present(_ viewControllerToPresent: UIViewController, animated: Bool) -> Async<Void> {

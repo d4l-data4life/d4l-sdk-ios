@@ -63,9 +63,17 @@ extension DocumentListInteractor {
     }
 
     func viewDidAppear() {
+        checkLoggedInStatus()
+    }
+
+    private func checkLoggedInStatus() {
         d4lClient.isUserLoggedIn { [weak self] result in
-            let state = result.error == nil ? true : false
-            self?.view?.updateUI(state: state)
+            var isLoggedIn: Bool = true
+            if case .failure = result {
+                isLoggedIn = false
+            }
+
+            self?.view?.updateUI(state: isLoggedIn)
         }
     }
 

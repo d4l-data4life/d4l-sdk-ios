@@ -16,6 +16,8 @@
 import Foundation
 @testable import Data4LifeSDK
 import Data4LifeCrypto
+import Data4LifeFHIR
+import ModelsR4
 
 struct DecryptedRecordFactory {
     static func create<R: FhirR4Resource>(_ fhirResource: R,

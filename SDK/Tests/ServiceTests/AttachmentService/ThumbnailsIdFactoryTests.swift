@@ -14,6 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
+import Data4LifeFHIR
+
 @testable import Data4LifeSDK
 
 class ThumbnailsIdFactoryTests: XCTestCase {
@@ -124,7 +126,7 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let attachmentId = UUID().uuidString
         attachment.id = attachmentId
         fhirResource.content = [DocumentReferenceContent(attachment: attachment)]
-        let expectedResource = fhirResource.copy() as! DocumentReference // swiftlint:disable:this force_cast
+        let expectedResource = fhirResource.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
 
         let additionalIdToUpdate = "d4l_f_p_t#\(attachmentId)#addId1#addId2"
         let additionalIdToRemove = "d4l_f_p_t#\(UUID().uuidString)#addId1#addId2"

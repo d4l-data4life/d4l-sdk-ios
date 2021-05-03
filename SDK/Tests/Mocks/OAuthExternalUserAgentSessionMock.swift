@@ -18,8 +18,13 @@ import AppAuth
 
 class OAuthExternalUserAgentSessionMock: NSObject, OIDExternalUserAgentSession {
     func cancel() {}
-    func resumeExternalUserAgentFlow(with URL: URL!) -> Bool {
+
+    func cancel(completion: (() -> Void)? = nil) {
+        completion?()
+    }
+
+    func resumeExternalUserAgentFlow(with URL: URL) -> Bool {
         return false
     }
-    func failExternalUserAgentFlowWithError(_ error: Error!) {}
+    func failExternalUserAgentFlowWithError(_ error: Error) {}
 }

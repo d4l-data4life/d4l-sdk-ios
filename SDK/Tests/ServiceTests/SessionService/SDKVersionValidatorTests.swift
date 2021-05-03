@@ -19,7 +19,7 @@ import XCTest
 class SDKVersionValidatorTests: XCTestCase {
 
     var infoService: InfoServiceMock!
-    var bundle: Bundle!
+    var bundle: Foundation.Bundle!
     var sdkFileManager: SDKFileManagerMock!
     var validator: SDKVersionValidator!
 

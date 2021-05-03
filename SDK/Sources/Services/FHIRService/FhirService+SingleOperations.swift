@@ -14,9 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
-import Data4LifeFHIR
-import struct Data4LifeCrypto.Key
+@_implementationOnly import Then
+@_implementationOnly import Data4LifeCrypto
 
 extension FhirService {
     func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,
@@ -24,9 +23,9 @@ extension FhirService {
                                                decryptedRecordType: DR.Type = DR.self) ->
     Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
-            let resourceWithKey = try await(self.uploadAttachments(creating: resource))
-            let decryptedRecord = try await(self.recordService.createRecord(forResource: resourceWithKey.resource,
+            let userId = try wait(self.keychainService.get(.userId))
+            let resourceWithKey = try wait(self.uploadAttachments(creating: resource))
+            let decryptedRecord = try wait(self.recordService.createRecord(forResource: resourceWithKey.resource,
                                                                             annotations: annotations,
                                                                             userId: userId,
                                                                             attachmentKey: resourceWithKey.key,
@@ -39,12 +38,12 @@ extension FhirService {
                                                annotations: [String]? = nil,
                                                decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return async {
-            let userId = try await(self.keychainService.get(.userId))
+            let userId = try wait(self.keychainService.get(.userId))
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
 
-            let resourceWithKey = try await(self.uploadAttachments(updating: resource, decryptedRecordType: decryptedRecordType))
+            let resourceWithKey = try wait(self.uploadAttachments(updating: resource, decryptedRecordType: decryptedRecordType))
 
-            let updatedRecord = try await(self.recordService.updateRecord(forResource: resourceWithKey.resource,
+            let updatedRecord = try wait(self.recordService.updateRecord(forResource: resourceWithKey.resource,
                                                                           annotations: annotations,
                                                                           userId: userId,
                                                                           recordId: recordId,

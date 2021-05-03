@@ -16,7 +16,7 @@
 import Foundation
 import Then
 @testable import Data4LifeSDK
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 import Data4LifeFHIR
 
 class AttachmentServiceMock: AttachmentServiceType {

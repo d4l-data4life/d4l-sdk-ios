@@ -15,7 +15,7 @@
 
 import Foundation
 @testable import Data4LifeSDK
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 import Then
 
 enum CryptoMockError: Error {

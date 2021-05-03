@@ -43,7 +43,7 @@ class DocumentReferenceUseCase: XCTestCase {
             let creationDate = DateTime.now
 
             // Create resource
-            let attachment = try! Attachment.with(title: title, creationDate: creationDate, contentType: contentType, data: data)
+            let attachment = try! Data4LifeFHIR.Attachment.with(title: title, creationDate: creationDate, contentType: contentType, data: data)
 
             // Encode & Decode
             let resourceData = try JSONEncoder().encode(attachment)
@@ -67,7 +67,7 @@ class DocumentReferenceUseCase: XCTestCase {
         let creationDate = DateTime(string: "2020-03-13")!
 
         // Create resource
-        let attachment = try! Attachment.with(title: title, creationDate: creationDate, contentType: contentType, data: data)
+        let attachment = try! Data4LifeFHIR.Attachment.with(title: title, creationDate: creationDate, contentType: contentType, data: data)
         attachment.hash = "WrongHash"
 
         XCTAssertEqual(attachment.hashValidity, .unknown, "Attachment hash should be unknown")
@@ -87,7 +87,7 @@ class DocumentReferenceUseCase: XCTestCase {
         let creationDate = DateTime(string: "2020-03-13")!
 
         // Create resource
-        let attachment = try! Attachment.with(title: title, creationDate: creationDate, contentType: contentType, data: data)
+        let attachment = try! Data4LifeFHIR.Attachment.with(title: title, creationDate: creationDate, contentType: contentType, data: data)
         attachment.hash = "WrongHash"
 
         do {

@@ -13,9 +13,8 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
-import Data4LifeCrypto
-import Then
+@_implementationOnly import Then
+import UIKit
 
 /// Returns either an error or an object
 public typealias ResultBlock<Value> = (Result<Value, Error>) -> Void
@@ -74,8 +73,7 @@ public class Data4LifeClient {
     /**
      Initialize a client.
      */
-    private init() {
-
+    init() {
         guard let clientConfiguration = Data4LifeClient.clientConfiguration else {
             fatalError("Data4LifeClient is not configured, call `Data4LifeClient.configure(with: ...)` before using the SDK")
         }
@@ -97,30 +95,7 @@ public class Data4LifeClient {
         } catch {
             fatalError(error.localizedDescription)
         }
-
         configureDependencies()
-    }
-
-    /// OAuth client id
-    public var clientId: String? {
-        return oAuthService.clientId
-    }
-
-    /// OAuth redirect url
-    public var redirectURL: String? {
-        return oAuthService.redirectURL.absoluteString
-    }
-
-    /// Enables logging for debug configurations, defaults to false
-    public var isLoggingEnabled: Bool {
-        get {
-            let loggerService: LoggerService? = try? container.resolve()
-            return loggerService?.isLoggingEnabled ?? false
-        }
-        set {
-            let loggerService: LoggerService? = try? container.resolve()
-            loggerService?.isLoggingEnabled = newValue
-        }
     }
 
     /**
@@ -149,13 +124,37 @@ public class Data4LifeClient {
         // Calling this method provide a way to test that the dependencies were configured properly
         configureDependencies()
     }
+
+    /// OAuth client id
+    public var clientId: String? {
+        return oAuthService.clientId
+    }
+
+    /// OAuth redirect url
+    public var redirectURL: String? {
+        return oAuthService.redirectURL.absoluteString
+    }
+
+    /// Enables logging for debug configurations, defaults to false
+    public var isLoggingEnabled: Bool {
+        get {
+            let loggerService: LoggerService? = try? container.resolve()
+            return loggerService?.isLoggingEnabled ?? false
+        }
+        set {
+            let loggerService: LoggerService? = try? container.resolve()
+            loggerService?.isLoggingEnabled = newValue
+        }
+    }
+
+    deinit { }
 }
 
 extension Data4LifeClient {
     private func configureDependencies() {
         sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
-        try? await(versionValidator.fetchVersionConfigurationRemotely())
+        try? wait(versionValidator.fetchVersionConfigurationRemotely())
     }
 }
 
@@ -238,7 +237,7 @@ extension Data4LifeClient {
      - parameter completion: Completion that returns boolean representing current state
      */
     public func isUserLoggedIn(queue: DispatchQueue = responseQueue,
-                               _ completion: @escaping DefaultResultBlock) {
+                               _ completion: @escaping ResultBlock<Void>) {
         guard commonKeyService.currentKey != nil, cryptoService.tek != nil else {
             completion(.failure(Data4LifeSDKError.notLoggedIn))
             return

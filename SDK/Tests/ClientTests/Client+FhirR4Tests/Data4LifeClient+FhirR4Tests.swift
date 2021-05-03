@@ -136,7 +136,7 @@ extension Data4LifeClientFhirR4Tests {
         fhirService.fetchRecordWithIdResult = Async.resolve(record)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.fetchFhirR4Record(withId: resourceId, of: DocumentReference.self) { result in
+        client.fetchFhirR4Record(withId: resourceId, of: ModelsR4.DocumentReference.self) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)
@@ -171,7 +171,7 @@ extension Data4LifeClientFhirR4Tests {
         fhirService.fetchRecordsResult = Async.resolve(records)
 
         let asyncExpectation = expectation(description: "Should return success result")
-        client.fetchFhirR4Records(of: DocumentReference.self, annotations: annotations) { result in
+        client.fetchFhirR4Records(of: ModelsR4.DocumentReference.self, annotations: annotations) { result in
             defer { asyncExpectation.fulfill() }
 
             XCTAssertNil(result.error)

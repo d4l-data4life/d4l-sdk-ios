@@ -14,20 +14,10 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 
 class Data4LifeCryptoProtocolTests: XCTestCase {
-    var bundle: Bundle!
-
-    override func setUp() {
-        super.setUp()
-        bundle = Bundle(for: type(of: self))
-    }
-
-    override func tearDown() {
-        bundle = nil
-        super.tearDown()
-    }
+    var bundle: Foundation.Bundle! = Bundle.current
 
     func testAsymmetricDecrypt() {
         do {
@@ -110,6 +100,8 @@ class Data4LifeCryptoProtocolTests: XCTestCase {
         }
     }
 
+    #if SWIFT_PACKAGE
+    #else
     func testGenerateKeyPair() {
         do {
             let keyExchange = try! KeyExhangeFactory.create(type: .appPrivate)
@@ -124,4 +116,5 @@ class Data4LifeCryptoProtocolTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
     }
+    #endif
 }

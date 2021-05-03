@@ -5,10 +5,6 @@ Pure Swift API client for HealthCloud that automatically handles encryption
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/badge/license-PRIVATE-blue.svg)](https://github.com/d4l-data4life/d4l-sdk-ios/blob/main/LICENSE)
 
-## Documentation
-
-Current documentation can be found on [GitHub Pages](https://d4l-data4life.github.io/d4l-sdk-ios/1.12.3).
-
 ## Usage
 ### Requirements
 * Xcode 12
@@ -17,10 +13,8 @@ Current documentation can be found on [GitHub Pages](https://d4l-data4life.githu
 
 ### Dependencies
 * [Alamofire](https://github.com/Alamofire/Alamofire)
-* [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift)
 * [then](https://github.com/freshOS/then)
 * [AppAuth](https://github.com/openid/AppAuth-iOS)
-* [SVProgressHUD](https://github.com/SVProgressHUD/SVProgressHUD)
 * [Data4LifeFHIR](https://github.com/d4l-data4life/d4l-fhir-ios)
 * [ModelsR4](https://github.com/d4l-data4life/d4l-fhir-ios)
 * [Data4LifeSDKUtils](https://github.com/d4l-data4life/d4l-utils-ios)
@@ -42,15 +36,21 @@ pod 'Data4LifeSDK', '~> 1.13.0'
 
 **Note**: For more info check [README](https://github.com/d4l-data4life/d4l-cocoapods-specs/blob/master/README.md).
 
-#### Carthage
+#### Swift Package Manager
 
-To install with [Carthage](https://github.com/Carthage/Carthage) add the following line to the Cartfile:
+To install with Swift package manager, select your project’s Swift Packages tab, and add our repository url, either as ssh or https url:
 
-```ruby
-github "d4l-data4life/d4l-sdk-ios"
+```
+https://github.com/d4l-data4life/d4l-sdk-ios.git
+```
+OR
+```
+git@github.com:d4l-data4life/d4l-sdk-ios.git
 ```
 
-Run `carthage` to build the framework and drag the built Data4LifeSDK.framework into your Xcode project. Follow [build instructions](https://github.com/Carthage/Carthage#getting-started).
+In the next step, select the latest version, and then import both the `Data4LifeCrypto` and `Data4LifeSDK` libraries in your target.
+
+To install with [Carthage](https://github.com/Carthage/Carthage) add the following line to the Cartfile:
 
 ## Building
 
@@ -95,20 +95,6 @@ The configuration file has the following structure:
 In order for the example app to choose which environment to use, you need to change the build setting `D4L_CONFIGURATION` on the Example target, and set any of the following values:
 DEVELOPMENT, SANDBOX, STAGING, PRODUCTION
 
-#### Install Carthage
-
-```sh
-brew install carthage
-```
-*Note*: For other installation methods check [README](https://github.com/Carthage/Carthage#installing-carthage).
-
-#### Build frameworks
-
-*Note*: Since from XCode 12 Carthage packaging does not work anymore, please use the script [README](https://github.com/Carthage/Carthage#installing-carthage).
-```sh
-./wcarthage.sh bootstrap --use-ssh --platform iOS
-```
-
 ### Example application
 Open `HCSDK.xcodeproj` and run the `Example` target.
 
@@ -142,10 +128,10 @@ Folowing command will release new version of framework while handling couple of 
 * Push new commit and tag to GitHub
 * Create GitHub release page with all of the information for [CHANGELOG.md](CHANGELOG.md)
 * Upload prebuilt framework to the release page
-* Push latest `podspec` to private [CococaPods specs repository](https://github.com/d4l-data4life/d4l-cocoapods-specs)
+* Push latest `podspec`s to private [CococaPods specs repository](https://github.com/d4l-data4life/d4l-cocoapods-specs)
 
 ```sh
-bundle exec fastlane release_framework version:"1.0.0" api_token:"super-secret-GitHub-API-token"
+bundle exec fastlane release_framework version:"1.0.0" crypto_version:"1.0.0" api_token:"super-secret-GitHub-API-token"
 ```
 
 ### Generate documentation

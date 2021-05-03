@@ -23,7 +23,7 @@ class CommonKeyServiceTests: XCTestCase {
     var keychainService: KeychainServiceMock!
     var cryptoService: CryptoServiceMock!
     var sessionService: SessionService!
-    var bundle: Bundle!
+    var bundle: Foundation.Bundle!
     var versionValidator: SDKVersionValidatorMock!
 
     override func setUp() {

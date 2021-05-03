@@ -204,17 +204,3 @@ extension Data4LifeSDKError.ClientConfiguration: CustomStringConvertible, Locali
         }
     }
 }
-
-extension Data4LifeSDKError: Equatable {
-    public static func == (lhs: Data4LifeSDKError, rhs: Data4LifeSDKError) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    public static func == (lhs: Error, rhs: Data4LifeSDKError) -> Bool {
-        guard let hcError = lhs as? Data4LifeSDKError else {
-            return false
-        }
-
-        return hcError == rhs
-    }
-}

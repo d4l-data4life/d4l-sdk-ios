@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+import Data4LifeFHIRCore
 
 @available(iOS, deprecated: 1.9.0, message: "Renamed to FhirRecord", renamed: "FhirRecord")
 typealias Record = FhirRecord

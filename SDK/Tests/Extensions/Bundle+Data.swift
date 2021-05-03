@@ -15,9 +15,57 @@
 
 import Foundation
 
+enum BundleError: Error {
+    case missingResource
+}
+
 extension Bundle {
+    static var current: Bundle {
+        #if SWIFT_PACKAGE
+        return Bundle.module
+        #else
+        return Bundle(for: Data4LifeClientUserTests.self)
+        #endif
+    }
+
     func data(forResource named: String, withExtension type: String) -> Data? {
-        guard let url = self.url(forResource: named, withExtension: type) else { return nil }
-        return try? Data(contentsOf: url)
+        if let url = self.url(forResource: named, withExtension: type) {
+            return try? Data(contentsOf: url)
+        } else {
+            return nil
+        }
+    }
+
+    private func decodable<T: Decodable>(fromURL url: URL) throws -> T {
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+
+    func decodable<T: Decodable>(fromJSON named: String) throws -> T {
+        guard let url = self.url(forResource: named, withExtension: "json") else {
+            throw BundleError.missingResource
+        }
+
+        return try decodable(fromURL: url)
+    }
+
+    func data(fromJSON named: String) throws -> Data {
+        guard let url = self.url(forResource: named, withExtension: "json") else {
+            throw BundleError.missingResource
+        }
+        return try Data(contentsOf: url)
+    }
+
+    func json(named: String) throws -> [String: Any]? {
+        guard let url = self.url(forResource: named, withExtension: "json") else {
+            throw BundleError.missingResource
+        }
+
+        let data = try Data(contentsOf: url)
+        return try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+    }
+
+    func jsonFiles(fromDirectories dirs: [String]) -> [URL] {
+        return dirs.flatMap { return self.urls(forResourcesWithExtension: "json", subdirectory: $0) ?? [] }
     }
 }

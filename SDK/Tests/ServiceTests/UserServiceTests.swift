@@ -25,7 +25,7 @@ class UserServiceTests: XCTestCase {
     var cryptoService: CryptoServiceMock!
     var commonKeyService: CommonKeyServiceMock!
     var keychainService: KeychainServiceMock!
-    var bundle: Bundle!
+    var bundle: Foundation.Bundle!
     var keyPairTag = "come.exmaple.keypair"
     var versionValidator: SDKVersionValidatorMock!
 

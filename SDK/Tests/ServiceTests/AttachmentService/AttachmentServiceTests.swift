@@ -20,6 +20,8 @@ import Data4LifeFHIR
 
 class AttachmentServiceTests: XCTestCase {
 
+    private var bundle = Foundation.Bundle.current
+
     var documentService: DocumentServiceMock!
     var imageResizer: ImageResizerMock!
     var attachmentService: AttachmentService!
@@ -128,7 +130,7 @@ class AttachmentServiceTests: XCTestCase {
     }
 
     func testUploadAttachmentWithThumbnailsIds() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
@@ -190,7 +192,7 @@ class AttachmentServiceTests: XCTestCase {
     }
 
     func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanThumbnails() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
@@ -226,7 +228,7 @@ class AttachmentServiceTests: XCTestCase {
     }
 
     func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanSmallThumbnail() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
@@ -409,7 +411,7 @@ class AttachmentServiceTests: XCTestCase {
     }
 
     func testUploadTwoAttachmentsWithSameHash() {
-        let imageData = Bundle(for: type(of: self)).data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
         let attachment1 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let attachment2 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment1, attachment2])

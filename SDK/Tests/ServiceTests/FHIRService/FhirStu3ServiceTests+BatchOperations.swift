@@ -28,7 +28,7 @@ extension FhirStu3ServiceTests {
         recordService.createRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "should return array with one record")
-        fhirService.createFhirRecords([resource], decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.createFhirRecords([resource], decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, resource)
@@ -53,8 +53,8 @@ extension FhirStu3ServiceTests {
         recordService.fetchRecordResult = Promise.resolve(record)
 
         let asyncExpectation = expectation(description: "should return a resource")
-        fhirService.fetchFhirRecords(withIds: [resourceId], decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
-            .then { (result: BatchResult<FhirRecord<CarePlan>, String>) in
+        fhirService.fetchFhirRecords(withIds: [resourceId], decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
+            .then { (result: BatchResult<FhirRecord<Data4LifeFHIR.CarePlan>, String>) in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId)
                 XCTAssertEqual(result.success.first?.id, record.id)
@@ -73,7 +73,7 @@ extension FhirStu3ServiceTests {
         let resource = FhirFactory.createStu3CarePlanResource()
         resource.id = resourceId
         let record = DecryptedRecordFactory.create(resource)
-        let futureResource = resource.copy() as! CarePlan // swiftlint:disable:this force_cast
+        let futureResource = resource.copy() as! Data4LifeFHIR.CarePlan // swiftlint:disable:this force_cast
         futureResource.language = UUID().uuidString
         let futureRecord = record.copy(with: futureResource)
 
@@ -81,7 +81,7 @@ extension FhirStu3ServiceTests {
         recordService.updateRecordResult = Promise.resolve(futureRecord)
 
         let asyncExpectation = expectation(description: "should update language property")
-        fhirService.updateFhirRecords([resource], decryptedRecordType: DecryptedFhirStu3Record<CarePlan>.self)
+        fhirService.updateFhirRecords([resource], decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.0.resource, resource)

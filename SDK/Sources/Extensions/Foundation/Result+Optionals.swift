@@ -15,7 +15,7 @@
 import Foundation
 
 extension Result {
-    public var value: Success? {
+    var value: Success? {
         switch self {
         case .success(let value):
             return value
@@ -23,7 +23,7 @@ extension Result {
             return nil
         }
     }
-    public var error: Failure? {
+    var error: Failure? {
         switch self {
         case .success:
             return nil

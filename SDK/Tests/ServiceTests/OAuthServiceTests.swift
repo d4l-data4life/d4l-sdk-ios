@@ -17,7 +17,7 @@ import XCTest
 @testable import Data4LifeSDK
 import Alamofire
 import Then
-import AppAuth
+@testable import AppAuth
 
 class OAuthServiceTests: XCTestCase {
     var keychainService: KeychainServiceMock!
@@ -31,16 +31,19 @@ class OAuthServiceTests: XCTestCase {
     var authState: AuthStateMock!
     var versionValidator: SDKVersionValidatorMock!
     var numberOfRetries: Int!
-    var bundle: Bundle { return Bundle(for: type(of: self)) }
+    var bundle: Foundation.Bundle { return Bundle.current }
+
     var mockedTokenReponse: OIDTokenResponse {
-        guard
-            let payload = try? bundle.json(named: "authStateTokenResponseSuccess"),
-            let stringData =  payload["data"] as? String,
-            let mockedTokenResponse = try? NSKeyedUnarchiver.unarchivedObject(ofClass: OIDTokenResponse.self, from: Data(base64Encoded: stringData)!)
-        else {
-            fatalError("Could not load mocked payload data")
+        do {
+            let payload = try bundle.json(named: "authStateTokenResponseSuccess")
+            guard let stringData = payload?["data"] as? String else {
+                fatalError("Could not load mocked payload data")
+            }
+            let mockedTokenResponse = try NSKeyedUnarchiver.unarchivedObject(ofClass: OIDTokenResponse.self, from: Data(base64Encoded: stringData)!)
+            return mockedTokenResponse!
+        } catch {
+            fatalError("Could not load mocked payload data: \(error)")
         }
-        return mockedTokenResponse
     }
 
     override func setUp() {
@@ -387,7 +390,7 @@ class OAuthServiceTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "Should return success")
         oAuthService.isSessionActive()
-            .then {
+            .then { _ in
                 XCTAssertRouteCalled("GET", "/userinfo")
             }.onError { error in
                 XCTFail(error.localizedDescription)
@@ -403,7 +406,7 @@ class OAuthServiceTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should return an error")
 
         oAuthService.isSessionActive()
-            .then {
+            .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
@@ -421,7 +424,7 @@ class OAuthServiceTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should return an error")
 
         oAuthService.isSessionActive()
-            .then {
+            .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)

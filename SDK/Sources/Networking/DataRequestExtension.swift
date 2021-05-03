@@ -13,8 +13,9 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Alamofire
-import Then
+@_implementationOnly import Alamofire
+@_implementationOnly import Then
+import Foundation
 
 /// Make Alamofire compatible with custom completion handler
 extension DataRequest {

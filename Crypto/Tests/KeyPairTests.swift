@@ -14,9 +14,11 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-@testable import Data4LifeCrypto
+import Data4LifeCrypto
 
 class KeyPairTests: XCTestCase {
+    #if SWIFT_PACKAGE
+    #else
     func testGenerateLoadAndDestroyKeyPair() {
         do {
             let tag = UUID().uuidString
@@ -34,7 +36,7 @@ class KeyPairTests: XCTestCase {
             XCTAssertEqual(generatedKeyPair.algorithm.hash?.rawValue, loadedKeyPair.algorithm.hash?.rawValue)
 
             try KeyPair.destroy(tag: tag)
-        } catch {
+        } catch(let error) {
             XCTFail(error.localizedDescription)
         }
     }
@@ -66,4 +68,5 @@ class KeyPairTests: XCTestCase {
             try! KeyPair.destroy(tag: tag)
         }
     }
+    #endif
 }

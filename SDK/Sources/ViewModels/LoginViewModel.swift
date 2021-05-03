@@ -14,7 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+@_implementationOnly import Then
+import UIKit
 
 class LoginViewModel {
     private let client: Data4LifeClient
@@ -40,12 +41,12 @@ class LoginViewModel {
             let userAgent = OAuthExternalUserAgent(with: viewController)
 
             return async {
-                _ =  try await(self.client.oAuthService.presentLogin(with: userAgent,
+                _ =  try wait(self.client.oAuthService.presentLogin(with: userAgent,
                                                                      publicKey: encodedPublicKey,
                                                                      scopes: scopes,
                                                                      animated: true,
                                                                      authStateType: AuthState.self))
-                _ = try await(self.client.userService.fetchUserInfo())
+                _ = try wait(self.client.userService.fetchUserInfo())
             }
         } catch {
             loginInProgress = false

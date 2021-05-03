@@ -29,7 +29,7 @@ class ModelTests: XCTestCase {
         let resource = FhirFactory.createStu3CarePlanResource()
 
         do {
-            _ = try resource.map(to: CarePlan.self)
+            _ = try resource.map(to: Data4LifeFHIR.CarePlan.self)
         } catch {
             XCTFail("Should map DomainResource to CarePlan")
         }

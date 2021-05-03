@@ -113,7 +113,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
 
         // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = questionnaire.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
 
         let expectedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
@@ -259,7 +259,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
 
         // We expect that the parameter of the uploadAttachments method pass the attachments without an Id
         let expectedAttachmentsWithoutId = questionnaire.allAttachments!.compactMap {
-            ($0.copy() as! Attachment) // swiftlint:disable:this force_cast
+            ($0.copy() as! Data4LifeFHIR.Attachment) // swiftlint:disable:this force_cast
         }
 
         let expectedQuestionnaire = questionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast

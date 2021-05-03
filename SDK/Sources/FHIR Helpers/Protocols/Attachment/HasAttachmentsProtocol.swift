@@ -13,7 +13,7 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Data4LifeFHIR
+import Foundation
 
 protocol HasAttachments {
     var schema: AttachmentSchema { get }

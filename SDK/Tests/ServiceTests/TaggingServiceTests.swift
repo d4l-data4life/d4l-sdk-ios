@@ -64,7 +64,7 @@ class TaggingServiceTests: XCTestCase {
         expectedTags.lowercased()
 
         let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: DocumentReference.self, annotations: expectedAnnotations)
+        taggingService.makeTagGroup(for: Data4LifeFHIR.DocumentReference.self, annotations: expectedAnnotations)
             .then { tagGroup in
                 asyncExpectation.fulfill()
                 XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")

@@ -13,9 +13,9 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Then
-import Data4LifeCrypto
-import Alamofire
+@_implementationOnly import Data4LifeCrypto
+@_implementationOnly import Then
+@_implementationOnly import Alamofire
 
 protocol UserServiceType {
     func fetchUserInfo() -> Async<Void>
@@ -41,7 +41,7 @@ class UserService: UserServiceType {
 
     func fetchUserInfo() -> Async<Void> {
         return async {
-            let response: UserInfoResponse = try await(self.sessionService.request(route: Router.userInfo).responseDecodable())
+            let response: UserInfoResponse = try wait(self.sessionService.request(route: Router.userInfo).responseDecodable())
 
             guard
                 let eckData = Data(base64Encoded: response.commonKey),
@@ -61,7 +61,7 @@ class UserService: UserServiceType {
             let tagKey: Key = try JSONDecoder().decode(Key.self, from: decryptedTekData)
             self.cryptoService.tek = tagKey
 
-            try await(self.keychainService.set(response.userId, forKey: .userId))
+            try wait(self.keychainService.set(response.userId, forKey: .userId))
         }
     }
 }

@@ -16,9 +16,9 @@
 import Data4LifeFHIR
 import ModelsR4
 import ModelIO
-import Data4LifeCrypto
+@_implementationOnly import Data4LifeCrypto
 
-protocol AttachmentType: AnyObject, NSCopying {
+protocol AttachmentType: NSCopying {
     var attachmentId: String? { get set }
     var attachmentContentType: String? { get set }
     var attachmentDataString: String? { get set }
@@ -99,18 +99,6 @@ extension Data4LifeFHIR.Attachment: AttachmentType {
 }
 
 extension ModelsR4.Attachment: AttachmentType {
-
-    public static func with(title: String, creationDate: Date, contentType: String, data: Data) throws -> ModelsR4.Attachment {
-
-        let attachment = ModelsR4.Attachment()
-        attachment.attachmentDataString = data.base64EncodedString()
-        attachment.contentType = contentType.asFHIRStringPrimitive()
-        attachment.creationDate = creationDate
-        attachment.attachmentHash = data.sha1Hash
-        attachment.title = title.asFHIRStringPrimitive()
-        attachment.attachmentSize = data.count
-        return attachment
-    }
 
     var attachmentContentType: String? {
         get {

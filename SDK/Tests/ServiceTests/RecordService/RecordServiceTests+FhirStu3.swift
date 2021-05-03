@@ -101,7 +101,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         stub("POST", "/users/\(userId)/records", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should create record")
-        let createdRecord: Async<DecryptedFhirStu3Record<DocumentReference>> = recordService.createRecord(forResource: resource, annotations: annotations, userId: userId)
+        let createdRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.createRecord(forResource: resource, annotations: annotations, userId: userId)
         createdRecord.then { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertNotNil(result)
@@ -130,7 +130,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         oldDocument.id = oldRecord.id
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
-        let document = oldDocument.copy() as! DocumentReference // swiftlint:disable:this force_cast
+        let document = oldDocument.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle
         var record = DecryptedRecordFactory.create(document)
@@ -175,7 +175,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         stub("PUT", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should update record")
-        let updatedRecord: Async<DecryptedFhirStu3Record<DocumentReference>> = recordService.updateRecord(forResource: document,
+        let updatedRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.updateRecord(forResource: document,
                                                                                                             userId: userId,
                                                                                                           recordId: record.id,
                                                                                                           attachmentKey: record.attachmentKey)
@@ -209,7 +209,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         oldDocument.id = oldRecord.id
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
-        let document = oldDocument.copy() as! DocumentReference // swiftlint:disable:this force_cast
+        let document = oldDocument.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle
         var record = DecryptedRecordFactory.create(document)
@@ -255,7 +255,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         stub("PUT", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should update record")
-        let updatedRecord: Async<DecryptedFhirStu3Record<DocumentReference>> = recordService.updateRecord(forResource: document,
+        let updatedRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.updateRecord(forResource: document,
                                                                                                           userId: userId,
                                                                                                           recordId: record.id,
                                                                                                           attachmentKey: record.attachmentKey)
@@ -289,7 +289,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         oldDocument.id = oldRecord.id
         var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
-        let document = oldDocument.copy() as! DocumentReference // swiftlint:disable:this force_cast
+        let document = oldDocument.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle
         let annotations = ["new-annotation"]
@@ -336,7 +336,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         stub("PUT", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should update record")
-        let updatedRecord: Async<DecryptedFhirStu3Record<DocumentReference>> = recordService.updateRecord(forResource: document,
+        let updatedRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.updateRecord(forResource: document,
                                                                                                           annotations: annotations,
                                                                                                           userId: userId,
                                                                                                           recordId: record.id,
@@ -393,7 +393,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         stub("GET", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should return a record")
-        recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
+        recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { record in
                 defer { asyncExpectation.fulfill() }
 
@@ -447,7 +447,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                                     pageSize: 10,
                                     offset: 0,
                                     annotations: annotations,
-                                    decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
+                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1)
@@ -499,7 +499,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                                     pageSize: 10,
                                     offset: 0,
                                     annotations: annotations,
-                                    decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
+                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1 * 2)
@@ -528,7 +528,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                                     to: endDate,
                                     pageSize: 10,
                                     offset: 0,
-                                    decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
+                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 0)
@@ -549,7 +549,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = []
 
         let asyncExpectation = expectation(description: "should return header containg record count")
-        recordService.countRecords(userId: userId, resourceType: DocumentReference.self, annotations: annotations)
+        recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self, annotations: annotations)
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount)
@@ -571,7 +571,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = []
 
         let asyncExpectation = expectation(description: "should return header containg record count")
-        recordService.countRecords(userId: userId, resourceType: DocumentReference.self, annotations: annotations)
+        recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self, annotations: annotations)
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount * 2)
@@ -592,7 +592,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = []
 
         let asyncExpectation = expectation(description: "should fail counting records")
-        recordService.countRecords(userId: userId, resourceType: DocumentReference.self)
+        recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self)
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
@@ -631,7 +631,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                                     to: Date(),
                                     pageSize: 10,
                                     offset: 0,
-                                    decryptedRecordType: DecryptedFhirStu3Record<DocumentReference>.self)
+                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { _ in
                 XCTFail("Should return an error")
             }.onError { error in
@@ -654,7 +654,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.tek = nil
-        let createdRecord: Async<DecryptedFhirStu3Record<DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
+        let createdRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")
         }.onError { error in
@@ -679,7 +679,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.generateGCKeyResult = record.dataKey
 
         commonKeyService.currentKey = nil
-        let createdRecord: Async<DecryptedFhirStu3Record<DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
+        let createdRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")
         }.onError { error in

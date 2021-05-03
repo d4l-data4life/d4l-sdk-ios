@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+@_implementationOnly import Then
 
 protocol SDKVersionValidatorType {
     var sessionService: SessionService? { get }
@@ -26,7 +26,7 @@ protocol SDKVersionValidatorType {
 class SDKVersionValidator: SDKVersionValidatorType {
 
     private var infoService: InfoServiceType
-    private var sdkBundle: Bundle
+    private var sdkBundle: Foundation.Bundle
     private let sdkFileManager: SDKFileManagerType
     weak var sessionService: SessionService?
 
@@ -47,7 +47,7 @@ class SDKVersionValidator: SDKVersionValidatorType {
     func fetchCurrentVersionStatus() -> Async<VersionStatus> {
             return async {
                 let currentVersion = self.infoService.fetchSDKVersion()
-                let versionConfiguration = try await(self.fetchVersionConfigurationLocally())
+                let versionConfiguration = try wait(self.fetchVersionConfigurationLocally())
                 return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
             }
     }
@@ -58,7 +58,7 @@ class SDKVersionValidator: SDKVersionValidatorType {
                 fatalError("Session service required to use the VersionValidator")
             }
 
-            let versionConfiguration: SDKVersionConfiguration = try await(
+            let versionConfiguration: SDKVersionConfiguration = try wait(
                 sessionService.request(route:
                     Router.versionInfo(version: ValidatorVersion.v1.rawValue))
                     .responseDecodable())

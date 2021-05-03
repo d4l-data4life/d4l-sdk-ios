@@ -55,8 +55,8 @@ Data4Life can deprecate or unsupport old SDK versions that aren't anymore secure
 === Software requirements
 The {app-plat} SDK has the following software requirements:
 
-* Xcode 12 or later
-* iOS 12.0 or later
+* Xcode 12.4 or later
+* iOS 13.0 or later
 * Swift 5.3 or later
 
 === Installing dependency managers
@@ -64,26 +64,23 @@ The {app-plat} SDK has the following software requirements:
 This section describes how you get the SDK up and running.
 Use the following for dependency management for the {app-plat} SDK:
 
-* *Carthage* is a dependency manager written in Swift.
+* *Swift Package Manager* is a dependency manager from Apple included in XCode.
 It builds your dependencies and provides you with binary frameworks while you retain control over your project structure and setup.
 
 * *CocoaPods* is a dependency manager for Swift and Objective-C Cocoa projects.
 The file with the specification that describes the dependencies of the targets of one or more Xcode projects is called `Podfile`.
 
-==== Carthage
+==== Swift Package Manager
 
-To install Carthage, use the following:
+To install with Swift package manager, select your project’s Swift Packages tab, and add our repository url, either as ssh or https url:
 
 ----
-github "d4l-data4life/d4l-sdk-ios"
+https://github.com/d4l-data4life/d4l-sdk-ios.git
+OR
+git@github.com:d4l-data4life/d4l-sdk-ios.git
 ----
 
-[NOTE]
-====
-The SDK has a few <<Dependencies of the SDK, dependencies>>.
-You must add them and link them manually with icon:external-link[] https://github.com/Carthage/Carthage#nested-dependencies[your project].
-====
-
+In the next step, select the latest version, and then import both the `Data4LifeCrypto` and `Data4LifeSDK` libraries in your target.
 
 ==== CocoaPods
 
@@ -108,7 +105,6 @@ For more info, see icon:eye[] the https://github.com/d4l-data4life/d4l-cocoapods
 The {app-plat} SDK has the following dependencies:
 
 * https://github.com/Alamofire/Alamofire[Alamofire] icon:external-link[] – HTTP networking library written in Swift
-* https://github.com/krzyzanowskim/CryptoSwift[CryptoSwift] icon:external-link[] – collection of cryptographic algorithms implemented in Swift
 * https://github.com/freshOS/then[then] icon:external-link[] – Promises library for Swift
 * https://github.com/openid/AppAuth-iOS[AppAuth] icon:external-link[] – iOS and macOS SDK for communicating with OAuth 2.0 and OpenID Connect providers
 * https://github.com/SVProgressHUD/SVProgressHUD[SVProgressHUD] icon:external-link[] – progress head-up display (HUD) to display the progress of an ongoing task

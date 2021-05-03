@@ -32,9 +32,9 @@ struct Data4LifeConfiguration {
         case production = "PRODUCTION"
     }
 
-    private let bundle: Bundle
+    private let bundle: Foundation.Bundle
 
-    init(bundle: Bundle = Bundle.main) {
+    init(bundle: Foundation.Bundle = Bundle.main) {
         self.bundle = bundle
     }
 }

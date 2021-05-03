@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Alamofire
+@_implementationOnly import Alamofire
 
 public protocol Cancellable {
     func cancel()
