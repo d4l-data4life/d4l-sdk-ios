@@ -19,6 +19,7 @@
 
 protocol UserServiceType {
     func fetchUserInfo() -> Async<Void>
+    func getUserId() throws -> String
 }
 
 class UserService: UserServiceType {
@@ -63,5 +64,9 @@ class UserService: UserServiceType {
 
             try `await`(self.keychainService.set(response.userId, forKey: .userId))
         }
+    }
+
+    func getUserId() throws -> String {
+        try `await`(self.keychainService.get(.userId))
     }
 }

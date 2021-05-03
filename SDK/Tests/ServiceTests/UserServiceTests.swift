@@ -29,6 +29,10 @@ class UserServiceTests: XCTestCase {
     var keyPairTag = "come.exmaple.keypair"
     var versionValidator: SDKVersionValidatorMock!
 
+    override func tearDown() {
+        keychainService.clear()
+    }
+
     override func setUp() {
         super.setUp()
 
@@ -166,5 +170,28 @@ class UserServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5)
+    }
+
+    func testGetUserIdLoggedIn() {
+        let userId = UUID().uuidString
+        keychainService[.userId] = userId
+        do {
+            let actualUserId = try userService.getUserId()
+            XCTAssertEqual(actualUserId, userId)
+        } catch {
+            XCTFail("Should not return an error")
+        }
+    }
+
+    func testGetUserIdLoggedOut() {
+        keychainService[.userId] = nil
+        let expectedError = Data4LifeSDKError.notLoggedIn
+
+        do {
+            let _ = try userService.getUserId()
+            XCTFail("Should return an error")
+        } catch (let error) {
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+        }
     }
 }

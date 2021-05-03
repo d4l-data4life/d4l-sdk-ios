@@ -273,6 +273,15 @@ extension Data4LifeClient {
         guard oAuthService.sessionStateChanged == nil else { return }
         oAuthService.sessionStateChanged = completion
     }
+
+    public func getUserId(completion: @escaping ResultBlock<String>) {
+        do {
+            let userId = try userService.getUserId()
+            completion(.success(userId))
+        } catch {
+            completion(.failure(error))
+        }
+    }
 }
 
 extension Data4LifeClient {
