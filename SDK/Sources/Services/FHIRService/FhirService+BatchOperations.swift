@@ -24,7 +24,7 @@ extension FhirService {
             var success: [FhirRecord<DR.Resource>] = []
             var failed: [(DR.Resource, Error)] = []
             try resources.forEach { (resource) in
-                try `await`(self.createFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
+                try wait(self.createFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
                             .then { success.append($0) }
                             .onError { failed.append((resource, $0)) }
                 )
@@ -41,7 +41,7 @@ extension FhirService {
             var success: [FhirRecord<DR.Resource>] = []
             var failed: [(DR.Resource, Error)] = []
             try resources.forEach { resource in
-                try `await`(self.updateFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
+                try wait(self.updateFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
                             .then { success.append($0) }
                             .onError { failed.append((resource, $0)) }
                 )
@@ -57,7 +57,7 @@ extension FhirService {
             var success: [FhirRecord<DR.Resource>] = []
             var failed: [(String, Error)] = []
             try identifiers.forEach { recordId in
-                try `await`(self.fetchFhirRecord(withId: recordId, decryptedRecordType: decryptedRecordType)
+                try wait(self.fetchFhirRecord(withId: recordId, decryptedRecordType: decryptedRecordType)
                             .then { success.append($0) }
                             .onError { failed.append((recordId, $0)) }
                 )
@@ -77,7 +77,7 @@ extension FhirService {
                 do {
                     let downloadProgress = Progress(totalUnitCount: 1, parent: parentProgress, pendingUnitCount: 1)
                     downloadProgress.becomeCurrent(withPendingUnitCount: 1)
-                    let record: FhirRecord<DR.Resource> = try `await`(self.downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: decryptedRecordType))
+                    let record: FhirRecord<DR.Resource> = try wait(self.downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: decryptedRecordType))
                     success.append(record)
                     downloadProgress.resignCurrent()
                 } catch {
@@ -93,7 +93,7 @@ extension FhirService {
             var success: [String] = []
             var failed: [(String, Error)] = []
             try identifiers.forEach { recordId in
-                try `await`(self.deleteRecord(withId: recordId)
+                try wait(self.deleteRecord(withId: recordId)
                             .then { success.append(recordId) }
                             .onError { failed.append((recordId, $0)) }
                 )

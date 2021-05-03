@@ -46,10 +46,10 @@ class DocumentService: DocumentServiceType {
 
     func create(document: Document, key: Key) -> Promise<Document> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
+            let userId = try wait(self.keychainService.get(.userId))
             let encryptedData = try self.cryptoService.encrypt(data: document.data, key: key)
             let route = Router.createDocument(userId: userId, headers: [("Content-Type", "application/octet-stream")])
-            let response: DocumentResponse = try `await`(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
+            let response: DocumentResponse = try wait(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
             return Document(id: response.identifier, data: document.data)
         }
     }
@@ -59,7 +59,7 @@ class DocumentService: DocumentServiceType {
         return Async { (resolve: @escaping (Document) -> Void, reject: @escaping (Error) -> Void) in
 
             do {
-                let userId = try `await`(self.keychainService.get(.userId))
+                let userId = try wait(self.keychainService.get(.userId))
                 let route = Router.fetchDocument(userId: userId, documentId: identifier)
                 let request = try self.sessionService.request(route: route)
 
@@ -72,7 +72,7 @@ class DocumentService: DocumentServiceType {
                     reject(URLError.init(URLError.cancelled))
                 }
 
-                let encryptedData = try `await`(request.responseData())
+                let encryptedData = try wait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
                 resolve(Document(id: identifier, data: decryptedData))
             } catch {
@@ -83,9 +83,9 @@ class DocumentService: DocumentServiceType {
 
     func deleteDocument(withId identifier: String) -> Promise<Void> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
+            let userId = try wait(self.keychainService.get(.userId))
             let route = Router.deleteDocument(userId: userId, documentId: identifier)
-            return try `await`(self.sessionService.request(route: route).responseEmpty())
+            return try wait(self.sessionService.request(route: route).responseEmpty())
         }
     }
 
