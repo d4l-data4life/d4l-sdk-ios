@@ -67,6 +67,6 @@ class UserService: UserServiceType {
     }
 
     func getUserId() throws -> String {
-        try `await`(self.keychainService.get(.userId))
+        try wait(self.keychainService.get(.userId))
     }
 }
