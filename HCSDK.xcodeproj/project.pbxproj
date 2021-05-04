@@ -207,8 +207,6 @@
 		CD10926B225B901E00325389 /* Async+RecordTransformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109216225B901E00325389 /* Async+RecordTransformations.swift */; };
 		CD10926C225B901E00325389 /* Async+ResultBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109217225B901E00325389 /* Async+ResultBlock.swift */; };
 		CD10926D225B901E00325389 /* Async+CryptoServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109218225B901E00325389 /* Async+CryptoServiceType.swift */; };
-		CD10926E225B901E00325389 /* Dictionary+toArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921A225B901E00325389 /* Dictionary+toArray.swift */; };
-		CD10926F225B901E00325389 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921B225B901E00325389 /* Dictionary+Extensions.swift */; };
 		CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921C225B901E00325389 /* Date+CustomFormatter.swift */; };
 		CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109221225B901E00325389 /* Data4LifeClient.swift */; };
 		CD109275225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */; };
@@ -605,8 +603,6 @@
 		CD109216225B901E00325389 /* Async+RecordTransformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+RecordTransformations.swift"; sourceTree = "<group>"; };
 		CD109217225B901E00325389 /* Async+ResultBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+ResultBlock.swift"; sourceTree = "<group>"; };
 		CD109218225B901E00325389 /* Async+CryptoServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+CryptoServiceType.swift"; sourceTree = "<group>"; };
-		CD10921A225B901E00325389 /* Dictionary+toArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+toArray.swift"; sourceTree = "<group>"; };
-		CD10921B225B901E00325389 /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		CD10921C225B901E00325389 /* Date+CustomFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+CustomFormatter.swift"; sourceTree = "<group>"; };
 		CD109221225B901E00325389 /* Data4LifeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeClient.swift; sourceTree = "<group>"; };
 		CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3Resource.swift"; sourceTree = "<group>"; };
@@ -1441,8 +1437,6 @@
 		CD109219225B901E00325389 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				CD10921A225B901E00325389 /* Dictionary+toArray.swift */,
-				CD10921B225B901E00325389 /* Dictionary+Extensions.swift */,
 				CD10921C225B901E00325389 /* Date+CustomFormatter.swift */,
 				CD7B29262280341A0091A8EA /* Result+Optionals.swift */,
 				0ADB117A2554409D00E8129C /* String+Extensions.swift */,
@@ -2245,7 +2239,6 @@
 				CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */,
 				CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */,
 				CD109243225B901E00325389 /* DecryptedRecord.swift in Sources */,
-				CD10926F225B901E00325389 /* Dictionary+Extensions.swift in Sources */,
 				0AF4C09522DDEC8900C5CD67 /* DownloadType.swift in Sources */,
 				CD109247225B901E00325389 /* FHIRElement.swift in Sources */,
 				0AF4C09722E0749B00C5CD67 /* ThumbnailsIdFactory.swift in Sources */,
@@ -2260,7 +2253,6 @@
 				36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */,
 				36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */,
 				365525EE250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift in Sources */,
-				CD10926E225B901E00325389 /* Dictionary+toArray.swift in Sources */,
 				3689D7FA24EABABB004295D9 /* AppDataRecord.swift in Sources */,
 				CD10926C225B901E00325389 /* Async+ResultBlock.swift in Sources */,
 				3689D7F824EABA34004295D9 /* SDKRecord.swift in Sources */,

@@ -71,7 +71,6 @@ struct TaggingService: TaggingServiceType {
         tags.merge(R.searchTags) { (tagsValue, _) -> String in
             return tagsValue
         }
-        tags.lowercased()
         return TagGroup(tags: tags, annotations: annotations ?? [])
     }
 

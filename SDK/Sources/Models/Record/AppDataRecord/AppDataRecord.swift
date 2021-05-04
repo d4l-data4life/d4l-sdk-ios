@@ -32,7 +32,6 @@ public struct AppDataRecord {
 extension Data: SDKResource {
     public static var searchTags: [String : String] {
         var tags = [TaggingService.Keys.flag.rawValue: TaggingService.FlagKey.appData.rawValue]
-        tags.lowercased()
         return tags
     }
 
