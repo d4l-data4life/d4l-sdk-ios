@@ -21,20 +21,22 @@ import Then
 import Data4LifeFHIR
 import Data4LifeCrypto
 
-class Data4LifeClientUserTests: XCTestCase {
-    var client: Data4LifeClient!
+class Data4LifeClientUserServiceModuleTests: XCTestCase {
+    private var client: Data4LifeClient!
+    private var userService: UserService!
 
-    var sessionService: SessionService!
-    var oAuthService: OAuthServiceMock!
-    var userService: UserServiceMock!
-    var cryptoService: CryptoServiceMock!
-    var commonKeyService: CommonKeyServiceMock!
-    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>!
-    var appDataService: AppDataServiceMock!
-    var keychainService: KeychainServiceMock!
-    var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
-    var environment: Environment!
-    var versionValidator: SDKVersionValidatorMock!
+    private var bundle: Foundation.Bundle!
+
+    private var sessionService: SessionService!
+    private var oAuthService: OAuthServiceMock!
+    private var cryptoService: CryptoServiceMock!
+    private var commonKeyService: CommonKeyServiceMock!
+    private var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>!
+    private var appDataService: AppDataServiceMock!
+    private var keychainService: KeychainServiceMock!
+    private var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
+    private var environment: Environment!
+    private var versionValidator: SDKVersionValidatorMock!
 
     override func setUp() {
         super.setUp()
@@ -43,8 +45,12 @@ class Data4LifeClientUserTests: XCTestCase {
 
         let container = Data4LifeDITestContainer()
         container.registerDependencies()
+        container.register(scope: .containerInstance) { (_) -> UserServiceType in
+            UserService(container: container)
+        }
+
         self.client = Data4LifeClient(container: container,
-                                                           environment: environment)
+                                      environment: environment)
 
         do {
             self.sessionService = try container.resolve()
@@ -57,43 +63,35 @@ class Data4LifeClientUserTests: XCTestCase {
             self.keychainService = try container.resolve(as: KeychainServiceType.self)
             self.versionValidator = try container.resolve(as: SDKVersionValidatorType.self)
             self.appDataService = try container.resolve(as: AppDataServiceType.self)
+            self.bundle = try container.resolve()
         } catch {
             XCTFail(error.localizedDescription)
         }
 
-        self.keychainService[.userId] = UUID().uuidString
         fhirService.keychainService = keychainService
         fhirService.recordService = recordService
         fhirService.cryptoService = cryptoService
         appDataService.keychainService = keychainService
         appDataService.recordService = recordService
         appDataService.cryptoService = cryptoService
+
+        Router.baseUrl = "http://example.com"
+        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
     }
 
     override func tearDown() {
         super.tearDown()
         clearStubs()
+        keychainService.clear()
     }
 }
 
-extension Data4LifeClientUserTests {
-    func testClientInfoValid() {
-        let clientId = UUID().uuidString
-        let redirectURL = URL(string: "http://domain.example.com/")!
-
-        oAuthService.redirectURL = redirectURL
-        oAuthService.clientId = clientId
-
-        XCTAssertEqual(client.clientId, clientId)
-        XCTAssertEqual(client.redirectURL, redirectURL.absoluteString)
-    }
-
-    func testClientConfigureDependencies() {
-        XCTAssertNotNil(self.versionValidator.setSessionServiceCalledWith, "Session Service wasn't injected in the validator as the dependencies configuration were expecting")
-        XCTAssertEqual(self.versionValidator.fetchVersionConfigOnlineCalled, true, "Expected version configuration endpoint wasn't called")
-    }
+extension Data4LifeClientUserServiceModuleTests {
 
     func testLoginSuccessWithDefaultScopes() {
+        let userId = UUID().uuidString
+        stubUserInfo(with: userId)
+
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
         let viewController = UIViewController()
         window.rootViewController = viewController
@@ -106,7 +104,6 @@ extension Data4LifeClientUserTests {
 
         oAuthService.presentLoginResult = Async.resolve()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true) { result in
@@ -117,7 +114,6 @@ extension Data4LifeClientUserTests {
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.0 is OAuthExternalUserAgent)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.1 == encodedPublicKey)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.2 == self.client.defaultScopes)
-            XCTAssertTrue(self.userService.fetchUserInfoCalled)
             XCTAssertNil(result.error)
             XCTAssertNotNil(try? KeyPair.destroy(tag: tag))
         }
@@ -126,6 +122,9 @@ extension Data4LifeClientUserTests {
     }
 
     func testLoginSuccessWithCustomScopes() {
+        let userId = UUID().uuidString
+        stubUserInfo(with: userId)
+
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
         let viewController = UIViewController()
         window.rootViewController = viewController
@@ -138,7 +137,6 @@ extension Data4LifeClientUserTests {
 
         oAuthService.presentLoginResult = Async.resolve()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Async.resolve()
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true, scopes: scopes) { result in
@@ -149,7 +147,6 @@ extension Data4LifeClientUserTests {
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.0 is OAuthExternalUserAgent)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.1 == encodedPublicKey)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.2 == scopes)
-            XCTAssertTrue(self.userService.fetchUserInfoCalled)
             XCTAssertNil(result.error)
             XCTAssertNotNil(try? KeyPair.destroy(tag: tag))
         }
@@ -225,17 +222,18 @@ extension Data4LifeClientUserTests {
                                 XCTAssertNil(viewController.presentedViewController)
                                 XCTAssertNotNil(window.rootViewController)
                                 XCTAssertNotNil(result.error)
-        })
+                            })
 
         waitForExpectations(timeout: 5)
     }
 
     func testLoginFailCouldNotLoadUserInfo() {
+        stub("GET", "/userinfo", with: ["invalid-payload"])
+
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
         let viewController = UIViewController()
         window.rootViewController = viewController
         window.makeKeyAndVisible()
-        let expectedError = Data4LifeSDKError.notLoggedIn
 
         let tag = "de.gesundheitscloud.keypair.fail.load.user.info"
         let keypair = KeyFactory.createKeyPair(tag: tag)
@@ -243,9 +241,8 @@ extension Data4LifeClientUserTests {
 
         oAuthService.presentLoginResult = Async.resolve()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Async.reject(expectedError)
 
-        let asyncExpectation = expectation(description: "should perform successful login")
+        let asyncExpectation = expectation(description: "should not perform successful login")
         client.presentLogin(on: viewController, animated: true) { result in
             defer { asyncExpectation.fulfill() }
             XCTAssertTrue(Thread.isMainThread)
@@ -253,160 +250,17 @@ extension Data4LifeClientUserTests {
             XCTAssertNotNil(window.rootViewController)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.0 is OAuthExternalUserAgent)
             XCTAssertTrue(self.oAuthService.presentLoginCalled?.1 == encodedPublicKey)
-            XCTAssertTrue(self.userService.fetchUserInfoCalled)
             XCTAssertNotNil(result.error)
-            XCTAssertEqual(expectedError, result.error as? Data4LifeSDKError)
+            XCTAssertEqual(result.error?.localizedDescription.contains("The data couldn’t be read because it isn’t in the correct format."), true)
             XCTAssertNotNil(try? KeyPair.destroy(tag: tag))
         }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testLogout() {
-        XCTAssertFalse(oAuthService.logoutCalled)
-        oAuthService.logoutResult = Async.resolve()
-
-        let asyncExpectation = expectation(description: "should logout")
-
-        client.logout { result in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertTrue(Thread.isMainThread)
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-
-            XCTAssertTrue(self.oAuthService.logoutCalled)
-            XCTAssertTrue(self.cryptoService.deleteKeyPairCalled)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testLoggedInTrue() {
-        cryptoService.tek = KeyFactory.createKey(.tag)
-        commonKeyService.currentKey = KeyFactory.createKey(.common)
-        oAuthService.isSessionActiveResult = Async.resolve()
-
-        let asyncExpectation = expectation(description: "should return success true")
-        client.isUserLoggedIn { result  in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertTrue(self.oAuthService.isSessionActiveCalled)
-            XCTAssertNil(result.error)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testLoggedInFalse() {
-        cryptoService.tek = KeyFactory.createKey(.tag)
-        commonKeyService.currentKey = KeyFactory.createKey(.common)
-
-        let asyncExpectation = expectation(description: "should return success false")
-        client.isUserLoggedIn { result  in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertTrue(self.oAuthService.isSessionActiveCalled)
-            XCTAssertNotNil(result.error)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testLoggedInFalseMissingKeys() {
-        let asyncExpectation = expectation(description: "should return success false")
-        client.isUserLoggedIn { result  in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertFalse(self.oAuthService.isSessionActiveCalled)
-            XCTAssertNotNil(result.error)
-            XCTAssertEqual(result.error as? Data4LifeSDKError, Data4LifeSDKError.notLoggedIn)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testCountAll() {
-        let userId = UUID().uuidString
-        let count = 3
-
-        keychainService[.userId] = userId
-        fhirService.countRecordsResult = Async.resolve(count)
-
-        let asyncExpectation = expectation(description: "should return count of all resources")
-        client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { result in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertNil(result.error)
-            XCTAssertEqual(count, result.value)
-            XCTAssertTrue(self.recordService.countRecordsCalledWith?.1 == nil)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testCallbackOnBackgroundThread() {
-        let count = 3
-        let queue = DispatchQueue.global(qos: .background)
-
-        keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Async.resolve(count)
-
-        let asyncExpectation = expectation(description: "should return response with count on background thread")
-        client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertNil(result.error)
-            XCTAssertEqual(result.value, count)
-            XCTAssertFalse(Thread.isMainThread)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testCallbackOnUIThread() {
-        let count = 3
-        let queue = DispatchQueue.main
-
-        keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Async.resolve(count)
-
-        let asyncExpectation = expectation(description: "should return response with count on UI thread")
-        client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
-            defer { asyncExpectation.fulfill() }
-            XCTAssertNil(result.error)
-            XCTAssertEqual(result.value, count)
-            XCTAssertTrue(Thread.isMainThread)
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testSessionStateBecomeActive() {
-        let state = true
-        let asyncExpectation = expectation(description: "should return response after state changes")
-
-        client.sessionStateDidChange { newState in
-            asyncExpectation.fulfill()
-            XCTAssertEqual(state, newState)
-        }
-
-        // mock state change call
-        oAuthService.sessionStateChanged?(state)
-        waitForExpectations(timeout: 5)
-    }
-
-    func testSessionStateRegisterDuplicateListener() {
-        let asyncExpectation = expectation(description: "should recieve response in first callback")
-        let firstCallback: (Bool) -> Void = { _ in asyncExpectation.fulfill() }
-        let secondCallback: (Bool) -> Void = { _ in }
-
-        client.sessionStateDidChange(completion: firstCallback)
-        XCTAssertNotNil(oAuthService.sessionStateChanged)
-        client.sessionStateDidChange(completion: secondCallback)
-
-        // mock state change call
-        oAuthService.sessionStateChanged?(true)
-        waitForExpectations(timeout: 5)
-    }
-
     func testGetUserIdWhenLoggedIn() {
         let userId = UUID().uuidString
-        userService.getUserIdResult = userId
+        stubUserInfo(with: userId)
 
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
         client.getUserId { result  in
@@ -419,8 +273,6 @@ extension Data4LifeClientUserTests {
     }
 
     func testGetUserIdWhenLoggedOutError() {
-        userService.getUserIdResult = nil
-
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
         client.getUserId { result  in
             defer { asyncExpectation.fulfill() }
@@ -429,5 +281,39 @@ extension Data4LifeClientUserTests {
         }
 
         waitForExpectations(timeout: 5)
+    }
+}
+
+private extension Data4LifeClientUserServiceModuleTests {
+    func stubUserInfo(with userId: String) {
+        let keypair: KeyPair = try! bundle.decodable(fromJSON: "asymPrivateExchangeKeyPKCS8")
+        let commonKey: Key = try! bundle.decodable(fromJSON: "symCommonExchangeKey")
+        let tagKey: Key = try! bundle.decodable(fromJSON: "symTagExchangeKey")
+
+        guard
+            let encryptedTestData = try? bundle.json(named: "encryptedCommonTekKeys") as? [String: String],
+            encryptedTestData["tek_iv"] != nil,
+            let encryptedCommonKey = encryptedTestData["encrypted_common_key"],
+            let encryptedTagKey = encryptedTestData["encrypted_tek"]
+        else {
+            XCTFail("Should load test data")
+            return
+        }
+
+        let ckData: Data = try! JSONEncoder().encode(commonKey)
+        let tekData: Data = try! JSONEncoder().encode(tagKey)
+        let eckData: Data = Data(base64Encoded: encryptedCommonKey)!
+        let etekData: Data = Data(base64Encoded: encryptedTagKey)!
+
+        cryptoService.fetchOrGenerateKeyPairResult = keypair
+        cryptoService.decryptDataKeyPairForInput = [(eckData, ckData)]
+        cryptoService.decryptDataForInput = [(etekData, tekData)]
+        keychainService[.userId] = userId
+
+        let data: [String: String] = [ "sub": userId,
+                                       "common_key": encryptedCommonKey,
+                                       "tag_encryption_key": encryptedTagKey]
+
+        stub("GET", "/userinfo", with: data)
     }
 }

@@ -31,4 +31,12 @@ class UserServiceMock: UserServiceType {
         logoutCalledWith = (refreshToken)
         return logoutResult ?? Promise.reject()
     }
+
+    var getUserIdResult: String?
+    func getUserId() throws -> String {
+        guard let result = getUserIdResult else {
+            throw Data4LifeSDKError.notLoggedIn
+        }
+        return result
+    }
 }
