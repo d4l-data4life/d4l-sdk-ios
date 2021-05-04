@@ -15,7 +15,6 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-
 @_implementationOnly import Then
 
 protocol HasAttachmentOperationsDependencies {
@@ -50,7 +49,7 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                                                                     downloadType: DownloadType,
                                                                     parentProgress: Progress) -> Promise<A> {
         return async {
-            let attachments: [A] = try `await`(self.downloadAttachments(of: type,
+            let attachments: [A] = try wait(self.downloadAttachments(of: type,
                                                                       decryptedRecordType: decryptedRecordType,
                                                                       withIds: [identifier],
                                                                       recordId: recordId,
@@ -77,8 +76,8 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                                                                      downloadType: DownloadType,
                                                                      parentProgress: Progress) -> Promise<[A]> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            let record = try `await`(self.recordService.fetchRecord(recordId: recordId,
+            let userId = try wait(self.keychainService.get(.userId))
+            let record = try wait(self.recordService.fetchRecord(recordId: recordId,
                                                                   userId: userId,
                                                                   decryptedRecordType: DR.self))
 
@@ -86,7 +85,7 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                 let attachmentKey = record.attachmentKey,
                 let resourceWithAttachments = record.resource as? HasAttachments
             else { throw Data4LifeSDKError.couldNotFindAttachment }
-            let attachments: [AttachmentType] = try `await`(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+            let attachments: [AttachmentType] = try wait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
                                                                                                   attachmentIds: identifiers,
                                                                                                   downloadType: downloadType,
                                                                                                   key: attachmentKey,

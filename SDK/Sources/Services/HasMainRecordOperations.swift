@@ -39,23 +39,23 @@ protocol HasMainRecordOperations {
 extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
     func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            return try `await`(self.recordService.countRecords(userId: userId, resourceType: type, annotations: annotations))
+            let userId = try wait(self.keychainService.get(.userId))
+            return try wait(self.recordService.countRecords(userId: userId, resourceType: type, annotations: annotations))
         }
     }
 
     func deleteRecord(withId identifier: String) -> Promise<Void> {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            return try `await`(self.recordService.deleteRecord(recordId: identifier, userId: userId))
+            let userId = try wait(self.keychainService.get(.userId))
+            return try wait(self.recordService.deleteRecord(recordId: identifier, userId: userId))
         }
     }
 
     func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
                                                              decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == DR.Resource {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            let decryptedRecord: DR = try `await`(self.recordService.fetchRecord(recordId: identifier, userId: userId))
+            let userId = try wait(self.keychainService.get(.userId))
+            let decryptedRecord: DR = try wait(self.recordService.fetchRecord(recordId: identifier, userId: userId))
             return Record(decryptedRecord: decryptedRecord)
         }
     }
@@ -68,8 +68,8 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
                                                               pageSize: Int?,
                                                               offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
         return async {
-            let userId = try `await`(self.keychainService.get(.userId))
-            let decryptedRecords: [DR] = try `await`(self.recordService.searchRecords(for: userId,
+            let userId = try wait(self.keychainService.get(.userId))
+            let decryptedRecords: [DR] = try wait(self.recordService.searchRecords(for: userId,
                                                                                     from: startDate,
                                                                                     to: endDate,
                                                                                     pageSize: pageSize,

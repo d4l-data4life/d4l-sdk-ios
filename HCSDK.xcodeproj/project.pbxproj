@@ -82,6 +82,9 @@
 		3679AAA725923BF90006494F /* Data4LifeClient+FhirR4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAA625923BF90006494F /* Data4LifeClient+FhirR4Tests.swift */; };
 		3679AAB125923D560006494F /* Data4LifeClient+FhirR4AttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAB025923D560006494F /* Data4LifeClient+FhirR4AttachmentTests.swift */; };
 		3679AAB725923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAB625923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift */; };
+		3682F78B26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */; };
+		3682F78D264024C200C03F55 /* Data4LifeClient+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */; };
+		3682F78F2640381E00C03F55 /* Await+Swift6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78E2640381E00C03F55 /* Await+Swift6.swift */; };
 		3685D42D25920C5C00F97F9E /* FhirR4ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */; };
 		3685D44B25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */; };
 		3685D4552592154400F97F9E /* r4-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4542592154400F97F9E /* r4-questionnaire.json */; };
@@ -473,6 +476,9 @@
 		367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTestHelpers.swift; sourceTree = "<group>"; };
 		367B87EE23F6D78800A6155E /* FhirStu3ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		367B87F023F6D86200A6155E /* stu3-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire.json"; sourceTree = "<group>"; };
+		3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+UserServiceModuleTests.swift"; sourceTree = "<group>"; };
+		3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+User.swift"; sourceTree = "<group>"; };
+		3682F78E2640381E00C03F55 /* Await+Swift6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Await+Swift6.swift"; sourceTree = "<group>"; };
 		3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirR4ServiceTests.swift; sourceTree = "<group>"; };
 		3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		3685D4542592154400F97F9E /* r4-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire.json"; sourceTree = "<group>"; };
@@ -932,6 +938,14 @@
 				3679AAB625923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift */,
 			);
 			path = "Client+FhirR4Tests";
+			sourceTree = "<group>";
+		};
+		3682F78926400C8300C03F55 /* ModuleTests */ = {
+			isa = PBXGroup;
+			children = (
+				3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */,
+			);
+			path = ModuleTests;
 			sourceTree = "<group>";
 		};
 		3685D42B25920C0E00F97F9E /* RecordService */ = {
@@ -1419,6 +1433,7 @@
 				CD109216225B901E00325389 /* Async+RecordTransformations.swift */,
 				CD109217225B901E00325389 /* Async+ResultBlock.swift */,
 				CD109218225B901E00325389 /* Async+CryptoServiceType.swift */,
+				3682F78E2640381E00C03F55 /* Await+Swift6.swift */,
 			);
 			path = Async;
 			sourceTree = "<group>";
@@ -1445,6 +1460,7 @@
 				36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */,
 				366A445A2587AF690003FBCE /* Data4LifeClient+FhirR4Attachment.swift */,
 				3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */,
+				3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -1518,17 +1534,18 @@
 		CD841DB2225CBE80002656D5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DFE225CBE80002656D5 /* Info.plist */,
-				CD841DFD225CBE80002656D5 /* Data4LifeSDK-Version.plist */,
 				CD841DE0225CBE80002656D5 /* BenchmarkClient */,
 				CD841DC9225CBE80002656D5 /* ClientTests */,
+				CD841DFD225CBE80002656D5 /* Data4LifeSDK-Version.plist */,
 				3607BCD2237AC5DB004C45F3 /* DI */,
 				CD841DDC225CBE80002656D5 /* Extensions */,
 				CD841DF8225CBE80002656D5 /* Factories */,
 				CD841DD2225CBE80002656D5 /* Helpers */,
 				CD841DD5225CBE80002656D5 /* HelperTests */,
+				CD841DFE225CBE80002656D5 /* Info.plist */,
 				CD841DB3225CBE80002656D5 /* Mocks */,
 				CD841DF0225CBE80002656D5 /* ModelTests */,
+				3682F78926400C8300C03F55 /* ModuleTests */,
 				CD9B013F225E432A007878EF /* Resources */,
 				360018882399110C004D9048 /* RouterTests */,
 				CD841DFF225CBE80002656D5 /* ServiceTests */,
@@ -2197,6 +2214,7 @@
 				CD10924F225B901E00325389 /* LoginViewController.swift in Sources */,
 				36080C37237DB12900085476 /* Wrapper.swift in Sources */,
 				0AF4C09322DDD18900C5CD67 /* ImageResizer.swift in Sources */,
+				3682F78D264024C200C03F55 /* Data4LifeClient+User.swift in Sources */,
 				CD109279225B901E00325389 /* OAuthService.swift in Sources */,
 				0A4EB42623EA850D00D0A4AA /* HasIdentifiableAttachments.swift in Sources */,
 				CD109241225B901E00325389 /* ClientConfiguration.swift in Sources */,
@@ -2234,6 +2252,7 @@
 				0A4EB42423E97F9E00D0A4AA /* AttachmentSchema.swift in Sources */,
 				36DD7A5B255ED0D600FA6EB7 /* Encodable+Data.swift in Sources */,
 				3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */,
+				3682F78F2640381E00C03F55 /* Await+Swift6.swift in Sources */,
 				36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */,
 				36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */,
 				CD109277225B901E00325389 /* RecordService.swift in Sources */,
@@ -2349,6 +2368,7 @@
 				36E646DD258901EB00C6B51C /* FhirR4ServiceTests+BatchOperations.swift in Sources */,
 				CDCB9DE1225F54A6004A565F /* CryptoServiceTests.swift in Sources */,
 				3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */,
+				3682F78B26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift in Sources */,
 				36E6469F2588F5CD00C6B51C /* AnySDKResource.swift in Sources */,
 				3634699E24ED693D001EEE66 /* AppDataServiceMock.swift in Sources */,
 			);

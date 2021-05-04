@@ -13,9 +13,7 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
 @_implementationOnly import Then
-import UIKit
 
 /// Returns either an error or an object
 public typealias ResultBlock<Value> = (Result<Value, Error>) -> Void
@@ -126,16 +124,6 @@ public class Data4LifeClient {
         configureDependencies()
     }
 
-    /// OAuth client id
-    public var clientId: String? {
-        return oAuthService.clientId
-    }
-
-    /// OAuth redirect url
-    public var redirectURL: String? {
-        return oAuthService.redirectURL.absoluteString
-    }
-
     /// Enables logging for debug configurations, defaults to false
     public var isLoggingEnabled: Bool {
         get {
@@ -155,7 +143,7 @@ extension Data4LifeClient {
     private func configureDependencies() {
         sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
-        try? `await`(versionValidator.fetchVersionConfigurationRemotely())
+        try? wait(versionValidator.fetchVersionConfigurationRemotely())
     }
 }
 
@@ -190,88 +178,6 @@ extension Data4LifeClient {
         } catch {
             fatalError(error.localizedDescription)
         }
-    }
-
-    /**
-     Pushes the loginView to the provided viewController.
-
-     - parameter viewController: ViewController on which the loginView is pushed
-     - parameter animated: Bool that decides if animations should happen in the loginView
-     - parameter scopes: request permissions with OAuth2 scopes
-     - parameter presentationCompletion: Callback that is called when the viewController is opened
-     - parameter loginCompletion: Callback that is called when login process is done
-     */
-    public func presentLogin(on viewController: UIViewController,
-                             animated: Bool,
-                             scopes: [String]? = nil,
-                             presentationCompletion: (() -> Void)? = nil,
-                             loginCompletion: @escaping DefaultResultBlock) {
-        let loginViewController = LoginViewController(client: self, scopes: scopes ?? defaultScopes)
-
-        viewController
-            .present(loginViewController, animated: animated)
-            .chain { presentationCompletion?() }
-            .then(loginViewController.presentLoginScreen)
-
-        loginViewController
-            .successHandler
-            .chain(loginViewController.dismiss(animated: animated))
-            .complete(loginCompletion)
-    }
-
-    /**
-     Clears all credentials from the client and performs logout
-
-     - parameter completion: Completion that returns an empty result
-     */
-    public func logout(queue: DispatchQueue = responseQueue,
-                       completion: @escaping DefaultResultBlock) {
-        oAuthService
-            .logout()
-            .then(cryptoService.deleteKeyPair())
-            .complete(queue: queue, completion)
-    }
-
-    /**
-     Checks if the user is logged in, requires active internet connection
-
-     - parameter completion: Completion that returns boolean representing current state
-     */
-    public func isUserLoggedIn(queue: DispatchQueue = responseQueue,
-                               _ completion: @escaping ResultBlock<Void>) {
-        guard commonKeyService.currentKey != nil, cryptoService.tek != nil else {
-            completion(.failure(Data4LifeSDKError.notLoggedIn))
-            return
-        }
-
-        oAuthService.isSessionActive().complete(queue: queue, completion)
-    }
-
-    /**
-     Refresh data tokens
-
-     - parameter completion: Completion closure to be called after the token have been refreshed
-     */
-    public func refreshedAccessToken(completion: @escaping ResultBlock<String?>) {
-        oAuthService.refreshTokens { result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success:
-                completion(.success(self.keychainService[.accessToken]))
-            }
-        }
-    }
-
-    /**
-     Returns a boolean indicating session state change. It's possible to register only one listener.
-
-     - parameter completion: Completion that returns boolean representing current state
-     */
-    public func sessionStateDidChange(queue: DispatchQueue = responseQueue,
-                                      completion: @escaping (Bool) -> Void) {
-        guard oAuthService.sessionStateChanged == nil else { return }
-        oAuthService.sessionStateChanged = completion
     }
 }
 

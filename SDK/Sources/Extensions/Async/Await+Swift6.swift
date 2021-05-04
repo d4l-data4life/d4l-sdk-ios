@@ -13,30 +13,9 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-@testable import Data4LifeSDK
-import Then
+import Foundation
+@_implementationOnly import Then
 
-class UserServiceMock: UserServiceType {
-
-    var fetchUserInfoResult: Async<Void>?
-    var fetchUserInfoCalled: Bool = false
-    func fetchUserInfo() -> Promise<Void> {
-        fetchUserInfoCalled = true
-        return fetchUserInfoResult ?? Promise.reject()
-    }
-
-    var logoutCalledWith: String?
-    var logoutResult: Async<Void>?
-    func logout(refreshToken: String) -> Promise<Void> {
-        logoutCalledWith = (refreshToken)
-        return logoutResult ?? Promise.reject()
-    }
-
-    var getUserIdResult: String?
-    func getUserId() throws -> String {
-        guard let result = getUserIdResult else {
-            throw Data4LifeSDKError.notLoggedIn
-        }
-        return result
-    }
+@discardableResult func wait<T>(_ promise: Promise<T>) throws -> T {
+    return try `await`(promise)
 }
