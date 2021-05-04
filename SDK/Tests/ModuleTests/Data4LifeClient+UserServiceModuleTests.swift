@@ -262,7 +262,7 @@ extension Data4LifeClientUserServiceModuleTests {
         let userId = UUID().uuidString
         stubUserInfo(with: userId)
 
-        let asyncExpectation = expectation(description: "should return response with count on UI thread")
+        let asyncExpectation = expectation(description: "should return response with userID")
         client.getUserId { result  in
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(result.error)
@@ -273,7 +273,7 @@ extension Data4LifeClientUserServiceModuleTests {
     }
 
     func testGetUserIdWhenLoggedOutError() {
-        let asyncExpectation = expectation(description: "should return response with count on UI thread")
+        let asyncExpectation = expectation(description: "should return error response being not logged in")
         client.getUserId { result  in
             defer { asyncExpectation.fulfill() }
             XCTAssertEqual(result.error as? Data4LifeSDKError, Data4LifeSDKError.notLoggedIn)
