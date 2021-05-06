@@ -141,12 +141,45 @@ struct RecordService: RecordServiceType {
                                             offset: Int?,
                                             annotations: [String] = [],
                                             decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
-        searchRecordsIncludingLegacyTaggedOnes(for: userId, from: startDate, to: endDate, pageSize: pageSize, offset: offset, annotations: annotations, decryptedRecordType: decryptedRecordType)
+        return async {
+            let tagGroup = try wait(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
+            let params = try wait(self.buildSearchParameters(from: startDate,
+                                                             to: endDate,
+                                                             offset: offset,
+                                                             pageSize: pageSize,
+                                                             tagGroup: tagGroup))
 
+            let route = Router.searchRecords(userId: userId, parameters: params)
+            let encryptedRecords: [EncryptedRecord] = try wait(
+                self.sessionService.request(route: route).responseDecodable()
+            )
+
+            guard encryptedRecords.isEmpty == false else {
+                return []
+            }
+            return try encryptedRecords.map {
+                try wait(DR.from(encryptedRecord: $0,
+                                 cryptoService: self.cryptoService,
+                                 commonKeyService: self.commonKeyService))
+            }
+        }
     }
 
     func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
-        countRecordsIncludingLegacyTaggedOnes(userId: userId, resourceType: resourceType, annotations: annotations)
+        return async {
+            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
+            let params = try wait(self.buildSearchParameters(tagGroup: tagGroup))
+            let route = Router.countRecords(userId: userId, parameters: params)
+            let headers = try wait(self.sessionService.request(route: route).responseHeaders())
+
+            guard
+                let countString = headers["x-total-count"] as? String,
+                let count = Int(countString) else {
+                throw Data4LifeSDKError.keyMissingInSerialization(key: "`x-total-count`")
+            }
+
+            return count
+        }
     }
 }
 
@@ -170,12 +203,6 @@ extension RecordService {
                                                annotations: annotations,
                                                decryptedRecordType: decryptedRecordType))
 
-        }
-    }
-
-    private func countRecordsIncludingLegacyTaggedOnes<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
-        return async {
-            return try wait(self.countRecords(userId: userId, resourceType: resourceType, annotations: annotations))
         }
     }
 }
@@ -209,7 +236,7 @@ extension RecordService {
             }
 
             // Encrypt tags
-            let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(), key: tek)
+            let encryptedTagParameters = try self.cryptoService.encrypt(tagsParameters: try tagGroup.asTagsParameters(for: .upload), key: tek)
 
             // Encrypt Resource body
             let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
@@ -219,12 +246,12 @@ extension RecordService {
             let jsonDataKey: Data = try JSONEncoder().encode(dataKey)
             let encDataKey:Data = try self.cryptoService.encrypt(data: jsonDataKey, key: commonKey)
 
-            var params:Parameters = ["encrypted_tags": encryptedTags,
-                                     "encrypted_body": encryptedBody,
-                                     "date": Date().yyyyMmDdFormattedString(),
-                                     "encrypted_key": encDataKey.base64EncodedString(),
-                                     "common_key_id": commonKeyId,
-                                     "model_version": DR.Resource.modelVersion]
+            var params: Parameters = ["encrypted_tags": encryptedTagParameters.asTagExpressions,
+                                      "encrypted_body": encryptedBody,
+                                      "date": Date().yyyyMmDdFormattedString(),
+                                      "encrypted_key": encDataKey.base64EncodedString(),
+                                      "common_key_id": commonKeyId,
+                                      "model_version": DR.Resource.modelVersion]
 
             // Add attachment key if present
             if let attKey = attachmentKey {
@@ -245,67 +272,16 @@ extension RecordService {
         }
     }
 
-    private func searchRecords<DR: DecryptedRecord>(for userId: String,
-                                                    from startDate: Date?,
-                                                    to endDate: Date?,
-                                                    pageSize: Int?,
-                                                    offset: Int?,
-                                                    annotations: [String] = [],
-                                                    usingPercentEncodedTags: Bool,
-                                                    decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
-        return async {
-            let tagGroup = try wait(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
-            let params = try wait(self.buildParameters(from: startDate,
-                                                        to: endDate,
-                                                        offset: offset,
-                                                        pageSize: pageSize,
-                                                        tagGroup: tagGroup))
-
-            let route = Router.searchRecords(userId: userId, parameters: params)
-            let encryptedRecords: [EncryptedRecord] = try wait(
-                self.sessionService.request(route: route).responseDecodable()
-            )
-
-            guard encryptedRecords.isEmpty == false else {
-                return []
-            }
-            return try encryptedRecords.map {
-                try wait(DR.from(encryptedRecord: $0,
-                                  cryptoService: self.cryptoService,
-                                  commonKeyService: self.commonKeyService))
-            }
-        }
-    }
-
-    private func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String], usingPercentEncoding: Bool) -> Async<Int> {
-        return async {
-            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
-            let params = try wait(self.buildParameters(tagGroup: tagGroup))
-            let route = Router.countRecords(userId: userId, parameters: params)
-            let headers = try wait(self.sessionService.request(route: route).responseHeaders())
-
-            guard
-                let countString = headers["x-total-count"] as? String,
-                let count = Int(countString) else {
-                throw Data4LifeSDKError.keyMissingInSerialization(key: "`x-total-count`")
-            }
-
-            return count
-        }
-    }
-
-    private func buildParameters(from startDate: Date? = nil,
-                                 to endDate: Date? = nil,
-                                 offset: Int? = nil,
-                                 pageSize: Int? = nil,
-                                 tagGroup: TagGroup) throws -> Async<Parameters> {
+    private func buildSearchParameters(from startDate: Date? = nil,
+                                       to endDate: Date? = nil,
+                                       offset: Int? = nil,
+                                       pageSize: Int? = nil,
+                                       tagGroup: TagGroup) throws -> Async<Parameters> {
         return async {
             var parameters: Parameters = [:]
             guard let tek = self.cryptoService.tek else {
                 throw Data4LifeSDKError.notLoggedIn
             }
-
-            let encryptedTags = try self.cryptoService.encrypt(values: try tagGroup.asParameters(), key: tek)
 
             if let startDate = startDate {
                 parameters["start_date"] = startDate.yyyyMmDdFormattedString()
@@ -320,10 +296,11 @@ extension RecordService {
                 parameters["offset"] = offset
             }
 
-            if encryptedTags.isEmpty == false {
-                parameters["tags"] = encryptedTags.joined(separator: ",")
+            if tagGroup.hasTags {
+                let tagsParameters = try tagGroup.asTagsParameters(for: .search())
+                let encryptedTagsParameters = try self.cryptoService.encrypt(tagsParameters: tagsParameters, key: tek)
+                parameters["tags"] = encryptedTagsParameters.asTagExpressions.joined(separator: ",")
             }
-
             return parameters
         }
     }

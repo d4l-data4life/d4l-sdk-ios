@@ -35,7 +35,7 @@ struct TaggingService: TaggingServiceType {
     }
 
     enum FlagKey: String {
-        case appData
+        case appData = "appdata"
     }
 
     let clientId: String
@@ -50,28 +50,28 @@ struct TaggingService: TaggingServiceType {
     func makeTagGroup<R: SDKResource>(for type: R.Type, annotations: [String]? = nil) -> Async<TagGroup> {
         return Async { resolve, _ in
             resolve({
-                return TagGroup(tags: self.makeTags(for: type), annotations: annotations ?? [])
+                return TagGroup(tags: self.makeTags(for: type), annotations: annotations?.lowercased ?? [])
             }())
         }
     }
 
     private func makeTags<R: SDKResource>(for type: R.Type) -> [String:String] {
-        return type.searchTags
+        return type.searchTags.lowercased
     }
 
     func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> Async<TagGroup> {
         return Async { resolve, _ in
-            resolve(self.makeTags(for: resource, oldTags: oldTags, annotations: annotations))
+            resolve(self.makeTagGroup(for: resource, oldTags: oldTags, annotations: annotations))
         }
     }
 
     // MARK: Private API
-    private func makeTags<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> TagGroup {
+    private func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> TagGroup {
         var tags = makeCommonTags(fromOldTags: oldTags)
         tags.merge(R.searchTags) { (tagsValue, _) -> String in
             return tagsValue
         }
-        return TagGroup(tags: tags, annotations: annotations ?? [])
+        return TagGroup(tags: tags.lowercased, annotations: annotations?.lowercased ?? [])
     }
 
     private func makeCommonTags(fromOldTags oldTags: [String: String] = [:]) -> [String:String] {
@@ -89,5 +89,20 @@ struct TaggingService: TaggingServiceType {
             tags[Keys.updatedByPartner.rawValue] = self.partnerId
         }
         return tags
+    }
+}
+
+private extension Dictionary where Key == String, Value == String {
+    var lowercased: [Key: Value] {
+        let entries = map { entry in
+            (entry.key.lowercased(), entry.value.lowercased())
+        }
+        return Dictionary(entries, uniquingKeysWith: { $1 })
+    }
+}
+
+private extension Array where Element == String {
+    var lowercased: [Element] {
+        map { $0.lowercased() }
     }
 }

@@ -51,14 +51,14 @@ class EncryptedRecordTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testConvertEncryptedRecordFailMissingRecordCommonKey() {
+    func testConvertEncryptedRecordFailMissingRecordCommonKey() throws {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         let encryptedRecord = EncryptedRecordFactory.create(for: record)
         let expectedError = Data4LifeSDKError.missingCommonKey
 
         cryptoService.tek = KeyFactory.createKey()
-        cryptoService.decryptValuesResult = record.tags.formattedKeyValuePairsForPhdp()
+        cryptoService.decryptValuesResult = try TagGroup(tags: record.tags, annotations: record.annotations).asParameters(for: .upload)
 
         commonKeyService.fetchKeyResult = Async.reject(expectedError)
 
@@ -78,13 +78,14 @@ class EncryptedRecordTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testConvertEncryptedRecordFailInvalidDataKey() {
+    func testConvertEncryptedRecordFailInvalidDataKey() throws {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
+        let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
 
         commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
-        cryptoService.decryptValuesResult = record.tags.formattedKeyValuePairsForPhdp()
+        cryptoService.decryptValuesResult = try tagGroup.asParameters(for: .upload)
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "Should fail decrypting record")
@@ -104,7 +105,7 @@ class EncryptedRecordTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testConvertEncryptedRecordFailInvalidBodyPayload() {
+    func testConvertEncryptedRecordFailInvalidBodyPayload() throws {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
@@ -117,7 +118,7 @@ class EncryptedRecordTests: XCTestCase {
         commonKeyService.fetchKeyResult = Promise.resolve(KeyFactory.createKey())
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = record.tags.formattedKeyValuePairsForPhdp()
+        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asParameters(for: .upload)
 
         cryptoService.decryptDataResult = decryptedDataKey
         cryptoService.decryptValuesResult = decryptedTags
@@ -156,7 +157,7 @@ class EncryptedRecordTests: XCTestCase {
         }
     }
 
-    func testConvertEncryptedRecordFailInvalidModelVersion() {
+    func testConvertEncryptedRecordFailInvalidModelVersion() throws {
         let resource = FhirFactory.createStu3CarePlanResource()
         let record = DecryptedRecordFactory.create(resource)
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
@@ -171,7 +172,7 @@ class EncryptedRecordTests: XCTestCase {
         cryptoService.tek = KeyFactory.createKey()
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = record.tags.formattedKeyValuePairsForPhdp()
+        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asParameters(for: .upload)
 
         let encryptedResourceData = Data(base64Encoded: encryptedRecord.encryptedBody)!
         let decryptedResourceData: Data = try! JSONEncoder().encode(record.resource)
@@ -191,5 +192,11 @@ class EncryptedRecordTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5)
+    }
+}
+
+extension Dictionary where Key == String, Value == String {
+    func asCorrectlyEncodedTags(separatedBy separator: String = "=") -> [String] {
+        map { "\($0)\(separator)\($1)" }
     }
 }

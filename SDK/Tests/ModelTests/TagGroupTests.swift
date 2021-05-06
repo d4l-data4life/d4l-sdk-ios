@@ -38,59 +38,80 @@ class TagGroupTests: XCTestCase {
 
     func testLowercasedAnnotation() throws {
         let tagGroup = TagGroup.annotationLowercased
-        let parameters = try tagGroup.asParameters()
-        XCTAssertEqual(parameters, ["tag=value","custom=valid"])
+        let parameters = try tagGroup.asParameters(for: .search())
+        XCTAssertEqual(parameters, ["tag=value",
+                                    "custom=valid"])
     }
 
     func testUppercasedAnnotation() throws {
         let tagGroup = TagGroup.annotationContainsUppercase
-        let parameters = try tagGroup.asParameters()
-        XCTAssertEqual(parameters, ["tag=value","custom=valid"])
+        let parameters = try tagGroup.asParameters(for: .search())
+        XCTAssertEqual(parameters, ["tag=value",
+                                    "custom=valid"])
     }
 
     func testEmptyAnnotation() throws {
         let tagGroup = TagGroup.annotationIsEmpty
-        XCTAssertThrowsError(try tagGroup.asParameters(), "should throw empty error") { (error) in
+        XCTAssertThrowsError(try tagGroup.asParameters(for: .search()), "should throw empty error") { (error) in
             XCTAssertEqual(error as? Data4LifeSDKError,
                            Data4LifeSDKError.emptyAnnotationNotAllowed)
         }
     }
 
-    func testSymbolAnnotation() throws {
+    func testSymbolAnnotationSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationContainsSymbols
-        let parameters = try tagGroup.asParameters()
+        let parameters = try tagGroup.asParameters(for: .search())
+        XCTAssertEqual(parameters, ["tag=value", "(custom=%3d,custom==,custom=%3D)"])
+    }
+
+    func testSymbolAnnotationNonSupportingLegacyTags() throws {
+        let tagGroup = TagGroup.annotationContainsSymbols
+        let parameters = try tagGroup.asParameters(for: .search(supportingLegacyTags: false))
         XCTAssertEqual(parameters, ["tag=value", "custom=%3d"])
     }
 
-    func testMixedAnnotation() throws {
+    func testMixedAnnotationNonSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationMixedValid
-        let parameters = try tagGroup.asParameters()
+        let parameters = try tagGroup.asParameters(for: .search(supportingLegacyTags: false))
         XCTAssertEqual(parameters, ["tag=value","custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid"])
+    }
+
+    func testMixedAnnotationsSupportingLegacyTags() throws {
+        let tagGroup = TagGroup.annotationMixedValid
+        let parameters = try tagGroup.asParameters(for: .search())
+        XCTAssertEqual(parameters, ["tag=value",
+                                    "(custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid,custom=valid ---==%%123.321%%==--- valid,custom=valid%20%2d%2d%2d%3D%3D%25%25123%2e321%25%25%3D%3D%2d%2d%2d%20valid)"])
     }
 
     func testSecondUppercasedAnnotation() throws {
         let tagGroup = TagGroup.secondAnnotationContainsUppercase
-        let parameters = try tagGroup.asParameters()
+        let parameters = try tagGroup.asParameters(for: .search())
         XCTAssertEqual(parameters, ["tag=value", "custom=valid", "custom=valid"])
     }
 
     func testSecondEmptyAnnotation() throws {
         let tagGroup = TagGroup.secondAnnotationIsEmpty
-        XCTAssertThrowsError(try tagGroup.asParameters(), "should throw empty error") { (error) in
+        XCTAssertThrowsError(try tagGroup.asParameters(for: .search()), "should throw empty error") { (error) in
             XCTAssertEqual(error as? Data4LifeSDKError,
                            Data4LifeSDKError.emptyAnnotationNotAllowed)
         }
     }
 
-    func testSecondSymbolAnnotation() throws {
+    func testSecondSymbolAnnotationNotSupportingLegacyTags() throws {
         let tagGroup = TagGroup.secondAnnotationContainsSymbols
-        let parameters = try tagGroup.asParameters()
+        let parameters = try tagGroup.asParameters(for: .search(supportingLegacyTags: false))
         XCTAssertEqual(parameters, ["tag=value", "custom=valid", "custom=%3d"])
+    }
+
+    func testSecondSymbolAnnotationSupportingLegacyTags() throws {
+        let tagGroup = TagGroup.secondAnnotationContainsSymbols
+        let parameters = try tagGroup.asParameters(for: .search())
+        XCTAssertEqual(parameters, ["tag=value", "custom=valid", "(custom=%3d,custom==,custom=%3D)"])
     }
 
     func testTrimmedAnnotation() throws {
         let tagGroup = TagGroup.annotationTrimmedValid
-        let parameters = try tagGroup.asParameters()
+        let parameters = try tagGroup.asParameters(for: .search())
         XCTAssertEqual(parameters, ["tag=value","custom=valid"])
     }
 }
@@ -98,7 +119,8 @@ class TagGroupTests: XCTestCase {
 extension TagGroupTests {
 
     func testLowercasedAnnotationInit() throws {
-        let tagGroup = TagGroup(from: ["tag=value","custom=valid"])
+        let tagGroup = TagGroup(from: ["tag=value",
+                                       "custom=valid"])
         XCTAssertEqual(tagGroup, TagGroup.annotationLowercased)
     }
 

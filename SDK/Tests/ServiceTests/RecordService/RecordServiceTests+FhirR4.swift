@@ -459,7 +459,7 @@ extension RecordServiceTests {
                                     decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(records.count, 1 * 2)
+                XCTAssertEqual(records.count, 1)
                 XCTAssertEqual(record.resource, document)
 
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
@@ -531,7 +531,7 @@ extension RecordServiceTests {
         recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)
             .then { count in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(count, recordCount * 2)
+                XCTAssertEqual(count, recordCount)
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
             }
 

@@ -171,7 +171,7 @@ extension Data4LifeClient {
      - parameter completion: Completion that returns fetched records
      */
 
-    public func fetchFhirStu3Records<R: FhirStu3Resource>(of type: R.Type,
+    public func fetchFhirStu3Records<R: FhirStu3Resource>(of type: R.Type = R.self,
                                                           size: Int = 10,
                                                           page: Int = 1,
                                                           from: Date? = nil,
