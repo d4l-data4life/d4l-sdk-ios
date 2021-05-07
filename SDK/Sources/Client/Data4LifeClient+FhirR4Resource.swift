@@ -159,7 +159,7 @@ extension Data4LifeClient {
     }
 
     /**
-     Fetches records per type with provided optional filters.
+     Fetches records per type with provided optional filters, and if no type is provided all types will be returned.
 
      - parameter type: Type of a resource
      - parameter size: Number of resources in a page
