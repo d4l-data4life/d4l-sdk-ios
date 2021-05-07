@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+### Added
+- `fetchFhirStu3Records<R: FhirStu3Resource>(of type: R.Type ...` now supports the possibility to not specify a type to get all Stu3 Resources 
+- `fetchFhirR4Records<R: FhirR4Resource>(of type: R.Type ...` now supports the possibility to not specify a type to get all R4 resources
+
+### Fixed
+- Uses new phdp query expression to filter tags for legacy SDKs, improving data usage
 
 ## [1.13.1]
 ### Added

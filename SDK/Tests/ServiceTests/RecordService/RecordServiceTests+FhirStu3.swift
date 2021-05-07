@@ -33,7 +33,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     var encoder: JSONEncoder!
 
     let commonKey = KeyFactory.createKey()
-    let tek = KeyFactory.createKey()
+    let tagEncryptionKey = KeyFactory.createKey()
     let commonKeyId = UUID().uuidString
 
     override func setUp() {
@@ -60,7 +60,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .formatted(.with(format: .iso8601TimeZone))
 
-        cryptoService.tagEncryptionKey = tek
+        cryptoService.tagEncryptionKey = tagEncryptionKey
         commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
         versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
     }

@@ -221,6 +221,33 @@ func fetchFhirStu3Records<R: FhirStu3Resource>(withIds identifiers: [String], of
 func fetchFhirR4Records<R: FhirR4Resource>(withIds identifiers: [String], of type: R.Type = R.self, completion: @escaping ResultBlock<BatchResult<Record<R>, String>>)
 ----
 
+==== Fetching multiple FHIR records matching filters
+
+To fetch more records matching a set of optional filters, use the `fetchFhirStu3Records` or `fetchFhirR4Records` method with the filter parameters.
+
+[source,swift]
+----
+func fetchFhirStu3Records<R: FhirStu3Resource>(of type: R.Type = R.self,
+                                               size: Int = 10,
+                                               page: Int = 1,
+                                               from: Date? = nil,
+                                               to: Date? = nil,
+                                               annotations: [String] = [],
+                                               queue: DispatchQueue = responseQueue,
+                                               completion: @escaping ResultBlock<[FhirRecord<R>]>)
+----
+[source,swift]
+----
+func fetchFhirR4Records<R: FhirR4Resource>(of type: R.Type = R.self,
+                                           size: Int = 10,
+                                           page: Int = 1,
+                                           from: Date? = nil,
+                                           to: Date? = nil,
+                                           annotations: [String] = [],
+                                           queue: DispatchQueue = responseQueue,
+                                           completion: @escaping ResultBlock<[FhirRecord<R>]>)
+----
+
 ==== Updating a FHIR record
 
 To update a record, use the `updateFhirStu3Record` or `updateFhirR4Record` method.
