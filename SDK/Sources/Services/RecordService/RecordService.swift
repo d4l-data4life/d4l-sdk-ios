@@ -195,7 +195,7 @@ extension RecordService {
                                                    uploadRequest: @escaping (Parameters) -> Router) -> Async<DR> {
         return async {
 
-            guard let tek = self.cryptoService.tek else {
+            guard let tagEncryptionKey = self.cryptoService.tagEncryptionKey else {
                 throw Data4LifeSDKError.missingTagKey
             }
 
@@ -291,7 +291,7 @@ extension RecordService {
 
             if tagGroup.hasTags {
                 let tagsParameters = try tagGroup.asTagsParameters(for: .search())
-                let encryptedTagsParameters = try self.cryptoService.encrypt(tagsParameters: tagsParameters, key: tek)
+                let encryptedTagsParameters = try self.cryptoService.encrypt(tagsParameters: tagsParameters, key: tagEncryptionKey)
                 parameters["tags"] = encryptedTagsParameters.asTagExpressions.joined(separator: ",")
             }
             return parameters

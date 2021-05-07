@@ -89,7 +89,7 @@ class UserServiceTests: XCTestCase {
         userService.fetchUserInfo()
             .then {
                 defer { asyncExpectation.fulfill() }
-                XCTAssertNotNil(self.cryptoService.tek)
+                XCTAssertNotNil(self.cryptoService.tagEncryptionKey)
                 XCTAssertEqual(self.commonKeyService.storeKeyCalledWith?.0, commonKey)
                 XCTAssertEqual(self.commonKeyService.storeKeyCalledWith?.1, CommonKeyService.initialId)
                 XCTAssertTrue(self.commonKeyService.storeKeyCalledWith?.2 ?? false)

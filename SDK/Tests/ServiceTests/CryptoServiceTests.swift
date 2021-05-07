@@ -49,12 +49,12 @@ class CryptoServiceTests: XCTestCase {
     func testLoadAndStoreTek() {
         let tek = KeyFactory.createKey(.tag)
         let base64EncodedKey = try! JSONEncoder().encode(tek).base64EncodedString()
-        XCTAssertNil(crypto.tek)
-        crypto.tek = tek
+        XCTAssertNil(crypto.tagEncryptionKey)
+        crypto.tagEncryptionKey = tek
         XCTAssertTrue(keychainService.setItemCalledWith.contains(where: {
             $0.0 == base64EncodedKey && $0.1 == KeychainKey.tagEncryptionKey
         }))
-        XCTAssertNotNil(crypto.tek)
+        XCTAssertNotNil(crypto.tagEncryptionKey)
         XCTAssertEqual(self.keychainService[.tagEncryptionKey], base64EncodedKey)
     }
 

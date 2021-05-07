@@ -282,7 +282,7 @@ extension Data4LifeClientUserTests {
     }
 
     func testLoggedInTrue() {
-        cryptoService.tek = KeyFactory.createKey(.tag)
+        cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
         commonKeyService.currentKey = KeyFactory.createKey(.common)
         oAuthService.isSessionActiveResult = Async.resolve()
 
@@ -297,7 +297,7 @@ extension Data4LifeClientUserTests {
     }
 
     func testLoggedInFalse() {
-        cryptoService.tek = KeyFactory.createKey(.tag)
+        cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
         commonKeyService.currentKey = KeyFactory.createKey(.common)
 
         let asyncExpectation = expectation(description: "should return success false")

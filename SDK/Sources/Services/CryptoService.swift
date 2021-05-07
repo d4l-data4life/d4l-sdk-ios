@@ -18,7 +18,7 @@ import Foundation
 
 protocol CryptoServiceType {
 
-    var tek: Key? { get set }
+    var tagEncryptionKey: Key? { get set }
     var keyPairTag: String { get }
 
     func encrypt(data: Data, key: Key) throws -> Data
@@ -44,16 +44,16 @@ final class CryptoService: CryptoServiceType {
     private var keychainService: KeychainServiceType
     private(set) var keyPairTag: String
 
-    var tek: Key? {
+    var tagEncryptionKey: Key? {
         get {
             guard
                 let tagEncryptionKeyBase64EncodedString = self.keychainService[.tagEncryptionKey],
-                let tekData = Data(base64Encoded: tagEncryptionKeyBase64EncodedString),
-                let tek: Key = try? decoder.decode(Key.self, from: tekData)
+                let tagEncryptionKeyData = Data(base64Encoded: tagEncryptionKeyBase64EncodedString),
+                let tagEncryptionKey: Key = try? decoder.decode(Key.self, from: tagEncryptionKeyData)
                 else {
                     return nil
             }
-            return tek
+            return tagEncryptionKey
         }
         set {
             if let key = newValue {
