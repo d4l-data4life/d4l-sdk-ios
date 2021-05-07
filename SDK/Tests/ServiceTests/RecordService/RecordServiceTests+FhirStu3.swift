@@ -60,7 +60,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .formatted(.with(format: .iso8601TimeZone))
 
-        cryptoService.tagEncryptionKey = tek
+        cryptoService.tek = tek
         commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
         versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
     }
