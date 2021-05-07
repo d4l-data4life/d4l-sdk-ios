@@ -36,7 +36,7 @@ extension FhirSDKResource {
             tags[TaggingService.Keys.resourceType.rawValue] = Self.resourceTypeString
         }
         tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
-        return tags
+        return tags.lowercased
     }
 }
 

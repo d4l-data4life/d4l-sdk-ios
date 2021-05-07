@@ -56,7 +56,7 @@ struct TaggingService: TaggingServiceType {
     }
 
     private func makeTags<R: SDKResource>(for type: R.Type) -> [String:String] {
-        return type.searchTags.lowercased
+        return type.searchTags
     }
 
     func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> Async<TagGroup> {
@@ -71,7 +71,7 @@ struct TaggingService: TaggingServiceType {
         tags.merge(R.searchTags) { (tagsValue, _) -> String in
             return tagsValue
         }
-        return TagGroup(tags: tags.lowercased, annotations: annotations?.lowercased ?? [])
+        return TagGroup(tags: tags, annotations: annotations?.lowercased ?? [])
     }
 
     private func makeCommonTags(fromOldTags oldTags: [String: String] = [:]) -> [String:String] {
@@ -88,6 +88,6 @@ struct TaggingService: TaggingServiceType {
         } else {
             tags[Keys.updatedByPartner.rawValue] = self.partnerId
         }
-        return tags
+        return tags.lowercased
     }
 }
