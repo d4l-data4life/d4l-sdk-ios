@@ -165,7 +165,7 @@ extension TagGroupTests {
     func testMixedAnnotationsForUpload() throws {
         let tagGroup = TagGroup.annotationMixedValid
         let parameters = try tagGroup.asTagsParameters(for: .upload).asTagExpressions
-        XCTAssertEqual(parameters, ["tag=value", 
+        XCTAssertEqual(parameters, ["tag=value",
                                     "custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid"])
     }
 

@@ -178,18 +178,6 @@ class CryptoServiceMock: CryptoServiceType {
         return result
     }
 
-    var encryptTagsParametersCalledWith: ([TagsParameter], Key)?
-    var encryptTagsParametersResult: [TagsParameter]?
-    func encrypt(tagsParameters: [TagsParameter], key: Key) throws -> [TagsParameter] {
-        encryptTagsParametersCalledWith = (tagsParameters, key)
-
-        guard let result = encryptTagsParametersResult else {
-            throw missingResultError
-        }
-
-        return result
-    }
-
     var encryptDataKeyPairCalledWith: (Data, KeyPair)?
     var encryptDataKeyPairForInput: [(input: Data, output: Data)]?
     func encrypt(data: Data, keypair: KeyPair) throws -> Data {
