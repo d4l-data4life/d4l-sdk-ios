@@ -53,11 +53,11 @@ extension RecordServiceType {
 }
 
 struct RecordService: RecordServiceType {
-    let sessionService: SessionService
-    let taggingService: TaggingServiceType
-    let cryptoService: CryptoServiceType
-    let commonKeyService: CommonKeyServiceType
-    let userService: UserServiceType
+    private let sessionService: SessionService
+    private let taggingService: TaggingServiceType
+    private let cryptoService: CryptoServiceType
+    private let commonKeyService: CommonKeyServiceType
+    private let userService: UserServiceType
 
     init(container: DIContainer) {
         do {
@@ -143,13 +143,13 @@ struct RecordService: RecordServiceType {
                                             decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
         return async {
             let tagGroup = try wait(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
-            let params = try wait(self.buildSearchParameters(from: startDate,
+            let parameters = try wait(self.makeSearchParameters(from: startDate,
                                                              to: endDate,
                                                              offset: offset,
                                                              pageSize: pageSize,
                                                              tagGroup: tagGroup))
 
-            let route = Router.searchRecords(userId: userId, parameters: params)
+            let route = Router.searchRecords(userId: userId, parameters: parameters)
             let encryptedRecords: [EncryptedRecord] = try wait(
                 self.sessionService.request(route: route).responseDecodable()
             )
@@ -168,7 +168,7 @@ struct RecordService: RecordServiceType {
     func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
         return async {
             let tagGroup = try wait(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
-            let params = try wait(self.buildSearchParameters(tagGroup: tagGroup))
+            let params = try wait(self.makeSearchParameters(tagGroup: tagGroup))
             let route = Router.countRecords(userId: userId, parameters: params)
             let headers = try wait(self.sessionService.request(route: route).responseHeaders())
 
@@ -183,31 +183,7 @@ struct RecordService: RecordServiceType {
     }
 }
 
-// MARK: - Legacy Record Handling
-extension RecordService {
-
-    /// See jira issue for more info: [SDK-521](https://gesundheitscloud.atlassian.net/browse/SDK-521)
-    private func searchRecordsIncludingLegacyTaggedOnes<DR: DecryptedRecord>(for userId: String,
-                                                                             from startDate: Date?,
-                                                                             to endDate: Date?,
-                                                                             pageSize: Int?,
-                                                                             offset: Int?,
-                                                                             annotations: [String] = [],
-                                                                             decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
-        return async {
-            return try wait(searchRecords(for: userId,
-                                               from: startDate,
-                                               to: endDate,
-                                               pageSize: pageSize,
-                                               offset: offset,
-                                               annotations: annotations,
-                                               decryptedRecordType: decryptedRecordType))
-
-        }
-    }
-}
-
-// MARK: - Common Record Service methods
+// MARK: - Upload Record (Create and Update)
 extension RecordService {
     private func uploadRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
                                                    userId: String,
@@ -219,49 +195,26 @@ extension RecordService {
                                                    uploadRequest: @escaping (Parameters) -> Router) -> Async<DR> {
         return async {
 
-            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
-
-            // Load crypto keys
             guard let tek = self.cryptoService.tek else {
                 throw Data4LifeSDKError.missingTagKey
             }
 
-            // Update current common key
             try wait(self.userService.fetchUserInfo())
-
             let commonKeyId = self.commonKeyService.currentId ?? CommonKeyService.initialId
-
             guard let commonKey = self.commonKeyService.currentKey else {
                 throw Data4LifeSDKError.missingCommonKey
             }
 
-            // Encrypt tags
-            let encryptedTagParameters = try self.cryptoService.encrypt(tagsParameters: try tagGroup.asTagsParameters(for: .upload), key: tek)
+            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
 
-            // Encrypt Resource body
-            let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
-            let encryptedBody = encryptedResource.base64EncodedString()
-
-            // Encrypt GC keys
-            let jsonDataKey: Data = try JSONEncoder().encode(dataKey)
-            let encDataKey:Data = try self.cryptoService.encrypt(data: jsonDataKey, key: commonKey)
-
-            var params: Parameters = ["encrypted_tags": encryptedTagParameters.asTagExpressions,
-                                      "encrypted_body": encryptedBody,
-                                      "date": Date().yyyyMmDdFormattedString(),
-                                      "encrypted_key": encDataKey.base64EncodedString(),
-                                      "common_key_id": commonKeyId,
-                                      "model_version": DR.Resource.modelVersion]
-
-            // Add attachment key if present
-            if let attKey = attachmentKey {
-                let jsonAttKey: Data = try JSONEncoder().encode(attKey)
-                let encAttKey: Data = try self.cryptoService.encrypt(data: jsonAttKey, key: commonKey)
-                params["attachment_key"] = encAttKey.base64EncodedString()
-            }
-
-            // Create new resource
-            let route = uploadRequest(params)
+            let uploadParameters = try makeUploadParameters(resource: resource,
+                                                            commonKey: commonKey,
+                                                            commonKeyIdentifier: commonKeyId,
+                                                            dataKey: dataKey,
+                                                            attachmentKey: attachmentKey,
+                                                            tagEncryptionKey: tagEncryptionKey,
+                                                            tagGroup: tagGroup)
+            let route = uploadRequest(uploadParameters)
             let encryptedRecord: EncryptedRecord = try wait(
                 self.sessionService.request(route: route).responseDecodable()
             )
@@ -271,15 +224,55 @@ extension RecordService {
                                      commonKeyService: self.commonKeyService))
         }
     }
+}
 
-    private func buildSearchParameters(from startDate: Date? = nil,
-                                       to endDate: Date? = nil,
-                                       offset: Int? = nil,
-                                       pageSize: Int? = nil,
-                                       tagGroup: TagGroup) throws -> Async<Parameters> {
+// MARK: - Parameter Builders
+extension RecordService {
+
+    private func makeUploadParameters<R: SDKResource>(resource: R,
+                                                      commonKey: Key,
+                                                      commonKeyIdentifier: String,
+                                                      dataKey: Key,
+                                                      attachmentKey: Key?,
+                                                      tagEncryptionKey: Key,
+                                                      tagGroup: TagGroup) throws -> Parameters {
+
+        var parameters: Parameters = Parameters()
+
+        parameters["date"] = Date().yyyyMmDdFormattedString()
+        parameters["common_key_id"] = commonKeyIdentifier
+        parameters["model_version"] = R.modelVersion
+
+        let encryptedTagParameters = try self.cryptoService.encrypt(tagsParameters: try tagGroup.asTagsParameters(for: .upload), key: tagEncryptionKey)
+        parameters["encrypted_tags"] = encryptedTagParameters.asTagExpressions
+
+        let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
+        let encryptedBody = encryptedResource.base64EncodedString()
+        parameters["encrypted_body"] = encryptedBody
+
+        let jsonDataKey: Data = try JSONEncoder().encode(dataKey)
+        let encryptedDataKey: Data = try self.cryptoService.encrypt(data: jsonDataKey, key: commonKey)
+        parameters["encrypted_key"] = encryptedDataKey.base64EncodedString()
+
+        if let attachmentKey = attachmentKey {
+            let jsonAttachmentKey: Data = try JSONEncoder().encode(attachmentKey)
+            let encryptedAttachmentKey: Data = try self.cryptoService.encrypt(data: jsonAttachmentKey, key: commonKey)
+            parameters["attachment_key"] = encryptedAttachmentKey.base64EncodedString()
+        }
+
+        return parameters
+    }
+
+    private func makeSearchParameters(from startDate: Date? = nil,
+                                      to endDate: Date? = nil,
+                                      offset: Int? = nil,
+                                      pageSize: Int? = nil,
+                                      tagGroup: TagGroup) throws -> Async<Parameters> {
         return async {
-            var parameters: Parameters = [:]
-            guard let tek = self.cryptoService.tek else {
+
+            var parameters = Parameters()
+
+            guard let tagEncryptionKey = self.cryptoService.tagEncryptionKey else {
                 throw Data4LifeSDKError.notLoggedIn
             }
 
@@ -302,6 +295,16 @@ extension RecordService {
                 parameters["tags"] = encryptedTagsParameters.asTagExpressions.joined(separator: ",")
             }
             return parameters
+        }
+    }
+}
+
+// MARK: - Helpers
+extension CryptoServiceType {
+    func encrypt(tagsParameters: [TagsParameter], key: Key) throws -> [TagsParameter] {
+        return try tagsParameters.map { tagsParameter in
+            let encodedTags = try tagsParameter.orComponents.map { try encrypt(string: $0.formattedTag, key: key) }
+            return TagsParameter(encodedTags.map { TagsParameter.OrComponent(formattedTag: $0) })
         }
     }
 }

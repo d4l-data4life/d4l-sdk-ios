@@ -57,8 +57,8 @@ class EncryptedRecordTests: XCTestCase {
         let encryptedRecord = EncryptedRecordFactory.create(for: record)
         let expectedError = Data4LifeSDKError.missingCommonKey
 
-        cryptoService.tek = KeyFactory.createKey()
-        cryptoService.decryptValuesResult = try TagGroup(tags: record.tags, annotations: record.annotations).asParameters(for: .upload)
+        cryptoService.tagEncryptionKey = KeyFactory.createKey()
+        cryptoService.decryptValuesResult = try TagGroup(tags: record.tags, annotations: record.annotations).asTagsParameters(for: .upload).asTagExpressions
 
         commonKeyService.fetchKeyResult = Async.reject(expectedError)
 
@@ -85,12 +85,12 @@ class EncryptedRecordTests: XCTestCase {
         var encryptedRecord = EncryptedRecordFactory.create(for: record)
 
         commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
-        cryptoService.decryptValuesResult = try tagGroup.asParameters(for: .upload)
+        cryptoService.decryptValuesResult = try tagGroup.asTagsParameters(for: .upload).asTagExpressions
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "Should fail decrypting record")
 
-        cryptoService.tek = KeyFactory.createKey()
+        cryptoService.tagEncryptionKey = KeyFactory.createKey()
         encryptedRecord.encryptedDataKey = String(describing: Data([0x00]))
 
         DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService)
@@ -114,11 +114,11 @@ class EncryptedRecordTests: XCTestCase {
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "Should fail decrypting record")
 
-        cryptoService.tek = KeyFactory.createKey()
+        cryptoService.tagEncryptionKey = KeyFactory.createKey()
         commonKeyService.fetchKeyResult = Promise.resolve(KeyFactory.createKey())
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asParameters(for: .upload)
+        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asTagsParameters(for: .upload).asTagExpressions
 
         cryptoService.decryptDataResult = decryptedDataKey
         cryptoService.decryptValuesResult = decryptedTags
@@ -169,10 +169,10 @@ class EncryptedRecordTests: XCTestCase {
         let expectedError = Data4LifeSDKError.invalidRecordModelVersionNotSupported
         let asyncExpectation = expectation(description: "Should fail decrypting record")
 
-        cryptoService.tek = KeyFactory.createKey()
+        cryptoService.tagEncryptionKey = KeyFactory.createKey()
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asParameters(for: .upload)
+        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asTagsParameters(for: .upload).asTagExpressions
 
         let encryptedResourceData = Data(base64Encoded: encryptedRecord.encryptedBody)!
         let decryptedResourceData: Data = try! JSONEncoder().encode(record.resource)

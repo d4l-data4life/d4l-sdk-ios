@@ -42,6 +42,7 @@ extension RecordServiceTests {
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
+        cryptoService.encryptStringResult = "encrypted"
 
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -151,7 +152,7 @@ extension RecordServiceTests {
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
-
+        cryptoService.encryptStringResult = "encrypted"
         cryptoService.generateGCKeyResult = record.dataKey
 
         // decrypt values for data key and body
@@ -219,6 +220,7 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -266,6 +268,7 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -324,6 +327,7 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "helloEncrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data.self)
@@ -345,6 +349,7 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "hello-percent-encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data.self)

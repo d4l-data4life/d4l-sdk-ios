@@ -91,18 +91,3 @@ struct TaggingService: TaggingServiceType {
         return tags
     }
 }
-
-private extension Dictionary where Key == String, Value == String {
-    var lowercased: [Key: Value] {
-        let entries = map { entry in
-            (entry.key.lowercased(), entry.value.lowercased())
-        }
-        return Dictionary(entries, uniquingKeysWith: { $1 })
-    }
-}
-
-private extension Array where Element == String {
-    var lowercased: [Element] {
-        map { $0.lowercased() }
-    }
-}

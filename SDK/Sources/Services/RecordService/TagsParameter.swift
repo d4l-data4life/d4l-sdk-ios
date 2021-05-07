@@ -1,20 +1,19 @@
 //  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
-//
+//  
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
 //  including any intellectual property rights that subsist in the SDK.
-//
+//  
 //  The SDK and its documentation may be accessed and used for viewing/review purposes only.
 //  Any usage of the SDK for other purposes, including usage for the development of
 //  applications/third-party applications shall require the conclusion of a license agreement
 //  between you and D4L.
-//
+//  
 //  If you are interested in licensing the SDK for your own applications/third-party
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Data4LifeCrypto
 
 struct TagsParameter: Hashable {
 
@@ -30,15 +29,15 @@ struct TagsParameter: Hashable {
             self.formattedTag = "\(key)\(separator)\(value)"
         }
 
-        init(tag: String) {
-            self.formattedTag = tag
+        init(formattedTag: String) {
+            self.formattedTag = formattedTag
         }
     }
 
     let orComponents: [OrComponent]
 
     init(_ formattedTag: String) {
-        self.orComponents = [OrComponent(tag: formattedTag)]
+        self.orComponents = [OrComponent(formattedTag: formattedTag)]
     }
 
     init(_ singleOrComponent: OrComponent) {
@@ -79,6 +78,7 @@ extension TagGroup {
     }
 }
 
+// MARK: - Validation
 extension TagGroup {
     private func validateAnnotations() throws {
         for annotation in annotations {
@@ -87,6 +87,10 @@ extension TagGroup {
             }
         }
     }
+}
+
+// MARK: - Parameter formatting
+extension TagGroup {
 
     private func formatSingleTag(withKey key: String, value: String, separator: Character, for operationType: TagsParameter.OperationType) throws -> TagsParameter {
         switch operationType {
@@ -169,22 +173,7 @@ extension TagGroup {
     }
 }
 
-extension CryptoService {
-    func encrypt(tagsParameters: [TagsParameter], key: Key) throws -> [TagsParameter] {
-        return try tagsParameters.map { tagsParameter in
-            let encodedTags = try tagsParameter.orComponents.map { try encrypt(string: $0.formattedTag, key: key) }
-            return TagsParameter(encodedTags.map { TagsParameter.OrComponent(tag: $0) })
-        }
-    }
-}
-
-extension Array where Element: Hashable {
-    var removingDuplicates: [Element] {
-        let orderedSet = NSOrderedSet(array: self as [Any])
-        return orderedSet.array.compactMap { $0 as? Element }
-    }
-}
-
+// MARK: - Extension helpers
 extension Array where Element == TagsParameter {
     var asTagExpressions: [String] {
         map { $0.tagExpression }

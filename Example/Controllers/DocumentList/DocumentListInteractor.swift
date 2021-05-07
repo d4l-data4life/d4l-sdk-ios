@@ -140,7 +140,7 @@ extension DocumentListInteractor {
         // let userKey = UserKey(t: "t", priv: "priv", pub: "pub", v: 5, scope: "scope")
         let hellosString = "{\"word\":\"hello\"}"
         let hello = Data(hellosString.utf8)
-        d4lClient.createAppDataRecord(hello, annotations: ["Anno-Test"]) { [weak self] result in
+        d4lClient.createAppDataRecord(hello, annotations: ["Anno-Test", "program:test","3.0.1"]) { [weak self] result in
             switch result {
             case .success:
                 self?.loadAppData {
@@ -258,7 +258,7 @@ private extension DocumentListInteractor {
     }
 
     private func loadAppData(_ completion: @escaping () -> Void = {}) {
-        d4lClient.fetchAppDataRecords(annotations: ["Anno-Test"]) { [weak self] result in
+        d4lClient.fetchAppDataRecords(annotations: ["program:test"]) { [weak self] result in
             switch result {
             case .success(let appData):
                 self?.schema.set(.appData(records: appData))

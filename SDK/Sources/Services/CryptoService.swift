@@ -30,8 +30,6 @@ protocol CryptoServiceType {
     func encrypt(values: [String], key: Key) throws -> [String]
     func decrypt(values: [String], key: Key) throws -> [String]
 
-    func encrypt(tagsParameters: [TagsParameter], key: Key) throws -> [TagsParameter]
-    
     func encrypt(data: Data, keypair: KeyPair) throws -> Data
     func decrypt(data: Data, keypair: KeyPair) throws -> Data
 

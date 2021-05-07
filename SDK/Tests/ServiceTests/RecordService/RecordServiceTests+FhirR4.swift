@@ -53,7 +53,7 @@ extension RecordServiceTests {
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.encryptDataForInput = inputs
         cryptoService.decryptDataForInput = inputs
-
+        cryptoService.encryptStringResult = "encrypted"
         stub("POST", "/users/\(userId)/records", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should create record")
@@ -110,7 +110,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -190,7 +190,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -271,7 +271,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -393,7 +393,7 @@ extension RecordServiceTests {
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
         cryptoService.decryptDataForInput = [dataInput, bodyInput]
-
+        cryptoService.encryptStringResult = "encrypted"
         stub("GET", "/users/\(userId)/records", with: [encryptedRecord.json])
 
         let asyncExpectation = expectation(description: "should return a list of records")
@@ -441,7 +441,7 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -504,6 +504,7 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)
@@ -526,6 +527,7 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)

@@ -14,7 +14,6 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 
 struct TagGroup: Equatable {
     let tags: [String: String]
@@ -30,7 +29,7 @@ struct TagGroup: Equatable {
         var annotationsList = [String]()
 
         for decryptedTag in decryptedTags {
-            guard let (key, value) = decryptedTag.splitKeyAndValue(separatedBy: separator) else { break }
+            guard let (key, value) = decryptedTag.decodeKeyAndValue(separatedBy: separator) else { break }
             if key == TaggingService.Keys.custom.rawValue {
                 annotationsList.append(value)
             } else {
@@ -44,5 +43,17 @@ struct TagGroup: Equatable {
 
     var hasTags: Bool {
         return !tags.isEmpty || !annotations.isEmpty
+    }
+}
+
+fileprivate extension String {
+    func decodeKeyAndValue(separatedBy separator: Character = "=") -> (String, String)? {
+        let keyValue = self.split(separator: separator)
+        guard keyValue.count == 2,
+              let unescapedKey = String(keyValue[0]).removingPercentEncoding,
+              let unescapedValue = String(keyValue[1]).removingPercentEncoding else {
+            return nil
+        }
+        return (unescapedKey, unescapedValue)
     }
 }
