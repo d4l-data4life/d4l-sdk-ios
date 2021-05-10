@@ -54,15 +54,13 @@ class CryptoServiceMock: CryptoServiceType {
     }
 
     var encryptStringCalledWith: (String, Key)?
-    var encryptStringResult: String?
     func encrypt(string: String, key: Key) throws -> String {
         encryptStringCalledWith = (string, key)
+        return encryptStringResult(for: string)
+    }
 
-        guard let result = encryptStringResult else {
-            throw missingResultError
-        }
-
-        return result
+    func encryptStringResult(for tag: String) -> String {
+        return tag
     }
 
     var fetchOrGenerateKeyPairWithTagCalledWith: (String)?

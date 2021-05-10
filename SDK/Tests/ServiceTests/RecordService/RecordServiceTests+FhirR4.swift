@@ -28,7 +28,7 @@ extension RecordServiceTests {
         var record = DecryptedRecordFactory.create(resource)
         let annotations = ["example-annotation1"]
         record.annotations = annotations
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         userService.fetchUserInfoResult = Async.resolve()
@@ -53,7 +53,7 @@ extension RecordServiceTests {
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.encryptDataForInput = inputs
         cryptoService.decryptDataForInput = inputs
-        cryptoService.encryptStringResult = "encrypted"
+        
         stub("POST", "/users/\(userId)/records", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should create record")
@@ -84,14 +84,14 @@ extension RecordServiceTests {
         let oldDocument = FhirFactory.createR4DocumentReferenceResource()
         let oldRecord = DecryptedRecordFactory.create(oldDocument)
         oldDocument.id = oldRecord.id.asFHIRStringPrimitive()
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
         let document = oldDocument.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle.asFHIRStringPrimitive()
         var record = DecryptedRecordFactory.create(document)
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -110,7 +110,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
+        
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -163,7 +163,7 @@ extension RecordServiceTests {
         let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id.asFHIRStringPrimitive()
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
         let document = oldDocument.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
@@ -171,7 +171,7 @@ extension RecordServiceTests {
         var record = DecryptedRecordFactory.create(document)
         record.annotations = oldAnnotations
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -190,7 +190,6 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -243,7 +242,7 @@ extension RecordServiceTests {
         let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id.asFHIRStringPrimitive()
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
         let document = oldDocument.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
@@ -252,7 +251,7 @@ extension RecordServiceTests {
         var record = DecryptedRecordFactory.create(document)
         record.annotations = annotations
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -271,7 +270,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
+        
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -323,7 +322,7 @@ extension RecordServiceTests {
 
         let document = FhirFactory.createR4DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
@@ -371,7 +370,7 @@ extension RecordServiceTests {
         let endDate = Date()
         let document = FhirFactory.createR4DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, annotations: annotations)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
@@ -393,7 +392,6 @@ extension RecordServiceTests {
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
         cryptoService.decryptDataForInput = [dataInput, bodyInput]
-        cryptoService.encryptStringResult = "encrypted"
         stub("GET", "/users/\(userId)/records", with: [encryptedRecord.json])
 
         let asyncExpectation = expectation(description: "should return a list of records")
@@ -424,7 +422,7 @@ extension RecordServiceTests {
         let document = FhirFactory.createR4DocumentReferenceResource()
         var record = DecryptedRecordFactory.create(document, annotations: annotations)
         record.annotations = annotations
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
@@ -441,7 +439,6 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -504,7 +501,6 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
-        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)
@@ -527,7 +523,6 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
-        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: ModelsR4.DocumentReference.self, annotations: annotations)
@@ -655,7 +650,7 @@ extension RecordServiceTests {
 
         let document = FhirFactory.createR4DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key

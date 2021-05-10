@@ -21,6 +21,8 @@ import Data4LifeFHIR
 
 final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
+    private(set) var encryptedRecordFactory: EncryptedRecordFactory!
+
     var recordService: RecordService!
     var keychain: KeychainServiceMock!
     var versionValidator: SDKVersionValidatorMock!
@@ -51,6 +53,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
             cryptoService = try container.resolve(as: CryptoServiceType.self)
             commonKeyService = try container.resolve(as: CommonKeyServiceType.self)
             userService = try container.resolve(as: UserServiceType.self)
+            encryptedRecordFactory = try container.resolve()
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -72,7 +75,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         var record = DecryptedRecordFactory.create(resource)
         let annotations = ["example-annotation1"]
         record.annotations = annotations
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         userService.fetchUserInfoResult = Async.resolve()
@@ -88,7 +91,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
-        cryptoService.encryptStringResult = "encrypted"
 
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -129,14 +131,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         let oldDocument = FhirFactory.createStu3DocumentReferenceResource()
         let oldRecord = DecryptedRecordFactory.create(oldDocument)
         oldDocument.id = oldRecord.id
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
         let document = oldDocument.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
         document.description_fhir = updatedTitle
         var record = DecryptedRecordFactory.create(document)
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -155,7 +157,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -208,7 +209,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
         let document = oldDocument.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
@@ -216,7 +217,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         var record = DecryptedRecordFactory.create(document)
         record.annotations = oldAnnotations
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -235,7 +236,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
+        
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -288,7 +289,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         let oldAnnotations = ["old-annotation"]
         oldRecord.annotations = oldAnnotations
         oldDocument.id = oldRecord.id
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
         let document = oldDocument.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let updatedTitle = UUID().uuidString
@@ -297,7 +298,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         var record = DecryptedRecordFactory.create(document)
         record.annotations = annotations
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -316,7 +317,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -368,7 +368,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
@@ -416,7 +416,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         let endDate = Date()
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, annotations: annotations)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
@@ -433,7 +433,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -469,7 +468,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         let endDate = Date()
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, annotations: annotations)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
@@ -486,7 +485,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -550,7 +548,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
-        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self, annotations: annotations)
@@ -573,7 +570,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
-        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self, annotations: annotations)
@@ -701,7 +697,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key

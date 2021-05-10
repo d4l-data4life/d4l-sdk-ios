@@ -63,6 +63,10 @@ extension Data4LifeDITestContainer {
             AppDataServiceMock()
         }.register(scope: .containerInstance) { (_) -> InitializationVectorGeneratorProtocol in
             InitializationVectorGenerator()
+        }.register(scope: .containerInstance) { (container) -> RecordServiceParameterBuilder in
+            RecordServiceParameterBuilder(container: container)
+        }.register(scope: .containerInstance) { (container) -> EncryptedRecordFactory in
+            EncryptedRecordFactory(container: container)
         }
     }
 }
