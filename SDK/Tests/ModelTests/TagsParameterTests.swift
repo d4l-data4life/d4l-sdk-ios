@@ -24,7 +24,7 @@ fileprivate extension TagsParameter {
 
 class TagsParameterTests: XCTestCase {
 
-    func testConvenienceInitaliazers() throws {
+    func testConvenienceInitialiazers() throws {
         let parameter1 = TagsParameter.stringInitialized
         let parameter2 = TagsParameter.keyValueInitialized
 

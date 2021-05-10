@@ -194,9 +194,3 @@ class EncryptedRecordTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 }
-
-extension Dictionary where Key == String, Value == String {
-    func asCorrectlyEncodedTags(separatedBy separator: String = "=") -> [String] {
-        map { "\($0)\(separator)\($1)" }
-    }
-}
