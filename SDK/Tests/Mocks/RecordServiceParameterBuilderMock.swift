@@ -20,12 +20,22 @@ import Data4LifeCrypto
 class RecordServiceParameterBuilderMock: RecordServiceParameterBuilderProtocol {
 
     var searchParametersResult: Parameters?
+    var searchParametersError: Data4LifeSDKError?
     func searchParameters(from startDate: Date?, to endDate: Date?, offset: Int?, pageSize: Int?, tagGroup: TagGroup, supportingLegacyTags: Bool) throws -> Parameters {
-        return searchParametersResult ?? [:]
+        if let error = searchParametersError {
+            throw error
+        } else {
+            return searchParametersResult ?? [:]
+        }
     }
 
     var uploadParametersResult: Parameters?
+    var uploadParametersError: Data4LifeSDKError?
     func uploadParameters<R>(resource: R, commonKey: Key, commonKeyIdentifier: String, dataKey: Key, attachmentKey: Key?, tagGroup: TagGroup) throws -> Parameters where R : SDKResource {
-        return uploadParametersResult ?? [:]
+        if let error = uploadParametersError {
+            throw error
+        } else {
+            return uploadParametersResult ?? [:]
+        }
     }
 }

@@ -261,6 +261,16 @@ extension RecordServiceParameterBuilderTests {
 }
 
 extension RecordServiceParameterBuilderTests {
+
+    func testTagEncryptionKeyMissing() throws {
+        cryptoService.tagEncryptionKey = nil
+        let tagGroup = TagGroup.annotationTrimmedValid
+        XCTAssertThrowsError(try builder.searchParameters(tagGroup: tagGroup), "should throw tag encryption key missing error") { (error) in
+            XCTAssertEqual(error as? Data4LifeSDKError,
+                           Data4LifeSDKError.missingTagKey)
+        }
+    }
+    
     func testEmptyAnnotationErrorGetsCalledForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationIsEmpty
         XCTAssertThrowsError(try builder.searchParameters(tagGroup: tagGroup), "should throw empty error") { (error) in

@@ -31,6 +31,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     var commonKeyService: CommonKeyServiceMock!
     var taggingService: TaggingServiceMock!
     var userService: UserServiceMock!
+    var builder: RecordServiceParameterBuilderMock!
 
     var encoder: JSONEncoder!
 
@@ -53,6 +54,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
             cryptoService = try container.resolve(as: CryptoServiceType.self)
             commonKeyService = try container.resolve(as: CommonKeyServiceType.self)
             userService = try container.resolve(as: UserServiceType.self)
+            builder = try container.resolve(as: RecordServiceParameterBuilderProtocol.self)
             encryptedRecordFactory = try container.resolve()
         } catch {
             XCTFail(error.localizedDescription)
@@ -620,11 +622,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testFailBuildingParamsMissingTek() {
+    func testFailBuildingFhirStu3SearchParamsMissingTek() {
         let userId = UUID().uuidString
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: []))
         cryptoService.tagEncryptionKey = nil
-        let expectedError = Data4LifeSDKError.notLoggedIn
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
+        builder.searchParametersError = Data4LifeSDKError.missingTagKey
+
+        let expectedError = Data4LifeSDKError.missingTagKey
 
         let asyncExpectation = expectation(description: "should fail building params")
         recordService.searchRecords(for: userId,
@@ -644,7 +649,8 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadFhirStu3RecordMissingTek() {
+    func testFailBuildingFhirStu3UploadParamsMissingTek() {
+
         let userId = UUID().uuidString
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
@@ -655,6 +661,10 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.tagEncryptionKey = nil
+        builder.uploadParametersError = Data4LifeSDKError.missingTagKey
+        userService.fetchUserInfoResult = Async.resolve()
+        commonKeyService.currentKey = record.dataKey
+
         let createdRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")

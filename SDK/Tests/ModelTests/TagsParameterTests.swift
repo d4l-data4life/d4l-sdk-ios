@@ -24,11 +24,9 @@ fileprivate extension RecordServiceParameterBuilder.TagsParameter {
 }
 
 class TagsParameterTests: XCTestCase {
-
-    func testConvenienceInitaliazers() throws {
+    func testConvenienceInitializers() throws {
         let parameter1 = RecordServiceParameterBuilder.TagsParameter.stringInitialized
         let parameter2 = RecordServiceParameterBuilder.TagsParameter.keyValueInitialized
-
         XCTAssertEqual(parameter1.orComponents.formattedTags, parameter2.orComponents.formattedTags)
         XCTAssertEqual(parameter1.tagExpression, parameter2.tagExpression)
     }

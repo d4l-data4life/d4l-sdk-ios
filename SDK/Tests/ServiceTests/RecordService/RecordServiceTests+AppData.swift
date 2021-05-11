@@ -378,11 +378,14 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailBuildingAppDataParamsMissingTek() {
+    func testFailBuildingAppDataSearchParamsMissingTek() {
         let userId = UUID().uuidString
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: []))
         cryptoService.tagEncryptionKey = nil
-        let expectedError = Data4LifeSDKError.notLoggedIn
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
+        builder.searchParametersError = Data4LifeSDKError.missingTagKey
+
+        let expectedError = Data4LifeSDKError.missingTagKey
 
         let asyncExpectation = expectation(description: "should fail building params")
         recordService.searchRecords(for: userId,
@@ -402,18 +405,21 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadAppDataRecordMissingTek() {
+    func testFailBuildingAppDataUploadParamsMissingTek() {
         let userId = UUID().uuidString
-
         let document = FhirFactory.createAppDataResourceData()
         let record = DecryptedRecordFactory.create(document)
+
+        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
+        cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.tagEncryptionKey = nil
+        builder.uploadParametersError = Data4LifeSDKError.missingTagKey
+        userService.fetchUserInfoResult = Async.resolve()
+        commonKeyService.currentKey = record.dataKey
 
         let expectedError = Data4LifeSDKError.missingTagKey
         let asyncExpectation = expectation(description: "should fail loading tek")
 
-        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
-        cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.tagEncryptionKey = nil
         let createdRecord: Async<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")

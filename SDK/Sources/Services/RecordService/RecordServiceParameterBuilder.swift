@@ -25,6 +25,12 @@ protocol RecordServiceParameterBuilderProtocol {
                           supportingLegacyTags: Bool) throws -> Parameters
 }
 
+extension RecordServiceParameterBuilderProtocol {
+    func searchParameters(tagGroup: TagGroup, supportingLegacyTags: Bool = true) throws -> Parameters {
+        try searchParameters(from: nil, to: nil, offset: nil, pageSize: nil, tagGroup: tagGroup, supportingLegacyTags: supportingLegacyTags)
+    }
+}
+
 struct RecordServiceParameterBuilder: RecordServiceParameterBuilderProtocol {
 
     enum ParameterKey {

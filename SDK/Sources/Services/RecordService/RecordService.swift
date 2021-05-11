@@ -58,7 +58,7 @@ struct RecordService: RecordServiceType {
     private let cryptoService: CryptoServiceType
     private let commonKeyService: CommonKeyServiceType
     private let userService: UserServiceType
-    private let parameterBuilder: RecordServiceParameterBuilder
+    private let parameterBuilder: RecordServiceParameterBuilderProtocol
 
     init(container: DIContainer) {
         do {
@@ -149,7 +149,8 @@ struct RecordService: RecordServiceType {
                                                                    to: endDate,
                                                                    offset: offset,
                                                                    pageSize: pageSize,
-                                                                   tagGroup: tagGroup)
+                                                                   tagGroup: tagGroup,
+                                                                   supportingLegacyTags: true)
 
             let route = Router.searchRecords(userId: userId, parameters: parameters)
             let encryptedRecords: [EncryptedRecord] = try wait(
