@@ -301,7 +301,7 @@ extension RecordService {
 
 // MARK: - Helpers
 extension CryptoServiceType {
-    func encrypt(tagsParameters: [TagsParameter], key: Key) throws -> [TagsParameter] {
+    fileprivate func encrypt(tagsParameters: [TagsParameter], key: Key) throws -> [TagsParameter] {
         return try tagsParameters.map { tagsParameter in
             let encodedTags = try tagsParameter.orComponents.map { try encrypt(string: $0.formattedTag, key: key) }
             return TagsParameter(encodedTags.map { TagsParameter.OrComponent(formattedTag: $0) })
