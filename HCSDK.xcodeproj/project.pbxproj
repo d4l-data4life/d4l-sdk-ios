@@ -963,6 +963,7 @@
 		3685D42B25920C0E00F97F9E /* RecordService */ = {
 			isa = PBXGroup;
 			children = (
+				36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */,
 				3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */,
 				366A44742588E5BC0003FBCE /* RecordServiceTests+FhirR4.swift */,
 				CD841E03225CBE80002656D5 /* RecordServiceTests+FhirStu3.swift */,
@@ -1711,7 +1712,6 @@
 				CDFB908A229C2E0000B33C7B /* ClientConfigurationTests.swift */,
 				0AC79E33235DC0AC007BC681 /* TaskTest.swift */,
 				0A8D847723C5D6E300D7DDD3 /* HasAttachmentsProtocolTests.swift */,
-				36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */,
 				366BC2BD2645699C00C33C37 /* TagsParameterTests.swift */,
 			);
 			path = ModelTests;

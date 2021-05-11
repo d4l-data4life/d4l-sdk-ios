@@ -12,11 +12,12 @@ import Foundation
 
 protocol RecordServiceParameterBuilderProtocol {
     func uploadParameters<R: SDKResource>(resource: R,
+                                          uploadDate: Date,
                                           commonKey: Key,
                                           commonKeyIdentifier: String,
                                           dataKey: Key,
                                           attachmentKey: Key?,
-                                          tagGroup: TagGroup) throws -> Parameters
+                                          tagGroup: TagGroup)  throws -> Parameters
     func searchParameters(from startDate: Date?,
                           to endDate: Date?,
                           offset: Int?,
@@ -111,6 +112,7 @@ extension RecordServiceParameterBuilder.TagsParameter {
 extension RecordServiceParameterBuilder {
 
     func uploadParameters<R: SDKResource>(resource: R,
+                                          uploadDate: Date = Date(),
                                           commonKey: Key,
                                           commonKeyIdentifier: String,
                                           dataKey: Key,
@@ -119,7 +121,7 @@ extension RecordServiceParameterBuilder {
 
         var parameters: Parameters = Parameters()
 
-        parameters[ParameterKey.Upload.date.rawValue] = Date().yyyyMmDdFormattedString()
+        parameters[ParameterKey.Upload.date.rawValue] = uploadDate.yyyyMmDdFormattedString()
         parameters[ParameterKey.Upload.commonKeyIdentifier.rawValue] = commonKeyIdentifier
         parameters[ParameterKey.Upload.modelVersion.rawValue] = R.modelVersion
 

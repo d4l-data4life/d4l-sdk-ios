@@ -207,6 +207,7 @@ extension RecordService {
             let tagGroup = try wait(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
 
             let uploadParameters = try parameterBuilder.uploadParameters(resource: resource,
+                                                                         uploadDate: Date(),
                                                                          commonKey: commonKey,
                                                                          commonKeyIdentifier: commonKeyId,
                                                                          dataKey: dataKey,

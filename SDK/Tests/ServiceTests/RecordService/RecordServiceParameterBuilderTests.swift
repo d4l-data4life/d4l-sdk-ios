@@ -47,7 +47,7 @@ final class RecordServiceParameterBuilderTests: XCTestCase {
     private let commonKey = KeyFactory.createKey(.common)
     private let commonKeyIdentifier = UUID().uuidString
     private let dataKey = KeyFactory.createKey(.data)
-    private lazy var decryptedRecord = DecryptedRecordFactory.create(resource, annotations: [], dataKey: dataKey, attachmentKey: nil)
+    private lazy var decryptedRecord = DecryptedRecordFactory.create(resource, annotations: [], dataKey: dataKey, attachmentKey: dataKey)
     private lazy var encryptedRecord = encryptedRecordFactory.create(for: decryptedRecord, commonKeyId: commonKeyIdentifier)
 
     override func setUp() {
@@ -69,7 +69,44 @@ final class RecordServiceParameterBuilderTests: XCTestCase {
     }
 }
 
-// Search, Not Supporting Legacy Tags
+// MARK: - All Parameter Tests
+extension RecordServiceParameterBuilderTests {
+    func testAllSearchParameters() throws {
+        let toDate = Calendar.current.date(from: DateComponents(year: 1983, month: 1, day: 11))!
+        let fromDate = Calendar.current.date(byAdding: DateComponents(day: -1), to: toDate)
+        let offset = 1
+        let pageSize = 20
+        let tagGroup = TagGroup.annotationLowercased
+
+        let parameters = try builder.searchParameters(from: fromDate, to: toDate, offset: offset, pageSize: pageSize, tagGroup: tagGroup, supportingLegacyTags: false)
+        XCTAssertEqual(parameters["tags"] as? String, "tag=value,custom=valid")
+        XCTAssertEqual(parameters["start_date"] as? String, "1983-01-10")
+        XCTAssertEqual(parameters["end_date"] as? String, "1983-01-11")
+        XCTAssertEqual(parameters["offset"] as? Int, 1)
+        XCTAssertEqual(parameters["limit"] as? Int, 20)
+    }
+
+    func testAllUploadParameters() throws {
+        let tagGroup = TagGroup.annotationLowercased
+        let uploadDate = Calendar.current.date(from: DateComponents(year: 1983, month: 1, day: 10))!
+        let parameters = try builder.uploadParameters(resource: resource,
+                                                      uploadDate: uploadDate,
+                                                      commonKey: commonKey,
+                                                      commonKeyIdentifier: commonKeyIdentifier,
+                                                      dataKey: dataKey,
+                                                      attachmentKey: dataKey,
+                                                      tagGroup: tagGroup)
+        XCTAssertEqual(parameters["encrypted_tags"] as? [String], ["tag=value","custom=valid"])
+        XCTAssertEqual(parameters["encrypted_body"] as? String, encryptedRecord.encryptedBodyData.base64EncodedString())
+        XCTAssertEqual(parameters["date"] as? String, "1983-01-10")
+        XCTAssertEqual(parameters["attachment_key"] as? String, encryptedRecord.encryptedAttachmentKey)
+        XCTAssertEqual(parameters["encrypted_key"] as? String, encryptedRecord.encryptedDataKey)
+        XCTAssertEqual(parameters["model_version"] as? Int, Patient.modelVersion)
+        XCTAssertEqual(parameters["common_key_id"] as? String, commonKeyIdentifier)
+    }
+}
+
+// MARK: - Tags Tests, Search, Not Supporting Legacy Tags
 extension RecordServiceParameterBuilderTests {
     func testLowercasedAnnotationForSearchNotSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationLowercased
@@ -120,6 +157,7 @@ extension RecordServiceParameterBuilderTests {
     }
 }
 
+// MARK: - Tags Tests, Search, Supporting Legacy Tags
 extension RecordServiceParameterBuilderTests {
     func testEncodableSymbolAnnotationForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationContainsEncodableSymbols
@@ -168,6 +206,7 @@ extension RecordServiceParameterBuilderTests {
     }
 }
 
+// MARK: - Tags Tests, Upload
 extension RecordServiceParameterBuilderTests {
 
     func testLowercasedAnnotationForUpload() throws {
@@ -260,6 +299,7 @@ extension RecordServiceParameterBuilderTests {
     }
 }
 
+// MARK: - Tags Tests, Thrown errors
 extension RecordServiceParameterBuilderTests {
 
     func testTagEncryptionKeyMissing() throws {
@@ -330,6 +370,7 @@ extension RecordServiceParameterBuilderTests {
     }
 }
 
+// MARK: - Initializers
 extension RecordServiceParameterBuilderTests {
 
     func testLowercasedAnnotationInit() throws {
