@@ -74,7 +74,7 @@ extension Data4LifeClient {
      */
     public func isUserLoggedIn(queue: DispatchQueue = responseQueue,
                                _ completion: @escaping ResultBlock<Void>) {
-        guard commonKeyService.currentKey != nil, cryptoService.tek != nil else {
+        guard commonKeyService.currentKey != nil, cryptoService.tagEncryptionKey != nil else {
             completion(.failure(Data4LifeSDKError.notLoggedIn))
             return
         }

@@ -386,7 +386,7 @@ extension RecordServiceTests {
 
     func testFailBuildingAppDataParamsMissingTek() {
         let userId = UUID().uuidString
-        cryptoService.tek = nil
+        cryptoService.tagEncryptionKey = nil
         let expectedError = Data4LifeSDKError.notLoggedIn
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
 
@@ -419,7 +419,7 @@ extension RecordServiceTests {
 
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.tek = nil
+        cryptoService.tagEncryptionKey = nil
         let createdRecord: Async<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")

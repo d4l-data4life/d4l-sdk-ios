@@ -32,7 +32,7 @@ class CryptoServiceMock: CryptoServiceType {
         }
     }
 
-    var tek: Key?
+    var tagEncryptionKey: Key?
 
     var encryptValueCalledWith: (Encodable, Key)?
     var encryptValueResult: Promise<Data>?

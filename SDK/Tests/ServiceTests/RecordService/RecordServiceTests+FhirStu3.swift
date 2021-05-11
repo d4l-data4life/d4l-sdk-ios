@@ -33,7 +33,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     var encoder: JSONEncoder!
 
     let commonKey = KeyFactory.createKey()
-    let tek = KeyFactory.createKey()
+    let tagEncryptionKey = KeyFactory.createKey()
     let commonKeyId = UUID().uuidString
 
     override func setUp() {
@@ -60,7 +60,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .formatted(.with(format: .iso8601TimeZone))
 
-        cryptoService.tek = tek
+        cryptoService.tagEncryptionKey = tagEncryptionKey
         commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
         versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
     }
@@ -626,7 +626,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
     func testFailBuildingParamsMissingTek() {
         let userId = UUID().uuidString
-        cryptoService.tek = nil
+        cryptoService.tagEncryptionKey = nil
         let expectedError = Data4LifeSDKError.notLoggedIn
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
 
@@ -658,7 +658,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.tek = nil
+        cryptoService.tagEncryptionKey = nil
         let createdRecord: Async<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")

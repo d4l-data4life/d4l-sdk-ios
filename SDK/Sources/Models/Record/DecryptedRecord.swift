@@ -49,7 +49,7 @@ extension DecryptedRecord {
         return try JSONDecoder().decode(Key.self, from: decryptedDataKey)
     }
     static func decryptTagGroup(from encryptedRecord: EncryptedRecord, cryptoService: CryptoServiceType) throws -> TagGroup {
-        guard let tagKey = cryptoService.tek else {
+        guard let tagKey = cryptoService.tagEncryptionKey else {
             throw Data4LifeSDKError.missingTagKey
         }
         return try wait(

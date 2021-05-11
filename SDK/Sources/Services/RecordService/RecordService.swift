@@ -195,7 +195,7 @@ extension RecordService {
                                                    uploadRequest: @escaping (Parameters) -> Router) -> Async<DR> {
         return async {
 
-            guard let tagEncryptionKey = self.cryptoService.tek else {
+            guard let tagEncryptionKey = self.cryptoService.tagEncryptionKey else {
                 throw Data4LifeSDKError.missingTagKey
             }
 
@@ -272,7 +272,7 @@ extension RecordService {
 
             var parameters = Parameters()
 
-            guard let tagEncryptionKey = self.cryptoService.tek else {
+            guard let tagEncryptionKey = self.cryptoService.tagEncryptionKey else {
                 throw Data4LifeSDKError.notLoggedIn
             }
 

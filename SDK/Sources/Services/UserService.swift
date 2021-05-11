@@ -45,22 +45,22 @@ class UserService: UserServiceType {
             let response: UserInfoResponse = try wait(self.sessionService.request(route: Router.userInfo).responseDecodable())
 
             guard
-                let eckData = Data(base64Encoded: response.commonKey),
-                let tekData = Data(base64Encoded: response.tagEncryptionKey)
+                let encryptedCommonKey = Data(base64Encoded: response.commonKey),
+                let encryptedTagEncryptionKey = Data(base64Encoded: response.tagEncryptionKey)
                 else {
                     throw Data4LifeSDKError.couldNotReadBase64EncodedData
             }
 
             let keyPair = try self.cryptoService.fetchOrGenerateKeyPair()
-            let decryptedCommonKeyData = try self.cryptoService.decrypt(data: eckData, keypair: keyPair)
+            let decryptedCommonKeyData = try self.cryptoService.decrypt(data: encryptedCommonKey, keypair: keyPair)
             let commonKey: Key = try JSONDecoder().decode(Key.self, from: decryptedCommonKeyData)
 
             let commonKeyId = response.commonKeyId ?? CommonKeyService.initialId
             self.commonKeyService.storeKey(commonKey, id: commonKeyId, isCurrent: true)
 
-            let decryptedTekData = try self.cryptoService.decrypt(data: tekData, key: commonKey)
-            let tagKey: Key = try JSONDecoder().decode(Key.self, from: decryptedTekData)
-            self.cryptoService.tek = tagKey
+            let decryptedTagEncryptionKeyData = try self.cryptoService.decrypt(data: encryptedTagEncryptionKey, key: commonKey)
+            let tagKey: Key = try JSONDecoder().decode(Key.self, from: decryptedTagEncryptionKeyData)
+            self.cryptoService.tagEncryptionKey = tagKey
 
             try wait(self.keychainService.set(response.userId, forKey: .userId))
         }
