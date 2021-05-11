@@ -57,8 +57,8 @@ struct EncryptedRecordFactory {
     }
 
     func tagsParameter(for tagGroup: TagGroup) -> [String] {
-        let commaSeparatedTags = try! builder.searchParameters(tagGroup: tagGroup, supportingLegacyTags: false)["tags"] as! String
-        return commaSeparatedTags.components(separatedBy: ",")
+        let commaSeparatedTags = try! builder.searchParameters(tagGroup: tagGroup, supportingLegacyTags: false)["tags"] as? String
+        return commaSeparatedTags?.components(separatedBy: ",") ?? []
     }
 }
 

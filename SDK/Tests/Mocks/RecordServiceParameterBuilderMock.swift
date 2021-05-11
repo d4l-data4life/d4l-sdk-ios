@@ -31,7 +31,13 @@ class RecordServiceParameterBuilderMock: RecordServiceParameterBuilderProtocol {
 
     var uploadParametersResult: Parameters?
     var uploadParametersError: Data4LifeSDKError?
-    func uploadParameters<R>(resource: R, uploadDate: Date, commonKey: Key, commonKeyIdentifier: String, dataKey: Key, attachmentKey: Key?, tagGroup: TagGroup) throws -> Parameters where R : SDKResource {
+    func uploadParameters<R>(resource: R,
+                             uploadDate: Date,
+                             commonKey: Key,
+                             commonKeyIdentifier: String,
+                             dataKey: Key,
+                             attachmentKey: Key?,
+                             tagGroup: TagGroup) throws -> Parameters where R : SDKResource {
         if let error = uploadParametersError {
             throw error
         } else {

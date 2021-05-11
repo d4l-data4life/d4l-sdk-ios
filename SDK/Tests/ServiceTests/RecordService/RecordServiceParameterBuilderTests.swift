@@ -185,7 +185,7 @@ extension RecordServiceParameterBuilderTests {
     func testMixedAnnotationsForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationMixedValid
         let parameters = try builder.searchParameters(tagGroup: tagGroup)
-        XCTAssertEqual(parameters["tags"] as? String,
+        XCTAssertEqual(parameters["tags"] as? String, // swiftlint:disable line_length
                        "tag=value,(custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid,custom=valid ---==%%123.321%%==--- valid,custom=valid%20%2d%2d%2d%3D%3D%25%25123%2e321%25%25%3D%3D%2d%2d%2d%20valid)")
     }
     func testSecondUppercasedAnnotationForSearchSupportingLegacyTags() throws {

@@ -18,9 +18,14 @@ import XCTest
 
 fileprivate extension RecordServiceParameterBuilder.TagsParameter {
     static var stringInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter("tag=value")
-    static var keyValueInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter(RecordServiceParameterBuilder.TagsParameter.OrComponent(key: "tag", value: "value", separator: "="))
-    static var doubleComponentInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter([RecordServiceParameterBuilder.TagsParameter.OrComponent(formattedTag: "tag=value"),
-                                                                                                                                      RecordServiceParameterBuilder.TagsParameter.OrComponent(formattedTag: "tag2=value2")])
+    static var keyValueInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter(
+        RecordServiceParameterBuilder.TagsParameter.OrComponent(key: "tag", value: "value", separator: "=")
+    )
+    static var doubleComponentInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter(
+        [RecordServiceParameterBuilder.TagsParameter.OrComponent(formattedTag: "tag=value"),
+         RecordServiceParameterBuilder.TagsParameter.OrComponent(formattedTag: "tag2=value2")
+        ]
+    )
 }
 
 class TagsParameterTests: XCTestCase {
