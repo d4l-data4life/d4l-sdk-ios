@@ -88,6 +88,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
+        cryptoService.encryptStringResult = "encrypted"
 
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -154,7 +155,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -234,7 +235,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -315,7 +316,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-
+        cryptoService.encryptStringResult = "encrypted"
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -432,6 +433,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -484,6 +486,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -502,7 +505,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                                     decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(records.count, 1 * 2)
+                XCTAssertEqual(records.count, 1)
                 XCTAssertEqual(record.resource, document)
 
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
@@ -547,6 +550,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self, annotations: annotations)
@@ -569,12 +573,13 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data4LifeFHIR.DocumentReference.self, annotations: annotations)
             .then { count in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(count, recordCount * 2)
+                XCTAssertEqual(count, recordCount)
                 XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
             }
 

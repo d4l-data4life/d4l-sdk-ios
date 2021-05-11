@@ -49,6 +49,7 @@ public enum Data4LifeSDKError: LocalizedError {
     case downloadActionWasCancelled
     case couldNotEncodeAppData
     case emptyAnnotationNotAllowed
+    case invalidCharacterInTag
 
     // AppAuth errors (https://github.com/openid/AppAuth-iOS/blob/master/Source/OIDError.h)
     case appAuth(Error)
@@ -138,6 +139,8 @@ extension Data4LifeSDKError: CustomStringConvertible {
             return "Could not encode app data"
         case .emptyAnnotationNotAllowed:
             return "Empty annotations are not allowed"
+        case .invalidCharacterInTag:
+            return "Invalid charater in tag"
         }
     }
 }

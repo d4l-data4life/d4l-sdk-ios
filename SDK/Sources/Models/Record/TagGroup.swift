@@ -14,7 +14,6 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 
 struct TagGroup: Equatable {
     let tags: [String: String]
@@ -25,12 +24,12 @@ struct TagGroup: Equatable {
         self.annotations = annotations
     }
 
-    init(from parameters: [String], separatedBy separator: Character = "=") {
+    init(from decryptedTags: [String], separatedBy separator: Character = "=") {
         var tagsDictionary = [String: String]()
         var annotationsList = [String]()
 
-        for decryptedTag in parameters {
-            guard let (key, value) = decryptedTag.splitKeyAndValue(separatedBy: separator) else { break }
+        for decryptedTag in decryptedTags {
+            guard let (key, value) = decryptedTag.decodeKeyAndValue(separatedBy: separator) else { break }
             if key == TaggingService.Keys.custom.rawValue {
                 annotationsList.append(value)
             } else {
@@ -42,25 +41,19 @@ struct TagGroup: Equatable {
         self.annotations = annotationsList
     }
 
-    func asParameters(separatedBy separator: Character = "=", percentEncoding: Bool = true) throws -> [String] {
-        try validateAnnotations()
-        let formattedAnnotations: [String] = annotations.compactMap {
-            String.formatKeyValuePair(key: TaggingService.Keys.custom.rawValue, value: $0, usingPercentEncoding: percentEncoding)
-        }
-        return tags.formattedKeyValuePairs(separatedBy: separator, usingPercentEncoding: percentEncoding) + formattedAnnotations
+    var hasTags: Bool {
+        return !tags.isEmpty || !annotations.isEmpty
     }
+}
 
-    func hasPercentEncodableCharacters() throws -> Bool {
-        let percentEncodedParameters = try asParameters(percentEncoding: true).sorted()
-        let nonPercentEncodedParameters = try asParameters(percentEncoding: false).sorted()
-        return percentEncodedParameters != nonPercentEncodedParameters
-    }
-
-    private func validateAnnotations() throws {
-        for annotation in annotations {
-            guard !annotation.isEmpty else {
-                throw Data4LifeSDKError.emptyAnnotationNotAllowed
-            }
+fileprivate extension String {
+    func decodeKeyAndValue(separatedBy separator: Character = "=") -> (String, String)? {
+        let keyValue = self.split(separator: separator)
+        guard keyValue.count == 2,
+              let unescapedKey = String(keyValue[0]).removingPercentEncoding,
+              let unescapedValue = String(keyValue[1]).removingPercentEncoding else {
+            return nil
         }
+        return (unescapedKey, unescapedValue)
     }
 }

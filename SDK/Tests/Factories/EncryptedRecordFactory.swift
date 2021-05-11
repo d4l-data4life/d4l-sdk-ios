@@ -24,7 +24,7 @@ struct EncryptedRecordFactory {
         let tagGroup = TagGroup(tags: decryptedRecord.tags, annotations: decryptedRecord.annotations)
 
         return EncryptedRecord(id: decryptedRecord.id,
-                               encryptedTags: try! tagGroup.asParameters(),
+                               encryptedTags: try! tagGroup.asTagsParameters(for: .upload).asTagExpressions,
                                encryptedBody: resourceData.base64EncodedString(),
                                createdAt: decryptedRecord.metadata.updatedDate,
                                date: decryptedRecord.metadata.createdDate,

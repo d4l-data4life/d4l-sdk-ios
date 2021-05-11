@@ -42,6 +42,7 @@ extension RecordServiceTests {
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
+        cryptoService.encryptStringResult = "encrypted"
 
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -151,7 +152,7 @@ extension RecordServiceTests {
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
-
+        cryptoService.encryptStringResult = "encrypted"
         cryptoService.generateGCKeyResult = record.dataKey
 
         // decrypt values for data key and body
@@ -219,6 +220,7 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -266,6 +268,7 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -282,7 +285,7 @@ extension RecordServiceTests {
                                                                                          offset: 0)
         searchRecords.then { records in
             defer { asyncExpectation.fulfill() }
-            XCTAssertEqual(records.count, 1 * 2)
+            XCTAssertEqual(records.count, 1)
             XCTAssertEqual(record.resource, appData)
         }
 
@@ -324,6 +327,7 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "helloEncrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data.self)
@@ -345,12 +349,13 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
+        cryptoService.encryptStringResult = "hello-percent-encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data.self)
             .then { count in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(count, recordCount * 2)
+                XCTAssertEqual(count, recordCount)
             }
 
         waitForExpectations(timeout: 5)

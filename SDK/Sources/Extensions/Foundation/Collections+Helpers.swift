@@ -13,20 +13,26 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import XCTest
-@testable import Data4LifeSDK
+import Foundation
 
-class StringHelperTests: XCTestCase {
-    func testStringSplitKeyAndValue() {
-        let input = "key=value"
-        let output = (key: "key", value: "value")
+extension Array where Element: Hashable {
+    var removingDuplicates: [Element] {
+        let orderedSet = NSOrderedSet(array: self as [Any])
+        return orderedSet.array.compactMap { $0 as? Element }
+    }
+}
 
-        guard let result = input.splitKeyAndValue(separatedBy: "=") else {
-            XCTFail("Should convert string to tuple with key and value")
-            return
+extension Array where Element == String {
+    var lowercased: [Element] {
+        map { $0.lowercased() }
+    }
+}
+
+extension Dictionary where Key == String, Value == String {
+    var lowercased: [Key: Value] {
+        let entries = map { entry in
+            (entry.key.lowercased(), entry.value.lowercased())
         }
-
-        XCTAssertEqual(result.0, output.key)
-        XCTAssertEqual(result.1, output.value)
+        return Dictionary(entries, uniquingKeysWith: { $1 })
     }
 }
