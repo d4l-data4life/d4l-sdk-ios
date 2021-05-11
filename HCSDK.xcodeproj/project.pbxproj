@@ -77,7 +77,6 @@
 		366A44652587C09F0003FBCE /* DocumentListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A44642587C09F0003FBCE /* DocumentListInteractor.swift */; };
 		366A446B2587C8B70003FBCE /* FileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A446A2587C8B70003FBCE /* FileData.swift */; };
 		366A44752588E5BC0003FBCE /* RecordServiceTests+FhirR4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366A44742588E5BC0003FBCE /* RecordServiceTests+FhirR4.swift */; };
-		366BC2B826443F4800C33C37 /* TagsParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366BC2B726443F4800C33C37 /* TagsParameter.swift */; };
 		366BC2BC2644536D00C33C37 /* Collections+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366BC2BB2644536D00C33C37 /* Collections+Helpers.swift */; };
 		366BC2BF264569AA00C33C37 /* TagsParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366BC2BD2645699C00C33C37 /* TagsParameterTests.swift */; };
 		366BC2C126458D6300C33C37 /* RecordServiceParameterBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366BC2C026458D6300C33C37 /* RecordServiceParameterBuilder.swift */; };
@@ -468,7 +467,6 @@
 		366A44642587C09F0003FBCE /* DocumentListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListInteractor.swift; sourceTree = "<group>"; };
 		366A446A2587C8B70003FBCE /* FileData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileData.swift; sourceTree = "<group>"; };
 		366A44742588E5BC0003FBCE /* RecordServiceTests+FhirR4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordServiceTests+FhirR4.swift"; sourceTree = "<group>"; };
-		366BC2B726443F4800C33C37 /* TagsParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsParameter.swift; sourceTree = "<group>"; };
 		366BC2BB2644536D00C33C37 /* Collections+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections+Helpers.swift"; sourceTree = "<group>"; };
 		366BC2BD2645699C00C33C37 /* TagsParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsParameterTests.swift; sourceTree = "<group>"; };
 		366BC2C026458D6300C33C37 /* RecordServiceParameterBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordServiceParameterBuilder.swift; sourceTree = "<group>"; };
@@ -926,7 +924,6 @@
 			isa = PBXGroup;
 			children = (
 				CD109227225B901E00325389 /* RecordService.swift */,
-				366BC2B726443F4800C33C37 /* TagsParameter.swift */,
 				366BC2C026458D6300C33C37 /* RecordServiceParameterBuilder.swift */,
 			);
 			path = RecordService;
@@ -2211,7 +2208,6 @@
 				CDE0336E22A7B39300002282 /* FhirService+AttachmentOperations.swift in Sources */,
 				CD109246225B901E00325389 /* Data4LifeSDKError.swift in Sources */,
 				CDC9D6B7229D8ECA0068E3D5 /* OAuthExternalUserAgent.swift in Sources */,
-				366BC2B826443F4800C33C37 /* TagsParameter.swift in Sources */,
 				CD10926D225B901E00325389 /* Async+CryptoServiceType.swift in Sources */,
 				3600188723966DBF004D9048 /* LoggerContainer.swift in Sources */,
 				CD109249225B901E00325389 /* FHIRModelVersionType.swift in Sources */,

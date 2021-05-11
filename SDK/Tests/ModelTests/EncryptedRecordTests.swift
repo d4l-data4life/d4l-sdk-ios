@@ -95,7 +95,6 @@ class EncryptedRecordTests: XCTestCase {
         commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
         cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
-
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "Should fail decrypting record")
 

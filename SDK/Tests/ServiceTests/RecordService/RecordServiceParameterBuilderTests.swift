@@ -310,7 +310,7 @@ extension RecordServiceParameterBuilderTests {
                            Data4LifeSDKError.missingTagKey)
         }
     }
-    
+
     func testEmptyAnnotationErrorGetsCalledForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationIsEmpty
         XCTAssertThrowsError(try builder.searchParameters(tagGroup: tagGroup), "should throw empty error") { (error) in

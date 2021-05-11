@@ -238,7 +238,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        
+
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)

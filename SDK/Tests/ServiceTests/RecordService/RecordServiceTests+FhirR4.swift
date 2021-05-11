@@ -53,7 +53,7 @@ extension RecordServiceTests {
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.encryptDataForInput = inputs
         cryptoService.decryptDataForInput = inputs
-        
+
         stub("POST", "/users/\(userId)/records", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should create record")
@@ -110,7 +110,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        
+
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
@@ -270,7 +270,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         cryptoService.generateGCKeyResult = record.dataKey
-        
+
         // decrypt values for data key and body
         let attachmentInput: (Data?, Data?) = (encryptedRecord.encryptedAttachmentKeyData,
                                                encryptedRecord.encryptedAttachmentKeyData)
