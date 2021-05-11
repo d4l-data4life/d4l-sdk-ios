@@ -86,7 +86,7 @@ extension Data4LifeDIContainer {
                 AppDataService(container: container)
             }.register(scope: .containerInstance) { (_) -> InitializationVectorGeneratorProtocol in
                 InitializationVectorGenerator()
-            }.register(scope: .containerInstance) { (container) -> RecordServiceParameterBuilder in
+            }.register(scope: .containerInstance) { (container) -> RecordServiceParameterBuilderProtocol in
                 RecordServiceParameterBuilder(container: container)
             }
         } catch {
