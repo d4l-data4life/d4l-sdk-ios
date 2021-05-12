@@ -26,7 +26,7 @@ extension RecordServiceTests {
         let userId = UUID().uuidString
         let resource = FhirFactory.createAppDataResourceData()
         let record = DecryptedRecordFactory.create(resource)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         userService.fetchUserInfoResult = Async.resolve()
@@ -42,7 +42,6 @@ extension RecordServiceTests {
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
-        cryptoService.encryptStringResult = "encrypted"
 
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)
@@ -81,7 +80,7 @@ extension RecordServiceTests {
         let appData = "test".data(using: .utf8)!
 
         let record = DecryptedRecordFactory.create(appData, dataKey: commonKey)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
@@ -126,7 +125,7 @@ extension RecordServiceTests {
         let userId = UUID().uuidString
         let oldData = FhirFactory.createAppDataResourceData()
         let oldRecord = DecryptedRecordFactory.create(oldData)
-        var oldEncryptedRecord = EncryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
+        var oldEncryptedRecord = encryptedRecordFactory.create(for: oldRecord, commonKeyId: commonKeyId)
         oldEncryptedRecord.encryptedAttachmentKey = nil
 
         let oldBaseData = try! JSONDecoder().decode(SomeAppDataResource.self, from: oldData)
@@ -135,7 +134,7 @@ extension RecordServiceTests {
         let newData = try! JSONEncoder().encode(newBaseData)
         var record = DecryptedRecordFactory.create(newData)
         record.id = oldRecord.id
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
@@ -152,7 +151,6 @@ extension RecordServiceTests {
         taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
-        cryptoService.encryptStringResult = "encrypted"
         cryptoService.generateGCKeyResult = record.dataKey
 
         // decrypt values for data key and body
@@ -203,7 +201,7 @@ extension RecordServiceTests {
         let appData = FhirFactory.createAppDataResourceData()
 
         let record = DecryptedRecordFactory.create(appData, annotations: annotations)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
@@ -220,7 +218,6 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -251,7 +248,7 @@ extension RecordServiceTests {
         let appData = FhirFactory.createAppDataResourceData()
         let annotations = ["hello-hello"]
         let record = DecryptedRecordFactory.create(appData, annotations: annotations)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
@@ -268,7 +265,6 @@ extension RecordServiceTests {
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
         cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.encryptStringResult = "encrypted"
 
         // decrypt values for data key and body
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
@@ -327,7 +323,6 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
-        cryptoService.encryptStringResult = "helloEncrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data.self)
@@ -349,7 +344,6 @@ extension RecordServiceTests {
         taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: annotations))
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
-        cryptoService.encryptStringResult = "hello-percent-encrypted"
 
         let asyncExpectation = expectation(description: "should return header containg record count")
         recordService.countRecords(userId: userId, resourceType: Data.self)
@@ -384,11 +378,14 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailBuildingAppDataParamsMissingTek() {
+    func testFailBuildingAppDataSearchParamsMissingTek() {
         let userId = UUID().uuidString
+
+        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:], annotations: []))
         cryptoService.tagEncryptionKey = nil
-        let expectedError = Data4LifeSDKError.notLoggedIn
-        taggingService.tagTypeResult = Async.resolve(TagGroup(tags: [:]))
+        builder.searchParametersError = Data4LifeSDKError.missingTagKey
+
+        let expectedError = Data4LifeSDKError.missingTagKey
 
         let asyncExpectation = expectation(description: "should fail building params")
         recordService.searchRecords(for: userId,
@@ -408,18 +405,21 @@ extension RecordServiceTests {
         waitForExpectations(timeout: 5)
     }
 
-    func testFailUploadAppDataRecordMissingTek() {
+    func testFailBuildingAppDataUploadParamsMissingTek() {
         let userId = UUID().uuidString
-
         let document = FhirFactory.createAppDataResourceData()
         let record = DecryptedRecordFactory.create(document)
+
+        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags, annotations: record.annotations))
+        cryptoService.generateGCKeyResult = record.dataKey
+        cryptoService.tagEncryptionKey = nil
+        builder.uploadParametersError = Data4LifeSDKError.missingTagKey
+        userService.fetchUserInfoResult = Async.resolve()
+        commonKeyService.currentKey = record.dataKey
 
         let expectedError = Data4LifeSDKError.missingTagKey
         let asyncExpectation = expectation(description: "should fail loading tek")
 
-        taggingService.tagResourceResult = Async.resolve(TagGroup(tags: record.tags))
-        cryptoService.generateGCKeyResult = record.dataKey
-        cryptoService.tagEncryptionKey = nil
         let createdRecord: Async<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")
@@ -463,7 +463,7 @@ extension RecordServiceTests {
 
         let document = FhirFactory.createAppDataResourceData()
         let record = DecryptedRecordFactory.create(document, dataKey: commonKey)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
+        var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key

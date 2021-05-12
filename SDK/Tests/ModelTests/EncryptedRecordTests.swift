@@ -19,8 +19,15 @@ import Then
 
 class EncryptedRecordTests: XCTestCase {
 
-    var cryptoService: CryptoServiceMock!
-    var commonKeyService: CommonKeyServiceMock!
+    private lazy var container: Data4LifeDITestContainer = {
+        let container = Data4LifeDITestContainer()
+        container.registerDependencies()
+        return container
+    }()
+
+    private lazy var encryptedRecordFactory = EncryptedRecordFactory(container: container)
+    private var cryptoService: CryptoServiceMock!
+    private var commonKeyService: CommonKeyServiceMock!
 
     override func setUp() {
         super.setUp()
@@ -32,7 +39,7 @@ class EncryptedRecordTests: XCTestCase {
     func testConvertEncryptedRecordFailMissingTek() {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         let expectedError = Data4LifeSDKError.missingTagKey
         let asyncExpectation = expectation(description: "Should fail decrypting record")
@@ -54,11 +61,12 @@ class EncryptedRecordTests: XCTestCase {
     func testConvertEncryptedRecordFailMissingRecordCommonKey() throws {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
         let expectedError = Data4LifeSDKError.missingCommonKey
 
         cryptoService.tagEncryptionKey = KeyFactory.createKey()
-        cryptoService.decryptValuesResult = try TagGroup(tags: record.tags, annotations: record.annotations).asTagsParameters(for: .upload).asTagExpressions
+        let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
+        cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         commonKeyService.fetchKeyResult = Async.reject(expectedError)
 
@@ -82,10 +90,10 @@ class EncryptedRecordTests: XCTestCase {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record)
+        var encryptedRecord = encryptedRecordFactory.create(for: record)
 
         commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
-        cryptoService.decryptValuesResult = try tagGroup.asTagsParameters(for: .upload).asTagExpressions
+        cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "Should fail decrypting record")
@@ -108,7 +116,7 @@ class EncryptedRecordTests: XCTestCase {
     func testConvertEncryptedRecordFailInvalidBodyPayload() throws {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record)
+        var encryptedRecord = encryptedRecordFactory.create(for: record)
         encryptedRecord.encryptedBody = String(describing: Data([0x00]))
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
@@ -118,7 +126,8 @@ class EncryptedRecordTests: XCTestCase {
         commonKeyService.fetchKeyResult = Promise.resolve(KeyFactory.createKey())
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asTagsParameters(for: .upload).asTagExpressions
+        let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
+        let decryptedTags = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         cryptoService.decryptDataResult = decryptedDataKey
         cryptoService.decryptValuesResult = decryptedTags
@@ -138,7 +147,7 @@ class EncryptedRecordTests: XCTestCase {
     func testFailLoadingEncryptedRecordJSON() {
         let resource = FhirFactory.createStu3DomainResource()
         let record = DecryptedRecordFactory.create(resource)
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         do {
             var json = encryptedRecord.json
@@ -160,7 +169,7 @@ class EncryptedRecordTests: XCTestCase {
     func testConvertEncryptedRecordFailInvalidModelVersion() throws {
         let resource = FhirFactory.createStu3CarePlanResource()
         let record = DecryptedRecordFactory.create(resource)
-        var encryptedRecord = EncryptedRecordFactory.create(for: record)
+        var encryptedRecord = encryptedRecordFactory.create(for: record)
         encryptedRecord.encryptedAttachmentKey = nil
         encryptedRecord.modelVersion += 1
 
@@ -172,7 +181,8 @@ class EncryptedRecordTests: XCTestCase {
         cryptoService.tagEncryptionKey = KeyFactory.createKey()
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
-        let decryptedTags = try TagGroup(tags: record.tags, annotations: record.annotations).asTagsParameters(for: .upload).asTagExpressions
+        let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
+        let decryptedTags = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         let encryptedResourceData = Data(base64Encoded: encryptedRecord.encryptedBody)!
         let decryptedResourceData: Data = try! JSONEncoder().encode(record.resource)
