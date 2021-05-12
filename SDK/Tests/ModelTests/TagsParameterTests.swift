@@ -16,26 +16,30 @@
 import XCTest
 @testable import Data4LifeSDK
 
-fileprivate extension TagsParameter {
-    static var stringInitialized: TagsParameter = TagsParameter("tag=value")
-    static var keyValueInitialized: TagsParameter = TagsParameter(TagsParameter.OrComponent(key: "tag", value: "value", separator: "="))
-    static var doubleComponentInitialized: TagsParameter = TagsParameter([TagsParameter.OrComponent(formattedTag: "tag=value"), TagsParameter.OrComponent(formattedTag: "tag2=value2")])
+fileprivate extension RecordServiceParameterBuilder.TagsParameter {
+    static var stringInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter("tag=value")
+    static var keyValueInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter(
+        RecordServiceParameterBuilder.TagsParameter.OrComponent(key: "tag", value: "value", separator: "=")
+    )
+    static var doubleComponentInitialized: RecordServiceParameterBuilder.TagsParameter = RecordServiceParameterBuilder.TagsParameter(
+        [RecordServiceParameterBuilder.TagsParameter.OrComponent(formattedTag: "tag=value"),
+         RecordServiceParameterBuilder.TagsParameter.OrComponent(formattedTag: "tag2=value2")
+        ]
+    )
 }
 
 class TagsParameterTests: XCTestCase {
-
     func testConvenienceInitializers() throws {
-        let parameter1 = TagsParameter.stringInitialized
-        let parameter2 = TagsParameter.keyValueInitialized
-
+        let parameter1 = RecordServiceParameterBuilder.TagsParameter.stringInitialized
+        let parameter2 = RecordServiceParameterBuilder.TagsParameter.keyValueInitialized
         XCTAssertEqual(parameter1.orComponents.formattedTags, parameter2.orComponents.formattedTags)
         XCTAssertEqual(parameter1.tagExpression, parameter2.tagExpression)
     }
 
     func testParameterExpressions() throws {
-        let parameter1 = TagsParameter.stringInitialized
-        let parameter2 = TagsParameter.keyValueInitialized
-        let parameter3 = TagsParameter.doubleComponentInitialized
+        let parameter1 = RecordServiceParameterBuilder.TagsParameter.stringInitialized
+        let parameter2 = RecordServiceParameterBuilder.TagsParameter.keyValueInitialized
+        let parameter3 = RecordServiceParameterBuilder.TagsParameter.doubleComponentInitialized
         XCTAssertEqual(parameter1.tagExpression, "tag=value")
         XCTAssertEqual(parameter2.tagExpression, "tag=value")
         XCTAssertEqual(parameter3.tagExpression, "(tag=value,tag2=value2)")

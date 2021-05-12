@@ -21,6 +21,7 @@ import Then
 class SessionServiceTests: XCTestCase {
 
     private var bundle = Foundation.Bundle.current
+    private var encryptedRecordFactory: EncryptedRecordFactory!
 
     var sessionService: SessionService!
     var versionValidator: SDKVersionValidatorMock!
@@ -30,6 +31,9 @@ class SessionServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
+        let container = Data4LifeDITestContainer()
+        container.registerDependencies()
+        encryptedRecordFactory = try! container.resolve()
         versionValidator = SDKVersionValidatorMock()
         networkReachabilityManager = ReachabilityMock()
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator, networkManager: networkReachabilityManager)
@@ -40,7 +44,7 @@ class SessionServiceTests: XCTestCase {
         let userId = UUID().uuidString
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
-        let encryptedRecord = EncryptedRecordFactory.create(for: record)
+        let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         let route = Router.fetchRecord(userId: userId, recordId: record.id)
         stub("GET", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)

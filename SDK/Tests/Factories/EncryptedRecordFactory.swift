@@ -17,14 +17,31 @@ import Foundation
 @testable import Data4LifeSDK
 
 struct EncryptedRecordFactory {
-    static func create<T, DR: DecryptedRecord>(for decryptedRecord: DR, resource: T, commonKeyId: String? = nil) -> EncryptedRecord where DR.Resource == T {
+
+    private let builder: RecordServiceParameterBuilder
+    private let cryptoService: CryptoServiceMock
+
+    init(container: DIContainer) {
+        do {
+            self.builder = try container.resolve()
+            self.cryptoService = try container.resolve(as: CryptoServiceType.self)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+
+        cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
+    }
+
+    func create<T, DR: DecryptedRecord>(for decryptedRecord: DR, resource: T, commonKeyId: String? = nil) -> EncryptedRecord where DR.Resource == T {
+
         let resourceData: Data = try! resource.encodedData(with: JSONEncoder())
         let dataKeyData: Data = try! JSONEncoder().encode(decryptedRecord.dataKey)
         let attachmentKeyData: Data? = try? JSONEncoder().encode(decryptedRecord.attachmentKey)
         let tagGroup = TagGroup(tags: decryptedRecord.tags, annotations: decryptedRecord.annotations)
+        let tagParameters = tagsParameter(for: tagGroup)
 
         return EncryptedRecord(id: decryptedRecord.id,
-                               encryptedTags: try! tagGroup.asTagsParameters(for: .upload).asTagExpressions,
+                               encryptedTags: tagParameters,
                                encryptedBody: resourceData.base64EncodedString(),
                                createdAt: decryptedRecord.metadata.updatedDate,
                                date: decryptedRecord.metadata.createdDate,
@@ -35,8 +52,13 @@ struct EncryptedRecordFactory {
         )
     }
 
-    static func create<T, DR: DecryptedRecord>(for decryptedRecord: DR, commonKeyId: String? = nil) -> EncryptedRecord where DR.Resource == T {
+    func create<T, DR: DecryptedRecord>(for decryptedRecord: DR, commonKeyId: String? = nil) -> EncryptedRecord where DR.Resource == T {
         return self.create(for: decryptedRecord, resource: decryptedRecord.resource, commonKeyId: commonKeyId)
+    }
+
+    func tagsParameter(for tagGroup: TagGroup) -> [String] {
+        let commaSeparatedTags = try! builder.searchParameters(tagGroup: tagGroup, supportingLegacyTags: false)["tags"] as? String
+        return commaSeparatedTags?.components(separatedBy: ",") ?? []
     }
 }
 
