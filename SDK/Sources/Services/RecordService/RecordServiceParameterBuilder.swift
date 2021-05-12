@@ -116,6 +116,7 @@ extension RecordServiceParameterBuilder.TagsParameter {
     }
 }
 
+// MARK: - Upload
 extension RecordServiceParameterBuilder {
 
     func uploadParameters<R: SDKResource>(resource: R,
@@ -131,27 +132,44 @@ extension RecordServiceParameterBuilder {
         parameters[ParameterKey.Upload.date.rawValue] = uploadDate.yyyyMmDdFormattedString()
         parameters[ParameterKey.Upload.commonKeyIdentifier.rawValue] = commonKeyIdentifier
         parameters[ParameterKey.Upload.modelVersion.rawValue] = R.modelVersion
-
-        let encryptedTagParameters = try encrypt(tagsParameters: try tagsParameters(from: tagGroup, for: .upload),
-                                                 key: try tagEncryptionKey())
-        parameters[ParameterKey.Upload.encryptedTags.rawValue] = encryptedTagParameters.asTagExpressions
-
-        let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
-        let encryptedBody = encryptedResource.base64EncodedString()
-        parameters[ParameterKey.Upload.encryptedBody.rawValue] = encryptedBody
-
-        let jsonDataKey: Data = try JSONEncoder().encode(dataKey)
-        let encryptedDataKey: Data = try self.cryptoService.encrypt(data: jsonDataKey, key: commonKey)
-        parameters[ParameterKey.Upload.encryptedKey.rawValue] = encryptedDataKey.base64EncodedString()
+        parameters[ParameterKey.Upload.encryptedTags.rawValue] = try tagsValueForUpload(tagGroup: tagGroup, encryptedWith: try tagEncryptionKey())
+        parameters[ParameterKey.Upload.encryptedBody.rawValue] = try encryptedBodyValue(resource: resource, encryptedWith: dataKey)
+        parameters[ParameterKey.Upload.encryptedKey.rawValue] = try encryptedDataKeyValue(dataKey: dataKey, encryptedWith: commonKey)
 
         if let attachmentKey = attachmentKey {
-            let jsonAttachmentKey: Data = try JSONEncoder().encode(attachmentKey)
-            let encryptedAttachmentKey: Data = try self.cryptoService.encrypt(data: jsonAttachmentKey, key: commonKey)
-            parameters[ParameterKey.Upload.attachmentKey.rawValue] = encryptedAttachmentKey.base64EncodedString()
+            parameters[ParameterKey.Upload.attachmentKey.rawValue] = try encryptedAttachmentKeyValue(attachmentKey: attachmentKey, encryptedWith: commonKey)
         }
 
         return parameters
     }
+
+    private func encryptedAttachmentKeyValue(attachmentKey: Key, encryptedWith commonKey: Key) throws -> String {
+        let jsonAttachmentKey: Data = try JSONEncoder().encode(attachmentKey)
+        let encryptedAttachmentKey: Data = try self.cryptoService.encrypt(data: jsonAttachmentKey, key: commonKey)
+        return encryptedAttachmentKey.base64EncodedString()
+    }
+
+    private func encryptedDataKeyValue(dataKey: Key, encryptedWith commonKey: Key) throws -> String {
+        let jsonDataKey: Data = try JSONEncoder().encode(dataKey)
+        let encryptedDataKey: Data = try self.cryptoService.encrypt(data: jsonDataKey, key: commonKey)
+        return encryptedDataKey.base64EncodedString()
+    }
+
+    private func encryptedBodyValue<R: SDKResource>(resource: R, encryptedWith dataKey: Key) throws -> String {
+        let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
+        return encryptedResource.base64EncodedString()
+    }
+
+    private func tagsValueForUpload(tagGroup: TagGroup, encryptedWith tagEncryptionKey: Key) throws -> [String] {
+        let tagsParameters = try tagsParameters(from: tagGroup, for: .upload)
+        let encryptedTagParameters = try encrypt(tagsParameters: tagsParameters,
+                                                 key: tagEncryptionKey)
+        return encryptedTagParameters.asTagExpressions
+    }
+}
+
+// MARK: - Search/Count
+extension RecordServiceParameterBuilder {
 
     func searchParameters(from startDate: Date? = nil,
                           to endDate: Date? = nil,
@@ -176,11 +194,18 @@ extension RecordServiceParameterBuilder {
         }
 
         if tagGroup.hasTags {
-            let tagsParameters = try tagsParameters(from: tagGroup, for: .search(supportingLegacyTags: supportingLegacyTags))
-            let encryptedTagsParameters = try encrypt(tagsParameters: tagsParameters, key: try tagEncryptionKey())
-            parameters[ParameterKey.Search.tags.rawValue] = encryptedTagsParameters.asTagExpressions.joined(separator: ",")
+            parameters[ParameterKey.Search.tags.rawValue] = try tagsValueForSearch(tagGroup: tagGroup,
+                                                                                   supportingLegacyTags: supportingLegacyTags,
+                                                                                   encryptedWith: try tagEncryptionKey())
         }
         return parameters
+    }
+
+    private func tagsValueForSearch(tagGroup: TagGroup, supportingLegacyTags: Bool, encryptedWith tagEncryptionKey: Key) throws -> String {
+        let tagsParameters = try tagsParameters(from: tagGroup, for: .search(supportingLegacyTags: supportingLegacyTags))
+        let encryptedTagParameters = try encrypt(tagsParameters: tagsParameters,
+                                                 key: tagEncryptionKey)
+        return encryptedTagParameters.asTagExpressions.joined(separator: ",")
     }
 }
 
