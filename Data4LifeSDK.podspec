@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Data4LifeSDK"
-  s.version          = "1.13.1"
+  s.version          = "1.14.0"
   s.summary          = "iOS SDK for interacting with the Gesundheitscloud health data backend."
   s.homepage         = "https://github.com/d4l-data4life/d4l-sdk-ios/"
   s.license          = { :type => 'LICENSE', :file => "LICENSE" }
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.cocoapods_version = '>= 1.10.0'
   s.resources = 'SDK/Sources/Certificates/*.cer', 'SDK/Sources/Certificates/*.der', 'SDK/Sources/Data4LifeSDK-Version.plist'
   s.vendored_frameworks = 'Data4LifeSDK.xcframework'
-  s.preserve_paths      = 'Data4LifeSDK.xcframework', 'Data4LifeSDK.dSYMs/Data4LifeSDK.framework.ios-arm64.dSYM', 'Data4LifeSDK.dSYMs/Data4LifeSDK.framework.ios-arm64_x86_64-simulator.dSYM'
+  s.preserve_paths      = 'Data4LifeSDK.xcframework'
 
   s.dependency 'Data4LifeSDKUtils', '~> 0.6.0'
   s.dependency 'Data4LifeCrypto', '~> 1.5.1'
