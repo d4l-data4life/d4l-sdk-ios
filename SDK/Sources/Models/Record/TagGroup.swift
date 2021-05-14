@@ -44,6 +44,14 @@ struct TagGroup: Equatable {
     var hasTags: Bool {
         return !tags.isEmpty || !annotations.isEmpty
     }
+
+    func validateAnnotations() throws {
+        for annotation in annotations {
+            guard !annotation.isEmpty else {
+                throw Data4LifeSDKError.emptyAnnotationNotAllowed
+            }
+        }
+    }
 }
 
 fileprivate extension String {
