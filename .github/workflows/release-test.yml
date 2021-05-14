@@ -3,9 +3,11 @@ name: D4L SDK CI (PR Testing)
 on:
   push:
     branches:
-      - release/**
+      - main 
 
   pull_request:
+    branches:
+      - release/**
 
 jobs:
   release-check:
@@ -43,5 +45,5 @@ jobs:
       run: bundle exec fastlane lint
     - name: Test code
       run: bundle exec fastlane test
-    - name: Test podspec 
+    - name: Test podspec
       run: bundle exec fastlane test_podspec
