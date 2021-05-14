@@ -161,8 +161,8 @@ extension RecordServiceParameterBuilder {
     }
 
     private func tagsValueForUpload(tagGroup: TagGroup, encryptedWith tagEncryptionKey: Key) throws -> [String] {
-        let tagsParameters = try tagsParameters(from: tagGroup, for: .upload)
-        let encryptedTagParameters = try encrypt(tagsParameters: tagsParameters,
+        let parameters = try tagsParameters(from: tagGroup, for: .upload)
+        let encryptedTagParameters = try encrypt(tagsParameters: parameters,
                                                  key: tagEncryptionKey)
         return encryptedTagParameters.asTagExpressions
     }
@@ -202,8 +202,8 @@ extension RecordServiceParameterBuilder {
     }
 
     private func tagsValueForSearch(tagGroup: TagGroup, supportingLegacyTags: Bool, encryptedWith tagEncryptionKey: Key) throws -> String {
-        let tagsParameters = try tagsParameters(from: tagGroup, for: .search(supportingLegacyTags: supportingLegacyTags))
-        let encryptedTagParameters = try encrypt(tagsParameters: tagsParameters,
+        let parameters = try tagsParameters(from: tagGroup, for: .search(supportingLegacyTags: supportingLegacyTags))
+        let encryptedTagParameters = try encrypt(tagsParameters: parameters,
                                                  key: tagEncryptionKey)
         return encryptedTagParameters.asTagExpressions.joined(separator: ",")
     }

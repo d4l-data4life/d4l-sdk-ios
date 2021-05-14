@@ -7,6 +7,7 @@ let package = Package(
     name: "Data4LifeSDK",
     platforms: [
         .iOS(.v13),
+        .macOS(.v10_12)
     ],
     products: [
         .library(
