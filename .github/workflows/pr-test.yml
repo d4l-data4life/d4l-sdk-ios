@@ -13,7 +13,6 @@ jobs:
 
     env:
       D4L_EXAMPLE_CONFIG: ${{ secrets.D4L_EXAMPLE_CONFIG }}
-      DEVELOPER_DIR: /Applications/Xcode_12.5.app/Contents/Developer
 
     steps:
     - name: Display runner context
