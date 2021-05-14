@@ -1,4 +1,4 @@
-name: D4L SDK CI
+name: D4L SDK CI (PR Testing)
 
 on:
   push:
@@ -9,14 +9,16 @@ on:
 
 jobs:
   build:
-
-    runs-on: [self-hosted, macos]
+    runs-on: macos-latest
 
     env:
       D4L_EXAMPLE_CONFIG: ${{ secrets.D4L_EXAMPLE_CONFIG }}
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Display runner context
+      run: hostname -s
+    - name: Check out repo
+      uses: actions/checkout@v2
     - name: Cache gems
       uses: actions/cache@v2
       with:
@@ -30,11 +32,11 @@ jobs:
         path: .build
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: ${{ runner.os }}-spm-
-    - name: Display runner context
-      run: hostname -s
     - run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
+    - name: Reset iOS simulators (Required to avoid tests failing problem)
+      run: xcrun simctl erase all
     - name: Generate iOS Config JSON
       run: printf '%s\n' "$D4L_EXAMPLE_CONFIG" > d4l-example-app-config.json
     - name: lint

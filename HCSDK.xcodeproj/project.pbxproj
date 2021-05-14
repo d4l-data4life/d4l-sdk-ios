@@ -47,12 +47,13 @@
 		36080C35237DB05900085476 /* DIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C34237DB05900085476 /* DIError.swift */; };
 		36080C37237DB12900085476 /* Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C36237DB12900085476 /* Wrapper.swift */; };
 		36080C39237DB14200085476 /* DIResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36080C38237DB14200085476 /* DIResolver.swift */; };
+		36087E48264C27250098E8BF /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E47264C27250098E8BF /* Data4LifeSDKUtils */; };
+		36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */; };
+		36087E4D264C27AE0098E8BF /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4C264C27AE0098E8BF /* Data4LifeFHIR */; };
+		36087E4F264C27AE0098E8BF /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4E264C27AE0098E8BF /* ModelsR4 */; };
 		360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */; };
-		360EC5222636F8BF00D8F8E9 /* Data4LifeSDKUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5212636F8BF00D8F8E9 /* Data4LifeSDKUtils */; };
 		360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5232636F8BF00D8F8E9 /* Alamofire */; };
 		360EC5262636F8BF00D8F8E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5252636F8BF00D8F8E9 /* Then */; };
-		360EC52C2636F8BF00D8F8E9 /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */; };
-		360EC52E2636F8BF00D8F8E9 /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC52D2636F8BF00D8F8E9 /* ModelsR4 */; settings = {ATTRIBUTES = (Weak, ); }; };
 		360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */; };
 		36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */; };
 		3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */; };
@@ -60,7 +61,6 @@
 		3634699A24ED5D53001EEE66 /* AppDataServiceTests+SingleOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699924ED5D53001EEE66 /* AppDataServiceTests+SingleOperations.swift */; };
 		3634699C24ED6010001EEE66 /* Data4LifeClient+AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699B24ED6010001EEE66 /* Data4LifeClient+AppDataTests.swift */; };
 		3634699E24ED693D001EEE66 /* AppDataServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699D24ED693D001EEE66 /* AppDataServiceMock.swift */; };
-		363D4EA1263739B60020B083 /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 363D4EA0263739B60020B083 /* Data4LifeFHIRCore */; };
 		365486F623E2EEC700846255 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365486F523E2EEC700846255 /* DocumentReference.swift */; };
 		365525E9250BC3FC00DF6DF7 /* AttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365525E7250BC3E300DF6DF7 /* AttachmentType.swift */; };
 		365525EB250F637500DF6DF7 /* STU3+HasAttachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365525EA250F637500DF6DF7 /* STU3+HasAttachments.swift */; };
@@ -714,11 +714,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				360EC52C2636F8BF00D8F8E9 /* Data4LifeFHIR in Frameworks */,
-				363D4EA1263739B60020B083 /* Data4LifeFHIRCore in Frameworks */,
-				360EC52E2636F8BF00D8F8E9 /* ModelsR4 in Frameworks */,
-				360EC5222636F8BF00D8F8E9 /* Data4LifeSDKUtils in Frameworks */,
+				36087E4D264C27AE0098E8BF /* Data4LifeFHIR in Frameworks */,
+				36087E4F264C27AE0098E8BF /* ModelsR4 in Frameworks */,
+				36087E48264C27250098E8BF /* Data4LifeSDKUtils in Frameworks */,
 				360EC5262636F8BF00D8F8E9 /* Then in Frameworks */,
+				36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */,
 				36DD22A3263C7C3300679F74 /* AppAuth in Frameworks */,
 				360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */,
 			);
@@ -1864,13 +1864,13 @@
 			);
 			name = SDKSPMDependencies;
 			packageProductDependencies = (
-				360EC5212636F8BF00D8F8E9 /* Data4LifeSDKUtils */,
 				360EC5232636F8BF00D8F8E9 /* Alamofire */,
 				360EC5252636F8BF00D8F8E9 /* Then */,
-				360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */,
-				360EC52D2636F8BF00D8F8E9 /* ModelsR4 */,
-				363D4EA0263739B60020B083 /* Data4LifeFHIRCore */,
 				36DD22A2263C7C3300679F74 /* AppAuth */,
+				36087E47264C27250098E8BF /* Data4LifeSDKUtils */,
+				36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */,
+				36087E4C264C27AE0098E8BF /* Data4LifeFHIR */,
+				36087E4E264C27AE0098E8BF /* ModelsR4 */,
 			);
 			productName = SDKSPMDependencies;
 			productReference = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */;
@@ -2033,11 +2033,11 @@
 			);
 			mainGroup = 8374639C1E854E7500AB500F;
 			packageReferences = (
-				36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
 				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
-				365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
 				36DD22A1263C7C3300679F74 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+				36087E46264C27250098E8BF /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
+				36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
 			);
 			productRefGroup = 837463A71E854E7500AB500F /* Products */;
 			projectDirPath = "";
@@ -3083,20 +3083,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
+		36087E46264C27250098E8BF /* XCRemoteSwiftPackageReference "d4l-utils-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:d4l-data4life/d4l-fhir-ios.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.21.1;
-			};
-		};
-		36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:d4l-data4life/d4l-utils-ios.git";
+			repositoryURL = "https://github.com/d4l-data4life/d4l-utils-ios.git";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 0.6.0;
+			};
+		};
+		36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/d4l-data4life/d4l-fhir-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.21.0;
 			};
 		};
 		36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
@@ -3126,10 +3126,25 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		360EC5212636F8BF00D8F8E9 /* Data4LifeSDKUtils */ = {
+		36087E47264C27250098E8BF /* Data4LifeSDKUtils */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9C2260CD04F00CA3250 /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
+			package = 36087E46264C27250098E8BF /* XCRemoteSwiftPackageReference "d4l-utils-ios" */;
 			productName = Data4LifeSDKUtils;
+		};
+		36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = Data4LifeFHIRCore;
+		};
+		36087E4C264C27AE0098E8BF /* Data4LifeFHIR */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = Data4LifeFHIR;
+		};
+		36087E4E264C27AE0098E8BF /* ModelsR4 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
+			productName = ModelsR4;
 		};
 		360EC5232636F8BF00D8F8E9 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3140,21 +3155,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
-		};
-		360EC52B2636F8BF00D8F8E9 /* Data4LifeFHIR */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = Data4LifeFHIR;
-		};
-		360EC52D2636F8BF00D8F8E9 /* ModelsR4 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = ModelsR4;
-		};
-		363D4EA0263739B60020B083 /* Data4LifeFHIRCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 365CCFD926332CD700658141 /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */;
-			productName = Data4LifeFHIRCore;
 		};
 		36DD22A2263C7C3300679F74 /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;

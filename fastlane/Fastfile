@@ -24,10 +24,6 @@ platform :ios do
       derived_data_path: "build/DerivedData",
       devices: device
     )
-
-    Dir.chdir("..") do
-      sh("pod spec lint --sources='https://github.com/d4l-data4life/d4l-cocoapods-specs,https://github.com/CocoaPods/Specs'")
-    end
   end
 
   desc "Package and release framework"
@@ -139,6 +135,13 @@ platform :ios do
     end
   end
 
+  desc "Test podspec integration"
+  lane :test_podspec do
+        Dir.chdir("..") do
+          sh("pod spec lint --sources='https://github.com/d4l-data4life/d4l-cocoapods-specs,https://github.com/CocoaPods/Specs'")
+        end
+  end
+  
   desc "Build xcframework for distribution"
   lane :build_xcframeworks do |options|
     if options[:sdk_version] == nil
