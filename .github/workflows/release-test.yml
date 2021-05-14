@@ -3,12 +3,12 @@ name: D4L SDK CI (PR Testing)
 on:
   push:
     branches:
-      - main
+      - release/**
 
   pull_request:
 
 jobs:
-  build:
+  release-check:
     runs-on: macos-latest
 
     env:
@@ -39,7 +39,9 @@ jobs:
       run: xcrun simctl erase all
     - name: Generate iOS Config JSON
       run: printf '%s\n' "$D4L_EXAMPLE_CONFIG" > d4l-example-app-config.json
-    - name: lint
+    - name: Lint code
       run: bundle exec fastlane lint
-    - name: test
+    - name: Test code
       run: bundle exec fastlane test
+    - name: Test podspec 
+      run: bundle exec fastlane test_podspec
