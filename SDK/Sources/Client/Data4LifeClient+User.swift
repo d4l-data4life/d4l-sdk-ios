@@ -43,15 +43,16 @@ extension Data4LifeClient {
                              loginCompletion: @escaping DefaultResultBlock) {
         let loginViewController = LoginViewController(client: self, scopes: scopes ?? defaultScopes)
 
-        viewController
-            .present(loginViewController, animated: animated)
-            .chain { presentationCompletion?() }
-            .then(loginViewController.presentLoginScreen)
+        viewController.present(loginViewController, animated: animated, completion: {
+            presentationCompletion?()
+            loginViewController.presentLoginScreen()
+        })
 
-        loginViewController
-            .successHandler
-            .chain(loginViewController.dismiss(animated: animated))
-            .complete(loginCompletion)
+        loginViewController.subscribeToFinishLogin { [unowned loginViewController] result in
+            loginViewController.dismiss(animated: animated) {
+                loginCompletion(result)
+            }
+        }
     }
 
     /**
@@ -63,8 +64,22 @@ extension Data4LifeClient {
                        completion: @escaping DefaultResultBlock) {
         oAuthService
             .logout()
-            .then(cryptoService.deleteKeyPair())
-            .complete(queue: queue, completion)
+            .sink(receiveCompletion: { sinkCompletion in
+                queue.async {
+                    switch sinkCompletion {
+                    case .failure(let error):
+                        completion(.failure(error))
+                    case .finished:
+                        do {
+                            try self.cryptoService.deleteKeyPair()
+                            completion(.success(()))
+                        } catch {
+                            completion(.failure(error))
+                        }
+                    }
+                }
+            }, receiveValue: {})
+            .store(in: &storage)
     }
 
     /**
@@ -79,7 +94,21 @@ extension Data4LifeClient {
             return
         }
 
-        oAuthService.isSessionActive().complete(queue: queue, completion)
+        oAuthService
+            .isSessionActive()
+            .subscribe(on: queue)
+            .receive(on: queue)
+            .sink { sinkResult in
+                queue.async {
+                    switch sinkResult {
+                    case .failure(let error):
+                        completion(.failure(error))
+                    case .finished:
+                        completion(.success(()))
+                    }
+                }
+            } receiveValue: {}
+            .store(in: &storage)
     }
 
     /**

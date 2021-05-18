@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-import Then
+import Combine
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 

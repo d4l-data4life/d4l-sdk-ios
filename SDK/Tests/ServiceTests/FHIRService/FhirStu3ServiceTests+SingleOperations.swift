@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
 
 extension FhirStu3ServiceTests {
@@ -26,7 +26,7 @@ extension FhirStu3ServiceTests {
         fhirResource.id = record.id
 
         keychainService[.userId] = userId
-        recordService.createRecordResult = Async.resolve(record)
+        recordService.createRecordResult = Just(record).asyncFuture
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
@@ -52,7 +52,7 @@ extension FhirStu3ServiceTests {
         let record = DecryptedRecordFactory.create(fhirResource)
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Async.resolve(record)
+        recordService.fetchRecordResult = Just(record).asyncFuture
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.fetchFhirRecord(withId: resourceId, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
@@ -81,7 +81,7 @@ extension FhirStu3ServiceTests {
         let updatedRecord = record.copy(with: updateResource)
 
         keychainService[.userId] = userId
-        recordService.updateRecordResult = Async.resolve(updatedRecord)
+        recordService.updateRecordResult = Just(updatedRecord)
 
         let asyncExpectation = expectation(description: "should update language property")
         fhirService.updateFhirRecord(updateResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
@@ -123,7 +123,7 @@ extension FhirStu3ServiceTests {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
 
-        recordService.deleteRecordResult = Async.resolve()
+        recordService.deleteRecordResult = Just(()).asyncFuture
         keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should return success")
@@ -151,7 +151,7 @@ extension FhirStu3ServiceTests {
         let to = Date()
 
         keychainService[.userId] = userId
-        recordService.searchRecordsResult = Async.resolve([record])
+        recordService.searchRecordsResult = Just([record])
 
         let asyncExpectation = expectation(description: "should return resources")
         fhirService.fetchRecords(decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self,
@@ -183,7 +183,7 @@ extension FhirStu3ServiceTests {
         let count = 1
 
         keychainService[.userId] = userId
-        recordService.countRecordsResult = Async.resolve(count)
+        recordService.countRecordsResult = Just(count)
 
         let asyncExpectation = expectation(description: "should return count of resources")
         fhirService.countRecords(of: Data4LifeFHIR.CarePlan.self, annotations: [])

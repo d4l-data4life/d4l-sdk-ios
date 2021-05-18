@@ -14,7 +14,6 @@
 //  contact D4L by email to help@data4life.care.
 
 import UIKit
-@_implementationOnly import Then
 
 final class LoginViewController: UIViewController {
 
@@ -23,6 +22,8 @@ final class LoginViewController: UIViewController {
     private var foregroundObserver: NSObjectProtocol?
     private let notificationCenter: NotificationCenter = NotificationCenter.default
 
+    private var didFinishLogin: DefaultResultBlock?
+
     private lazy var loadingIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .medium)
         view.hidesWhenStopped = true
@@ -30,7 +31,6 @@ final class LoginViewController: UIViewController {
         view.startAnimating()
         return view
     }()
-    var successHandler: Promise<Void> = Promise()
 
     // MARK: - Life cycle methods
     public init(client: Data4LifeClient = Data4LifeClient.default, scopes: [String]) {
@@ -53,14 +53,16 @@ final class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
 
+    func subscribeToFinishLogin(_ didFinishLogin: @escaping DefaultResultBlock) {
+        self.didFinishLogin = didFinishLogin
+    }
+
     func presentLoginScreen() {
         viewModel.presentLoginScreen(on: self, scopes: scopes)
-            .then { [weak self] in
-                self?.successHandler.fulfill(())
-            }.onError { [weak self] error in
-                self?.successHandler.reject(error)
-            }.finally { [weak self] in
-                DispatchQueue.main.async {
+            .complete(queue: DispatchQueue.main) { [weak self] result in
+                self?.didFinishLogin?(result)
+            } finally: {
+                DispatchQueue.main.async { [weak self] in
                     self?.loadingIndicator.stopAnimating()
                 }
             }

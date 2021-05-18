@@ -14,79 +14,83 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+import Combine
 import Data4LifeCrypto
 @testable import Data4LifeSDK
+
+enum RecordServiceMockError: Error {
+    case noResultSet
+}
 
 class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where MockDR.Resource == MockR {
 
     // MARK: Single Operations
     var updateRecordCalledWith: (AnySDKResource<MockR>, [String]?, String, String, Key?)?
-    var updateRecordResult: Async<MockDR>?
+    var updateRecordResult: SDKFuture<MockDR>?
     func updateRecord<DR>(forResource resource: DR.Resource,
                           annotations: [String]?,
                           userId: String,
                           recordId: String,
                           attachmentKey: Key?,
-                          decryptedRecordType: DR.Type) -> Async<DR> where DR : DecryptedRecord {
+                          decryptedRecordType: DR.Type) -> SDKFuture<DR> where DR : DecryptedRecord {
         guard let resource = resource as? MockR else {
             fatalError()
         }
         updateRecordCalledWith = (AnySDKResource<MockR>(resource: resource), annotations, userId, recordId, attachmentKey)
-        return updateRecordResult as? Async<DR> ?? Async.reject()
+        return updateRecordResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
     }
 
     var createRecordCalledWith: (AnySDKResource<MockR>, [String]?, String, Key?)?
-    var createRecordResult: Async<MockDR>?
+    var createRecordResult: SDKFuture<MockDR>?
     func createRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
                                            annotations: [String],
                                            userId: String,
                                            attachmentKey: Key?,
-                                           decryptedRecordType: DR.Type) -> Async<DR> {
+                                           decryptedRecordType: DR.Type) -> SDKFuture<DR> {
         guard let resource = resource as? MockR else {
             fatalError()
         }
         createRecordCalledWith = (AnySDKResource<MockR>(resource: resource), annotations, userId, attachmentKey)
-        return createRecordResult as? Promise<DR> ?? Async.reject()
+        return createRecordResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
     }
 
     var fetchRecordCalledWith: (String, String)?
-    var fetchRecordResult: Async<MockDR>?
-    var fetchRecordResults: [Async<MockDR>]?
-    func fetchRecord<DR>(recordId: String, userId: String, decryptedRecordType: DR.Type) -> Async<DR> where DR : DecryptedRecord {
+    var fetchRecordResult: SDKFuture<MockDR>?
+    var fetchRecordResults: [SDKFuture<MockDR>]?
+    func fetchRecord<DR>(recordId: String, userId: String, decryptedRecordType: DR.Type) -> SDKFuture<DR> where DR : DecryptedRecord {
         fetchRecordCalledWith = (recordId, userId)
         if let results = fetchRecordResults, let first = results.first {
             fetchRecordResults = Array(results.dropFirst())
-            return first as? Promise<DR> ?? Async.reject()
+            return first as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
         }
-        return fetchRecordResult as? Promise<DR> ?? Async.reject()
+        return fetchRecordResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
     }
 
     var deleteRecordCalledWith: (String, String)?
-    var deleteRecordResult: AsyncTask?
-    func deleteRecord(recordId: String, userId: String) -> AsyncTask {
+    var deleteRecordResult: SDKFuture<Void>?
+    func deleteRecord(recordId: String, userId: String) -> SDKFuture<Void> {
         deleteRecordCalledWith = (recordId, userId)
-        return deleteRecordResult ?? Async.reject()
+        return deleteRecordResult ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
     }
 
     // MARK: Shared operations
     var searchRecordsCalledWith: (Date?, Date?, Int?, Int?, [String]?)?
-    var searchRecordsResult: Async<[MockDR]>?
+    var searchRecordsResult: SDKFuture<[MockDR]>?
     func searchRecords<DR>(for userId: String,
                            from startDate: Date?,
                            to endDate: Date?,
                            pageSize: Int?,
                            offset: Int?,
                            annotations: [String],
-                           decryptedRecordType: DR.Type) -> Async<[DR]> where DR : DecryptedRecord {
+                           decryptedRecordType: DR.Type) -> SDKFuture<[DR]> where DR : DecryptedRecord {
         searchRecordsCalledWith = (startDate, endDate, pageSize, offset, annotations)
-        return searchRecordsResult as? Promise<[DR]> ?? Async.reject()
+        return searchRecordsResult as? SDKFuture<[DR]> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
     }
 
     var countRecordsCalledWith: (String, SDKResource.Type?, [String]?)?
-    var countRecordsResult: Async<Int>?
-    func countRecords<R>(userId: String, resourceType: R.Type, annotations: [String]) -> Async<Int> where R : SDKResource {
+    var countRecordsResult: SDKFuture<Int>?
+    func countRecords<R>(userId: String, resourceType: R.Type, annotations: [String]) -> SDKFuture<Int> where R : SDKResource {
         countRecordsCalledWith = (userId, resourceType, annotations)
-        return countRecordsResult ?? Async.reject()
+        return countRecordsResult ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture
     }
 }

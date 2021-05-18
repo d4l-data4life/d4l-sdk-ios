@@ -14,22 +14,26 @@
 //  contact D4L by email to help@data4life.care.
 
 @testable import Data4LifeSDK
-import Then
+import Combine
+
+enum UserSerivceMockError: Error {
+    case noResultSet
+}
 
 class UserServiceMock: UserServiceType {
 
-    var fetchUserInfoResult: Async<Void>?
+    var fetchUserInfoResult: SDKFuture<Void>?
     var fetchUserInfoCalled: Bool = false
-    func fetchUserInfo() -> Promise<Void> {
+    func fetchUserInfo() -> SDKFuture<Void> {
         fetchUserInfoCalled = true
-        return fetchUserInfoResult ?? Promise.reject()
+        return fetchUserInfoResult ?? Fail(error: UserSerivceMockError.noResultSet).asyncFuture
     }
 
     var logoutCalledWith: String?
-    var logoutResult: Async<Void>?
-    func logout(refreshToken: String) -> Promise<Void> {
+    var logoutResult: SDKFuture<Void>?
+    func logout(refreshToken: String) -> SDKFuture<Void> {
         logoutCalledWith = (refreshToken)
-        return logoutResult ?? Promise.reject()
+        return logoutResult ?? Fail(error: UserSerivceMockError.noResultSet).asyncFuture
     }
 
     var getUserIdResult: String?

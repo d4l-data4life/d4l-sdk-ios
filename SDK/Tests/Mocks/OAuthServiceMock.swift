@@ -16,7 +16,11 @@
 import Foundation
 @testable import Data4LifeSDK
 import Alamofire
-import Then
+import Combine
+
+enum OAuthServiceMockError: Error {
+    case noResultSet
+}
 
 class OAuthServiceMock: OAuthServiceType {
 
@@ -33,28 +37,28 @@ class OAuthServiceMock: OAuthServiceType {
     }
 
     var isSessionActiveCalled = false
-    var isSessionActiveResult: Async<Void>?
-    func isSessionActive() -> Promise<Void> {
+    var isSessionActiveResult: SDKFuture<Void>?
+    func isSessionActive() -> SDKFuture<Void> {
         isSessionActiveCalled = true
-        return isSessionActiveResult ?? Promise.reject()
+        return isSessionActiveResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture
     }
 
     var logoutCalled = false
-    var logoutResult: Async<Void>?
-    func logout() -> Promise<Void> {
+    var logoutResult: SDKFuture<Void>?
+    func logout() -> SDKFuture<Void> {
         logoutCalled = true
-        return logoutResult ?? Async.reject()
+        return logoutResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture
     }
 
     var presentLoginCalled: (OAuthExternalUserAgentType, String, [String], Bool, AuthStateType.Type)?
-    var presentLoginResult: Promise<Void>?
+    var presentLoginResult: SDKFuture<Void>?
     func presentLogin(with userAgent: OAuthExternalUserAgentType,
                       publicKey: String,
                       scopes: [String],
                       animated: Bool,
-                      authStateType: AuthStateType.Type = AuthStateMock.self) -> Promise<Void> {
+                      authStateType: AuthStateType.Type = AuthStateMock.self) -> SDKFuture<Void> {
         presentLoginCalled = (userAgent, publicKey, scopes, animated, authStateType)
-        return presentLoginResult ?? Async.reject()
+        return presentLoginResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture
     }
 
     func refreshTokens(completion: @escaping DefaultResultBlock) { }

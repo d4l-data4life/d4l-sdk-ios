@@ -15,12 +15,12 @@
 
 import Foundation
 import Security
-@_implementationOnly import Then
+import Combine
 
 protocol KeychainServiceType {
     subscript(key: KeychainKey) -> String? { get set }
-    func set(_ item: String?, forKey key: KeychainKey) -> AsyncTask
-    func get(_ key: KeychainKey) -> Async<String>
+    func set(_ item: String?, forKey key: KeychainKey)
+    func get(_ key: KeychainKey) throws -> String
     func clear()
 
     func getCommonKeyById(_ id: String) -> String?
@@ -38,7 +38,7 @@ enum KeychainKey: String, CaseIterable {
     case tagEncryptionKey = "tag_encryption_key"
 }
 
-struct KeychainService: KeychainServiceType {
+struct KeychainService {
     let serviceName: String
     let groupId: String?
     let defaults: UserDefaults
@@ -61,6 +61,9 @@ struct KeychainService: KeychainServiceType {
             return
         }
     }
+}
+
+extension KeychainService: KeychainServiceType {
 
     func clear() {
         KeychainKey.allCases.forEach { self.set(item: nil, forKey: $0.rawValue) }
@@ -75,6 +78,24 @@ struct KeychainService: KeychainServiceType {
         set {
             set(item: newValue, forKey: key.rawValue)
         }
+    }
+
+    func set(_ item: String?, forKey key: KeychainKey) {
+        set(item: item, forKey: key.rawValue)
+    }
+
+    func get(_ key: KeychainKey) throws -> String {
+
+        if let value: String = self.get(key.rawValue) {
+            return value
+        } else {
+            guard key != KeychainKey.userId else {
+                throw Data4LifeSDKError.notLoggedIn
+            }
+
+            throw Data4LifeSDKError.keychainItemNotFound(key.rawValue)
+        }
+
     }
 }
 
@@ -92,14 +113,7 @@ extension KeychainService {
         return attr
     }
 
-    func set(_ item: String?, forKey key: KeychainKey) -> AsyncTask {
-        return Async { (resolve : @escaping (() -> Void), _: @escaping ((Error) -> Void)) in
-            self.set(item: item, forKey: key.rawValue)
-            resolve()
-        }
-    }
-
-    func set(item: String?, forKey key: String) {
+    private func set(item: String?, forKey key: String) {
         var attr = self.query(for: key)
 
         if let item = item {
@@ -111,22 +125,7 @@ extension KeychainService {
         }
    }
 
-    func get(_ key: KeychainKey) -> Async<String> {
-        return Async { resolve, reject in
-            if let value: String = self.get(key.rawValue) {
-                resolve(value)
-            } else {
-                guard key != KeychainKey.userId else {
-                    reject(Data4LifeSDKError.notLoggedIn)
-                    return
-                }
-
-                reject(Data4LifeSDKError.keychainItemNotFound(key.rawValue))
-            }
-        }
-    }
-
-    func get(_ key: String) -> String? {
+    private func get(_ key: String) -> String? {
         var attr = self.query(for: key)
         attr[kSecReturnData] = kCFBooleanTrue
         attr[kSecMatchLimit] = kSecMatchLimitOne

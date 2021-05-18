@@ -17,7 +17,7 @@ import XCTest
 @testable import Data4LifeSDK
 import Data4LifeCrypto
 import Alamofire
-import Then
+import Combine
 
 class UserServiceTests: XCTestCase {
     var userService: UserService!
@@ -52,7 +52,7 @@ class UserServiceTests: XCTestCase {
         }
 
         Router.baseUrl = "http://example.com"
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
     }
 
     func testFetchUserInfo() {
@@ -66,9 +66,9 @@ class UserServiceTests: XCTestCase {
             encryptedTestData["tek_iv"] != nil,
             let encryptedCommonKey = encryptedTestData["encrypted_common_key"],
             let encryptedTagKey = encryptedTestData["encrypted_tek"]
-            else {
-                XCTFail("Should load test data")
-                return
+        else {
+            XCTFail("Should load test data")
+            return
         }
 
         let ckData: Data = try! JSONEncoder().encode(commonKey)
@@ -95,7 +95,7 @@ class UserServiceTests: XCTestCase {
                 XCTAssertTrue(self.commonKeyService.storeKeyCalledWith?.2 ?? false)
 
                 XCTAssertEqual(self.keychainService[.userId], userId)
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -104,15 +104,11 @@ class UserServiceTests: XCTestCase {
         stub("GET", "/userinfo", with: ["invalid-payload"])
         let asyncExpectation = expectation(description: "should fail fetching user info")
 
-        userService.fetchUserInfo()
-            .then {
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertRouteCalled("GET", "/userinfo")
-                XCTAssertTrue(error.localizedDescription.contains("The data couldn’t be read because it isn’t in the correct format."))
-            }.finally {
-                asyncExpectation.fulfill()
-            }
+        userService.fetchUserInfo().then(onError: { error in
+            XCTAssertRouteCalled("GET", "/userinfo")
+            XCTAssertTrue(error.localizedDescription.contains("The data couldn’t be read because it isn’t in the correct format."))
+            asyncExpectation.fulfill()
+        })
 
         waitForExpectations(timeout: 5)
     }
@@ -121,15 +117,11 @@ class UserServiceTests: XCTestCase {
         stub("GET", "/userinfo", with: ["tag_encryption_key": "", "commmon_key": ""])
         let asyncExpectation = expectation(description: "should fail fetching user info")
 
-        userService.fetchUserInfo()
-            .then {
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertRouteCalled("GET", "/userinfo")
-                XCTAssertTrue(error.localizedDescription.contains("The data couldn’t be read because it is missing."))
-            }.finally {
-                asyncExpectation.fulfill()
-        }
+        userService.fetchUserInfo().then(onError: { error in
+            XCTAssertRouteCalled("GET", "/userinfo")
+            XCTAssertTrue(error.localizedDescription.contains("The data couldn’t be read because it is missing."))
+            asyncExpectation.fulfill()
+        })
 
         waitForExpectations(timeout: 5)
     }
@@ -141,33 +133,25 @@ class UserServiceTests: XCTestCase {
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
         let asyncExpectation = expectation(description: "should fail fetching user info")
 
-        userService.fetchUserInfo()
-            .then {
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertRouteCalled("GET", "/userinfo")
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
+        userService.fetchUserInfo().then(onError: { error in
+            XCTAssertRouteCalled("GET", "/userinfo")
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+            asyncExpectation.fulfill()
+        })
 
         waitForExpectations(timeout: 5)
     }
 
     func testFetchUserInfoFailsUnsupportedVersion() {
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should fail fetching user info")
 
-        userService.fetchUserInfo()
-            .then {
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
+        userService.fetchUserInfo().then(onError: { error in
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+            asyncExpectation.fulfill()
+        })
 
         waitForExpectations(timeout: 5)
     }

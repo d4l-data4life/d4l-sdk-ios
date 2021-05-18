@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
 import Data4LifeCrypto
 
@@ -44,7 +44,7 @@ class DocumentServiceTests: XCTestCase {
         }
 
         Router.baseUrl = "https://example.com"
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported)
     }
 
     func testCreateSingleDocument() {
@@ -188,7 +188,7 @@ class DocumentServiceTests: XCTestCase {
         let key = KeyFactory.createKey(.attachment)
 
         keychainService[.userId] = userId
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "Should fetch a document")
@@ -212,7 +212,7 @@ fileprivate extension DocumentService {
         return Async { (resolve: @escaping (Document) -> Void, reject: @escaping (Error) -> Void) in
 
             do {
-                let userId = try wait(self.keychainService.get(.userId))
+                let userId = try thenWait(self.keychainService.get(.userId))
                 let route = Router.fetchDocument(userId: userId, documentId: identifier)
                 let request = try self.sessionService.request(route: route)
 
@@ -225,7 +225,7 @@ fileprivate extension DocumentService {
                     reject(URLError.init(URLError.cancelled))
                 }
 
-                let encryptedData = try wait(request.responseData())
+                let encryptedData = try thenWait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
                     resolve(Document(id: identifier, data: decryptedData))

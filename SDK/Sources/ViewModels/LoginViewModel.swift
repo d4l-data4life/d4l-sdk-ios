@@ -14,8 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 import UIKit
+import Combine
 
 class LoginViewModel {
     private let client: Data4LifeClient
@@ -31,7 +31,7 @@ class LoginViewModel {
         }
     }
 
-    func presentLoginScreen(on viewController: UIViewController, scopes: [String]) -> Async<Void> {
+    func presentLoginScreen(on viewController: UIViewController, scopes: [String]) -> SDKFuture<Void> {
         loginInProgress = true
 
         do {
@@ -40,17 +40,19 @@ class LoginViewModel {
             let encodedPublicKey = try JSONEncoder().encode(keypair).base64EncodedString()
             let userAgent = OAuthExternalUserAgent(with: viewController)
 
-            return async {
-                _ =  try wait(self.client.oAuthService.presentLogin(with: userAgent,
+            return combineAsync {
+                try combineAwait(self.client.oAuthService.presentLogin(with: userAgent,
                                                                      publicKey: encodedPublicKey,
                                                                      scopes: scopes,
                                                                      animated: true,
                                                                      authStateType: AuthState.self))
-                _ = try wait(self.client.userService.fetchUserInfo())
+               try combineAwait(self.client.userService.fetchUserInfo())
             }
         } catch {
             loginInProgress = false
-            return Async.reject(error)
+            return combineAsync {
+                throw error
+            } 
         }
     }
 }

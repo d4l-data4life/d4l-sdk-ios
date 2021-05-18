@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 
 fileprivate extension TagGroup {
     static var annotationLowercased: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid"])
@@ -59,7 +59,7 @@ final class RecordServiceParameterBuilderTests: XCTestCase {
         cryptoService = try! container.resolve(as: CryptoServiceType.self)
         encryptedRecordFactory = try! container.resolve()
 
-        cryptoService.encryptValueResult = Async(encryptedRecord.data)
+        cryptoService.encryptValueResult = Just(encryptedRecord.data).asyncFuture
         cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)

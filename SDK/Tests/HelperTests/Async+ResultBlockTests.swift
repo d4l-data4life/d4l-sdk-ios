@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 
 class AsyncResultBlockTests: XCTestCase {
 
@@ -23,7 +23,7 @@ class AsyncResultBlockTests: XCTestCase {
         let value = 1
 
         let asyncSuccessExpectation = expectation(description: "should call with success")
-        Async.resolve(value).complete({ result in
+        Just(value).complete({ result in
             defer { asyncSuccessExpectation.fulfill() }
             XCTAssertNotNil(result.value)
             XCTAssertEqual(result.value, value)

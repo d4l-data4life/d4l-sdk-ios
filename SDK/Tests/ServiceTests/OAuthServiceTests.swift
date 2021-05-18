@@ -16,7 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Alamofire
-import Then
+import Combine
 @testable import AppAuth
 
 class OAuthServiceTests: XCTestCase {
@@ -59,7 +59,7 @@ class OAuthServiceTests: XCTestCase {
         keychainService = KeychainServiceMock()
         authState = AuthStateMock()
         versionValidator = SDKVersionValidatorMock()
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported)
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator)
         numberOfRetries = 2
 

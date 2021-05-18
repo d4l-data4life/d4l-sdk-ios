@@ -14,22 +14,26 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+import Combine
 @testable import Data4LifeSDK
+
+enum SDKVersionValidatorMockError: Error {
+    case noResultSet
+}
 
 class SDKVersionValidatorMock: SDKVersionValidatorType {
     var sessionService: SessionService?
 
-    var fetchCurrentVersionStatusResult: Async<VersionStatus>?
-    func fetchCurrentVersionStatus() -> Async<VersionStatus> {
-        return fetchCurrentVersionStatusResult ?? Async.reject()
+    var fetchCurrentVersionStatusResult: SDKFuture<VersionStatus>?
+    func fetchCurrentVersionStatus() -> SDKFuture<VersionStatus> {
+        return fetchCurrentVersionStatusResult ?? Fail(error: SDKVersionValidatorMockError.noResultSet).asyncFuture
     }
 
     var fetchVersionConfigOnlineCalled: Bool = false
-    var fetchVersionConfigOnlineResult: Async<Void>?
-    func fetchVersionConfigurationRemotely() -> AsyncTask {
+    var fetchVersionConfigOnlineResult: SDKFuture<Void>?
+    func fetchVersionConfigurationRemotely() -> SDKFuture<Void> {
         fetchVersionConfigOnlineCalled = true
-        return fetchVersionConfigOnlineResult ?? Async.reject()
+        return fetchVersionConfigOnlineResult ?? Fail(error: SDKVersionValidatorMockError.noResultSet).asyncFuture
     }
 
     var setSessionServiceCalledWith: (SessionService)?

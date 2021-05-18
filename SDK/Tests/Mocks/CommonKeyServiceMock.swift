@@ -15,8 +15,12 @@
 
 import Foundation
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeCrypto
+
+enum CommonKeyServiceMockError: Error {
+    case noResultSet
+}
 
 class CommonKeyServiceMock: CommonKeyServiceType {
     static let initialId = "00000000-0000-0000-0000-000000000000"
@@ -25,9 +29,9 @@ class CommonKeyServiceMock: CommonKeyServiceType {
 
     var fetchKeyCalledWith: String?
     var fetchKeyResult: Async<Key>?
-    func fetchKey(with commonKeyId: String) -> Async<Key> {
+    func fetchKey(with commonKeyId: String) -> SDKFuture<Key> {
         fetchKeyCalledWith = commonKeyId
-        return fetchKeyResult ?? Promise.reject()
+        return fetchKeyResult ?? Fail(error: CommonKeyServiceMockError.noResultSet).asyncFuture
     }
 
     var storeKeyCalledWith: (Key, String, Bool)?

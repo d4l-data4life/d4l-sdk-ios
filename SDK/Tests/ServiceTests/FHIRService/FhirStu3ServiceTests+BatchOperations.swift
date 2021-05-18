@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
 
 extension FhirStu3ServiceTests {

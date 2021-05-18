@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
 import Foundation
 
@@ -58,7 +58,7 @@ final class AppDataServiceTests: XCTestCase {
         let to = Date()
 
         keychainService[.userId] = userId
-        recordService.searchRecordsResult = Async.resolve([record])
+        recordService.searchRecordsResult = Just([record])
 
         let asyncExpectation = expectation(description: "should return resources")
         appDataService.fetchAppDataRecords(from: from, to: to, pageSize: pageSize, offset: offset)
@@ -83,7 +83,7 @@ final class AppDataServiceTests: XCTestCase {
         let count = 1
 
         keychainService[.userId] = userId
-        recordService.countRecordsResult = Async.resolve(count)
+        recordService.countRecordsResult = Just(count)
 
         let asyncExpectation = expectation(description: "should return count of resources")
         appDataService.countAppDataRecords()

@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import ModelsR4
 
 final class FhirR4ServiceTests: XCTestCase {

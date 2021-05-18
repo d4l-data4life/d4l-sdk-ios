@@ -13,32 +13,32 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-@_implementationOnly import Then
+import Combine
 import Foundation
 
 protocol AppDataServiceSingleOperations {
-    func createAppDataRecord(_ data: Data, annotations: [String]) -> Promise<AppDataRecord>
-    func updateAppDataRecord(_ data: Data, recordId: String, annotations: [String]?) -> Promise<AppDataRecord>
-    func fetchAppDataRecord(withId identifier: String) -> Promise<AppDataRecord>
-    func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String]) -> Promise<[AppDataRecord]>
-    func deleteAppDataRecord(withId identifier: String) -> Promise<Void>
-    func countAppDataRecords(annotations: [String]) -> Promise<Int>
+    func createAppDataRecord(_ data: Data, annotations: [String]) -> SDKFuture<AppDataRecord>
+    func updateAppDataRecord(_ data: Data, recordId: String, annotations: [String]?) -> SDKFuture<AppDataRecord>
+    func fetchAppDataRecord(withId identifier: String) -> SDKFuture<AppDataRecord>
+    func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String]) -> SDKFuture<[AppDataRecord]>
+    func deleteAppDataRecord(withId identifier: String) -> SDKFuture<Void>
+    func countAppDataRecords(annotations: [String]) -> SDKFuture<Int>
 }
 
 extension AppDataServiceSingleOperations where Self: HasMainRecordOperations {
-    func fetchAppDataRecord(withId identifier: String) -> Promise<AppDataRecord> {
+    func fetchAppDataRecord(withId identifier: String) -> SDKFuture<AppDataRecord> {
         return fetchRecord(withId: identifier, decryptedRecordType: DecryptedAppDataRecord.self)
     }
 
-    func deleteAppDataRecord(withId identifier: String) -> Promise<Void> {
+    func deleteAppDataRecord(withId identifier: String) -> SDKFuture<Void> {
         return deleteRecord(withId: identifier)
     }
 
-    func countAppDataRecords(annotations: [String] = []) -> Promise<Int> {
+    func countAppDataRecords(annotations: [String] = []) -> SDKFuture<Int> {
         return countRecords(of: Data.self, annotations: annotations)
     }
 
-    func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String] = []) -> Promise<[AppDataRecord]> {
+    func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String] = []) -> SDKFuture<[AppDataRecord]> {
         return fetchRecords(decryptedRecordType: DecryptedAppDataRecord.self,
                             recordType: AppDataRecord.self,
                             annotations: annotations,
@@ -50,10 +50,10 @@ extension AppDataServiceSingleOperations where Self: HasMainRecordOperations {
 }
 
 extension AppDataService {
-    func createAppDataRecord(_ data: Data, annotations: [String] = []) -> Promise<AppDataRecord> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let record: DecryptedAppDataRecord = try wait(self.recordService.createRecord(forResource: data,
+    func createAppDataRecord(_ data: Data, annotations: [String] = []) -> SDKFuture<AppDataRecord> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            let record: DecryptedAppDataRecord = try combineAwait(self.recordService.createRecord(forResource: data,
                                                                                            annotations: annotations,
                                                                                            userId: userId,
                                                                                            attachmentKey: nil,
@@ -63,10 +63,10 @@ extension AppDataService {
         }
     }
 
-    func updateAppDataRecord(_ data: Data, recordId: String, annotations: [String]? = nil) -> Promise<AppDataRecord> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let updatedRecord = try wait(self.recordService.updateRecord(forResource: data,
+    func updateAppDataRecord(_ data: Data, recordId: String, annotations: [String]? = nil) -> SDKFuture<AppDataRecord> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            let updatedRecord = try combineAwait(self.recordService.updateRecord(forResource: data,
                                                                           annotations: annotations,
                                                                           userId: userId,
                                                                           recordId: recordId,

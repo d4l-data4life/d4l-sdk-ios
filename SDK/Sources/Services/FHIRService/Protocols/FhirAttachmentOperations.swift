@@ -15,7 +15,7 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
+import Combine
 
 protocol HasAttachmentOperationsDependencies {
     var attachmentService: AttachmentServiceType { get }
@@ -28,17 +28,17 @@ protocol FhirAttachmentOperations {
                                                                     withId identifier: String,
                                                                     recordId: String,
                                                                     downloadType: DownloadType,
-                                                                    parentProgress: Progress) -> Promise<A>
+                                                                    parentProgress: Progress) -> SDKFuture<A>
     func downloadAttachments<A: AttachmentType, DR: DecryptedRecord>(of type: A.Type,
                                                                      decryptedRecordType: DR.Type,
                                                                      withIds identifiers: [String],
                                                                      recordId: String,
                                                                      downloadType: DownloadType,
-                                                                     parentProgress: Progress) -> Promise<[A]>
+                                                                     parentProgress: Progress) -> SDKFuture<[A]>
     func downloadFhirRecordWithAttachments<DR: DecryptedRecord>(withId identifier: String,
-                                                                decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
-    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> Promise<(resource: R,  key: Key?)>
-    func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource, decryptedRecordType: DR.Type) -> Promise<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource
+                                                                decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
+    func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> SDKFuture<(resource: R,  key: Key?)>
+    func uploadAttachments<DR: DecryptedRecord>(updating resource: DR.Resource, decryptedRecordType: DR.Type) -> SDKFuture<(resource: DR.Resource, key: Key?)> where DR.Resource: FhirSDKResource
 }
 
 extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependencies & HasRecordOperationsDependencies {
@@ -47,9 +47,9 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                                                                     withId identifier: String,
                                                                     recordId: String,
                                                                     downloadType: DownloadType,
-                                                                    parentProgress: Progress) -> Promise<A> {
-        return async {
-            let attachments: [A] = try wait(self.downloadAttachments(of: type,
+                                                                    parentProgress: Progress) -> SDKFuture<A> {
+        return combineAsync {
+            let attachments: [A] = try combineAwait(self.downloadAttachments(of: type,
                                                                       decryptedRecordType: decryptedRecordType,
                                                                       withIds: [identifier],
                                                                       recordId: recordId,
@@ -64,9 +64,9 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
             }
 
             return attachment
-        }.bridgeError { error in
-            throw self.bridgeErrorCancelledAction(error: error)
-        }
+        }.mapError { error in
+            return self.bridgeErrorCancelledAction(error: error)
+        }.asyncFuture
     }
 
     func downloadAttachments<A: AttachmentType, DR: DecryptedRecord>(of type: A.Type = A.self,
@@ -74,10 +74,10 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                                                                      withIds identifiers: [String],
                                                                      recordId: String,
                                                                      downloadType: DownloadType,
-                                                                     parentProgress: Progress) -> Promise<[A]> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let record = try wait(self.recordService.fetchRecord(recordId: recordId,
+                                                                     parentProgress: Progress) -> SDKFuture<[A]> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            let record = try combineAwait(self.recordService.fetchRecord(recordId: recordId,
                                                                   userId: userId,
                                                                   decryptedRecordType: DR.self))
 
@@ -85,16 +85,16 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                 let attachmentKey = record.attachmentKey,
                 let resourceWithAttachments = record.resource as? HasAttachments
             else { throw Data4LifeSDKError.couldNotFindAttachment }
-            let attachments: [AttachmentType] = try wait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+            let attachments: [AttachmentType] = try combineAwait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
                                                                                                   attachmentIds: identifiers,
                                                                                                   downloadType: downloadType,
                                                                                                   key: attachmentKey,
                                                                                                   parentProgress: parentProgress))
             return attachments as? [A] ?? []
         }
-        .bridgeError { error in
-            throw self.bridgeErrorCancelledAction(error: error)
-        }
+        .mapError { error in
+           return self.bridgeErrorCancelledAction(error: error)
+        }.asyncFuture
     }
 }
 

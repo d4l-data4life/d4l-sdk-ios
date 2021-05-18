@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-import Then
+import Combine
 @testable import Data4LifeSDK
 import ModelsR4
 
@@ -69,7 +69,7 @@ extension Data4LifeClientFhirR4Tests {
         updateResource.id = resourceId.asFHIRStringPrimitive()
         let record = RecordFactory.create(updateResource)
 
-        fhirService.updateFhirRecordResult = Async.resolve(record)
+        fhirService.updateFhirRecordResult = Just(record).asyncFuture
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateFhirR4Record(updateResource) { result in

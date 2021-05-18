@@ -16,7 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Alamofire
-import Then
+import Combine
 
 class SessionServiceTests: XCTestCase {
 
@@ -37,7 +37,7 @@ class SessionServiceTests: XCTestCase {
         versionValidator = SDKVersionValidatorMock()
         networkReachabilityManager = ReachabilityMock()
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator, networkManager: networkReachabilityManager)
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported)
     }
 
     func testNetworkUnavailable() {
@@ -99,7 +99,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestRouteFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -116,7 +116,7 @@ class SessionServiceTests: XCTestCase {
     func testRequestURLFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
         let env = Environment.staging
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -131,7 +131,7 @@ class SessionServiceTests: XCTestCase {
 
     func testUploadFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {

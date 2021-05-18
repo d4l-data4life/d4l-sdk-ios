@@ -16,8 +16,10 @@
 @_implementationOnly import Alamofire
 import Foundation
 
+private var backgroundResponseQueue = DispatchQueue(label: "alamofire.response.queue", qos: .background, attributes: .concurrent)
+
 extension Request {
     static var backgroundQueue: DispatchQueue {
-        return DispatchQueue.global(qos: .background)
+        return backgroundResponseQueue
     }
 }

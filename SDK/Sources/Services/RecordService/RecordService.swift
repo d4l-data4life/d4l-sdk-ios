@@ -15,39 +15,38 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 
 protocol RecordServiceType {
     func createRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
                                            annotations: [String],
                                            userId: String,
                                            attachmentKey: Key?,
-                                           decryptedRecordType: DR.Type) -> Async<DR>
+                                           decryptedRecordType: DR.Type) -> SDKFuture<DR>
     func fetchRecord<DR: DecryptedRecord>(recordId: String,
                                           userId: String,
-                                          decryptedRecordType: DR.Type) -> Async<DR>
+                                          decryptedRecordType: DR.Type) -> SDKFuture<DR>
     func updateRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
                                            annotations: [String]?,
                                            userId: String,
                                            recordId: String,
                                            attachmentKey: Key?,
-                                           decryptedRecordType: DR.Type) -> Async<DR>
-    func deleteRecord(recordId: String, userId: String) -> Async<Void>
+                                           decryptedRecordType: DR.Type) -> SDKFuture<DR>
+    func deleteRecord(recordId: String, userId: String) -> SDKFuture<Void>
     func countRecords<R: SDKResource>(userId: String,
                                       resourceType: R.Type,
-                                      annotations: [String]) -> Async<Int>
+                                      annotations: [String]) -> SDKFuture<Int>
     func searchRecords<DR: DecryptedRecord>(for userId: String,
                                             from startDate: Date?,
                                             to endDate: Date?,
                                             pageSize: Int?,
                                             offset: Int?,
                                             annotations: [String],
-                                            decryptedRecordType: DR.Type) -> Async<[DR]>
+                                            decryptedRecordType: DR.Type) -> SDKFuture<[DR]>
 }
 
 extension RecordServiceType {
     func fetchRecord<DR: DecryptedRecord>(recordId: String,
-                                          userId: String) -> Async<DR> {
+                                          userId: String) -> SDKFuture<DR> {
         return fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: DR.self)
     }
 }
@@ -77,20 +76,23 @@ struct RecordService: RecordServiceType {
                                            annotations: [String] = [],
                                            userId: String,
                                            attachmentKey: Key? = nil,
-                                           decryptedRecordType: DR.Type = DR.self) -> Async<DR> {
+                                           decryptedRecordType: DR.Type = DR.self) -> SDKFuture<DR> {
         func createRequest(parameters: Parameters) -> Router {
             return Router.createRecord(userId: userId, parameters: parameters)
         }
 
-        return cryptoService.generateGCKey(.data).then { key in
+       return cryptoService
+        .generateGCKey(.data)
+        .flatMap { key in
             return self.uploadRecord(forResource: resource,
                                      userId: userId,
                                      dataKey: key,
                                      attachmentKey: attachmentKey,
                                      annotations: annotations,
                                      decryptedRecordType: decryptedRecordType,
-                                     uploadRequest: createRequest)
-        }
+                                     uploadRequest: createRequest) }
+        .eraseToAnyPublisher()
+        .asyncFuture
     }
 
     func updateRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
@@ -98,41 +100,42 @@ struct RecordService: RecordServiceType {
                                            userId: String,
                                            recordId: String,
                                            attachmentKey: Key? = nil,
-                                           decryptedRecordType: DR.Type = DR.self) -> Async<DR> {
+                                           decryptedRecordType: DR.Type = DR.self) -> SDKFuture<DR> {
         func updateRequest(parameters: Parameters) -> Router {
             return Router.updateRecord(userId: userId, recordId: recordId, parameters: parameters)
         }
 
-        let promise: Async<DR> = fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType).then { record in
-
-            return self.uploadRecord(forResource: resource,
-                                     userId: userId,
-                                     dataKey: record.dataKey,
-                                     attachmentKey: record.attachmentKey ?? attachmentKey,
-                                     oldTags: record.tags,
-                                     annotations: annotations ?? record.annotations,
-                                     decryptedRecordType: decryptedRecordType,
-                                     uploadRequest: updateRequest)
+        return combineAsync {
+            let record = try combineAwait(self.fetchRecord(recordId: recordId, userId: userId, decryptedRecordType: decryptedRecordType))
+            let updatedRecord = try combineAwait(self.uploadRecord(forResource: resource,
+                                                                   userId: userId,
+                                                                   dataKey: record.dataKey,
+                                                                   attachmentKey: record.attachmentKey ?? attachmentKey,
+                                                                   oldTags: record.tags,
+                                                                   annotations: annotations ?? record.annotations,
+                                                                   decryptedRecordType: decryptedRecordType,
+                                                                   uploadRequest: updateRequest))
+            return updatedRecord
         }
-        return promise
     }
 
     func fetchRecord<DR: DecryptedRecord>(recordId: String,
                                           userId: String,
-                                          decryptedRecordType: DR.Type = DR.self) -> Async<DR> {
-        return async {
+                                          decryptedRecordType: DR.Type = DR.self) -> SDKFuture<DR> {
+        return combineAsync {
             let route = Router.fetchRecord(userId: userId, recordId: recordId)
-            let encrypted: EncryptedRecord = try wait(self.sessionService.request(route: route).responseDecodable())
-            return try wait(DR.from(encryptedRecord: encrypted,
-                                     cryptoService: self.cryptoService,
-                                     commonKeyService: self.commonKeyService))
+            let encrypted: EncryptedRecord = try combineAwait(self.sessionService.request(route: route).responseDecodable())
+            let decryptedRecord = try DR.from(encryptedRecord: encrypted,
+                                              cryptoService: self.cryptoService,
+                                              commonKeyService: self.commonKeyService)
+            return decryptedRecord
         }
     }
 
-    func deleteRecord(recordId: String, userId: String) -> Async<Void> {
-        return async {
+    func deleteRecord(recordId: String, userId: String) -> SDKFuture<Void> {
+        return combineAsync {
             let route = Router.deleteRecord(userId: userId, recordId: recordId)
-            return try wait(self.sessionService.request(route: route).responseEmpty())
+            return try combineAwait(self.sessionService.request(route: route).responseEmpty())
         }
     }
 
@@ -142,9 +145,9 @@ struct RecordService: RecordServiceType {
                                             pageSize: Int?,
                                             offset: Int?,
                                             annotations: [String] = [],
-                                            decryptedRecordType: DR.Type = DR.self) -> Async<[DR]> {
-        return async {
-            let tagGroup = try wait(self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations))
+                                            decryptedRecordType: DR.Type = DR.self) -> SDKFuture<[DR]> {
+        return combineAsync {
+            let tagGroup = self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations)
             let parameters = try parameterBuilder.searchParameters(from: startDate,
                                                                    to: endDate,
                                                                    offset: offset,
@@ -153,7 +156,7 @@ struct RecordService: RecordServiceType {
                                                                    supportingLegacyTags: true)
 
             let route = Router.searchRecords(userId: userId, parameters: parameters)
-            let encryptedRecords: [EncryptedRecord] = try wait(
+            let encryptedRecords: [EncryptedRecord] = try combineAwait(
                 self.sessionService.request(route: route).responseDecodable()
             )
 
@@ -161,19 +164,19 @@ struct RecordService: RecordServiceType {
                 return []
             }
             return try encryptedRecords.map {
-                try wait(DR.from(encryptedRecord: $0,
-                                 cryptoService: self.cryptoService,
-                                 commonKeyService: self.commonKeyService))
+                try DR.from(encryptedRecord: $0,
+                            cryptoService: self.cryptoService,
+                            commonKeyService: self.commonKeyService)
             }
         }
     }
 
-    func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> Async<Int> {
-        return async {
-            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resourceType, annotations: annotations))
+    func countRecords<R: SDKResource>(userId: String, resourceType: R.Type, annotations: [String] = []) -> SDKFuture<Int> {
+        return combineAsync {
+            let tagGroup = self.taggingService.makeTagGroup(for: resourceType, annotations: annotations)
             let params = try parameterBuilder.searchParameters(tagGroup: tagGroup)
             let route = Router.countRecords(userId: userId, parameters: params)
-            let headers = try wait(self.sessionService.request(route: route).responseHeaders())
+            let headers = try combineAwait(self.sessionService.request(route: route).responseHeaders())
 
             guard
                 let countString = headers["x-total-count"] as? String,
@@ -195,16 +198,16 @@ extension RecordService {
                                                    oldTags: [String: String]? = nil,
                                                    annotations: [String]? = nil,
                                                    decryptedRecordType: DR.Type = DR.self,
-                                                   uploadRequest: @escaping (Parameters) -> Router) -> Async<DR> {
-        return async {
+                                                   uploadRequest: @escaping (Parameters) -> Router) -> SDKFuture<DR> {
+        return combineAsync {
 
-            try wait(self.userService.fetchUserInfo())
+            try combineAwait(self.userService.fetchUserInfo())
             let commonKeyId = self.commonKeyService.currentId ?? CommonKeyService.initialId
             guard let commonKey = self.commonKeyService.currentKey else {
                 throw Data4LifeSDKError.missingCommonKey
             }
 
-            let tagGroup = try wait(self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations))
+            let tagGroup = self.taggingService.makeTagGroup(for: resource, oldTags: oldTags ?? [:], annotations: annotations)
 
             let uploadParameters = try parameterBuilder.uploadParameters(resource: resource,
                                                                          uploadDate: Date(),
@@ -214,13 +217,13 @@ extension RecordService {
                                                                          attachmentKey: attachmentKey,
                                                                          tagGroup: tagGroup)
             let route = uploadRequest(uploadParameters)
-            let encryptedRecord: EncryptedRecord = try wait(
+            let encryptedRecord: EncryptedRecord = try combineAwait(
                 self.sessionService.request(route: route).responseDecodable()
             )
 
-            return try wait(DR.from(encryptedRecord: encryptedRecord,
-                                     cryptoService: self.cryptoService,
-                                     commonKeyService: self.commonKeyService))
+            return try DR.from(encryptedRecord: encryptedRecord,
+                               cryptoService: self.cryptoService,
+                               commonKeyService: self.commonKeyService)
         }
     }
 }

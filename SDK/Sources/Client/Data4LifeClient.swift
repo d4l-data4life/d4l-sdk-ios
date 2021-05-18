@@ -13,7 +13,7 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-@_implementationOnly import Then
+import Combine
 
 /// Returns either an error or an object
 public typealias ResultBlock<Value> = (Result<Value, Error>) -> Void
@@ -27,6 +27,7 @@ public class Data4LifeClient {
 
     private let container: DIContainer
     private let versionValidator: SDKVersionValidatorType
+    var storage: Set<AnyCancellable> = Set()
 
     /// Holds client configuration used for SDK setup
     static var clientConfiguration: ClientConfiguration?
@@ -143,7 +144,7 @@ extension Data4LifeClient {
     private func configureDependencies() {
         sessionServiceInterceptor.setRetrier(oAuthService)
         versionValidator.setSessionService(sessionService)
-        try? wait(versionValidator.fetchVersionConfigurationRemotely())
+        try? combineAwait(self.versionValidator.fetchVersionConfigurationRemotely())
     }
 }
 

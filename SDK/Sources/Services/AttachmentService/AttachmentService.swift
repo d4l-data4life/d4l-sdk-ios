@@ -15,17 +15,17 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 import Data4LifeFHIRCore
+import Combine
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]>
+                           key: Key) -> SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]>
     func fetchAttachments(for resourceWithAttachments: HasAttachments,
                           attachmentIds: [String],
                           downloadType: DownloadType,
                           key: Key,
-                          parentProgress: Progress) -> Promise<[AttachmentType]>
+                          parentProgress: Progress) -> SDKFuture<[AttachmentType]>
 }
 
 final class AttachmentService: AttachmentServiceType {
@@ -43,8 +43,8 @@ final class AttachmentService: AttachmentServiceType {
     }
 
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]> {
-        return async {
+                           key: Key) -> SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+        return combineAsync {
             let documentsWithAdditionalIds = try attachments.map { attachment -> (AttachmentType, [String]) in
                 guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
                     throw Data4LifeSDKError.invalidAttachmentMissingData
@@ -53,12 +53,12 @@ final class AttachmentService: AttachmentServiceType {
                 do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
 
                 let document = Document(data: data)
-                let uploaded = try wait(self.documentService.create(document: document, key: key))
+                let uploaded = try combineAwait(self.documentService.create(document: document, key: key))
 
                 var thumbnailsIds: [String]?
                 if let attachmentId = uploaded.id {
                     if self.imageResizer.isResizable(document.data) {
-                        thumbnailsIds = try wait(self.createThumbnails(attachmentId: attachmentId, originalData: document.data, key: key))
+                        thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: document.data, key: key))
                     }
                 }
 
@@ -75,8 +75,8 @@ final class AttachmentService: AttachmentServiceType {
                           attachmentIds: [String],
                           downloadType: DownloadType,
                           key: Key,
-                          parentProgress: Progress) -> Promise<[AttachmentType]> {
-        return async {
+                          parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
+        return combineAsync {
             guard let attachments = resourceWithAttachments.allAttachments else { return [] }
 
             let filledAttachments = try attachments.compactMap { attachment -> AttachmentType? in
@@ -94,7 +94,7 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 let documentId: String = selectedDocumentId ?? attachmentId
-                let data = try wait(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
+                let data = try combineAwait(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
 
                 let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
                 attachmentCopy.attachmentDataString = data.base64EncodedString()
@@ -122,8 +122,8 @@ final class AttachmentService: AttachmentServiceType {
 
     private func createThumbnails(attachmentId: String,
                                   originalData: Data,
-                                  key: Key) -> Promise<[String]> {
-        return async {
+                                  key: Key) -> SDKFuture<[String]> {
+        return combineAsync {
             // Convert imageData to UIImage
             guard let imageToResize = UIImage(data: originalData) else {
                 // Data is not an image. This case should never happen, because the mimeType is actually an image
@@ -140,7 +140,7 @@ final class AttachmentService: AttachmentServiceType {
                         return []
                     }
 
-                    let uploaded = try wait(self.documentService.create(document: Document(data: resizedData), key: key))
+                    let uploaded = try combineAwait(self.documentService.create(document: Document(data: resizedData), key: key))
                     guard let thumbnailId = uploaded.id else {
                         // A created document should always have got an id
                         return []

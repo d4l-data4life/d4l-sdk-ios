@@ -16,7 +16,7 @@
 import XCTest
 import Alamofire
 import SafariServices
-import Then
+import Combine
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 import Data4LifeCrypto
@@ -104,9 +104,9 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Async.resolve()
+        oAuthService.presentLoginResult = Just(()).asyncFuture
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Async.resolve()
+        userService.fetchUserInfoResult = Just(()).asyncFuture
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true) { result in
@@ -136,9 +136,9 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Async.resolve()
+        oAuthService.presentLoginResult = Just(()).asyncFuture
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Async.resolve()
+        userService.fetchUserInfoResult = Just(()).asyncFuture
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true, scopes: scopes) { result in
@@ -241,7 +241,7 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Async.resolve()
+        oAuthService.presentLoginResult = Just(()).asyncFuture
         cryptoService.fetchOrGenerateKeyPairResult = keypair
         userService.fetchUserInfoResult = Async.reject(expectedError)
 
@@ -264,7 +264,7 @@ extension Data4LifeClientUserTests {
 
     func testLogout() {
         XCTAssertFalse(oAuthService.logoutCalled)
-        oAuthService.logoutResult = Async.resolve()
+        oAuthService.logoutResult = Just(()).asyncFuture
 
         let asyncExpectation = expectation(description: "should logout")
 
@@ -284,7 +284,7 @@ extension Data4LifeClientUserTests {
     func testLoggedInTrue() {
         cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
         commonKeyService.currentKey = KeyFactory.createKey(.common)
-        oAuthService.isSessionActiveResult = Async.resolve()
+        oAuthService.isSessionActiveResult = Just(()).asyncFuture
 
         let asyncExpectation = expectation(description: "should return success true")
         client.isUserLoggedIn { result  in
@@ -327,7 +327,7 @@ extension Data4LifeClientUserTests {
         let count = 3
 
         keychainService[.userId] = userId
-        fhirService.countRecordsResult = Async.resolve(count)
+        fhirService.countRecordsResult = Just(count)
 
         let asyncExpectation = expectation(description: "should return count of all resources")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { result in
@@ -345,7 +345,7 @@ extension Data4LifeClientUserTests {
         let queue = DispatchQueue.global(qos: .background)
 
         keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Async.resolve(count)
+        fhirService.countRecordsResult = Just(count)
 
         let asyncExpectation = expectation(description: "should return response with count on background thread")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
@@ -363,7 +363,7 @@ extension Data4LifeClientUserTests {
         let queue = DispatchQueue.main
 
         keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Async.resolve(count)
+        fhirService.countRecordsResult = Just(count)
 
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in

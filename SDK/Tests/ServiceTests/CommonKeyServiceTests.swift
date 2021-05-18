@@ -16,7 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Data4LifeCrypto
-import Then
+import Combine
 
 class CommonKeyServiceTests: XCTestCase {
     var commonKeyService: CommonKeyService!
@@ -44,7 +44,7 @@ class CommonKeyServiceTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
 
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported)
     }
 
     func testInitialCommonKeyId() {
@@ -245,7 +245,7 @@ class CommonKeyServiceTests: XCTestCase {
         let userId = UUID().uuidString
         let commonKeyId = UUID().uuidString
 
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
         self.keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should fail because the version is unsupported")

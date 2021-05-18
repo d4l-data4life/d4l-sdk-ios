@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 
 class KeychainServiceTests: XCTestCase {
     var keychain: KeychainService!

@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 
 class EncryptedRecordTests: XCTestCase {
 
@@ -92,7 +92,7 @@ class EncryptedRecordTests: XCTestCase {
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
         var encryptedRecord = encryptedRecordFactory.create(for: record)
 
-        commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey())
         cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
@@ -173,7 +173,7 @@ class EncryptedRecordTests: XCTestCase {
         encryptedRecord.encryptedAttachmentKey = nil
         encryptedRecord.modelVersion += 1
 
-        commonKeyService.fetchKeyResult = Async.resolve(KeyFactory.createKey())
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey())
 
         let expectedError = Data4LifeSDKError.invalidRecordModelVersionNotSupported
         let asyncExpectation = expectation(description: "Should fail decrypting record")

@@ -14,20 +14,20 @@
 //  contact D4L by email to help@data4life.care.
 
 @_implementationOnly import Alamofire
-@_implementationOnly import Then
+import Combine
 import Foundation
 
 /// Make Alamofire compatible with custom completion handler
 extension DataRequest {
     func responseDecodable<T: Decodable>(
-        queue: DispatchQueue = backgroundQueue) -> Async<T> {
-        return Async<T> { resolve, reject in
+        queue: DispatchQueue = backgroundQueue) -> SDKFuture<T> {
+        return SDKFuture { promise in
             self.validate().responseDecodable(queue: queue) { (response: AFDataResponse<T>)  in
                 switch response.result {
                 case .success(let value):
-                    resolve(value)
+                    promise(.success(value))
                 case .failure(let error):
-                    reject(error)
+                    promise(.failure(error))
                 }
             }
         }
@@ -35,42 +35,41 @@ extension DataRequest {
 
     @discardableResult
     func responseData(
-        queue: DispatchQueue = backgroundQueue) -> Async<Data> {
-        return Async { resolve, reject in
+        queue: DispatchQueue = backgroundQueue) -> SDKFuture<Data> {
+        return SDKFuture { promise in
             self.validate().responseData(queue: queue) { (response) in
                 switch response.result {
                 case .success(let value):
-                    resolve(value)
+                    promise(.success(value))
                 case .failure(let error):
-                    reject(error)
+                    promise(.failure(error))
                 }
             }
         }
     }
 
     func responseEmpty(
-        queue: DispatchQueue = backgroundQueue) -> Async<Void> {
-        return Async { (resolve : @escaping (() -> Void), reject: @escaping ((Error) -> Void)) in
+        queue: DispatchQueue = backgroundQueue) -> SDKFuture<Void> {
+        return SDKFuture { promise in
             self.validate().response(queue: queue) { response in
                 switch response.result {
-                case .success:
-                    resolve()
+                case .success:                    promise(.success(()))
                 case .failure(let error):
-                    reject(error)
+                    promise(.failure(error))
                 }
             }
         }
     }
 
     func responseHeaders(
-        queue: DispatchQueue = backgroundQueue) -> Async<[AnyHashable: Any]> {
-        return Async { resolve, reject in
+        queue: DispatchQueue = backgroundQueue) -> SDKFuture<[AnyHashable: Any]> {
+        return SDKFuture { promise in
             self.validate().responseData(queue: queue) { response in
                 switch response.result {
                 case .success:
-                    resolve(response.response?.allHeaderFields ?? [:])
+                    promise(.success(response.response?.allHeaderFields ?? [:]))
                 case .failure(let error):
-                    reject(error)
+                    promise(.failure(error))
                 }
             }
         }
