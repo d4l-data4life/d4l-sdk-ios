@@ -28,7 +28,7 @@ class CommonKeyServiceMock: CommonKeyServiceType {
     var currentKey: Key?
 
     var fetchKeyCalledWith: String?
-    var fetchKeyResult: Async<Key>?
+    var fetchKeyResult: SDKFuture<Key>?
     func fetchKey(with commonKeyId: String) -> SDKFuture<Key> {
         fetchKeyCalledWith = commonKeyId
         return fetchKeyResult ?? Fail(error: CommonKeyServiceMockError.noResultSet).asyncFuture

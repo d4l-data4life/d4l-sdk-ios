@@ -44,7 +44,7 @@ class CommonKeyServiceTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
 
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
     }
 
     func testInitialCommonKeyId() {
@@ -183,10 +183,10 @@ class CommonKeyServiceTests: XCTestCase {
         commonKeyService.fetchKey(with: commonKeyId)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertRouteCalled("GET", "/users/\(userId)/commonkeys/\(commonKeyId)")
                 XCTAssertTrue(error.localizedDescription.contains("The data couldn’t be read because it is missing."))
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -208,9 +208,9 @@ class CommonKeyServiceTests: XCTestCase {
         commonKeyService.fetchKey(with: commonKeyId)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -231,10 +231,10 @@ class CommonKeyServiceTests: XCTestCase {
         commonKeyService.fetchKey(with: commonKeyId)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertRouteCalled("GET", "/users/\(userId)/commonkeys/\(commonKeyId)")
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -245,7 +245,7 @@ class CommonKeyServiceTests: XCTestCase {
         let userId = UUID().uuidString
         let commonKeyId = UUID().uuidString
 
-        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
         self.keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should fail because the version is unsupported")
@@ -254,9 +254,9 @@ class CommonKeyServiceTests: XCTestCase {
         commonKeyService.fetchKey(with: commonKeyId)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 

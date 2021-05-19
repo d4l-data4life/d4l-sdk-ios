@@ -14,7 +14,9 @@ private var testStorage: Set<AnyCancellable> = []
 
 extension Publisher {
 
-    func then(_ onValue: @escaping (Output) -> Void = { _ in XCTFail("Expected error instead")}, onError: @escaping (Failure) -> Void = { _ in XCTFail("Expected value instead")}) {
+    func then(_ onValue: @escaping (Output) -> Void = { _ in XCTFail("Expected error instead")},
+              onError: @escaping (Failure) -> Void = { _ in XCTFail("Expected value instead")},
+              finally: @escaping () -> Void = {}) {
         sink { sinkResult in
             switch sinkResult {
             case .finished:
@@ -22,6 +24,7 @@ extension Publisher {
             case .failure(let error):
                 onError(error)
             }
+            finally()
         } receiveValue: { value in
             onValue(value)
         }.store(in: &testStorage)

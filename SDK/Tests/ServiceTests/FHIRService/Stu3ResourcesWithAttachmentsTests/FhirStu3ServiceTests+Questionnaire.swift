@@ -66,7 +66,7 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let questionnaire = FhirFactory.createStu3Questionnaire()
         questionnaire.id = resourceId
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
-        recordService.createRecordResult = Just(originalRecord)
+        recordService.createRecordResult = Just(originalRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
@@ -78,9 +78,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
 
                 XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
                 XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -140,9 +140,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                                                    (uploadedAttachment1, []),
                                                                    (uploadedAttachment2, []),
                                                                    (uploadedAttachment3, []),
-                                                                   (unmatchableAttachment, [])])
+                                                                   (unmatchableAttachment, [])]).asyncFuture
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.createRecordResult = Just(expectedRecord)
+        recordService.createRecordResult = Just(expectedRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
@@ -160,9 +160,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                questionnaire.allAttachments as? [Attachment])
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource),
                                questionnaire)
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -184,18 +184,18 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         questionnaire.item? = [FhirFactory.createStu3QuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
-        recordService.createRecordResult = Just(originalRecord)
+        recordService.createRecordResult = Just(originalRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
             XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
             XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
             XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -215,18 +215,18 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         questionnaire.item? = [FhirFactory.createStu3QuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
-        recordService.createRecordResult = Just(originalRecord)
+        recordService.createRecordResult = Just(originalRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
             XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
             XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
             XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -295,9 +295,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                                                    (uploadedAttachment1, expected1AdditionalId),
                                                                    (uploadedAttachment2, expected2AdditionalId),
                                                                    (uploadedAttachment3, expected3AdditionalId),
-                                                                   (unmatchableAttachment, [])])
+                                                                   (unmatchableAttachment, [])]).asyncFuture
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.createRecordResult = Just(expectedRecord)
+        recordService.createRecordResult = Just(expectedRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
@@ -315,9 +315,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                questionnaire.allAttachments as? [Attachment])
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource),
                                questionnaire)
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -341,8 +341,8 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let expectedQuestionnaire = updatedQuestionnaire.copy() as! Questionnaire // swiftlint:disable:this force_cast
         let expectedRecord = originalRecord.copy(with: expectedQuestionnaire)
 
-        recordService.fetchRecordResult = Just(originalRecord)
-        recordService.updateRecordResult = Just(expectedRecord)
+        recordService.fetchRecordResult = Just(originalRecord).asyncFuture
+        recordService.updateRecordResult = Just(expectedRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedQuestionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
@@ -355,9 +355,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                 XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
                 XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
                 XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
         waitForExpectations(timeout: 5)
@@ -403,10 +403,10 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(uploadedNewAttachmentId2)
         let uploadedAttachment3 = newAttachment2.copyWithId(uploadedNewAttachmentId3)
 
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])])
-        recordService.fetchRecordResult = Just(originalRecord)
+        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture
+        recordService.fetchRecordResult = Just(originalRecord).asyncFuture
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.updateRecordResult = Just(expectedRecord)
+        recordService.updateRecordResult = Just(expectedRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedQuestionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
@@ -423,9 +423,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                [newAttachment2, newAttachment3, newAttachment1].map { $0.testable }, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
         waitForExpectations(timeout: 5)
@@ -448,17 +448,17 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
 
         keychainService[.userId] = userId
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.fetchRecordResult = Just(updatedRecord)
+        recordService.fetchRecordResult = Just(updatedRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
             XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
             XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -480,17 +480,17 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
 
         keychainService[.userId] = userId
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.fetchRecordResult = Just(updatedRecord)
+        recordService.fetchRecordResult = Just(updatedRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
             XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
             XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 

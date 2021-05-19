@@ -52,7 +52,7 @@ class LoginViewModel {
             loginInProgress = false
             return combineAsync {
                 throw error
-            } 
+            }
         }
     }
 }

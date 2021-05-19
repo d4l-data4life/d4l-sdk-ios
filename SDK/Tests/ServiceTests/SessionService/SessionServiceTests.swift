@@ -37,7 +37,7 @@ class SessionServiceTests: XCTestCase {
         versionValidator = SDKVersionValidatorMock()
         networkReachabilityManager = ReachabilityMock()
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator, networkManager: networkReachabilityManager)
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
     }
 
     func testNetworkUnavailable() {
@@ -99,7 +99,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestRouteFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -116,7 +116,7 @@ class SessionServiceTests: XCTestCase {
     func testRequestURLFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
         let env = Environment.staging
-        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -131,7 +131,7 @@ class SessionServiceTests: XCTestCase {
 
     func testUploadFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -152,14 +152,13 @@ class SessionServiceTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should return an error")
         do {
             try session.request(url: env.apiBaseURL, method: .get)
-                .responseData()
-                .onError { error in
+                .responseData().then(onError: { error in
                     let nsError = error as NSError
                     XCTAssertNotEqual(nsError.code, 11)
                     XCTAssertTrue((error as? AFError)?.responseCode == 404)
-                }.finally {
+                }, finally: {
                     asyncExpectation.fulfill()
-                }
+                })
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -178,10 +177,10 @@ class SessionServiceTests: XCTestCase {
                 .responseData()
                 .then { _ in
                     XCTFail("Should return an error")
-                }.onError { error in
+                } onError: { error in
                     let nsError = error as NSError
                     XCTAssertEqual(nsError.code, 11)
-                }.finally {
+                } finally: {
                     asyncExpectation.fulfill()
                 }
         } catch {

@@ -36,26 +36,17 @@ class EncryptedRecordTests: XCTestCase {
         commonKeyService = CommonKeyServiceMock()
     }
 
-    func testConvertEncryptedRecordFailMissingTek() {
+    func testConvertEncryptedRecordFailMissingTek() throws {
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         let encryptedRecord = encryptedRecordFactory.create(for: record)
 
         let expectedError = Data4LifeSDKError.missingTagKey
-        let asyncExpectation = expectation(description: "Should fail decrypting record")
 
-        DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
-                             cryptoService: cryptoService,
-                             commonKeyService: commonKeyService)
-            .then { _ in
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        _ = try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
+                                             cryptoService: cryptoService,
+                                             commonKeyService: commonKeyService)
+        XCTAssertThrowsError(expectedError)
     }
 
     func testConvertEncryptedRecordFailMissingRecordCommonKey() throws {
@@ -68,22 +59,13 @@ class EncryptedRecordTests: XCTestCase {
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
         cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
-        commonKeyService.fetchKeyResult = Async.reject(expectedError)
-
-        let asyncExpectation = expectation(description: "Should fail decrypting record")
-
-        DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
-                                 cryptoService: cryptoService,
-                                 commonKeyService: commonKeyService)
-            .then { _ in
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        commonKeyService.fetchKeyResult = Fail(error: expectedError).asyncFuture
+        XCTAssertThrowsError(try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
+                                                              cryptoService: cryptoService,
+                                                              commonKeyService: commonKeyService),
+                             "should throw error", { error in
+                                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+                             })
     }
 
     func testConvertEncryptedRecordFailInvalidDataKey() throws {
@@ -92,38 +74,31 @@ class EncryptedRecordTests: XCTestCase {
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
         var encryptedRecord = encryptedRecordFactory.create(for: record)
 
-        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey())
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture
         cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
-        let asyncExpectation = expectation(description: "Should fail decrypting record")
 
         cryptoService.tagEncryptionKey = KeyFactory.createKey()
         encryptedRecord.encryptedDataKey = String(describing: Data([0x00]))
 
-        DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService)
-            .then { _ in
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        XCTAssertThrowsError(try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService),
+                             "should throw error", { error in
+                                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+                             })
     }
 
     func testConvertEncryptedRecordFailInvalidBodyPayload() throws {
+
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document)
         var encryptedRecord = encryptedRecordFactory.create(for: record)
         encryptedRecord.encryptedBody = String(describing: Data([0x00]))
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
-        let asyncExpectation = expectation(description: "Should fail decrypting record")
 
         cryptoService.tagEncryptionKey = KeyFactory.createKey()
-        commonKeyService.fetchKeyResult = Promise.resolve(KeyFactory.createKey())
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -132,16 +107,10 @@ class EncryptedRecordTests: XCTestCase {
         cryptoService.decryptDataResult = decryptedDataKey
         cryptoService.decryptValuesResult = decryptedTags
 
-        DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService)
-            .then { _ in
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        XCTAssertThrowsError(try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService),
+                             "should throw error" , { error in
+                                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+                             })
     }
 
     func testFailLoadingEncryptedRecordJSON() {
@@ -173,10 +142,9 @@ class EncryptedRecordTests: XCTestCase {
         encryptedRecord.encryptedAttachmentKey = nil
         encryptedRecord.modelVersion += 1
 
-        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey())
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture
 
         let expectedError = Data4LifeSDKError.invalidRecordModelVersionNotSupported
-        let asyncExpectation = expectation(description: "Should fail decrypting record")
 
         cryptoService.tagEncryptionKey = KeyFactory.createKey()
 
@@ -192,15 +160,9 @@ class EncryptedRecordTests: XCTestCase {
                                              (encryptedResourceData, decryptedResourceData)]
         cryptoService.decryptValuesResult = decryptedTags
 
-        DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService)
-            .then { _ in
-                XCTFail("Should return an error")
-            }.onError { error in
-                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
-                asyncExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        XCTAssertThrowsError(try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord, cryptoService: cryptoService, commonKeyService: commonKeyService),
+                             "should throw error", { error in
+                                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+                             })
     }
 }

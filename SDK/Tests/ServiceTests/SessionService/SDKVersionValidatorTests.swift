@@ -154,9 +154,9 @@ class SDKVersionValidatorTests: XCTestCase {
 
         validator.fetchVersionConfigurationRemotely().then { _ in
             XCTFail("Shouldn't return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertNotNil(error is Data4LifeSDKError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 

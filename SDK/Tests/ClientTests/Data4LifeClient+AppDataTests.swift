@@ -138,7 +138,7 @@ extension Data4LifeClientUserTests {
 
         let resources = ["test".data(using: .utf8)!, "test2".data(using: .utf8)!]
         let records = resources.map { RecordFactory.create($0) }
-        appDataService.fetchRecordsResult = Just(records)
+        appDataService.fetchRecordsResult = Just(records).asyncFuture
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchAppDataRecords { result in
@@ -156,7 +156,7 @@ extension Data4LifeClientUserTests {
 
     func testCountAppDataResources() {
         let resourceCount = 2
-        appDataService.countRecordsResult = Just(resourceCount)
+        appDataService.countRecordsResult = Just(resourceCount).asyncFuture
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.countAppDataRecords { result in

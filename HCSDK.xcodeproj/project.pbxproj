@@ -252,7 +252,6 @@
 		CD841E29225CBE80002656D5 /* CarePlan.json in Resources */ = {isa = PBXBuildFile; fileRef = CD841DD1225CBE80002656D5 /* CarePlan.json */; };
 		CD841E2A225CBE80002656D5 /* Assert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD3225CBE80002656D5 /* Assert.swift */; };
 		CD841E2B225CBE80002656D5 /* StubbedURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */; };
-		CD841E2D225CBE80002656D5 /* Async+ResultBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */; };
 		CD841E30225CBE80002656D5 /* *.gesundheitscloud.de.cer in Resources */ = {isa = PBXBuildFile; fileRef = CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */; };
 		CD841E32225CBE80002656D5 /* Data+UTF8String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */; };
 		CD841E33225CBE80002656D5 /* Bundle+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDF225CBE80002656D5 /* Bundle+Data.swift */; };
@@ -649,7 +648,6 @@
 		CD841DD1225CBE80002656D5 /* CarePlan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CarePlan.json; sourceTree = "<group>"; };
 		CD841DD3225CBE80002656D5 /* Assert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assert.swift; sourceTree = "<group>"; };
 		CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubbedURLProtocol.swift; sourceTree = "<group>"; };
-		CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+ResultBlockTests.swift"; sourceTree = "<group>"; };
 		CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "*.gesundheitscloud.de.cer"; sourceTree = "<group>"; };
 		CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+UTF8String.swift"; sourceTree = "<group>"; };
 		CD841DDF225CBE80002656D5 /* Bundle+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Data.swift"; sourceTree = "<group>"; };
@@ -1640,7 +1638,6 @@
 		CD841DD5225CBE80002656D5 /* HelperTests */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */,
 			);
 			path = HelperTests;
 			sourceTree = "<group>";
@@ -2336,7 +2333,6 @@
 				36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */,
 				0AF4C09922E205C300C5CD67 /* ImageResizerMock.swift in Sources */,
 				CD841E4F225CBE80002656D5 /* TaggingServiceTests.swift in Sources */,
-				CD841E2D225CBE80002656D5 /* Async+ResultBlockTests.swift in Sources */,
 				CD841E1A225CBE80002656D5 /* TaggingServiceMock.swift in Sources */,
 				366A44752588E5BC0003FBCE /* RecordServiceTests+FhirR4.swift in Sources */,
 				CD841E1C225CBE80002656D5 /* KeychainServiceMock.swift in Sources */,

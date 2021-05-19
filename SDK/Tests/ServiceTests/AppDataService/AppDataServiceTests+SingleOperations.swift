@@ -18,7 +18,6 @@ import XCTest
 import Combine
 import Data4LifeFHIR
 
-
     enum JustError: Swift.Error {
         case dummy
     }
@@ -121,12 +120,11 @@ extension AppDataServiceTests {
         appDataService.deleteAppDataRecord(withId: resourceId)
             .then { _ in
                 XCTAssertTrue(self.recordService.deleteRecordCalledWith! == (resourceId, userId))
-        }.onError { error in
-            XCTAssertNil(error.localizedDescription)
-        }.finally {
-            asyncExpectation.fulfill()
-        }
-
+            } onError: { error in
+                XCTAssertNil(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 }

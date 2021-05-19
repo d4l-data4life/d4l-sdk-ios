@@ -25,7 +25,7 @@ extension FhirStu3ServiceTests {
         let record = DecryptedRecordFactory.create(resource)
 
         keychainService[.userId] = userId
-        recordService.createRecordResult = Promise.resolve(record)
+        recordService.createRecordResult = Just(record).asyncFuture
 
         let asyncExpectation = expectation(description: "should return array with one record")
         fhirService.createFhirRecords([resource], decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
@@ -33,9 +33,9 @@ extension FhirStu3ServiceTests {
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, resource)
                 XCTAssertEqual(result.success.first?.id, record.id)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -50,7 +50,7 @@ extension FhirStu3ServiceTests {
         let record = DecryptedRecordFactory.create(resource)
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Promise.resolve(record)
+        recordService.fetchRecordResult = Just(record).asyncFuture
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.fetchFhirRecords(withIds: [resourceId], decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
@@ -58,9 +58,9 @@ extension FhirStu3ServiceTests {
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId)
                 XCTAssertEqual(result.success.first?.id, record.id)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -78,7 +78,7 @@ extension FhirStu3ServiceTests {
         let futureRecord = record.copy(with: futureResource)
 
         keychainService[.userId] = userId
-        recordService.updateRecordResult = Promise.resolve(futureRecord)
+        recordService.updateRecordResult = Just(futureRecord).asyncFuture
 
         let asyncExpectation = expectation(description: "should update language property")
         fhirService.updateFhirRecords([resource], decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.CarePlan>.self)
@@ -88,9 +88,9 @@ extension FhirStu3ServiceTests {
                 XCTAssertEqual(result.success.first?.id, record.id)
                 XCTAssertNotEqual(result.success.first?.fhirResource, resource)
                 XCTAssertEqual(result.success.first?.fhirResource, futureResource)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -102,7 +102,7 @@ extension FhirStu3ServiceTests {
         let resourceId = UUID().uuidString
 
         keychainService[.userId] = userId
-        recordService.deleteRecordResult = Promise.resolve()
+        recordService.deleteRecordResult = Just(()).asyncFuture
 
         let asyncExpectation = expectation(description: "should return success")
         fhirService.deleteFhirRecords(withIds: [resourceId])
@@ -110,9 +110,9 @@ extension FhirStu3ServiceTests {
                 XCTAssertEqual(self.recordService.deleteRecordCalledWith?.0, resourceId)
                 XCTAssertEqual(self.recordService.deleteRecordCalledWith?.1, userId)
                 XCTAssertEqual(result.success, [resourceId])
-            }.onError { error in
+            } onError: { error in
                 XCTAssertNil(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 

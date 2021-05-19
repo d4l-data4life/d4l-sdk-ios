@@ -166,8 +166,8 @@ extension Data4LifeClientUserTests {
         let tag = "de.gesundheitscloud.keypair.present.login"
         let keypair = KeyFactory.createKeyPair(tag: tag)
 
-        let err = Data4LifeSDKError.notLoggedIn
-        oAuthService.presentLoginResult = Async.reject(err)
+        let expectedError = Data4LifeSDKError.notLoggedIn
+        oAuthService.presentLoginResult = Fail(error: expectedError).asyncFuture
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should fail login")
@@ -177,7 +177,7 @@ extension Data4LifeClientUserTests {
             XCTAssertNil(viewController.presentedViewController)
             XCTAssertNotNil(window.rootViewController)
             XCTAssertNotNil(result.error)
-            XCTAssertEqual(err, result.error as? Data4LifeSDKError)
+            XCTAssertEqual(expectedError, result.error as? Data4LifeSDKError)
             XCTAssertNotNil(try? KeyPair.destroy(tag: tag))
         }
 
@@ -243,7 +243,7 @@ extension Data4LifeClientUserTests {
 
         oAuthService.presentLoginResult = Just(()).asyncFuture
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Async.reject(expectedError)
+        userService.fetchUserInfoResult = Fail(error: expectedError).asyncFuture
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true) { result in
@@ -327,7 +327,7 @@ extension Data4LifeClientUserTests {
         let count = 3
 
         keychainService[.userId] = userId
-        fhirService.countRecordsResult = Just(count)
+        fhirService.countRecordsResult = Just(count).asyncFuture
 
         let asyncExpectation = expectation(description: "should return count of all resources")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { result in
@@ -345,7 +345,7 @@ extension Data4LifeClientUserTests {
         let queue = DispatchQueue.global(qos: .background)
 
         keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Just(count)
+        fhirService.countRecordsResult = Just(count).asyncFuture
 
         let asyncExpectation = expectation(description: "should return response with count on background thread")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
@@ -363,7 +363,7 @@ extension Data4LifeClientUserTests {
         let queue = DispatchQueue.main
 
         keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Just(count)
+        fhirService.countRecordsResult = Just(count).asyncFuture
 
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in

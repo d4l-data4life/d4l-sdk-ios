@@ -60,8 +60,8 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let expectedDownloadType: DownloadType = .full
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Promise.resolve(record)
-        attachmentService.fetchAttachmentsResult = Promise.resolve([attachment])
+        recordService.fetchRecordResult = Just(record).asyncFuture
+        attachmentService.fetchAttachmentsResult = Just([attachment]).asyncFuture
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
@@ -86,9 +86,9 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.2, expectedDownloadType)
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.3, record.attachmentKey)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -109,8 +109,8 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         let expectedDownloadType: DownloadType = .full
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Promise.resolve(record)
-        attachmentService.fetchAttachmentsResult = Promise.resolve([attachment])
+        recordService.fetchRecordResult = Just(record).asyncFuture
+        attachmentService.fetchAttachmentsResult = Just([attachment]).asyncFuture
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
@@ -135,9 +135,9 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1, [attachmentId])
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.2, expectedDownloadType)
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.3, record.attachmentKey)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -156,7 +156,7 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         documentReference.id = record.id
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Promise.resolve(record)
+        recordService.fetchRecordResult = Just(record).asyncFuture
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
@@ -167,9 +167,9 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                                        parentProgress: progress)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.couldNotFindAttachment)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
         waitForExpectations(timeout: 5)
@@ -195,8 +195,8 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         documentReference.id = record.id
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Promise.resolve(record)
-        attachmentService.fetchAttachmentsResult = Promise.resolve([secondAttachment])
+        recordService.fetchRecordResult = Just(record).asyncFuture
+        attachmentService.fetchAttachmentsResult = Just([secondAttachment]).asyncFuture
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
@@ -207,9 +207,9 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                                        parentProgress: progress)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.couldNotFindAttachment)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -236,10 +236,10 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
         documentReference.id = record.id
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Promise.resolve(record)
+        recordService.fetchRecordResult = Just(record).asyncFuture
 
         let urlError = URLError.init(.cancelled)
-        attachmentService.fetchAttachmentsResult = Promise.reject(urlError)
+        attachmentService.fetchAttachmentsResult = Fail(error: urlError).asyncFuture
 
         let asyncExpectation = expectation(description: "Should throw error cancelled download")
 
@@ -251,9 +251,9 @@ class FhirStu3ServiceAttachmentOperationsTests: XCTestCase {
                                        parentProgress: progress)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.downloadActionWasCancelled)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 

@@ -36,10 +36,10 @@ extension RecordServiceTests {
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData)
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
 
         // encrypted tags
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags))
+        taggingService.tagResourceResult = TagGroup(tags: record.tags)
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
@@ -55,7 +55,7 @@ extension RecordServiceTests {
         stub("POST", "/users/\(userId)/records", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should create record")
-        let createdRecord: Async<DecryptedAppDataRecord> = recordService.createRecord(forResource: resource, userId: userId)
+        let createdRecord: SDKFuture<DecryptedAppDataRecord> = recordService.createRecord(forResource: resource, userId: userId)
         createdRecord.then { result in
             defer { asyncExpectation.fulfill() }
 
@@ -84,13 +84,13 @@ extension RecordServiceTests {
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
-        commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData)
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
 
         // encrypted tags
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags))
+        taggingService.tagResourceResult = TagGroup(tags: record.tags)
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
@@ -145,10 +145,10 @@ extension RecordServiceTests {
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData)
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
 
         // encrypted tags
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags))
+        taggingService.tagResourceResult = TagGroup(tags: record.tags)
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.generateGCKeyResult = record.dataKey
@@ -171,7 +171,7 @@ extension RecordServiceTests {
         stub("PUT", "/users/\(userId)/records/\(record.id)", with: encryptedRecord.data)
 
         let asyncExpectation = expectation(description: "should update record")
-        let updatedRecord: Async<DecryptedAppDataRecord> = recordService.updateRecord(forResource: newData,
+        let updatedRecord: SDKFuture<DecryptedAppDataRecord> = recordService.updateRecord(forResource: newData,
                                                                                                userId: userId,
                                                                                                recordId: record.id,
                                                                                                attachmentKey: record.attachmentKey)
@@ -204,16 +204,16 @@ extension RecordServiceTests {
         var encryptedRecord = encryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags, annotations: record.annotations))
+        taggingService.tagTypeResult = TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations)
+        taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         // Common key
-        commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData)
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
 
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
@@ -227,7 +227,7 @@ extension RecordServiceTests {
         stub("GET", "/users/\(userId)/records", with: [encryptedRecord.json])
 
         let asyncExpectation = expectation(description: "should return a list of records")
-        let searchRecords: Async<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
+        let searchRecords: SDKFuture<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
                                                                                          from: startDate,
                                                                                          to: endDate,
                                                                                          pageSize: 10,
@@ -251,16 +251,16 @@ extension RecordServiceTests {
         var encryptedRecord = encryptedRecordFactory.create(for: record, resource: appData, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations))
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags))
+        taggingService.tagTypeResult = TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations)
+        taggingService.tagResourceResult = TagGroup(tags: record.tags)
         cryptoService.encryptValuesResult = encryptedRecord.encryptedTags
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         // Common key
-        commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData)
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
 
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
@@ -274,7 +274,7 @@ extension RecordServiceTests {
         stub("GET", "/users/\(userId)/records", with: [encryptedRecord.json])
 
         let asyncExpectation = expectation(description: "should return a list of records")
-        let searchRecords: Async<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
+        let searchRecords: SDKFuture<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
                                                                                          from: startDate,
                                                                                          to: endDate,
                                                                                          pageSize: 10,
@@ -294,7 +294,7 @@ extension RecordServiceTests {
         let endDate = Date()
         stub("GET", "/users/\(userId)/records", with: [])
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: [:]))
+        taggingService.tagTypeResult = TagGroup(tags: [:])
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
 
@@ -320,7 +320,7 @@ extension RecordServiceTests {
 
         stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-total-count" : "\(recordCount)"], code: 200)
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: [:], annotations: annotations))
+        taggingService.tagTypeResult = TagGroup(tags: [:], annotations: annotations)
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
 
@@ -341,7 +341,7 @@ extension RecordServiceTests {
 
         stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-total-count" : "\(recordCount)"], code: 200)
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: [:], annotations: annotations))
+        taggingService.tagTypeResult = TagGroup(tags: [:], annotations: annotations)
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
 
@@ -361,7 +361,7 @@ extension RecordServiceTests {
 
         stub("HEAD", "/users/\(userId)/records", with: Data(), headers: ["x-count" : "\(0)"], code: 200)
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: [:]))
+        taggingService.tagTypeResult = TagGroup(tags: [:])
         cryptoService.encryptValuesResult = []
         cryptoService.decryptValuesResult = []
 
@@ -369,9 +369,9 @@ extension RecordServiceTests {
         recordService.countRecords(userId: userId, resourceType: Data.self)
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -381,7 +381,7 @@ extension RecordServiceTests {
     func testFailBuildingAppDataSearchParamsMissingTek() {
         let userId = UUID().uuidString
 
-        taggingService.tagTypeResult = Just(TagGroup(tags: [:], annotations: []))
+        taggingService.tagTypeResult = TagGroup(tags: [:], annotations: [])
         cryptoService.tagEncryptionKey = nil
         builder.searchParametersError = Data4LifeSDKError.missingTagKey
 
@@ -396,9 +396,9 @@ extension RecordServiceTests {
                                     decryptedRecordType: DecryptedAppDataRecord.self)
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -410,7 +410,7 @@ extension RecordServiceTests {
         let document = FhirFactory.createAppDataResourceData()
         let record = DecryptedRecordFactory.create(document)
 
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags, annotations: record.annotations))
+        taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.tagEncryptionKey = nil
         builder.uploadParametersError = Data4LifeSDKError.missingTagKey
@@ -420,12 +420,12 @@ extension RecordServiceTests {
         let expectedError = Data4LifeSDKError.missingTagKey
         let asyncExpectation = expectation(description: "should fail loading tek")
 
-        let createdRecord: Async<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
+        let createdRecord: SDKFuture<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -441,17 +441,17 @@ extension RecordServiceTests {
         let expectedError = Data4LifeSDKError.missingCommonKey
         let asyncExpectation = expectation(description: "should fail loading common key")
 
-        taggingService.tagResourceResult = Just(TagGroup(tags: record.tags))
+        taggingService.tagResourceResult = TagGroup(tags: record.tags)
         userService.fetchUserInfoResult = Just(()).asyncFuture
         cryptoService.generateGCKeyResult = record.dataKey
 
         commonKeyService.currentKey = nil
-        let createdRecord: Async<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
+        let createdRecord: SDKFuture<DecryptedAppDataRecord> = recordService.createRecord(forResource: document, userId: userId)
         createdRecord.then { _ in
             XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -467,19 +467,19 @@ extension RecordServiceTests {
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
-        commonKeyService.fetchKeyResult = Promise.resolve(commonKey)
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
 
         // Validator
-        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should return a record")
         recordService.fetchRecord(recordId: record.id, userId: userId, decryptedRecordType: type(of: record))
             .then { _ in
                 XCTFail("Should return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
