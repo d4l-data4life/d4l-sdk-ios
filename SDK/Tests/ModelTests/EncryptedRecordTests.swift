@@ -43,10 +43,12 @@ class EncryptedRecordTests: XCTestCase {
 
         let expectedError = Data4LifeSDKError.missingTagKey
 
-        _ = try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
+        XCTAssertThrowsError(try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
                                              cryptoService: cryptoService,
-                                             commonKeyService: commonKeyService)
-        XCTAssertThrowsError(expectedError)
+                                             commonKeyService: commonKeyService),
+                             "should throw error", { error in
+                                XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+                             })
     }
 
     func testConvertEncryptedRecordFailMissingRecordCommonKey() throws {

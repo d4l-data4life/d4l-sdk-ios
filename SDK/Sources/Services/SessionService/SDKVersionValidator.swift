@@ -45,11 +45,13 @@ class SDKVersionValidator: SDKVersionValidatorType {
     }
 
     func fetchCurrentVersionStatus() -> SDKFuture<VersionStatus> {
-            return combineAsync {
+        return combineAsync {
+
                 let currentVersion = self.infoService.fetchSDKVersion()
                 let versionConfiguration = try combineAwait(self.fetchVersionConfigurationLocally())
                 return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
-            }
+
+        }
     }
 
     func fetchVersionConfigurationRemotely() -> SDKFuture<Void> {
@@ -60,7 +62,7 @@ class SDKVersionValidator: SDKVersionValidatorType {
 
             let versionConfiguration: SDKVersionConfiguration = try combineAwait(
                 sessionService.request(route:
-                    Router.versionInfo(version: ValidatorVersion.v1.rawValue))
+                                        Router.versionInfo(version: ValidatorVersion.v1.rawValue))
                     .responseDecodable())
             let versionConfigurationData = try JSONEncoder().encode(versionConfiguration)
             try? self.sdkFileManager.saveVersionConfiguration(data: versionConfigurationData)
@@ -73,8 +75,13 @@ class SDKVersionValidator: SDKVersionValidatorType {
 
     private func fetchVersionConfigurationLocally() -> SDKFuture<SDKVersionConfiguration?> {
         return combineAsync {
-            let fileData = try self.sdkFileManager.readVersionConfiguration()
-            return try JSONDecoder().decode(SDKVersionConfiguration.self, from: fileData)
+            do {
+                let fileData = try self.sdkFileManager.readVersionConfiguration()
+                let configuration = try JSONDecoder().decode(SDKVersionConfiguration.self, from: fileData)
+                return configuration
+            } catch {
+                return nil
+            }
         }
     }
 

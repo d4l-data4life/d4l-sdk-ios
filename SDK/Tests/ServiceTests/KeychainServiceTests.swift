@@ -127,14 +127,18 @@ class KeychainServiceTests: XCTestCase {
 
     func testKeychainKeyNotFound() throws {
         let expectedError = Data4LifeSDKError.keychainItemNotFound("access_token")
-        _ = try keychain.get(.accessToken)
-        XCTAssertThrowsError(expectedError)
+        XCTAssertThrowsError(try keychain.get(.accessToken),
+        "should throw error", { error in
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+        })
     }
 
     func testKeychainKeyCustomError() throws {
         let expectedError = Data4LifeSDKError.notLoggedIn
-        _ = try keychain.get(.userId)
-        XCTAssertThrowsError(expectedError)
+        XCTAssertThrowsError(try keychain.get(.userId),
+        "should throw error", { error in
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+        })
     }
 
     func testGroupKeychain() {

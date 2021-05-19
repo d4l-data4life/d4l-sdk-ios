@@ -38,7 +38,7 @@ private let asyncQueue: DispatchQueue = DispatchQueue(label: "combine.async.queu
     }
 
     if let error = error {
-        throw error
+        throw error 
     } else {
         return result
     }

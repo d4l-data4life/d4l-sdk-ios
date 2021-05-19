@@ -86,8 +86,7 @@ class UserServiceTests: XCTestCase {
 
         stub("GET", "/userinfo", with: data)
         let asyncExpectation = expectation(description: "should return user info")
-        userService.fetchUserInfo()
-            .then {
+        userService.fetchUserInfo().then ({
                 defer { asyncExpectation.fulfill() }
                 XCTAssertNotNil(self.cryptoService.tagEncryptionKey)
                 XCTAssertEqual(self.commonKeyService.storeKeyCalledWith?.0, commonKey)
@@ -95,7 +94,7 @@ class UserServiceTests: XCTestCase {
                 XCTAssertTrue(self.commonKeyService.storeKeyCalledWith?.2 ?? false)
 
                 XCTAssertEqual(self.keychainService[.userId], userId)
-            }
+        })
 
         waitForExpectations(timeout: 5)
     }

@@ -56,7 +56,6 @@
 		36087E552652D8C10098E8BF /* Combine+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E542652D8C10098E8BF /* Combine+Test.swift */; };
 		360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */; };
 		360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5232636F8BF00D8F8E9 /* Alamofire */; };
-		360EC5262636F8BF00D8F8E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5252636F8BF00D8F8E9 /* Then */; };
 		360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */; };
 		36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */; };
 		3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */; };
@@ -711,7 +710,6 @@
 				36087E4D264C27AE0098E8BF /* Data4LifeFHIR in Frameworks */,
 				36087E4F264C27AE0098E8BF /* ModelsR4 in Frameworks */,
 				36087E48264C27250098E8BF /* Data4LifeSDKUtils in Frameworks */,
-				360EC5262636F8BF00D8F8E9 /* Then in Frameworks */,
 				36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */,
 				36DD22A3263C7C3300679F74 /* AppAuth in Frameworks */,
 				360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */,
@@ -1856,7 +1854,6 @@
 			name = SDKSPMDependencies;
 			packageProductDependencies = (
 				360EC5232636F8BF00D8F8E9 /* Alamofire */,
-				360EC5252636F8BF00D8F8E9 /* Then */,
 				36DD22A2263C7C3300679F74 /* AppAuth */,
 				36087E47264C27250098E8BF /* Data4LifeSDKUtils */,
 				36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */,
@@ -2025,7 +2022,6 @@
 			mainGroup = 8374639C1E854E7500AB500F;
 			packageReferences = (
 				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
 				36DD22A1263C7C3300679F74 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				36087E46264C27250098E8BF /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
 				36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
@@ -3097,14 +3093,6 @@
 				version = 5.4.1;
 			};
 		};
-		36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/freshOS/Then";
-			requirement = {
-				kind = exactVersion;
-				version = 5.1.2;
-			};
-		};
 		36DD22A1263C7C3300679F74 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
@@ -3140,11 +3128,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		360EC5252636F8BF00D8F8E9 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
 		};
 		36DD22A2263C7C3300679F74 /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;
