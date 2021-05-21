@@ -63,7 +63,7 @@ final class LoginViewController: UIViewController {
             .presentLoginScreen(on: self, scopes: scopes)
             .complete(queue: DispatchQueue.main) { [weak self] result in
                 switch result {
-                case .success():
+                case .success:
                     self?.didFinishLogin.send()
                     self?.didFinishLogin.send(completion: .finished)
                 case .failure(let error):
