@@ -30,11 +30,11 @@ extension FutureExecutorTests {
     func testAsyncFinishesOnCreation() {
         var originalCounter = 0
         XCTAssertEqual(originalCounter, 0)
-        let expectation = expectation(description: "future runs on creation")
+        let runningExpectation = expectation(description: "future runs on creation")
         combineAsync { () -> Int in
             originalCounter += 1
             XCTAssertEqual(originalCounter, 1)
-            expectation.fulfill()
+            runningExpectation.fulfill()
             return originalCounter
         }
 
@@ -125,7 +125,7 @@ extension FutureExecutorTests {
 
     func testCompleteCancellation() {
 
-        let expectation = expectation(description: "Counter was only changed from first part of future")
+        let counterExpectation = expectation(description: "Counter was only changed from first part of future")
         let queue = DispatchQueue(label: "test")
         var originalCounter = 0
 
@@ -148,7 +148,7 @@ extension FutureExecutorTests {
         cancelTask(cancellable)
         queue.asyncAfter(deadline: DispatchTime.now().advanced(by: DispatchTimeInterval.milliseconds(100))) {
             XCTAssertEqual(originalCounter, 1)
-            expectation.fulfill()
+            counterExpectation.fulfill()
         }
         waitForExpectations(timeout: 5)
     }
