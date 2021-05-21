@@ -76,7 +76,7 @@ class Data4LifeClientUserServiceModuleTests: XCTestCase {
         appDataService.cryptoService = cryptoService
 
         Router.baseUrl = "http://example.com"
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     override func tearDown() {
@@ -102,7 +102,7 @@ extension Data4LifeClientUserServiceModuleTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Just(()).asyncFuture
+        oAuthService.presentLoginResult = Just(()).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should perform successful login")
@@ -135,7 +135,7 @@ extension Data4LifeClientUserServiceModuleTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Just(()).asyncFuture
+        oAuthService.presentLoginResult = Just(()).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should perform successful login")
@@ -164,7 +164,7 @@ extension Data4LifeClientUserServiceModuleTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
 
         let err = Data4LifeSDKError.notLoggedIn
-        oAuthService.presentLoginResult = Fail(error: err).asyncFuture
+        oAuthService.presentLoginResult = Fail(error: err).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should fail login")
@@ -239,7 +239,7 @@ extension Data4LifeClientUserServiceModuleTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Just(()).asyncFuture
+        oAuthService.presentLoginResult = Just(()).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should not perform successful login")

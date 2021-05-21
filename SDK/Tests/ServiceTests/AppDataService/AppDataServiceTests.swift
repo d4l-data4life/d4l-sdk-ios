@@ -58,7 +58,7 @@ final class AppDataServiceTests: XCTestCase {
         let to = Date()
 
         keychainService[.userId] = userId
-        recordService.searchRecordsResult = Just([record]).asyncFuture
+        recordService.searchRecordsResult = Just([record]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return resources")
         appDataService.fetchAppDataRecords(from: from, to: to, pageSize: pageSize, offset: offset)
@@ -83,7 +83,7 @@ final class AppDataServiceTests: XCTestCase {
         let count = 1
 
         keychainService[.userId] = userId
-        recordService.countRecordsResult = Just(count).asyncFuture
+        recordService.countRecordsResult = Just(count).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return count of resources")
         appDataService.countAppDataRecords()

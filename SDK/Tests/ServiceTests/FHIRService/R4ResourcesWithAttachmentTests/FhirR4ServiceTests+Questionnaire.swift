@@ -59,7 +59,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         let questionnaire = FhirFactory.createR4Questionnaire()
         questionnaire.id = resourceId.asFHIRStringPrimitive()
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
-        recordService.createRecordResult = Just(originalRecord).asyncFuture
+        recordService.createRecordResult = Just(originalRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -133,9 +133,9 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
                                                                    (uploadedAttachment1, []),
                                                                    (uploadedAttachment2, []),
                                                                    (uploadedAttachment3, []),
-                                                                   (unmatchableAttachment, [])]).asyncFuture
+                                                                   (unmatchableAttachment, [])]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.createRecordResult = Just(expectedRecord).asyncFuture
+        recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -177,7 +177,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         questionnaire.item? = [FhirFactory.createR4QuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
-        recordService.createRecordResult = Just(originalRecord).asyncFuture
+        recordService.createRecordResult = Just(originalRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -208,7 +208,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         questionnaire.item? = [FhirFactory.createR4QuestionnaireItem(initial: attachment)]
         let originalRecord = DecryptedRecordFactory.create(questionnaire)
 
-        recordService.createRecordResult = Just(originalRecord).asyncFuture
+        recordService.createRecordResult = Just(originalRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -288,9 +288,9 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
                                                                    (uploadedAttachment1, expected1AdditionalId),
                                                                    (uploadedAttachment2, expected2AdditionalId),
                                                                    (uploadedAttachment3, expected3AdditionalId),
-                                                                   (unmatchableAttachment, [])]).asyncFuture
+                                                                   (unmatchableAttachment, [])]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.createRecordResult = Just(expectedRecord).asyncFuture
+        recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -334,8 +334,8 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         let expectedQuestionnaire = updatedQuestionnaire.copy() as! ModelsR4.Questionnaire // swiftlint:disable:this force_cast
         let expectedRecord = originalRecord.copy(with: expectedQuestionnaire)
 
-        recordService.fetchRecordResult = Just(originalRecord).asyncFuture
-        recordService.updateRecordResult = Just(expectedRecord).asyncFuture
+        recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
+        recordService.updateRecordResult = Just(expectedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedQuestionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -396,10 +396,10 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(uploadedNewAttachmentId2)
         let uploadedAttachment3 = newAttachment2.copyWithId(uploadedNewAttachmentId3)
 
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture
-        recordService.fetchRecordResult = Just(originalRecord).asyncFuture
+        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture()
+        recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.updateRecordResult = Just(expectedRecord).asyncFuture
+        recordService.updateRecordResult = Just(expectedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedQuestionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -441,7 +441,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
 
         keychainService[.userId] = userId
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.fetchRecordResult = Just(updatedRecord).asyncFuture
+        recordService.fetchRecordResult = Just(updatedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)
@@ -473,7 +473,7 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
 
         keychainService[.userId] = userId
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
-        recordService.fetchRecordResult = Just(updatedRecord).asyncFuture
+        recordService.fetchRecordResult = Just(updatedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.Questionnaire>.self)

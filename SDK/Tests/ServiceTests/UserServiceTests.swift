@@ -52,7 +52,7 @@ class UserServiceTests: XCTestCase {
         }
 
         Router.baseUrl = "http://example.com"
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     func testFetchUserInfo() {
@@ -142,7 +142,7 @@ class UserServiceTests: XCTestCase {
     }
 
     func testFetchUserInfoFailsUnsupportedVersion() {
-        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should fail fetching user info")

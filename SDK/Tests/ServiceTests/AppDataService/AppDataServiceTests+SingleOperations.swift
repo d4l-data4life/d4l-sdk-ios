@@ -18,14 +18,14 @@ import XCTest
 import Combine
 import Data4LifeFHIR
 
-    enum JustError: Swift.Error {
-        case dummy
-    }
+enum JustError: Swift.Error {
+    case dummy
+}
 
 extension Just {
-    var asyncFuture: Future<Output, Error> {
+    func asyncFuture() -> Future<Output, Error> {
         mapError { _ in JustError.dummy }
-        .asyncFuture
+        .asyncFuture()
     }
 }
 
@@ -36,7 +36,7 @@ extension AppDataServiceTests {
         let record = DecryptedRecordFactory.create(appData)
 
         keychainService[.userId] = userId
-        recordService.createRecordResult = Just(record).asyncFuture
+        recordService.createRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
         appDataService.createAppDataRecord(appData).complete({ result in
@@ -61,7 +61,7 @@ extension AppDataServiceTests {
         let record = DecryptedRecordFactory.create(appData)
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
         appDataService.fetchAppDataRecord(withId: resourceId)
@@ -92,7 +92,7 @@ extension AppDataServiceTests {
         let updatedRecord = record.copy(with: updatedResource)
 
         keychainService[.userId] = userId
-        recordService.updateRecordResult = Just(updatedRecord).asyncFuture
+        recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should update language property")
         appDataService.updateAppDataRecord(updatedResource, recordId: record.id)
@@ -113,7 +113,7 @@ extension AppDataServiceTests {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
 
-        recordService.deleteRecordResult = Just(()).asyncFuture
+        recordService.deleteRecordResult = Just(()).asyncFuture()
         keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should return success")

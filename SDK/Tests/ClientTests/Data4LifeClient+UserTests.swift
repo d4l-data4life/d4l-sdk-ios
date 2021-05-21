@@ -104,9 +104,9 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Just(()).asyncFuture
+        oAuthService.presentLoginResult = Just(()).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true) { result in
@@ -136,9 +136,9 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Just(()).asyncFuture
+        oAuthService.presentLoginResult = Just(()).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true, scopes: scopes) { result in
@@ -167,7 +167,7 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
 
         let expectedError = Data4LifeSDKError.notLoggedIn
-        oAuthService.presentLoginResult = Fail(error: expectedError).asyncFuture
+        oAuthService.presentLoginResult = Fail(error: expectedError).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
 
         let asyncExpectation = expectation(description: "should fail login")
@@ -241,9 +241,9 @@ extension Data4LifeClientUserTests {
         let keypair = KeyFactory.createKeyPair(tag: tag)
         let encodedPublicKey = try! JSONEncoder().encode(keypair).base64EncodedString()
 
-        oAuthService.presentLoginResult = Just(()).asyncFuture
+        oAuthService.presentLoginResult = Just(()).asyncFuture()
         cryptoService.fetchOrGenerateKeyPairResult = keypair
-        userService.fetchUserInfoResult = Fail(error: expectedError).asyncFuture
+        userService.fetchUserInfoResult = Fail(error: expectedError).asyncFuture()
 
         let asyncExpectation = expectation(description: "should perform successful login")
         client.presentLogin(on: viewController, animated: true) { result in
@@ -264,7 +264,7 @@ extension Data4LifeClientUserTests {
 
     func testLogout() {
         XCTAssertFalse(oAuthService.logoutCalled)
-        oAuthService.logoutResult = Just(()).asyncFuture
+        oAuthService.logoutResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "should logout")
 
@@ -284,7 +284,7 @@ extension Data4LifeClientUserTests {
     func testLoggedInTrue() {
         cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
         commonKeyService.currentKey = KeyFactory.createKey(.common)
-        oAuthService.isSessionActiveResult = Just(()).asyncFuture
+        oAuthService.isSessionActiveResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return success true")
         client.isUserLoggedIn { result  in
@@ -327,7 +327,7 @@ extension Data4LifeClientUserTests {
         let count = 3
 
         keychainService[.userId] = userId
-        fhirService.countRecordsResult = Just(count).asyncFuture
+        fhirService.countRecordsResult = Just(count).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return count of all resources")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self) { result in
@@ -345,7 +345,7 @@ extension Data4LifeClientUserTests {
         let queue = DispatchQueue.global(qos: .background)
 
         keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Just(count).asyncFuture
+        fhirService.countRecordsResult = Just(count).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return response with count on background thread")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in
@@ -363,7 +363,7 @@ extension Data4LifeClientUserTests {
         let queue = DispatchQueue.main
 
         keychainService[.userId] = UUID().uuidString
-        fhirService.countRecordsResult = Just(count).asyncFuture
+        fhirService.countRecordsResult = Just(count).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return response with count on UI thread")
         client.countFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, queue: queue) { result in

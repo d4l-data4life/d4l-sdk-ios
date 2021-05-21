@@ -31,7 +31,7 @@ class AttachmentServiceMock: AttachmentServiceType {
                           key: Key,
                           parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
         fetchAttachmentsCalledWith = (resourceWithAttachments, attachmentIds, downloadType, key, parentProgress)
-        return fetchAttachmentsResult ?? Fail(error: AttachmentServiceMockError.noResultSet).asyncFuture
+        return fetchAttachmentsResult ?? Fail(error: AttachmentServiceMockError.noResultSet).asyncFuture()
     }
 
     var uploadAttachmentsCalledWith: ([AttachmentType], Key)?
@@ -44,6 +44,6 @@ class AttachmentServiceMock: AttachmentServiceType {
             uploadAttachmentsResults = Array(results.dropFirst())
             return first
         }
-        return uploadAttachmentsResult ?? Fail(error: AttachmentServiceMockError.noResultSet).asyncFuture
+        return uploadAttachmentsResult ?? Fail(error: AttachmentServiceMockError.noResultSet).asyncFuture()
     }
 }

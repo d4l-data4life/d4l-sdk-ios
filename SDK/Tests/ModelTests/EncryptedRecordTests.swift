@@ -61,7 +61,7 @@ class EncryptedRecordTests: XCTestCase {
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
         cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
-        commonKeyService.fetchKeyResult = Fail(error: expectedError).asyncFuture
+        commonKeyService.fetchKeyResult = Fail(error: expectedError).asyncFuture()
         XCTAssertThrowsError(try DecryptedFhirStu3Record.from(encryptedRecord: encryptedRecord,
                                                               cryptoService: cryptoService,
                                                               commonKeyService: commonKeyService),
@@ -76,7 +76,7 @@ class EncryptedRecordTests: XCTestCase {
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
         var encryptedRecord = encryptedRecordFactory.create(for: record)
 
-        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture()
         cryptoService.decryptValuesResult = encryptedRecordFactory.tagsParameter(for: tagGroup)
 
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
@@ -100,7 +100,7 @@ class EncryptedRecordTests: XCTestCase {
         let expectedError = Data4LifeSDKError.couldNotReadBase64EncodedData
 
         cryptoService.tagEncryptionKey = KeyFactory.createKey()
-        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture()
 
         let decryptedDataKey = try! JSONEncoder().encode(record.dataKey)
         let tagGroup = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -144,7 +144,7 @@ class EncryptedRecordTests: XCTestCase {
         encryptedRecord.encryptedAttachmentKey = nil
         encryptedRecord.modelVersion += 1
 
-        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture
+        commonKeyService.fetchKeyResult = Just(KeyFactory.createKey()).asyncFuture()
 
         let expectedError = Data4LifeSDKError.invalidRecordModelVersionNotSupported
 

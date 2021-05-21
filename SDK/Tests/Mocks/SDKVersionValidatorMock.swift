@@ -26,14 +26,14 @@ class SDKVersionValidatorMock: SDKVersionValidatorType {
 
     var fetchCurrentVersionStatusResult: SDKFuture<VersionStatus>?
     func fetchCurrentVersionStatus() -> SDKFuture<VersionStatus> {
-        return fetchCurrentVersionStatusResult ?? Fail(error: SDKVersionValidatorMockError.noResultSet).asyncFuture
+        return fetchCurrentVersionStatusResult ?? Fail(error: SDKVersionValidatorMockError.noResultSet).asyncFuture()
     }
 
     var fetchVersionConfigOnlineCalled: Bool = false
     var fetchVersionConfigOnlineResult: SDKFuture<Void>?
     func fetchVersionConfigurationRemotely() -> SDKFuture<Void> {
         fetchVersionConfigOnlineCalled = true
-        return fetchVersionConfigOnlineResult ?? Fail(error: SDKVersionValidatorMockError.noResultSet).asyncFuture
+        return fetchVersionConfigOnlineResult ?? Fail(error: SDKVersionValidatorMockError.noResultSet).asyncFuture()
     }
 
     var setSessionServiceCalledWith: (SessionService)?

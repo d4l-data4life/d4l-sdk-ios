@@ -59,7 +59,7 @@ final class RecordServiceParameterBuilderTests: XCTestCase {
         cryptoService = try! container.resolve(as: CryptoServiceType.self)
         encryptedRecordFactory = try! container.resolve()
 
-        cryptoService.encryptValueResult = Just(encryptedRecord.data).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.data).asyncFuture()
         cryptoService.tagEncryptionKey = KeyFactory.createKey(.tag)
         let dataInput: (Data, Data) = (encryptedRecord.encryptedDataKeyData, encryptedRecord.encryptedDataKeyData)
         let bodyInput: (Data, Data) = (encryptedRecord.encryptedBodyData, encryptedRecord.encryptedBodyData)

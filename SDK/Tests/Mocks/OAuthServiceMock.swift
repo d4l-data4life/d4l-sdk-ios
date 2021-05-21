@@ -40,14 +40,14 @@ class OAuthServiceMock: OAuthServiceType {
     var isSessionActiveResult: SDKFuture<Void>?
     func isSessionActive() -> SDKFuture<Void> {
         isSessionActiveCalled = true
-        return isSessionActiveResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture
+        return isSessionActiveResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture()
     }
 
     var logoutCalled = false
     var logoutResult: SDKFuture<Void>?
     func logout() -> SDKFuture<Void> {
         logoutCalled = true
-        return logoutResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture
+        return logoutResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture()
     }
 
     var presentLoginCalled: (OAuthExternalUserAgentType, String, [String], Bool, AuthStateType.Type)?
@@ -58,7 +58,7 @@ class OAuthServiceMock: OAuthServiceType {
                       animated: Bool,
                       authStateType: AuthStateType.Type = AuthStateMock.self) -> SDKFuture<Void> {
         presentLoginCalled = (userAgent, publicKey, scopes, animated, authStateType)
-        return presentLoginResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture
+        return presentLoginResult ?? Fail(error: OAuthServiceMockError.noResultSet).asyncFuture()
     }
 
     func refreshTokens(completion: @escaping DefaultResultBlock) { }

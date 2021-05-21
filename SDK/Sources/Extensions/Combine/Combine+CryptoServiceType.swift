@@ -21,7 +21,7 @@ extension CryptoServiceType {
 
     func encrypt<T: Encodable>(value: T, key: Key) -> SDKFuture<Data> {
         return combineAsync {
-            let encodedData = try value.encodedData(with: encoder)
+            let encodedData = try value.encodedData(with: Self.encoder)
             let encryptedValue = try self.encrypt(data: encodedData, key: key)
             return encryptedValue
         }
@@ -30,7 +30,7 @@ extension CryptoServiceType {
     func decrypt<T: Decodable>(data: Data, to type: T.Type, key: Key) -> SDKFuture<T> {
         return combineAsync {
             let decryptedData = try self.decrypt(data: data, key: key)
-            let decodedData = try self.decoder.decode(type, from: decryptedData)
+            let decodedData = try Self.decoder.decode(type, from: decryptedData)
             return decodedData
         }
     }
@@ -46,17 +46,5 @@ extension CryptoServiceType {
         return combineAsync {
             try self.deleteKeyPair()
         }
-    }
-
-    var decoder: JSONDecoder {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(DateFormatter.with(format: .iso8601TimeZone))
-        return decoder
-    }
-
-    var encoder: JSONEncoder {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .formatted(DateFormatter.with(format: .iso8601TimeZone))
-        return encoder
     }
 }

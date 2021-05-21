@@ -29,14 +29,14 @@ extension RecordServiceTests {
         var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         // Common key
         commonKeyService.currentId = commonKeyId
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags)
@@ -84,10 +84,10 @@ extension RecordServiceTests {
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags)
@@ -138,14 +138,14 @@ extension RecordServiceTests {
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         // Common key
         commonKeyService.currentId = commonKeyId
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags)
@@ -210,10 +210,10 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
@@ -257,10 +257,10 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
@@ -414,7 +414,7 @@ extension RecordServiceTests {
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.tagEncryptionKey = nil
         builder.uploadParametersError = Data4LifeSDKError.missingTagKey
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
         commonKeyService.currentKey = record.dataKey
 
         let expectedError = Data4LifeSDKError.missingTagKey
@@ -442,7 +442,7 @@ extension RecordServiceTests {
         let asyncExpectation = expectation(description: "should fail loading common key")
 
         taggingService.tagResourceResult = TagGroup(tags: record.tags)
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
         cryptoService.generateGCKeyResult = record.dataKey
 
         commonKeyService.currentKey = nil
@@ -467,10 +467,10 @@ extension RecordServiceTests {
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // Validator
-        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should return a record")

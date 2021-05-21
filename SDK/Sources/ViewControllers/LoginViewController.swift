@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import UIKit
+import Combine
 
 final class LoginViewController: UIViewController {
 
@@ -22,7 +23,11 @@ final class LoginViewController: UIViewController {
     private var foregroundObserver: NSObjectProtocol?
     private let notificationCenter: NotificationCenter = NotificationCenter.default
 
-    private var didFinishLogin: DefaultResultBlock?
+    private let didFinishLogin = PassthroughSubject<Void, Error>()
+
+    var loginPublisher: AnyPublisher<Void,Error> {
+        didFinishLogin.eraseToAnyPublisher()
+    }
 
     private lazy var loadingIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .medium)
@@ -53,14 +58,18 @@ final class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
 
-    func subscribeToFinishLogin(_ didFinishLogin: @escaping DefaultResultBlock) {
-        self.didFinishLogin = didFinishLogin
-    }
 
     func presentLoginScreen() {
-        viewModel.presentLoginScreen(on: self, scopes: scopes)
+        viewModel
+            .presentLoginScreen(on: self, scopes: scopes)
             .complete(queue: DispatchQueue.main) { [weak self] result in
-                self?.didFinishLogin?(result)
+                switch result {
+                case .success():
+                    self?.didFinishLogin.send()
+                    self?.didFinishLogin.send(completion: .finished)
+                case .failure(let error):
+                    self?.didFinishLogin.send(completion: .failure(error))
+                }
             } finally: {
                 DispatchQueue.main.async { [weak self] in
                     self?.loadingIndicator.stopAnimating()

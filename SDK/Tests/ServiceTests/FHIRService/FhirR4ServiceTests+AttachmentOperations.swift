@@ -61,8 +61,8 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
         let expectedDownloadType: DownloadType = .full
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
-        attachmentService.fetchAttachmentsResult = Just([attachment]).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
+        attachmentService.fetchAttachmentsResult = Just([attachment]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.downloadAttachment(of: ModelsR4.Attachment.self,
@@ -110,8 +110,8 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
         let expectedDownloadType: DownloadType = .full
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
-        attachmentService.fetchAttachmentsResult = Just([attachment]).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
+        attachmentService.fetchAttachmentsResult = Just([attachment]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.downloadAttachment(of: ModelsR4.Attachment.self,
@@ -157,7 +157,7 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
         documentReference.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
@@ -196,8 +196,8 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
         documentReference.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
-        attachmentService.fetchAttachmentsResult = Just([secondAttachment]).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
+        attachmentService.fetchAttachmentsResult = Just([secondAttachment]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
         fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
@@ -237,10 +237,10 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
         documentReference.id = record.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
 
         let urlError = URLError.init(.cancelled)
-        attachmentService.fetchAttachmentsResult = Fail(error: urlError).asyncFuture
+        attachmentService.fetchAttachmentsResult = Fail(error: urlError).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should throw error cancelled download")
 

@@ -48,7 +48,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentKey = KeyFactory.createKey()
         let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
-        documentService.fetchDocumentResult = Just(payload).asyncFuture
+        documentService.fetchDocumentResult = Just(payload).asyncFuture()
 
         let asyncExpectation = expectation(description: "should fetch attachment")
         attachmentService.fetchAttachments(for: document,
@@ -82,7 +82,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentKey = KeyFactory.createKey()
         let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
-        documentService.fetchDocumentResult = Just(payload).asyncFuture
+        documentService.fetchDocumentResult = Just(payload).asyncFuture()
 
         let asyncExpectation = expectation(description: "should fetch attachment")
         attachmentService.fetchAttachments(for: resource,
@@ -111,7 +111,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
-        documentService.createDocumentResult = Just(payload).asyncFuture
+        documentService.createDocumentResult = Just(payload).asyncFuture()
 
         let asyncExpectation = expectation(description: "should upload data and return document")
         attachmentService.uploadAttachments([attachment],
@@ -139,7 +139,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let expectedThumbnailsIds = [UUID().uuidString, UUID().uuidString]
         let thumbnailPayloads = expectedThumbnailsIds.map { Document(id: $0, data: imageData) }
-        documentService.createDocumentResults = ([payload] + thumbnailPayloads).map { Just($0).asyncFuture }
+        documentService.createDocumentResults = ([payload] + thumbnailPayloads).map { Just($0).asyncFuture() }
 
         imageResizer.isResizableResult = true
         let selectedSize = CGSize(width: 220, height: 200)
@@ -170,7 +170,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentId = UUID().uuidString
         let payload = Document(id: attachmentId, data: attachment.attachmentData!)
 
-        documentService.createDocumentResult = Just(payload).asyncFuture
+        documentService.createDocumentResult = Just(payload).asyncFuture()
         imageResizer.isResizableResult = true
 
         let asyncExpectation = expectation(description: "should upload data without additional id and return document")
@@ -202,7 +202,7 @@ class AttachmentServiceTests: XCTestCase {
         let expectedThumbnailsIds = [attachmentId, attachmentId]
         let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
 
-        documentService.createDocumentResult = Just(payload).asyncFuture
+        documentService.createDocumentResult = Just(payload).asyncFuture()
         imageResizer.isResizableResult = true
         imageResizer.resizeResults = [(nil, expectedError), (nil, expectedError)]
 
@@ -240,7 +240,7 @@ class AttachmentServiceTests: XCTestCase {
         let thumbnailPayload = Document(id: mediumThumbnailId, data: imageData)
         let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
 
-        documentService.createDocumentResults = [payload, thumbnailPayload].map { Just($0).asyncFuture }
+        documentService.createDocumentResults = [payload, thumbnailPayload].map { Just($0).asyncFuture() }
 
         imageResizer.isResizableResult = true
         let selectedSize = CGSize(width: 220, height: 200)
@@ -325,7 +325,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentKey = KeyFactory.createKey()
         let paylaod = Document(data: attachment.attachmentData!)
 
-        documentService.fetchDocumentResult = Just(paylaod).asyncFuture
+        documentService.fetchDocumentResult = Just(paylaod).asyncFuture()
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadType
         let asyncExpectation = expectation(description: "should throw error invalid payload")
@@ -359,7 +359,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentKey = KeyFactory.createKey()
         let payload = Document(data: attachment.attachmentData!)
 
-        documentService.fetchDocumentResult = Just(payload).asyncFuture
+        documentService.fetchDocumentResult = Just(payload).asyncFuture()
 
         let asyncExpectation = expectation(description: "shoould return an empty array of attachments")
         attachmentService.fetchAttachments(for: document,
@@ -428,7 +428,7 @@ class AttachmentServiceTests: XCTestCase {
         let thumbnailPayloads2 = expectedThumbnailsIds2.map { Document(id: $0, data: imageData) }
 
         documentService.createDocumentResults = ([payload1] + thumbnailPayloads1 + [payload2] + thumbnailPayloads2)
-            .map { Just($0).asyncFuture }
+            .map { Just($0).asyncFuture() }
 
         imageResizer.isResizableResult = true
         let selectedSize = CGSize(width: 220, height: 200)
@@ -469,7 +469,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachmentKey = KeyFactory.createKey()
         let paylaod = Document(data: attachment.attachmentData!)
 
-        documentService.fetchDocumentResult = Just(paylaod).asyncFuture
+        documentService.fetchDocumentResult = Just(paylaod).asyncFuture()
 
         let expectedError = Data4LifeSDKError.invalidAttachmentPayloadHash
         let asyncExpectation = expectation(description: "should throw error invalid payload")

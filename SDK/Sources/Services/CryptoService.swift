@@ -18,6 +18,9 @@ import Foundation
 
 protocol CryptoServiceType {
 
+    static var decoder: JSONDecoder { get }
+    static var encoder: JSONEncoder { get }
+
     var tagEncryptionKey: Key? { get set }
     var keyPairTag: String { get }
 
@@ -44,12 +47,24 @@ final class CryptoService: CryptoServiceType {
     private var keychainService: KeychainServiceType
     private(set) var keyPairTag: String
 
+    static var decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(DateFormatter.with(format: .iso8601TimeZone))
+        return decoder
+    }()
+
+    static var encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .formatted(DateFormatter.with(format: .iso8601TimeZone))
+        return encoder
+    }()
+
     var tagEncryptionKey: Key? {
         get {
             guard
                 let tagEncryptionKeyBase64EncodedString = self.keychainService[.tagEncryptionKey],
                 let tagEncryptionKeyData = Data(base64Encoded: tagEncryptionKeyBase64EncodedString),
-                let tagEncryptionKey: Key = try? decoder.decode(Key.self, from: tagEncryptionKeyData)
+                let tagEncryptionKey: Key = try? CryptoService.decoder.decode(Key.self, from: tagEncryptionKeyData)
                 else {
                     return nil
             }
@@ -57,7 +72,7 @@ final class CryptoService: CryptoServiceType {
         }
         set {
             if let key = newValue {
-                let encodedTagKey = try? encoder.encode(key).base64EncodedString()
+                let encodedTagKey = try? CryptoService.encoder.encode(key).base64EncodedString()
                 self.keychainService[.tagEncryptionKey] = encodedTagKey
             } else {
                 self.keychainService[.tagEncryptionKey] = nil

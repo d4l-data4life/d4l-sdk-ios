@@ -180,7 +180,7 @@ class OAuthService: OAuthServiceType {
                                                                             }
                                                                         }
                                                                     })
-        }.asyncFuture
+        }.asyncFuture()
     }
 
     func saveAuthState(_ state: AuthStateType) throws {
@@ -220,7 +220,7 @@ class OAuthService: OAuthServiceType {
 
     func logout() -> SDKFuture<Void> {
         guard let encodedClientInfo = "\(clientId):\(clientSecret)".data(using: .utf8)?.base64EncodedString() else {
-            return Fail(error: Data4LifeSDKError.notLoggedIn).asyncFuture
+            return Fail(error: Data4LifeSDKError.notLoggedIn).asyncFuture()
         }
 
         return combineAsync {

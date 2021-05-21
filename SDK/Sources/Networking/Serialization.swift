@@ -16,7 +16,7 @@
 import Foundation
 @_implementationOnly import Alamofire
 
-private struct IsoDateTimeSerializer<T: Decodable>: ResponseSerializer {
+struct IsoDateTimeSerializer<T: Decodable>: ResponseSerializer {
     typealias SerializedObject = T
 
     func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?) throws -> T {
@@ -33,18 +33,5 @@ private struct IsoDateTimeSerializer<T: Decodable>: ResponseSerializer {
         } catch let error {
             throw Data4LifeSDKError.jsonSerialization(error)
         }
-    }
-}
-
-extension DataRequest {
-    @discardableResult
-    func responseDecodable<T: Decodable>(
-        queue: DispatchQueue = backgroundQueue,
-        completionHandler: @escaping (AFDataResponse<T>) -> Void)
-    -> Self {
-        let serializer = IsoDateTimeSerializer<T>()
-        return response(queue: queue,
-                        responseSerializer: serializer,
-                        completionHandler: completionHandler)
     }
 }

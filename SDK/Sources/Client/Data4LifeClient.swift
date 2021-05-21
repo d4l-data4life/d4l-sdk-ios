@@ -27,7 +27,6 @@ public class Data4LifeClient {
 
     private let container: DIContainer
     private let versionValidator: SDKVersionValidatorType
-    var storage: Set<AnyCancellable> = Set()
 
     /// Holds client configuration used for SDK setup
     static var clientConfiguration: ClientConfiguration?

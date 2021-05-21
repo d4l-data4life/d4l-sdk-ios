@@ -51,9 +51,11 @@
 		36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */; };
 		36087E4D264C27AE0098E8BF /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4C264C27AE0098E8BF /* Data4LifeFHIR */; };
 		36087E4F264C27AE0098E8BF /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4E264C27AE0098E8BF /* ModelsR4 */; };
-		36087E51264ED4360098E8BF /* Combine+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E50264ED4360098E8BF /* Combine+AsyncAwait.swift */; };
+		36087E51264ED4360098E8BF /* FutureExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E50264ED4360098E8BF /* FutureExecutor.swift */; };
 		36087E532652B8550098E8BF /* Combine+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E522652B8550098E8BF /* Combine+Helpers.swift */; };
 		36087E552652D8C10098E8BF /* Combine+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E542652D8C10098E8BF /* Combine+Test.swift */; };
+		36087E5726564D190098E8BF /* Combine+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E5626564D190098E8BF /* Combine+UIKit.swift */; };
+		36087E5D2657B5DD0098E8BF /* FutureExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */; };
 		360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */; };
 		360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5232636F8BF00D8F8E9 /* Alamofire */; };
 		360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */; };
@@ -185,7 +187,7 @@
 		CD1091CA225B8FC400325389 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091C0225B8FC300325389 /* LoadingCell.swift */; };
 		CD1091CB225B8FC400325389 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091C2225B8FC300325389 /* UIViewController+Alerts.swift */; };
 		CD109236225B901E00325389 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091CE225B901E00325389 /* LoginViewModel.swift */; };
-		CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D1225B901E00325389 /* DataRequestExtension.swift */; };
+		CD109238225B901E00325389 /* Alamofire+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D1225B901E00325389 /* Alamofire+Combine.swift */; };
 		CD109239225B901E00325389 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D2225B901E00325389 /* AuthState.swift */; };
 		CD10923A225B901E00325389 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D3225B901E00325389 /* Reachability.swift */; };
 		CD10923B225B901E00325389 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D4225B901E00325389 /* Router.swift */; };
@@ -205,7 +207,6 @@
 		CD10924F225B901E00325389 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091EF225B901E00325389 /* LoginViewController.swift */; };
 		CD109264225B901E00325389 /* PartnerId+CustomIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */; };
 		CD109266225B901E00325389 /* Data4LifeSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = CD10920D225B901E00325389 /* Data4LifeSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CD109267225B901E00325389 /* Alamofire+BackgroundQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */; };
 		CD10926D225B901E00325389 /* Combine+CryptoServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109218225B901E00325389 /* Combine+CryptoServiceType.swift */; };
 		CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921C225B901E00325389 /* Date+CustomFormatter.swift */; };
 		CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109221225B901E00325389 /* Data4LifeClient.swift */; };
@@ -441,9 +442,11 @@
 		36080C34237DB05900085476 /* DIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIError.swift; sourceTree = "<group>"; };
 		36080C36237DB12900085476 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		36080C38237DB14200085476 /* DIResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIResolver.swift; sourceTree = "<group>"; };
-		36087E50264ED4360098E8BF /* Combine+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+AsyncAwait.swift"; sourceTree = "<group>"; };
+		36087E50264ED4360098E8BF /* FutureExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureExecutor.swift; sourceTree = "<group>"; };
 		36087E522652B8550098E8BF /* Combine+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Helpers.swift"; sourceTree = "<group>"; };
 		36087E542652D8C10098E8BF /* Combine+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Test.swift"; sourceTree = "<group>"; };
+		36087E5626564D190098E8BF /* Combine+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+UIKit.swift"; sourceTree = "<group>"; };
+		36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureExecutorTests.swift; sourceTree = "<group>"; };
 		360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDKSPMDependencies.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKSPMDependencies.swift; sourceTree = "<group>"; };
 		36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationVectorGenerator.swift; sourceTree = "<group>"; };
@@ -579,7 +582,7 @@
 		CD1091C0225B8FC300325389 /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		CD1091C2225B8FC300325389 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		CD1091CE225B901E00325389 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		CD1091D1225B901E00325389 /* DataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestExtension.swift; sourceTree = "<group>"; };
+		CD1091D1225B901E00325389 /* Alamofire+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire+Combine.swift"; sourceTree = "<group>"; };
 		CD1091D2225B901E00325389 /* AuthState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		CD1091D3225B901E00325389 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		CD1091D4225B901E00325389 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -600,7 +603,6 @@
 		CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PartnerId+CustomIdentifiable.swift"; sourceTree = "<group>"; };
 		CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Data4LifeSDK-Version.plist"; sourceTree = "<group>"; };
 		CD10920D225B901E00325389 /* Data4LifeSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data4LifeSDK.h; sourceTree = "<group>"; };
-		CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire+BackgroundQueue.swift"; sourceTree = "<group>"; };
 		CD109218225B901E00325389 /* Combine+CryptoServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Combine+CryptoServiceType.swift"; sourceTree = "<group>"; };
 		CD10921C225B901E00325389 /* Date+CustomFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+CustomFormatter.swift"; sourceTree = "<group>"; };
 		CD109221225B901E00325389 /* Data4LifeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeClient.swift; sourceTree = "<group>"; };
@@ -855,6 +857,22 @@
 				36080C36237DB12900085476 /* Wrapper.swift */,
 			);
 			path = DIFramework;
+			sourceTree = "<group>";
+		};
+		36087E5A2657B2190098E8BF /* Concurrency */ = {
+			isa = PBXGroup;
+			children = (
+				36087E50264ED4360098E8BF /* FutureExecutor.swift */,
+			);
+			path = Concurrency;
+			sourceTree = "<group>";
+		};
+		36087E5B2657B5C60098E8BF /* ConcurrencyTests */ = {
+			isa = PBXGroup;
+			children = (
+				36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */,
+			);
+			path = ConcurrencyTests;
 			sourceTree = "<group>";
 		};
 		360EC5162636F8AC00D8F8E9 /* SDKSPMDependencies */ = {
@@ -1276,6 +1294,7 @@
 		CD1091CC225B901E00325389 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				36087E5A2657B2190098E8BF /* Concurrency */,
 				3607BCCC2379B8AB004C45F3 /* DI */,
 				CD109224225B901E00325389 /* Info.plist */,
 				CD10920D225B901E00325389 /* Data4LifeSDK.h */,
@@ -1305,7 +1324,6 @@
 			isa = PBXGroup;
 			children = (
 				36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */,
-				CD1091D1225B901E00325389 /* DataRequestExtension.swift */,
 				CD1091D2225B901E00325389 /* AuthState.swift */,
 				CD1091D3225B901E00325389 /* Reachability.swift */,
 				CD1091D4225B901E00325389 /* Router.swift */,
@@ -1422,7 +1440,7 @@
 		CD10920F225B901E00325389 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
-				CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */,
+				CD1091D1225B901E00325389 /* Alamofire+Combine.swift */,
 			);
 			path = Alamofire;
 			sourceTree = "<group>";
@@ -1431,8 +1449,8 @@
 			isa = PBXGroup;
 			children = (
 				CD109218225B901E00325389 /* Combine+CryptoServiceType.swift */,
-				36087E50264ED4360098E8BF /* Combine+AsyncAwait.swift */,
 				36087E522652B8550098E8BF /* Combine+Helpers.swift */,
+				36087E5626564D190098E8BF /* Combine+UIKit.swift */,
 			);
 			path = Combine;
 			sourceTree = "<group>";
@@ -1531,6 +1549,7 @@
 		CD841DB2225CBE80002656D5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				36087E5B2657B5C60098E8BF /* ConcurrencyTests */,
 				CD841DE0225CBE80002656D5 /* BenchmarkClient */,
 				CD841DC9225CBE80002656D5 /* ClientTests */,
 				CD841DFD225CBE80002656D5 /* Data4LifeSDK-Version.plist */,
@@ -2165,7 +2184,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD109267225B901E00325389 /* Alamofire+BackgroundQueue.swift in Sources */,
 				CDA407A622E5E2A100B29A0D /* DocumentService.swift in Sources */,
 				CD10927E225B901E00325389 /* TaggingService.swift in Sources */,
 				36080C33237DB04000085476 /* DIScope.swift in Sources */,
@@ -2222,7 +2240,7 @@
 				0A4FF1E0232FBD550065DDBA /* CommonKeyResponse.swift in Sources */,
 				CDCB9DE4225F5647004A565F /* SecKey+Data.swift in Sources */,
 				CD109244225B901E00325389 /* EncryptedRecord.swift in Sources */,
-				36087E51264ED4360098E8BF /* Combine+AsyncAwait.swift in Sources */,
+				36087E51264ED4360098E8BF /* FutureExecutor.swift in Sources */,
 				368AFB0C23744D56004AE88F /* LoggerService.swift in Sources */,
 				CD109278225B901E00325389 /* UserService.swift in Sources */,
 				0A3934B62404ED2E00DDCE2B /* SDKFileManager.swift in Sources */,
@@ -2233,10 +2251,11 @@
 				3659BC8223D74E0A009970DA /* Attachment+Validation.swift in Sources */,
 				CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */,
 				3689D7FE24EABBAE004295D9 /* DecryptedAppDataRecord.swift in Sources */,
+				36087E5726564D190098E8BF /* Combine+UIKit.swift in Sources */,
 				CD109283225B901E00325389 /* SessionService.swift in Sources */,
 				36080C35237DB05900085476 /* DIError.swift in Sources */,
 				CD109275225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift in Sources */,
-				CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */,
+				CD109238225B901E00325389 /* Alamofire+Combine.swift in Sources */,
 				CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */,
 				36087E532652B8550098E8BF /* Combine+Helpers.swift in Sources */,
 				CD109243225B901E00325389 /* DecryptedRecord.swift in Sources */,
@@ -2283,6 +2302,7 @@
 				0AA455992417A21B008B788C /* InfoServiceMock.swift in Sources */,
 				CD841E18225CBE80002656D5 /* OAuthServiceMock.swift in Sources */,
 				CD5CB01A22A53A0800A91DE8 /* OAuthExternalUserAgentTests.swift in Sources */,
+				36087E5D2657B5DD0098E8BF /* FutureExecutorTests.swift in Sources */,
 				CD841E16225CBE80002656D5 /* CryptoServiceMock.swift in Sources */,
 				3600188A23991125004D9048 /* RouterTests.swift in Sources */,
 				0A8D847823C5D6E300D7DDD3 /* HasAttachmentsProtocolTests.swift in Sources */,

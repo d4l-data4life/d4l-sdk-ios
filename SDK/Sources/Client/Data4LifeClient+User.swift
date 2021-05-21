@@ -43,16 +43,18 @@ extension Data4LifeClient {
                              loginCompletion: @escaping DefaultResultBlock) {
         let loginViewController = LoginViewController(client: self, scopes: scopes ?? defaultScopes)
 
-        viewController.present(loginViewController, animated: animated, completion: {
-            presentationCompletion?()
-            loginViewController.presentLoginScreen()
-        })
+        viewController
+            .present(loginViewController, animated: animated)
+            .map { presentationCompletion?() }
+            .complete { _ in loginViewController.presentLoginScreen() }
 
-        loginViewController.subscribeToFinishLogin { [unowned loginViewController] result in
-            loginViewController.dismiss(animated: animated) {
-                loginCompletion(result)
+        loginViewController
+            .loginPublisher
+            .complete { [unowned loginViewController] result in
+                loginViewController.dismiss(animated: animated).complete { _ in
+                    loginCompletion(result)
+                }
             }
-        }
     }
 
     /**
@@ -64,22 +66,8 @@ extension Data4LifeClient {
                        completion: @escaping DefaultResultBlock) {
         oAuthService
             .logout()
-            .sink(receiveCompletion: { sinkCompletion in
-                queue.async {
-                    switch sinkCompletion {
-                    case .failure(let error):
-                        completion(.failure(error))
-                    case .finished:
-                        do {
-                            try self.cryptoService.deleteKeyPair()
-                            completion(.success(()))
-                        } catch {
-                            completion(.failure(error))
-                        }
-                    }
-                }
-            }, receiveValue: {})
-            .store(in: &storage)
+            .tryMap { try self.cryptoService.deleteKeyPair() }
+            .complete(queue: queue, completion)
     }
 
     /**
@@ -96,19 +84,7 @@ extension Data4LifeClient {
 
         oAuthService
             .isSessionActive()
-            .subscribe(on: queue)
-            .receive(on: queue)
-            .sink { sinkResult in
-                queue.async {
-                    switch sinkResult {
-                    case .failure(let error):
-                        completion(.failure(error))
-                    case .finished:
-                        completion(.success(()))
-                    }
-                }
-            } receiveValue: {}
-            .store(in: &storage)
+            .complete(queue: queue, completion)
     }
 
     /**

@@ -23,6 +23,10 @@ enum CryptoMockError: Error {
 }
 
 class CryptoServiceMock: CryptoServiceType {
+
+    static var encoder: JSONEncoder = JSONEncoder()
+    static var decoder: JSONDecoder = JSONDecoder()
+
     let missingResultError = CryptoMockError.missingResult
 
     var didSetKeyPairTag = false
@@ -38,7 +42,7 @@ class CryptoServiceMock: CryptoServiceType {
     var encryptValueResult: SDKFuture<Data>?
     func encrypt<T: Encodable>(value: T, key: Key) -> SDKFuture<Data> {
         encryptValueCalledWith = (value, key)
-        return encryptValueResult ?? Fail(error: CryptoMockError.missingResult).asyncFuture
+        return encryptValueResult ?? Fail(error: CryptoMockError.missingResult).asyncFuture()
     }
 
     var decryptStringCalledWith: (String, Key)?

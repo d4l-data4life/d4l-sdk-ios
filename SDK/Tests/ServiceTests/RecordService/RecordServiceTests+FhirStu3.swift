@@ -66,8 +66,8 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         encoder.dateEncodingStrategy = .formatted(.with(format: .iso8601TimeZone))
 
         cryptoService.tagEncryptionKey = tagEncryptionKey
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     func testCreateFhirStu3Record() {
@@ -80,14 +80,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         var encryptedRecord = encryptedRecordFactory.create(for: record, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         // Common key
         commonKeyService.currentId = commonKeyId
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -144,14 +144,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         // Common key
         commonKeyService.currentId = commonKeyId
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -223,14 +223,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         // Common key
         commonKeyService.currentId = commonKeyId
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -304,14 +304,14 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         stub("GET", "/users/\(userId)/records/\(oldRecord.id)", with: oldEncryptedRecord.data)
 
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
 
         // Common key
         commonKeyService.currentId = commonKeyId
         commonKeyService.currentKey = commonKey
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -374,10 +374,10 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted tags
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -427,10 +427,10 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
@@ -479,10 +479,10 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.decryptValuesResult = encryptedRecord.encryptedTags
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // encrypted body
-        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture
+        cryptoService.encryptValueResult = Just(encryptedRecord.encryptedBodyData).asyncFuture()
 
         // encrypted data key
         cryptoService.encryptDataResult = encryptedRecord.encryptedDataKeyData
@@ -662,7 +662,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         cryptoService.generateGCKeyResult = record.dataKey
         cryptoService.tagEncryptionKey = nil
         builder.uploadParametersError = Data4LifeSDKError.missingTagKey
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
         commonKeyService.currentKey = record.dataKey
 
         let createdRecord: SDKFuture<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>> = recordService.createRecord(forResource: document, userId: userId)
@@ -686,7 +686,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         let asyncExpectation = expectation(description: "should fail loading common key")
 
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
-        userService.fetchUserInfoResult = Just(()).asyncFuture
+        userService.fetchUserInfoResult = Just(()).asyncFuture()
         cryptoService.generateGCKeyResult = record.dataKey
 
         commonKeyService.currentKey = nil
@@ -711,10 +711,10 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
         encryptedRecord.encryptedAttachmentKey = nil
 
         // Common key
-        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture
+        commonKeyService.fetchKeyResult = Just(commonKey).asyncFuture()
 
         // Validator
-        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "should return a record")

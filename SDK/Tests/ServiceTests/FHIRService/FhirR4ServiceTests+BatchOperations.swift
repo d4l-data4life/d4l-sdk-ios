@@ -25,7 +25,7 @@ extension FhirR4ServiceTests {
         let record = DecryptedRecordFactory.create(resource)
 
         keychainService[.userId] = userId
-        recordService.createRecordResult = Just(record).asyncFuture
+        recordService.createRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return array with one record")
         fhirService.createFhirRecords([resource], decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
@@ -50,7 +50,7 @@ extension FhirR4ServiceTests {
         let record = DecryptedRecordFactory.create(resource)
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Just(record).asyncFuture
+        recordService.fetchRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
         fhirService.fetchFhirRecords(withIds: [resourceId], decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
@@ -78,7 +78,7 @@ extension FhirR4ServiceTests {
         let futureRecord = record.copy(with: futureResource)
 
         keychainService[.userId] = userId
-        recordService.updateRecordResult = Just(futureRecord).asyncFuture
+        recordService.updateRecordResult = Just(futureRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should update language property")
         fhirService.updateFhirRecords([resource], decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self)
@@ -102,7 +102,7 @@ extension FhirR4ServiceTests {
         let resourceId = UUID().uuidString
 
         keychainService[.userId] = userId
-        recordService.deleteRecordResult = Just(()).asyncFuture
+        recordService.deleteRecordResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return success")
         fhirService.deleteFhirRecords(withIds: [resourceId])

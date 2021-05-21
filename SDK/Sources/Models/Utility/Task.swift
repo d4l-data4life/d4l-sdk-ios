@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Alamofire
+import Combine
 
 public protocol Cancellable {
     func cancel()
@@ -25,6 +25,7 @@ class Task: Cancellable {
     let progress: Progress
     private var observations: [NSKeyValueObservation] = []
     var isActive: Bool { return progress.isFinished == false && progress.isCancelled == false }
+    var cancellableFuture: AnyCancellable?
 
     init(_ progress: Progress) {
         self.progress = progress
@@ -37,6 +38,9 @@ class Task: Cancellable {
     public func cancel() {
         guard progress.isCancellable else { return }
         progress.cancel()
+        if let cancellableFuture = cancellableFuture {
+            cancelTask(cancellableFuture)
+        }
     }
 
     func observeFractionCompleted(_ onFractionCompleted: @escaping (Progress) -> Void) {
@@ -46,3 +50,5 @@ class Task: Cancellable {
         observations.append(observer)
     }
 }
+
+extension AnyCancellable: Cancellable {}

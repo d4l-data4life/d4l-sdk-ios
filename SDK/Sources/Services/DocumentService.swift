@@ -77,7 +77,7 @@ class DocumentService: DocumentServiceType {
             } catch {
                 promise(.failure(error))
             }
-        }.asyncFuture
+        }.asyncFuture()
     }
 
     func deleteDocument(withId identifier: String) -> SDKFuture<Void> {
@@ -90,16 +90,16 @@ class DocumentService: DocumentServiceType {
 
     func deleteDocuments(withIds identifiers: [String]) -> SDKFuture<Void> {
         let requests = identifiers.map { self.deleteDocument(withId: $0) }
-        return Publishers.MergeMany(requests).last().eraseToAnyPublisher().asyncFuture
+        return Publishers.MergeMany(requests).last().eraseToAnyPublisher().asyncFuture()
     }
 
     func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[Document]> {
         let requests = identifiers.map { self.fetchDocument(withId: $0, key: key, parentProgress: parentProgress) }
-        return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture
+        return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }
 
     func create(documents: [Document], key: Key) -> SDKFuture<[Document]> {
         let requests = documents.map { self.create(document: $0, key: key) }
-        return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture
+        return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }
 }

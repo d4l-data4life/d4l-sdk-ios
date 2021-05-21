@@ -88,7 +88,7 @@ extension Data4LifeClientFhirR4Tests {
         let annotations = [UUID().uuidString]
         let resource = FhirFactory.createR4DocumentReferenceResource()
         let record = RecordFactory.create(resource, annotations: annotations)
-        fhirService.createFhirRecordResult = Just(record).asyncFuture
+        fhirService.createFhirRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.createFhirR4Record(resource, annotations: annotations) { result in
@@ -109,7 +109,7 @@ extension Data4LifeClientFhirR4Tests {
         let updateResource = FhirFactory.createR4DocumentReferenceResource()
         let record = RecordFactory.create(updateResource, annotations: annotations)
 
-        fhirService.updateFhirRecordResult = Just(record).asyncFuture
+        fhirService.updateFhirRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateFhirR4Record(updateResource, annotations: annotations) { result in
@@ -133,7 +133,7 @@ extension Data4LifeClientFhirR4Tests {
         resource.id = resourceId.asFHIRStringPrimitive()
         let record = RecordFactory.create(resource)
 
-        fhirService.fetchRecordWithIdResult = Just(record).asyncFuture
+        fhirService.fetchRecordWithIdResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchFhirR4Record(withId: resourceId, of: ModelsR4.DocumentReference.self) { result in
@@ -150,7 +150,7 @@ extension Data4LifeClientFhirR4Tests {
 
     func testDeleteResource() {
         let resourceId = UUID().uuidString
-        fhirService.deleteRecordResult = Just(()).asyncFuture
+        fhirService.deleteRecordResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.deleteFhirR4Record(withId: resourceId) { result in
@@ -168,7 +168,7 @@ extension Data4LifeClientFhirR4Tests {
         let annotations = [UUID().uuidString]
         let resources = [FhirFactory.createR4DocumentReferenceResource(), FhirFactory.createR4DocumentReferenceResource()]
         let records = resources.map { RecordFactory.create($0, annotations: annotations) }
-        fhirService.fetchRecordsResult = Just(records).asyncFuture
+        fhirService.fetchRecordsResult = Just(records).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchFhirR4Records(of: ModelsR4.DocumentReference.self, annotations: annotations) { result in
@@ -191,7 +191,7 @@ extension Data4LifeClientFhirR4Tests {
         let resourceCount = 2
         let resourceType = ModelsR4.DocumentReference.self
 
-        fhirService.countRecordsResult = Just(resourceCount).asyncFuture
+        fhirService.countRecordsResult = Just(resourceCount).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.countFhirR4Records(of: resourceType, annotations: annotations) { result in

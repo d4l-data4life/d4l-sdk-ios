@@ -34,41 +34,41 @@ class DocumentServiceMock: DocumentServiceType {
             return first
         }
 
-        return createDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture
+        return createDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var createDocumentsCalledWith: ([Document], Key)?
     var createDocumentsResult: SDKFuture<[Document]>?
     func create(documents: [Document], key: Key) -> SDKFuture<[Document]> {
         createDocumentsCalledWith = (documents, key)
-        return createDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture
+        return createDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var fetchDocumentCalledWith: (String, Key, Progress)?
     var fetchDocumentResult: SDKFuture<Document>?
     func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<Document> {
         fetchDocumentCalledWith = (identifier, key, parentProgress)
-        return fetchDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture
+        return fetchDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var fetchDocumentsCalledWith: ([String], Key, Progress)?
     var fetchDocumentsResult: SDKFuture<[Document]>?
     func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[Document]> {
         fetchDocumentsCalledWith = (identifiers, key, parentProgress)
-        return fetchDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture
+        return fetchDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var deleteDocumentCalledWith: (String)?
     var deleteDocumentResult: SDKFuture<Void>?
     func deleteDocument(withId id: String) -> SDKFuture<Void> {
         deleteDocumentCalledWith = (id)
-        return deleteDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture
+        return deleteDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var deleteDocumentsCalledWith: ([String])?
     var deleteDocumentsResult: SDKFuture<Void>?
     func deleteDocuments(withIds identifiers: [String]) -> SDKFuture<Void> {
         deleteDocumentsCalledWith = (identifiers)
-        return deleteDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture
+        return deleteDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 }

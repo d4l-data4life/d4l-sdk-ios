@@ -59,7 +59,7 @@ class OAuthServiceTests: XCTestCase {
         keychainService = KeychainServiceMock()
         authState = AuthStateMock()
         versionValidator = SDKVersionValidatorMock()
-        versionValidator.fetchCurrentVersionStatusResult = Just(VersionStatus.supported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(VersionStatus.supported).asyncFuture()
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator)
         numberOfRetries = 2
 

@@ -66,7 +66,7 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
             return attachment
         }.mapError { error in
             return self.bridgeErrorCancelledAction(error: error)
-        }.asyncFuture
+        }.asyncFuture()
     }
 
     func downloadAttachments<A: AttachmentType, DR: DecryptedRecord>(of type: A.Type = A.self,
@@ -94,7 +94,7 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
         }
         .mapError { error in
            return self.bridgeErrorCancelledAction(error: error)
-        }.asyncFuture
+        }.asyncFuture()
     }
 }
 

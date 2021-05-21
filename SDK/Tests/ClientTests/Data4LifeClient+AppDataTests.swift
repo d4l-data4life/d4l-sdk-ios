@@ -25,7 +25,7 @@ extension Data4LifeClientUserTests {
         let annotations = ["test"]
         let record = RecordFactory.create(resource, annotations: annotations)
 
-        appDataService.createAppDataRecordResult = Just(record).asyncFuture
+        appDataService.createAppDataRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.createAppDataRecord(resource, annotations: annotations) { result in
@@ -45,7 +45,7 @@ extension Data4LifeClientUserTests {
         let resource = FhirFactory.createAppDataResourceData()
         let annotations = ["test"]
         let record = RecordFactory.create(resource, annotations: annotations)
-        appDataService.createAppDataRecordResult = Just(record).asyncFuture
+        appDataService.createAppDataRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.createAppDataRecord(resource, annotations: annotations) { result in
@@ -64,7 +64,7 @@ extension Data4LifeClientUserTests {
     func testUpdateAppDataResource() {
         let updateResource = FhirFactory.createAppDataResourceData()
         let record = RecordFactory.create(updateResource)
-        appDataService.updateAppDataRecordResult = Just(record).asyncFuture
+        appDataService.updateAppDataRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateAppDataRecord(updateResource, recordId: record.id) { result in
@@ -83,7 +83,7 @@ extension Data4LifeClientUserTests {
         let updateResource = FhirFactory.createAppDataResource()
         let updateResourceData = FhirFactory.createAppDataResourceData()
         let record = RecordFactory.create(updateResourceData)
-        appDataService.updateAppDataRecordResult = Just(record).asyncFuture
+        appDataService.updateAppDataRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateCodableAppDataRecord(updateResource, recordId: record.id) { result in
@@ -103,7 +103,7 @@ extension Data4LifeClientUserTests {
         let resource = "test".data(using: .utf8)!
         let record = RecordFactory.create(resource)
         let resourceId = record.id
-        appDataService.fetchRecordWithIdResult = Just(record).asyncFuture
+        appDataService.fetchRecordWithIdResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchAppDataRecord(withId: resourceId) { result in
@@ -120,7 +120,7 @@ extension Data4LifeClientUserTests {
 
     func testDeleteAppDataResource() {
         let resourceId = UUID().uuidString
-        appDataService.deleteRecordResult = Just(()).asyncFuture
+        appDataService.deleteRecordResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.deleteAppDataRecord(withId: resourceId) { result in
@@ -138,7 +138,7 @@ extension Data4LifeClientUserTests {
 
         let resources = ["test".data(using: .utf8)!, "test2".data(using: .utf8)!]
         let records = resources.map { RecordFactory.create($0) }
-        appDataService.fetchRecordsResult = Just(records).asyncFuture
+        appDataService.fetchRecordsResult = Just(records).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchAppDataRecords { result in
@@ -156,7 +156,7 @@ extension Data4LifeClientUserTests {
 
     func testCountAppDataResources() {
         let resourceCount = 2
-        appDataService.countRecordsResult = Just(resourceCount).asyncFuture
+        appDataService.countRecordsResult = Just(resourceCount).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.countAppDataRecords { result in

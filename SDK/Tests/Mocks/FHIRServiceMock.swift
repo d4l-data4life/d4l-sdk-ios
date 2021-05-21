@@ -76,7 +76,7 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
 extension FhirServiceMock {
     func countRecords<R: SDKResource>(of type: R.Type, annotations: [String] = []) -> SDKFuture<Int> {
         countRecordsCalledWith = (type as! MDR.Resource.Type, annotations) // swiftlint:disable:this force_cast
-        return countRecordsResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return countRecordsResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
@@ -87,18 +87,18 @@ extension FhirServiceMock {
                                                               pageSize: Int?,
                                                               offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
         fetchRecordsCalledWith = (decryptedRecordType as! MDR.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
-        return fetchRecordsResult as? SDKFuture<[Record]> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return fetchRecordsResult as? SDKFuture<[Record]> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
                                                              decryptedRecordType: DR.Type = DR.self) -> SDKFuture<Record> where Record.Resource == DR.Resource {
         fetchRecordWithIdCalledWith = (identifier, decryptedRecordType as! MDR.Type) // swiftlint:disable:this force_cast
-        return fetchRecordWithIdResult as? SDKFuture<Record> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return fetchRecordWithIdResult as? SDKFuture<Record> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func deleteRecord(withId identifier: String) -> SDKFuture<Void> {
         deleteRecordCalledWith = identifier
-        return deleteRecordResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return deleteRecordResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 }
 
@@ -108,12 +108,12 @@ extension FhirServiceMock {
                                                annotations: [String] = [],
                                                decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         createFhirRecordCalledWith = (resource as? MDR.Resource, annotations)
-        return createFhirRecordResult as? SDKFuture<FhirRecord<DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return createFhirRecordResult as? SDKFuture<FhirRecord<DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String]?, decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         updateFhirRecordCalledWith = (resource as? MDR.Resource, annotations)
-        return updateFhirRecordResult as? SDKFuture<FhirRecord<DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return updateFhirRecordResult as? SDKFuture<FhirRecord<DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 }
 
@@ -129,18 +129,18 @@ extension FhirServiceMock {
         } else if let downloadSpecificRecordResult = downloadSpecificRecordResult {
             return downloadSpecificRecordResult as! SDKFuture<FhirRecord<DR.Resource>> // swiftlint:disable:this force_cast
         } else {
-            return Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+            return Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
         }
     }
 
     func uploadAttachments<R: FhirSDKResource>(creating resource: R) -> SDKFuture<(resource: R,  key: Key?)> {
         uploadAttachmentsCreatingCalledWith = resource as? MDR.Resource
-        return uploadAttachmentsCreatingResult as? SDKFuture<(resource: R, key: Key?)> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return uploadAttachmentsCreatingResult as? SDKFuture<(resource: R, key: Key?)> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func uploadAttachments<R: FhirSDKResource, DR: DecryptedRecord>(updating resource: R, decryptedRecordType: DR.Type) -> SDKFuture<(resource: R,  key: Key?)> {
         uploadAttachmentsUpdatingCalledWith = resource as? MDR.Resource
-        return uploadAttachmentsUpdatingResult as? SDKFuture<(resource: R, key: Key?)> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return uploadAttachmentsUpdatingResult as? SDKFuture<(resource: R, key: Key?)> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func downloadAttachments<A: AttachmentType, DR: DecryptedRecord>(of type: A.Type,
@@ -150,7 +150,7 @@ extension FhirServiceMock {
                                                                      downloadType: DownloadType,
                                                                      parentProgress: Progress) -> SDKFuture<[A]> {
         downloadAttachmentsCalledWith = (identifiers, recordId, downloadType, parentProgress)
-        return downloadAttachmentsResult as? SDKFuture<[A]> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return downloadAttachmentsResult as? SDKFuture<[A]> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func downloadAttachment<A: AttachmentType, DR: DecryptedRecord>(of type: A.Type,
@@ -160,7 +160,7 @@ extension FhirServiceMock {
                                                                     downloadType: DownloadType,
                                                                     parentProgress: Progress) -> SDKFuture<A> {
         downloadAttachmentCalledWith = (identifier, recordId, downloadType, parentProgress)
-        return downloadAttachmentResult as? SDKFuture<A> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return downloadAttachmentResult as? SDKFuture<A> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 }
 
@@ -171,31 +171,33 @@ extension FhirServiceMock {
                                                 annotations: [String] = [],
                                                 decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         createFhirRecordsCalledWith = (resources as! [MDR.Resource], annotations) // swiftlint:disable:this force_cast
-        return  createFhirRecordsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return createFhirRecordsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String]? = nil,
                                                 decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         updateFhirRecordsCalledWith = (resources as! [MDR.Resource], annotations) // swiftlint:disable:this force_cast
-        return  updateFhirRecordsResult as? SDKFuture<(success: [FhirRecord<DR.Resource>], failed: [(object: DR.Resource, error: Error)])> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return updateFhirRecordsResult as?
+            SDKFuture<(success: [FhirRecord<DR.Resource>], failed: [(object: DR.Resource, error: Error)])> ??
+            Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
                                                decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         fetchFhirRecordsWithIdsCalledWith = (identifiers, decryptedRecordType as! MDR.Type) // swiftlint:disable:this force_cast
-        return fetchFhirRecordsWithIdsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return fetchFhirRecordsWithIdsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func deleteFhirRecords(withIds identifiers: [String]) -> SDKFuture<BatchResult<String, String>> {
         deleteFhirRecordsWithIdsCalledWith = identifiers
-        return deleteFhirRecordsWithIdsResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+        return deleteFhirRecordsWithIdsResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
     func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
                                                                  decryptedRecordType: DR.Type,
                                                                  parentProgress: Progress) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
             downloadFhirRecordsCalledWith = (identifiers, parentProgress)
-            return downloadFhirRecordsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture
+            return downloadFhirRecordsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 }

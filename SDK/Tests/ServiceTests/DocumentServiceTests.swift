@@ -44,7 +44,7 @@ class DocumentServiceTests: XCTestCase {
         }
 
         Router.baseUrl = "https://example.com"
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     func testCreateSingleDocument() {
@@ -188,7 +188,7 @@ class DocumentServiceTests: XCTestCase {
         let key = KeyFactory.createKey(.attachment)
 
         keychainService[.userId] = userId
-        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "Should fetch a document")
@@ -232,6 +232,6 @@ fileprivate extension DocumentService {
             } catch {
                 promise(.failure(error))
             }
-        }.asyncFuture
+        }.asyncFuture()
     }
 }

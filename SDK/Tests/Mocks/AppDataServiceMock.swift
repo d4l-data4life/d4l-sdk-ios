@@ -50,7 +50,7 @@ class AppDataServiceMock: HasRecordOperationsDependencies, HasMainRecordOperatio
 extension AppDataServiceMock {
     func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> SDKFuture<Int> {
         countRecordsCalledWith = (type as? Data.Type, annotations)
-        return countRecordsResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture
+        return countRecordsResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 
     func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
@@ -61,18 +61,18 @@ extension AppDataServiceMock {
                                                               pageSize: Int?,
                                                               offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
         fetchRecordsCalledWith = (decryptedRecordType as! DecryptedAppDataRecord.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
-        return fetchRecordsResult as? SDKFuture<[Record]> ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture
+        return fetchRecordsResult as? SDKFuture<[Record]> ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 
     func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
                                                              decryptedRecordType: DR.Type = DR.self) -> SDKFuture<Record> where Record.Resource == DR.Resource {
         fetchRecordWithIdCalledWith = (identifier, decryptedRecordType as! DecryptedAppDataRecord.Type) // swiftlint:disable:this force_cast
-        return fetchRecordWithIdResult as? SDKFuture<Record> ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture
+        return fetchRecordWithIdResult as? SDKFuture<Record> ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 
     func deleteRecord(withId identifier: String) -> SDKFuture<Void> {
         deleteRecordCalledWith = identifier
-        return deleteRecordResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture
+        return deleteRecordResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 }
 
@@ -80,11 +80,11 @@ extension AppDataServiceMock {
 extension AppDataServiceMock {
     func createAppDataRecord(_ resource: Data, annotations: [String] = []) -> SDKFuture<AppDataRecord> {
         createAppDataRecordCalledWith = (resource, annotations)
-        return createAppDataRecordResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture
+        return createAppDataRecordResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 
     func updateAppDataRecord(_ resource: Data, recordId: String, annotations: [String]? = nil) -> SDKFuture<AppDataRecord> {
         updateAppDataRecordCalledWith = resource
-        return updateAppDataRecordResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture
+        return updateAppDataRecordResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 }

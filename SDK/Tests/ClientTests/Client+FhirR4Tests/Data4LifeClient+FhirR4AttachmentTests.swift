@@ -25,7 +25,7 @@ extension Data4LifeClientFhirR4Tests {
         let attachment = FhirFactory.createR4AttachmentElement()
         attachment.id = attachmentId.asFHIRStringPrimitive()
 
-        fhirService.downloadAttachmentResult = Just(attachment).asyncFuture
+        fhirService.downloadAttachmentResult = Just(attachment).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return a attachment")
         client.downloadFhirR4Attachment(withId: attachmentId, recordId: recordId) { result in
@@ -50,7 +50,7 @@ extension Data4LifeClientFhirR4Tests {
 
         firstAttachment.id = firstAttachmentId.asFHIRStringPrimitive()
         secondAttachment.id = secondAttachmentId.asFHIRStringPrimitive()
-        fhirService.downloadAttachmentsResult = Just([firstAttachment, secondAttachment]).asyncFuture
+        fhirService.downloadAttachmentsResult = Just([firstAttachment, secondAttachment]).asyncFuture()
 
         let ids = [firstAttachmentId, secondAttachmentId]
         let asyncExpectation = expectation(description: "Should return a attachment")

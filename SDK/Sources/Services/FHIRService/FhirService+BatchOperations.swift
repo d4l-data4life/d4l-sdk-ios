@@ -31,7 +31,7 @@ extension FhirService {
                             .mapError { error -> Error in
                                 failed.append((resource, error))
                                 return error
-                            }.eraseToAnyPublisher().asyncFuture
+                            }.eraseToAnyPublisher().asyncFuture()
                 )
             }
 
@@ -54,7 +54,7 @@ extension FhirService {
                     .mapError { error -> Error in
                         failed.append((resource, error))
                         return error
-                    }.eraseToAnyPublisher().asyncFuture
+                    }.eraseToAnyPublisher().asyncFuture()
                 try combineAwait(future)
             }
 
@@ -78,7 +78,7 @@ extension FhirService {
                         return record
                     }
                     .eraseToAnyPublisher()
-                    .asyncFuture
+                    .asyncFuture()
                 try combineAwait(future)
             }
 
@@ -122,7 +122,7 @@ extension FhirService {
                         success.append(recordId)
                     }
                     .eraseToAnyPublisher()
-                    .asyncFuture
+                    .asyncFuture()
                 try combineAwait(future)
             }
             return ((success, failed))

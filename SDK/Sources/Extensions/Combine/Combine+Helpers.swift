@@ -12,15 +12,15 @@ import Combine
 typealias SDKFuture<T> = Future<T, Error>
 typealias NoErrorFuture<T> = Future<T, Never>
 
-private var cancellableStorage: Set<AnyCancellable> = []
-private let asyncCancellableStorageQueue: DispatchQueue = DispatchQueue(label: "combine.async.storageQueue")
-
 extension Publisher {
+    @discardableResult
     func complete(queue: DispatchQueue = DispatchQueue.main,
                   _ completion: @escaping ResultBlock<Output>,
-                  finally: (() -> Void)? = nil) {
-        let cancellable = sink { sinkResult in
-            queue.async {
+                  finally: (() -> Void)? = nil) -> AnyCancellable {
+        let cancellable =
+            receive(on: queue)
+            .sink { sinkResult in
+
                 switch sinkResult {
                 case .failure(let error):
                     completion(.failure(error))
@@ -28,14 +28,12 @@ extension Publisher {
                     break
                 }
                 finally?()
-            }
-        } receiveValue: { value in
-            queue.async {
+
+            } receiveValue: { value in
                 completion(.success(value))
             }
-        }
-        asyncCancellableStorageQueue.async {
-            cancellableStorage.insert(cancellable)
-        }
+
+        FutureExecutor.storeTaskHandler(cancellable)
+        return cancellable
     }
 }

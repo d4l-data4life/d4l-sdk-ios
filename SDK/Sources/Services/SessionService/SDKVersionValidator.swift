@@ -46,11 +46,9 @@ class SDKVersionValidator: SDKVersionValidatorType {
 
     func fetchCurrentVersionStatus() -> SDKFuture<VersionStatus> {
         return combineAsync {
-
-                let currentVersion = self.infoService.fetchSDKVersion()
-                let versionConfiguration = try combineAwait(self.fetchVersionConfigurationLocally())
-                return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
-
+            let currentVersion = self.infoService.fetchSDKVersion()
+            let versionConfiguration = try combineAwait(self.fetchVersionConfigurationLocally())
+            return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
         }
     }
 

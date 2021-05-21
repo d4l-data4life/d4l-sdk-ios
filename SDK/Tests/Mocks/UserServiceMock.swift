@@ -26,14 +26,14 @@ class UserServiceMock: UserServiceType {
     var fetchUserInfoCalled: Bool = false
     func fetchUserInfo() -> SDKFuture<Void> {
         fetchUserInfoCalled = true
-        return fetchUserInfoResult ?? Fail(error: UserSerivceMockError.noResultSet).asyncFuture
+        return fetchUserInfoResult ?? Fail(error: UserSerivceMockError.noResultSet).asyncFuture()
     }
 
     var logoutCalledWith: String?
     var logoutResult: SDKFuture<Void>?
     func logout(refreshToken: String) -> SDKFuture<Void> {
         logoutCalledWith = (refreshToken)
-        return logoutResult ?? Fail(error: UserSerivceMockError.noResultSet).asyncFuture
+        return logoutResult ?? Fail(error: UserSerivceMockError.noResultSet).asyncFuture()
     }
 
     var getUserIdResult: String?

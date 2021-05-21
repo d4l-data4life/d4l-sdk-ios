@@ -44,7 +44,7 @@ class CommonKeyServiceTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
 
-        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     func testInitialCommonKeyId() {
@@ -245,7 +245,7 @@ class CommonKeyServiceTests: XCTestCase {
         let userId = UUID().uuidString
         let commonKeyId = UUID().uuidString
 
-        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         self.keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should fail because the version is unsupported")

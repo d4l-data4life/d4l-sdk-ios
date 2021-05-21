@@ -92,7 +92,7 @@ struct RecordService: RecordServiceType {
                                      decryptedRecordType: decryptedRecordType,
                                      uploadRequest: createRequest) }
         .eraseToAnyPublisher()
-        .asyncFuture
+        .asyncFuture()
     }
 
     func updateRecord<DR: DecryptedRecord>(forResource resource: DR.Resource,
