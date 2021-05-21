@@ -26,6 +26,8 @@ let package = Package(
                  .upToNextMinor(from: "0.21.1")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
+        .package(url: "https://github.com/freshOS/Then",
+                 .upToNextMinor(from: "5.1.2")),
         .package(name: "AppAuth",
                  url: "https://github.com/openid/AppAuth-iOS.git",
                  .upToNextMinor(from: "1.4.0")),
@@ -59,6 +61,9 @@ let package = Package(
                 path: "Dummies/Data4LifeDependencies"),
         .target(name: "OtherDependencies",
                 dependencies: [
+                    .product(name: "Then",
+                             package: "Then",
+                             condition: .when(platforms: [.iOS])),
                     .product(name: "Alamofire",
                              package: "Alamofire",
                              condition: .when(platforms: [.iOS])),
