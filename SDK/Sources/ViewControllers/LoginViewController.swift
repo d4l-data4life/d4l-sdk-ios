@@ -58,7 +58,6 @@ final class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
 
-
     func presentLoginScreen() {
         viewModel
             .presentLoginScreen(on: self, scopes: scopes)
