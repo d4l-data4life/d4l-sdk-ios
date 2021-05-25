@@ -1,13 +1,13 @@
-name: D4L SDK CI (PR Testing)
+name: D4L SDK CI (Release)
 
 on:
   push:
     branches:
-      - main
+      - release/**
 
   pull_request:
     branches:
-      - release/**
+      - main
 
 jobs:
   release-check:
@@ -15,7 +15,9 @@ jobs:
 
     env:
       D4L_EXAMPLE_CONFIG: ${{ secrets.D4L_EXAMPLE_CONFIG }}
-
+    concurrency:
+      group: ${{ github.head_ref }}
+      cancel-in-progress: true
     steps:
     - name: Display runner context
       run: hostname -s
