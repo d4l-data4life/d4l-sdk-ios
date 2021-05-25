@@ -30,22 +30,8 @@ jobs:
         key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gem-
-    - name: Cache Swift packages
-      uses: actions/cache@v2
-      with:
-        path: .build
-        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-        restore-keys: ${{ runner.os }}-spm-
     - run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
-    - name: Reset iOS simulators (Required to avoid tests failing problem)
-      run: xcrun simctl erase all
-    - name: Generate iOS Config JSON
-      run: printf '%s\n' "$D4L_EXAMPLE_CONFIG" > d4l-example-app-config.json
-    - name: Lint code
-      run: bundle exec fastlane lint
-    - name: Test code
-      run: bundle exec fastlane test
     - name: Test podspec
       run: bundle exec fastlane test_podspec
