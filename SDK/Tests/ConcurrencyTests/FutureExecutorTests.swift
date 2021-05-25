@@ -21,6 +21,7 @@ class FutureExecutorTests: XCTestCase {
     enum Error: Swift.Error {
         case first
         case second
+        case nested
     }
 }
 
@@ -167,6 +168,32 @@ extension FutureExecutorTests {
         let result = combineAwait(concatenatedFuture)
         XCTAssertEqual(result, [2,4])
     }
+
+    func testNestedAsyncFutures() {
+        let futureOne = combineAsync { () -> Int in
+            return 2
+        }
+
+        let futureTwo = combineAsync { () -> Int in
+            return 4
+        }
+
+        let futureThree = combineAsync { () -> Int in
+            return combineAwait(futureTwo)
+        }
+
+        let futureFour = combineAsync { () -> Int in
+            let result = combineAwait(futureOne)
+            let result2 = combineAwait(futureTwo)
+            let result3 = combineAwait(futureThree)
+            XCTAssertEqual(result, 2)
+            XCTAssertEqual(result2, 4)
+            XCTAssertEqual(result3, 4)
+            return result + result2 + result3
+        }
+
+        XCTAssertEqual(combineAwait(futureFour), 10)
+    }
 }
 
 // MARK: - Error cases
@@ -193,6 +220,25 @@ extension FutureExecutorTests {
         let concatenatedFuture = Publishers.Concatenate(prefix: futureOne, suffix: futureTwo).collect().asyncFuture()
         XCTAssertThrowsError(try combineAwait(concatenatedFuture), "should throw first error", { error in
             XCTAssertEqual(error as? FutureExecutorTests.Error, FutureExecutorTests.Error.first)
+        })
+    }
+
+    func testNestedAsyncErroredFutures() {
+        let erroredFuture: SDKFuture<Int> = combineAsync { () -> Int in
+            throw Error.nested
+        }
+
+        let secondLevelNestedFuture: SDKFuture<Int> = combineAsync { () -> Int in
+            return try combineAwait(erroredFuture)
+        }
+
+        let firstLevelNestedFuture: SDKFuture<Int> = combineAsync { () -> Int in
+            try combineAwait(secondLevelNestedFuture)
+            return 10
+        }
+
+        XCTAssertThrowsError(try combineAwait(firstLevelNestedFuture), "should throw error", { error in
+            XCTAssertEqual(error as? FutureExecutorTests.Error, FutureExecutorTests.Error.nested)
         })
     }
 }
