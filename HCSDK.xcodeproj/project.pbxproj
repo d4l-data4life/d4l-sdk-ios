@@ -2710,7 +2710,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.14.0;
+				MARKETING_VERSION = 1.14.1;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -no-serialize-debugging-options";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2762,7 +2762,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.14.0;
+				MARKETING_VERSION = 1.14.1;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -no-serialize-debugging-options";
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";

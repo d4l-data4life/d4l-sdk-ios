@@ -87,6 +87,11 @@ class OAuthService: OAuthServiceType {
         self.keychainService = keychainService
         self.sessionService = sessionService
         self.numberOfRetriesOnTimeout = numberOfRetriesOnTimeout
+        migrateUnarchiverToD4L()
+    }
+
+    private func migrateUnarchiverToD4L() {
+        NSKeyedUnarchiver.setClass(Data4LifeSDK.AuthState.self, forClassName: "HCSDK.AuthState")
     }
 
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {

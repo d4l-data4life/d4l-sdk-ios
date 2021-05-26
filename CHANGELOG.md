@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Replaces Then with Combine
 
+## [1.14.1] - 2021-05-25
+### Fixed
+- SDk doesnt automatically logout on update from 1.12.3
+
 ## [1.14.0] - 2021-05-14
 ### Added
 - `fetchFhirStu3Records<R: FhirStu3Resource>(of type: R.Type ...` now supports the possibility to not specify a type to get all Stu3 Resources
@@ -445,7 +449,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.0...main
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.1...main
+[1.14.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.0...1.14.1
 [1.14.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.1...1.14.0
 [1.13.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.0...1.13.1
 [1.13.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.12.3...1.13.0
