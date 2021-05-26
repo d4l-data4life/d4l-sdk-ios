@@ -87,10 +87,10 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
         return searchRecordsResult as? SDKFuture<[DR]> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
     }
 
-    var countRecordsCalledWith: (String, SDKResource.Type?, [String]?)?
+    var countRecordsCalledWith: (String, MockR.Type?, [String]?)?
     var countRecordsResult: SDKFuture<Int>?
     func countRecords<R>(userId: String, resourceType: R.Type, annotations: [String]) -> SDKFuture<Int> where R : SDKResource {
-        countRecordsCalledWith = (userId, resourceType, annotations)
+        countRecordsCalledWith = (userId, resourceType as? MockR.Type, annotations)
         return countRecordsResult ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
     }
 }

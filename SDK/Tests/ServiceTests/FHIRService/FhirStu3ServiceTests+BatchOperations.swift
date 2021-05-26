@@ -33,8 +33,6 @@ extension FhirStu3ServiceTests {
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, resource)
                 XCTAssertEqual(result.success.first?.id, record.id)
-            } onError: { error in
-                XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
         }
@@ -58,8 +56,6 @@ extension FhirStu3ServiceTests {
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId)
                 XCTAssertEqual(result.success.first?.id, record.id)
-            } onError: { error in
-                XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
         }
@@ -88,8 +84,6 @@ extension FhirStu3ServiceTests {
                 XCTAssertEqual(result.success.first?.id, record.id)
                 XCTAssertNotEqual(result.success.first?.fhirResource, resource)
                 XCTAssertEqual(result.success.first?.fhirResource, futureResource)
-            } onError: { error in
-                XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
         }
@@ -110,8 +104,6 @@ extension FhirStu3ServiceTests {
                 XCTAssertEqual(self.recordService.deleteRecordCalledWith?.0, resourceId)
                 XCTAssertEqual(self.recordService.deleteRecordCalledWith?.1, userId)
                 XCTAssertEqual(result.success, [resourceId])
-            } onError: { error in
-                XCTAssertNil(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
         }

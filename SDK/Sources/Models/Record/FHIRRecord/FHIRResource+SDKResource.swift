@@ -18,7 +18,7 @@ import Data4LifeFHIRCore
 import Data4LifeFHIR
 import ModelsR4
 
-protocol SDKResource: ModelVersionInformation, Codable {
+protocol SDKResource: ModelVersionInformation, Codable, Equatable {
     static var searchTags: [String: String] { get }
 }
 
@@ -49,7 +49,7 @@ extension FhirSDKResource {
     }
 }
 
-extension Optional where Wrapped == FhirSDKResource {
+extension Optional where Wrapped: FhirSDKResource {
     func map<R: FhirSDKResource>(to type: R.Type) throws -> R {
         guard let resource = self else { throw Data4LifeSDKError.invalidRecordMissingResource }
         return try resource.map(to: R.self)

@@ -14,118 +14,54 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+import Combine
 
 extension FhirService {
     func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String] = [],
-                                                decryptedRecordType: DR.Type = DR.self) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
+                                                decryptedRecordType: DR.Type = DR.self) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         return combineAsync {
-            var success: [FhirRecord<DR.Resource>] = []
-            var failed: [(DR.Resource, Error)] = []
-            try resources.forEach { (resource) in
-                try combineAwait(self
-                            .createFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
-                            .map { record -> FhirRecord<DR.Resource> in
-                                success.append(record)
-                                return record }
-                            .mapError { error -> Error in
-                                failed.append((resource, error))
-                                return error
-                            }.eraseToAnyPublisher().asyncFuture()
-                )
-            }
-
-            return ((success, failed))
+            let identifiedFutures = resources.map { ($0, createFhirRecord($0, annotations: annotations, decryptedRecordType: decryptedRecordType)) }
+            let combineResult = combineAwait(identifiedFutures)
+            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
         }
     }
 
     func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String]? = nil,
-                                                decryptedRecordType: DR.Type = DR.self) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
+                                                decryptedRecordType: DR.Type = DR.self) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         return combineAsync {
-            var success: [FhirRecord<DR.Resource>] = []
-            var failed: [(DR.Resource, Error)] = []
-            try resources.forEach { resource in
-                let future = self
-                    .updateFhirRecord(resource, annotations: annotations, decryptedRecordType: decryptedRecordType)
-                    .map { record -> FhirRecord<DR.Resource> in
-                        success.append(record)
-                        return record }
-                    .mapError { error -> Error in
-                        failed.append((resource, error))
-                        return error
-                    }.eraseToAnyPublisher().asyncFuture()
-                try combineAwait(future)
-            }
-
-            return (success, failed)
+            let identifiedFutures = resources.map { ($0, updateFhirRecord($0, annotations: annotations, decryptedRecordType: decryptedRecordType)) }
+            let combineResult = combineAwait(identifiedFutures)
+            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
         }
     }
 
     func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
-                                               decryptedRecordType: DR.Type = DR.self) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
+                                               decryptedRecordType: DR.Type = DR.self) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         return combineAsync {
-            var success: [FhirRecord<DR.Resource>] = []
-            var failed: [(String, Error)] = []
-            try identifiers.forEach { recordId in
-                let future = self
-                    .fetchFhirRecord(withId: recordId, decryptedRecordType: decryptedRecordType)
-                    .mapError { error -> Error in
-                        failed.append((recordId, error))
-                        return error }
-                    .map { record -> FhirRecord<DR.Resource> in
-                        success.append(record)
-                        return record
-                    }
-                    .eraseToAnyPublisher()
-                    .asyncFuture()
-                try combineAwait(future)
-            }
+            let identifiedFutures = identifiers.map { ($0, fetchFhirRecord(withId: $0, decryptedRecordType: decryptedRecordType)) }
+            let combineResult = combineAwait(identifiedFutures)
+            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
+        }
+    }
 
-            return ((success, failed))
+    func deleteFhirRecords(withIds identifiers: [String]) -> NoErrorFuture<BatchResult<String, String>> {
+        return combineAsync {
+            let identifiedFutures = identifiers.map { ($0, deleteRecord(withId: $0)) }
+            let combineResult = combineAwait(identifiedFutures)
+            return (combineResult.successRequests.map { $0.0 }, combineResult.failedRequests)
         }
     }
 
     func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
                                                                  decryptedRecordType: DR.Type = DR.self,
                                                                  parentProgress: Progress)
-    -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
+    -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         return combineAsync {
-            var success: [FhirRecord<DR.Resource>] = []
-            var fail: [(String, Error)] = []
-            identifiers.forEach { identifier in
-                do {
-                    let downloadProgress = Progress(totalUnitCount: 1, parent: parentProgress, pendingUnitCount: 1)
-                    downloadProgress.becomeCurrent(withPendingUnitCount: 1)
-                    let record: FhirRecord<DR.Resource> = try combineAwait(self.downloadFhirRecordWithAttachments(withId: identifier, decryptedRecordType: decryptedRecordType))
-                    success.append(record)
-                    downloadProgress.resignCurrent()
-                } catch {
-                    fail.append((identifier, error))
-                }
-            }
-            return (success, fail)
-        }
-    }
-
-    func deleteFhirRecords(withIds identifiers: [String]) -> SDKFuture<BatchResult<String, String>> {
-        return combineAsync {
-            var success: [String] = []
-            var failed: [(String, Error)] = []
-            try identifiers.forEach { recordId in
-                let future = self
-                    .deleteRecord(withId: recordId)
-                    .mapError { error -> Error in
-                        failed.append((recordId, error))
-                        return error }
-                    .map { _ in
-                        success.append(recordId)
-                    }
-                    .eraseToAnyPublisher()
-                    .asyncFuture()
-                try combineAwait(future)
-            }
-            return ((success, failed))
+            let identifiedFutures = identifiers.map { ($0, downloadFhirRecordWithAttachments(withId: $0, decryptedRecordType: decryptedRecordType)) }
+            let combineResult = combineAwait(identifiedFutures, progress: parentProgress)
+            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
         }
     }
 }

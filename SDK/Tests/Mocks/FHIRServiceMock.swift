@@ -48,15 +48,15 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
 
     // MARK: Batch Operations Properties
     var createFhirRecordsCalledWith: ([MDR.Resource], [String])?
-    var createFhirRecordsResult: SDKFuture<BatchResult<FhirRecord<MDR.Resource>, MDR.Resource>>?
+    var createFhirRecordsResult: NoErrorFuture<BatchResult<FhirRecord<MDR.Resource>, MDR.Resource>>?
     var fetchFhirRecordsWithIdsCalledWith: ([String], MDR.Type)?
-    var fetchFhirRecordsWithIdsResult: SDKFuture<BatchResult<FhirRecord<MDR.Resource>, String>>?
+    var fetchFhirRecordsWithIdsResult: NoErrorFuture<BatchResult<FhirRecord<MDR.Resource>, String>>?
     var updateFhirRecordsCalledWith: ([MDR.Resource], [String]?)?
-    var updateFhirRecordsResult: SDKFuture<BatchResult<FhirRecord<MDR.Resource>, MDR.Resource>>?
+    var updateFhirRecordsResult: NoErrorFuture<BatchResult<FhirRecord<MDR.Resource>, MDR.Resource>>?
     var deleteFhirRecordsWithIdsCalledWith: ([String])?
-    var deleteFhirRecordsWithIdsResult: SDKFuture<BatchResult<String, String>>?
+    var deleteFhirRecordsWithIdsResult: NoErrorFuture<BatchResult<String, String>>?
     var downloadFhirRecordsCalledWith: ([String], Progress)?
-    var downloadFhirRecordsResult: SDKFuture<BatchResult<FhirRecord<MDR.Resource>, String>>?
+    var downloadFhirRecordsResult: NoErrorFuture<BatchResult<FhirRecord<MDR.Resource>, String>>?
 
     // MARK: Attachment Operations Properties
     var downloadRecordCalledWith: (String, MDR.Type)?
@@ -169,35 +169,35 @@ extension FhirServiceMock {
 
     func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String] = [],
-                                                decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
+                                                decryptedRecordType: DR.Type) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         createFhirRecordsCalledWith = (resources as! [MDR.Resource], annotations) // swiftlint:disable:this force_cast
-        return createFhirRecordsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
+        return createFhirRecordsResult as? NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> ?? Empty<BatchResult<FhirRecord<DR.Resource>, DR.Resource>, Never>(completeImmediately: true).asyncFuture()
     }
 
     func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String]? = nil,
-                                                decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
+                                                decryptedRecordType: DR.Type) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource {
         updateFhirRecordsCalledWith = (resources as! [MDR.Resource], annotations) // swiftlint:disable:this force_cast
         return updateFhirRecordsResult as?
-            SDKFuture<(success: [FhirRecord<DR.Resource>], failed: [(object: DR.Resource, error: Error)])> ??
-            Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
+            NoErrorFuture<(success: [FhirRecord<DR.Resource>], failed: [(object: DR.Resource, error: Error)])> ??
+            Empty<BatchResult<FhirRecord<DR.Resource>, DR.Resource>, Never>(completeImmediately: true).asyncFuture()
     }
 
     func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
-                                               decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
+                                               decryptedRecordType: DR.Type) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         fetchFhirRecordsWithIdsCalledWith = (identifiers, decryptedRecordType as! MDR.Type) // swiftlint:disable:this force_cast
-        return fetchFhirRecordsWithIdsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
+        return fetchFhirRecordsWithIdsResult as? NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Empty<BatchResult<FhirRecord<DR.Resource>, String>, Never>(completeImmediately: true).asyncFuture()
     }
 
-    func deleteFhirRecords(withIds identifiers: [String]) -> SDKFuture<BatchResult<String, String>> {
+    func deleteFhirRecords(withIds identifiers: [String]) -> NoErrorFuture<BatchResult<String, String>> {
         deleteFhirRecordsWithIdsCalledWith = identifiers
-        return deleteFhirRecordsWithIdsResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
+        return deleteFhirRecordsWithIdsResult ?? Empty<BatchResult<String, String>, Never>(completeImmediately: true).asyncFuture()
     }
 
     func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
                                                                  decryptedRecordType: DR.Type,
-                                                                 parentProgress: Progress) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
+                                                                 parentProgress: Progress) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
             downloadFhirRecordsCalledWith = (identifiers, parentProgress)
-            return downloadFhirRecordsResult as? SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
+            return downloadFhirRecordsResult as? NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> ?? Empty<BatchResult<FhirRecord<DR.Resource>, String>, Never>(completeImmediately: true).asyncFuture()
     }
 }

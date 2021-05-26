@@ -845,8 +845,6 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
-        } onError: { error in
-            XCTFail(error.localizedDescription)
         } finally: {
             asyncExpectation.fulfill()
         }

@@ -19,14 +19,14 @@ import Combine
 protocol FhirServiceBatchOperations {
     func createFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String],
-                                                decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource
+                                                decryptedRecordType: DR.Type) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource
     func updateFhirRecords<DR: DecryptedRecord>(_ resources: [DR.Resource],
                                                 annotations: [String]?,
-                                                decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource
+                                                decryptedRecordType: DR.Type) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, DR.Resource>> where DR.Resource: FhirSDKResource
     func fetchFhirRecords<DR: DecryptedRecord>(withIds identifiers: [String],
-                                               decryptedRecordType: DR.Type) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource
+                                               decryptedRecordType: DR.Type) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource
     func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
                                                                  decryptedRecordType: DR.Type,
-                                                                 parentProgress: Progress) -> SDKFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource
-    func deleteFhirRecords(withIds identifiers: [String]) -> SDKFuture<BatchResult<String, String>>
+                                                                 parentProgress: Progress) -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource
+    func deleteFhirRecords(withIds identifiers: [String]) -> NoErrorFuture<BatchResult<String, String>>
 }

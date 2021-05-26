@@ -29,7 +29,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     var sessionService: SessionService!
     var cryptoService: CryptoServiceMock!
     var commonKeyService: CommonKeyServiceMock!
-    var taggingService: TaggingServiceMock!
+    var taggingService: TaggingServiceMock<Data4LifeFHIR.DocumentReference>!
     var userService: UserServiceMock!
     var builder: RecordServiceParameterBuilderMock!
 
