@@ -46,7 +46,7 @@ extension Data4LifeDITestContainer {
         }.register(scope: .containerInstance) { (_) -> DocumentServiceType in
             DocumentServiceMock()
         }.register(scope: .containerInstance) { (_) -> TaggingServiceType in
-            TaggingServiceMock<Data4LifeFHIR.DocumentReference>()
+            TaggingServiceMock()
         }.register(scope: .containerInstance) { (_) -> AttachmentServiceType in
             AttachmentServiceMock()
         }.register(scope: .containerInstance) { (_) -> Bundle in

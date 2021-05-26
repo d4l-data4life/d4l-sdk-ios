@@ -22,7 +22,7 @@ protocol SDKResource: ModelVersionInformation, Codable, Equatable {
     static var searchTags: [String: String] { get }
 }
 
-protocol FhirSDKResource: AnyFhirResource, SDKResource {
+protocol FhirSDKResource: AnyFhirResource, SDKResource, NSCopying {
     var fhirIdentifier: String? { get set }
     static var fhirVersion: String { get }
     static var resourceTypeString: String { get }

@@ -29,7 +29,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     var sessionService: SessionService!
     var cryptoService: CryptoServiceMock!
     var commonKeyService: CommonKeyServiceMock!
-    var taggingService: TaggingServiceMock<Data4LifeFHIR.DocumentReference>!
+    var taggingService: TaggingServiceMock!
     var userService: UserServiceMock!
     var builder: RecordServiceParameterBuilderMock!
 
@@ -456,7 +456,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                 XCTAssertEqual(records.count, 1)
                 XCTAssertEqual(record.resource, document)
 
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
                 XCTAssertEqual(record.annotations, annotations)
             }
 
@@ -508,7 +508,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
                 XCTAssertEqual(records.count, 1)
                 XCTAssertEqual(record.resource, document)
 
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
                 XCTAssertEqual(record.annotations, annotations)
             }
 
@@ -556,7 +556,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount)
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
             }
 
         waitForExpectations(timeout: 5)
@@ -578,7 +578,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount)
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
             }
 
         waitForExpectations(timeout: 5)

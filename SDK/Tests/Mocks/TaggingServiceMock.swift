@@ -17,8 +17,8 @@ import Combine
 @testable import Data4LifeSDK
 
 class TaggingServiceMock: TaggingServiceType {
-    func makeTagGroup<R>(for resource: R, oldTags: [String : String], annotations: [String]?) -> TagGroup {
-        tagResourceCalledWith = (resource, oldTags, annotations)
+    func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String : String], annotations: [String]?) -> TagGroup {
+        tagResourceCalledWith = (resource.erased, oldTags, annotations)
         guard let tagResourceResult = tagResourceResult else {
             fatalError("TaggingServiceMock result Not set")
         }
@@ -26,16 +26,16 @@ class TaggingServiceMock: TaggingServiceType {
     }
 
     func makeTagGroup<R>(for type: R.Type, annotations: [String]?) -> TagGroup {
-        tagTypeCalledWith = (type, annotations)
+        tagTypeCalledWith = (annotations)
         guard let tagTypeResult = tagTypeResult else {
             fatalError("TaggingServiceMock result Not set")
         }
         return tagTypeResult
     }
 
-    var tagResourceCalledWith: (AnySDKResource?, [String: String]?, [String]?)?
+    var tagResourceCalledWith: (ErasedSDKResource?, [String: String]?, [String]?)?
     var tagResourceResult: TagGroup?
 
-    var tagTypeCalledWith: (AnySDKResource.Type, [String]?)?
+    var tagTypeCalledWith: ([String]?)?
     var tagTypeResult: TagGroup?
 }

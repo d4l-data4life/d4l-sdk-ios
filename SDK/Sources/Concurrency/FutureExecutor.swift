@@ -43,14 +43,13 @@ func combineAwait<Value, Error, Identifier: Equatable>(_ identifiedFutures: [(Id
         downloadProgress?.becomeCurrent(withPendingUnitCount: Int64(identifiedFutures.count))
     }
 
-    let futures: [Future<Value?,Never>] = identifiedFutures.map { identifiedFuture in
-
+    let futures: [Future<Value,Error>] = identifiedFutures.map { identifiedFuture in
         let identifier = identifiedFuture.0
         let future = identifiedFuture.1
 
         let elementFuture =
             future
-            .map { value -> Value? in
+            .map { value -> Value in
                 mutualStorageProtectQueue.async {
                     success.append((identifier, value))
                 }
@@ -64,13 +63,12 @@ func combineAwait<Value, Error, Identifier: Equatable>(_ identifiedFutures: [(Id
                 downloadProgress?.completedUnitCount += 1
                 return error
             }
-            .replaceError (with: nil)
             .eraseToAnyPublisher()
             .asyncFuture()
         return elementFuture
     }
 
-    combineAwait(Publishers.MergeMany(futures).collect().asyncFuture())
+    let result = combineAwait(Publishers.MergeMany(futures).collect().replaceError(with: []).asyncFuture())
     downloadProgress?.resignCurrent()
     
     let futureWaitForArrays = NoErrorFuture<CombineBatchResult<Identifier, Value, Error>> { promise in

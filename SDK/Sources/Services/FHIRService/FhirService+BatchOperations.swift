@@ -54,7 +54,7 @@ extension FhirService {
         }
     }
 
-    func downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
+    func  downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
                                                                  decryptedRecordType: DR.Type = DR.self,
                                                                  parentProgress: Progress)
     -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {

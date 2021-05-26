@@ -28,19 +28,21 @@ extension FhirService {
             let record = FhirRecord<DR.Resource>(decryptedRecord: decryptedRecord)
             guard let attachmentKey = decryptedRecord.attachmentKey else { return record }
 
-            if let resourceWithAttachments = record.fhirResource as? HasAttachments {
+            if let resourceWithAttachments = record.fhirResource.copy() as? HasAttachments {
                 let ids = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId }
                 let downloadedAttachments: [AttachmentType] = try combineAwait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
-                                                                                                                attachmentIds: ids ?? [],
-                                                                                                                downloadType: .full,
-                                                                                                                key: attachmentKey,
-                                                                                                                parentProgress: Progress()))
+                                                                                                                       attachmentIds: ids ?? [],
+                                                                                                                       downloadType: .full,
+                                                                                                                       key: attachmentKey,
+                                                                                                                       parentProgress: Progress()))
                 var downloadedGenericAttachments = downloadedAttachments as [AttachmentType]
                 let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &downloadedGenericAttachments)
                 resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
+                let record = FhirRecord<DR.Resource>(id: record.id, resource: resourceWithAttachments as! DR.Resource, metadata: record.metadata, annotations: record.annotations)
+                return record
+            } else {
+                return record
             }
-
-            return record
         }
     }
 

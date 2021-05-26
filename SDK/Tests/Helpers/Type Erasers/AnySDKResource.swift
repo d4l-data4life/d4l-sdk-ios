@@ -40,7 +40,8 @@ final class AnySDKResource<T: SDKResource>: SDKResource, Equatable {
     }
 }
 
-final class ErasedSDKResource: SDKResource, Equatable {
+final class ErasedSDKResource: Equatable {
+
     var resource: Any
     init<T: SDKResource>(resource: T) {
         self.resource = resource
@@ -49,19 +50,22 @@ final class ErasedSDKResource: SDKResource, Equatable {
     func getValue<T: SDKResource>(as type: T.Type = T.self) -> T {
         resource as! T
     }
+
     static var searchTags: [String : String] {
         return [:]
     }
 
     static var modelVersion: Int { 1 }
     static func == (lhs: ErasedSDKResource, rhs: ErasedSDKResource) -> Bool {
-        let encoder = JSONEncoder()
-        let lhsJson = try? encoder.encode(lhs.getValue())
-        let rhsJson = rhs.resource as? CustomStringConvertible
-        return lhsJson?.description == rhsJson?.description
+        return lhs.getValue() == rhs.getValue()
     }
 
     static func make<T: SDKResource>(from resource: T) -> ErasedSDKResource {
         return ErasedSDKResource(resource: resource)
     }
+}
+
+extension SDKResource {
+
+    var erased: ErasedSDKResource { ErasedSDKResource(resource: self)}
 }

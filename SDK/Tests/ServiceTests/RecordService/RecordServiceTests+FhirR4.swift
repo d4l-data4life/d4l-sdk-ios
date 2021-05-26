@@ -407,7 +407,7 @@ extension RecordServiceTests {
                 XCTAssertEqual(records.count, 1)
                 XCTAssertEqual(record.resource, document)
 
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
                 XCTAssertEqual(record.annotations, annotations)
             }
 
@@ -459,7 +459,7 @@ extension RecordServiceTests {
                 XCTAssertEqual(records.count, 1)
                 XCTAssertEqual(record.resource, document)
 
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
                 XCTAssertEqual(record.annotations, annotations)
             }
 
@@ -507,7 +507,7 @@ extension RecordServiceTests {
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount)
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
             }
 
         waitForExpectations(timeout: 5)
@@ -529,7 +529,7 @@ extension RecordServiceTests {
             .then { count in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(count, recordCount)
-                XCTAssertEqual(self.taggingService.tagTypeCalledWith?.1, annotations)
+                XCTAssertEqual(self.taggingService.tagTypeCalledWith, annotations)
             }
 
         waitForExpectations(timeout: 5)
