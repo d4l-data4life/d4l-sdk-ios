@@ -23,8 +23,7 @@ func combineAsync<Value, E>(_ task: @escaping () throws -> Value) -> Future<Valu
 
 @discardableResult
 func combineAsync<Value>(_ task: @escaping () -> Value) -> Future<Value, Never> {
-    let future: Future<Value,Never> = FutureExecutor.combineAsync(task)
-    return future
+    FutureExecutor.combineAsync(task)
 }
 
 @discardableResult
