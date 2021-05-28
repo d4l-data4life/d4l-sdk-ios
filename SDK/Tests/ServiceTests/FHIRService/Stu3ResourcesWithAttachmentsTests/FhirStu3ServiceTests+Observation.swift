@@ -826,7 +826,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         secondResource.id = secondResourceId
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResults = [Just(firstRecord).asyncFuture()]
+        recordService.fetchRecordResults = [firstResourceId: Just(firstRecord).asyncFuture()]
         attachmentService.fetchAttachmentsResult = Just([firstAttachment]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a record")

@@ -50,7 +50,8 @@ public enum Data4LifeSDKError: LocalizedError {
     case couldNotEncodeAppData
     case emptyAnnotationNotAllowed
     case invalidCharacterInTag
-
+    case firstBatchError(Error)
+    
     // AppAuth errors (https://github.com/openid/AppAuth-iOS/blob/master/Source/OIDError.h)
     case appAuth(Error)
     case userCanceledAuthFlow
@@ -141,6 +142,8 @@ extension Data4LifeSDKError: CustomStringConvertible {
             return "Empty annotations are not allowed"
         case .invalidCharacterInTag:
             return "Invalid charater in tag"
+        case .firstBatchError(let error):
+            return "Encountered Error in batch request. First one is: \(error.localizedDescription)"
         }
     }
 }

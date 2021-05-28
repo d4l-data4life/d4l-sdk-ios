@@ -36,6 +36,7 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
         guard let resource = resource as? MockR else {
             fatalError()
         }
+        
         updateRecordCalledWith = (AnySDKResource<MockR>(resource: resource), annotations, userId, recordId, attachmentKey)
         return updateRecordResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
     }
@@ -56,12 +57,11 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
 
     var fetchRecordCalledWith: (String, String)?
     var fetchRecordResult: SDKFuture<MockDR>?
-    var fetchRecordResults: [SDKFuture<MockDR>]?
+    var fetchRecordResults: [String: SDKFuture<MockDR>]?
     func fetchRecord<DR>(recordId: String, userId: String, decryptedRecordType: DR.Type) -> SDKFuture<DR> where DR : DecryptedRecord {
         fetchRecordCalledWith = (recordId, userId)
-        if let results = fetchRecordResults, let first = results.first {
-            fetchRecordResults = Array(results.dropFirst())
-            return first as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
+        if let results = fetchRecordResults, let futureResult = results[recordId] {
+            return futureResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
         }
         return fetchRecordResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
     }

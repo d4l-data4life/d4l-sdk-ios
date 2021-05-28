@@ -33,57 +33,19 @@ func combineAwait<Value,Error>(_ future: Future<Value, Error>) throws -> Value {
 
 @discardableResult
 func combineAwait<Value, Error, Identifier: Equatable>(_ identifiedFutures: [(Identifier, Future<Value, Error>)], progress: Progress? = nil) -> CombineBatchResult<Identifier, Value, Error> {
-
-    let mutualStorageProtectQueue = DispatchQueue(label: "combine.await.array")
-    var success: [(Identifier, Value)] = []
-    var failed: [(Identifier, Error)] = []
-    var downloadProgress: Progress?
-    if let progress = progress {
-        downloadProgress = Progress(totalUnitCount: Int64(identifiedFutures.count), parent: progress, pendingUnitCount: Int64(identifiedFutures.count))
-        downloadProgress?.becomeCurrent(withPendingUnitCount: Int64(identifiedFutures.count))
-    }
-
-    let futures: [Future<Value,Error>] = identifiedFutures.map { identifiedFuture in
-        let identifier = identifiedFuture.0
-        let future = identifiedFuture.1
-
-        let elementFuture =
-            future
-            .map { value -> Value in
-                mutualStorageProtectQueue.async {
-                    success.append((identifier, value))
-                }
-                downloadProgress?.completedUnitCount += 1
-                return value
-            }
-            .mapError { error -> Error in
-                mutualStorageProtectQueue.async {
-                    failed.append((identifier, error))
-                }
-                downloadProgress?.completedUnitCount += 1
-                return error
-            }
-            .eraseToAnyPublisher()
-            .asyncFuture()
-        return elementFuture
-    }
-
-    let result = combineAwait(Publishers.MergeMany(futures).collect().replaceError(with: []).asyncFuture())
-    downloadProgress?.resignCurrent()
-    
-    let futureWaitForArrays = NoErrorFuture<CombineBatchResult<Identifier, Value, Error>> { promise in
-        mutualStorageProtectQueue.async {
-            let result = CombineBatchResult<Identifier, Value, Error>(successRequests: success, failedRequests: failed)
-            promise(.success(result))
-        }
-    }
-
-    return combineAwait(futureWaitForArrays)
+    FutureExecutor.combineAwait(identifiedFutures, progress: progress)
 }
 
 struct CombineBatchResult<Identifier, Value, Error> {
     let successRequests: [(Identifier, Value)]
     let failedRequests: [(Identifier, Error)]
+
+    func throwIfErrored() throws {
+        guard let firstError = failedRequests.first?.1 as? Data4LifeSDKError else {
+            return
+        }
+        throw Data4LifeSDKError.firstBatchError(firstError)
+    }
 }
 
 @discardableResult
@@ -150,6 +112,42 @@ final class FutureExecutor {
         } else {
             return result
         }
+    }
+
+    @discardableResult fileprivate static func combineAwait<Value, Error, Identifier: Equatable>(_ identifiedFutures: [(Identifier, Future<Value, Error>)],
+                                                                                                 progress: Progress? = nil) -> CombineBatchResult<Identifier, Value, Error> {
+        var success: [(Identifier, Value)] = []
+        var failed: [(Identifier, Error)] = []
+        var downloadProgress: Progress?
+        if let progress = progress {
+            downloadProgress = Progress(totalUnitCount: Int64(identifiedFutures.count), parent: progress, pendingUnitCount: Int64(identifiedFutures.count))
+            downloadProgress?.becomeCurrent(withPendingUnitCount: Int64(identifiedFutures.count))
+        }
+
+        let group = DispatchGroup()
+
+        for tuple in identifiedFutures {
+            group.enter()
+            let identifier = tuple.0
+            let future = tuple.1
+            let cancellable = future
+                .sink(receiveCompletion: { errorCompletion in
+                    switch errorCompletion {
+                    case .failure(let failureError):
+                        failed.append((identifier, failureError))
+                    case .finished:
+                        break
+                    }
+                    downloadProgress?.completedUnitCount += 1
+                    group.leave()
+                }, receiveValue: { value in
+                    success.append((identifier, value))
+                })
+            storeTaskHandler(cancellable)
+        }
+        group.wait()
+        downloadProgress?.resignCurrent()
+        return CombineBatchResult<Identifier, Value, Error>(successRequests: success, failedRequests: failed)
     }
 
     @discardableResult fileprivate static func combineAsync<Value, E>(_ task: @escaping () throws -> Value, queue: DispatchQueue = asyncQueue) -> Future<Value, E> where E: Swift.Error {

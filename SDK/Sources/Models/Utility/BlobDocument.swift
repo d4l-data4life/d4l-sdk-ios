@@ -15,7 +15,7 @@
 
 import Foundation
 
-struct Document {
+struct BlobDocument {
     let id: String?
     let data: Data
 
@@ -23,4 +23,9 @@ struct Document {
         self.id = id
         self.data = data
     }
+}
+
+struct UnfoldedBlobDocument {
+    var attachment: AttachmentType
+    var document: BlobDocument
 }

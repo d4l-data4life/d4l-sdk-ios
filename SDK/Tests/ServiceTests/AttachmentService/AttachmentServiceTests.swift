@@ -46,7 +46,7 @@ class AttachmentServiceTests: XCTestCase {
         let attachment = FhirFactory.createUploadedAttachmentElement()
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Just(payload).asyncFuture()
 
@@ -80,7 +80,7 @@ class AttachmentServiceTests: XCTestCase {
         resource.addAdditionalId(additionalId)
 
         let attachmentKey = KeyFactory.createKey()
-        let payload = Document(id: attachment.attachmentId!, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachment.attachmentId!, data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Just(payload).asyncFuture()
 
@@ -109,7 +109,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachmentId, data: attachment.attachmentData!)
 
         documentService.createDocumentResult = Just(payload).asyncFuture()
 
@@ -135,11 +135,13 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachmentId, data: attachment.attachmentData!)
 
         let expectedThumbnailsIds = [UUID().uuidString, UUID().uuidString]
-        let thumbnailPayloads = expectedThumbnailsIds.map { Document(id: $0, data: imageData) }
-        documentService.createDocumentResults = ([payload] + thumbnailPayloads).map { Just($0).asyncFuture() }
+        let thumbnailPayloads = expectedThumbnailsIds.map { BlobDocument(id: $0, data: imageData) }
+        documentService.createDocumentResults = Dictionary(([payload] + thumbnailPayloads)
+                                                            .map { ($0, Just($0).asyncFuture()) },
+                                                           uniquingKeysWith: { $1 })
 
         imageResizer.isResizableResult = true
         let selectedSize = CGSize(width: 220, height: 200)
@@ -168,7 +170,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachmentId, data: attachment.attachmentData!)
 
         documentService.createDocumentResult = Just(payload).asyncFuture()
         imageResizer.isResizableResult = true
@@ -197,7 +199,7 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachmentId, data: attachment.attachmentData!)
 
         let expectedThumbnailsIds = [attachmentId, attachmentId]
         let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
@@ -233,14 +235,17 @@ class AttachmentServiceTests: XCTestCase {
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let record = DecryptedRecordFactory.create(document)
         let attachmentId = UUID().uuidString
-        let payload = Document(id: attachmentId, data: attachment.attachmentData!)
+        let payload = BlobDocument(id: attachmentId, data: attachment.attachmentData!)
 
         let mediumThumbnailId = UUID().uuidString
         let expectedThumbnailsIds = [mediumThumbnailId, attachmentId]
-        let thumbnailPayload = Document(id: mediumThumbnailId, data: imageData)
+        let thumbnailPayload = BlobDocument(id: mediumThumbnailId, data: imageData)
         let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
 
-        documentService.createDocumentResults = [payload, thumbnailPayload].map { Just($0).asyncFuture() }
+        documentService.createDocumentResults = Dictionary([payload, thumbnailPayload]
+                                                            .map { ($0, Just($0).asyncFuture()) },
+                                                           uniquingKeysWith: { $1 })
+
 
         imageResizer.isResizableResult = true
         let selectedSize = CGSize(width: 220, height: 200)
@@ -323,7 +328,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let paylaod = Document(data: attachment.attachmentData!)
+        let paylaod = BlobDocument(data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Just(paylaod).asyncFuture()
 
@@ -357,7 +362,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let payload = Document(data: attachment.attachmentData!)
+        let payload = BlobDocument(data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Just(payload).asyncFuture()
 
@@ -419,16 +424,17 @@ class AttachmentServiceTests: XCTestCase {
         let record = DecryptedRecordFactory.create(document)
         let attachmentId1 = UUID().uuidString
         let attachmentId2 = UUID().uuidString
-        let payload1 = Document(id: attachmentId1, data: attachment1.attachmentData!)
-        let payload2 = Document(id: attachmentId2, data: attachment2.attachmentData!)
+        let payload1 = BlobDocument(id: attachmentId1, data: attachment1.attachmentData!)
+        let payload2 = BlobDocument(id: attachmentId2, data: attachment2.attachmentData!)
 
         let expectedThumbnailsIds1 = [UUID().uuidString, UUID().uuidString]
-        let thumbnailPayloads1 = expectedThumbnailsIds1.map { Document(id: $0, data: imageData) }
+        let thumbnailPayloads1 = expectedThumbnailsIds1.map { BlobDocument(id: $0, data: imageData) }
         let expectedThumbnailsIds2 = [UUID().uuidString, UUID().uuidString]
-        let thumbnailPayloads2 = expectedThumbnailsIds2.map { Document(id: $0, data: imageData) }
+        let thumbnailPayloads2 = expectedThumbnailsIds2.map { BlobDocument(id: $0, data: imageData) }
 
-        documentService.createDocumentResults = ([payload1] + thumbnailPayloads1 + [payload2] + thumbnailPayloads2)
-            .map { Just($0).asyncFuture() }
+        documentService.createDocumentResults = Dictionary(([payload1] + thumbnailPayloads1 + [payload2] + thumbnailPayloads2)
+                                                            .map { ($0, Just($0).asyncFuture()) },
+                                                           uniquingKeysWith: { $1 })
 
         imageResizer.isResizableResult = true
         let selectedSize = CGSize(width: 220, height: 200)
@@ -467,7 +473,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
         let attachmentKey = KeyFactory.createKey()
-        let paylaod = Document(data: attachment.attachmentData!)
+        let paylaod = BlobDocument(data: attachment.attachmentData!)
 
         documentService.fetchDocumentResult = Just(paylaod).asyncFuture()
 
