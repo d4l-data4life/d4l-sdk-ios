@@ -95,7 +95,6 @@ class OAuthService: OAuthServiceType {
     }
 
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-
         guard let response = request.task?.response as? HTTPURLResponse,
               response.statusCode == 401 || response.statusCode == 408 else {
             completion(.doNotRetry)
@@ -128,11 +127,13 @@ class OAuthService: OAuthServiceType {
         state.setNeedsTokenRefresh()
         state.performAction(freshTokens: { (accessToken, refreshToken, error) in
             if let error = error {
+                self.isRefreshing = false
                 self.keychainService.clear()
                 self.retryRequests.forEach { $0(.doNotRetry) }
                 self.sessionStateChanged?(false)
                 completion(.failure(error))
             } else {
+                self.isRefreshing = false
                 self.keychainService[.refreshToken] = refreshToken
                 self.keychainService[.accessToken] = accessToken
                 self.retryRequests.forEach { $0(.retry) }
