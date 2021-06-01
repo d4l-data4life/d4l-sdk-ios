@@ -35,8 +35,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Data4LifeSDK",
-            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.1/Data4LifeSDK-xcframework-1.14.1.zip",
-            checksum: "7d229900ab5a8ec9868b67ed476b98e71387c3c40dc7c3a82f43ad4493710876"
+            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.2/Data4LifeSDK-xcframework-1.14.2.zip",
+            checksum: "0ea2f407385d0dbbaadfa495fbd3e8bbedd1f610bb031bb9179361b4a3eb4326"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
