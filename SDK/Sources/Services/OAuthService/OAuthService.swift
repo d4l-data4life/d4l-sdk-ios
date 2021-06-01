@@ -33,7 +33,7 @@ protocol OAuthServiceType: RequestRetrier {
     func refreshTokens(completion: @escaping DefaultResultBlock)
 }
 
-class OAuthService: OAuthServiceType {
+final class OAuthService: OAuthServiceType {
 
     var keychainService: KeychainServiceType
     var sessionService: SessionService
@@ -69,6 +69,8 @@ class OAuthService: OAuthServiceType {
     private var retryRequests: [(RetryResult) -> Void] = []
     var isRefreshing = false
 
+    private let retryQueue = DispatchQueue(label: "d4l.oauthservice.retry.queue")
+    
     init(clientId: String,
          clientSecret: String,
          redirectURL: URL,
@@ -95,45 +97,54 @@ class OAuthService: OAuthServiceType {
     }
 
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        guard let response = request.task?.response as? HTTPURLResponse,
-              response.statusCode == 401 || response.statusCode == 408 else {
-            completion(.doNotRetry)
-            return
-        }
+        retryQueue.async { [weak self] in
+            guard let self = self else { return }
 
-        if (error as NSError).code == NSURLErrorTimedOut || response.statusCode == 408 {
-            if currentRetryCount < numberOfRetriesOnTimeout {
-                currentRetryCount += 1
-                completion(.retry)
-                return
-            } else {
-                currentRetryCount = 0
+            guard let response = request.task?.response as? HTTPURLResponse,
+                  response.statusCode == 401 || response.statusCode == 408 else {
                 completion(.doNotRetry)
+                return
             }
+
+            if (error as NSError).code == NSURLErrorTimedOut || response.statusCode == 408 {
+                if self.currentRetryCount < self.numberOfRetriesOnTimeout {
+                    self.currentRetryCount += 1
+                    completion(.retry)
+                    return
+                } else {
+                    self.currentRetryCount = 0
+                    completion(.doNotRetry)
+                }
+            }
+
+            self.retryRequests.append(completion)
+
+            self.refreshTokens(completion: { [weak self] _ in
+                self?.retryRequests.removeAll()
+                self?.isRefreshing = false
+            })
         }
-
-        self.retryRequests.append(completion)
-
-        refreshTokens(completion: { [weak self] _ in
-            self?.retryRequests.removeAll()
-            self?.isRefreshing = false
-        })
     }
 
     func refreshTokens(completion: @escaping DefaultResultBlock) {
-        guard let state = self.storedAuthState else { return }
-        guard isRefreshing == false else { return }
-        isRefreshing = true
+        guard let state = self.storedAuthState else {
+            completion(.failure(Data4LifeSDKError.notLoggedIn))
+            return
+        }
+
+        guard self.isRefreshing == false else { return }
+
+        self.isRefreshing = true
         state.setNeedsTokenRefresh()
         state.performAction(freshTokens: { (accessToken, refreshToken, error) in
+            self.isRefreshing = false
+
             if let error = error {
-                self.isRefreshing = false
                 self.keychainService.clear()
                 self.retryRequests.forEach { $0(.doNotRetry) }
                 self.sessionStateChanged?(false)
                 completion(.failure(error))
             } else {
-                self.isRefreshing = false
                 self.keychainService[.refreshToken] = refreshToken
                 self.keychainService[.accessToken] = accessToken
                 self.retryRequests.forEach { $0(.retry) }
