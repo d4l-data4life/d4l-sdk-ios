@@ -121,7 +121,6 @@ final class OAuthService: OAuthServiceType {
 
             self.refreshTokens(completion: { [weak self] _ in
                 self?.retryRequests.removeAll()
-                self?.isRefreshing = false
             })
         }
     }
