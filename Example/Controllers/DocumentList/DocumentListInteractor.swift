@@ -255,8 +255,6 @@ private extension DocumentListInteractor {
                 self?.countDocuments()
             }
         }
-
-        testData()
     }
 
     private func loadAppData(_ completion: @escaping () -> Void = {}) {
@@ -330,15 +328,6 @@ private extension DocumentListInteractor {
                     }
                 }
             }
-        }
-    }
-}
-
-extension DocumentListInteractor {
-    func testData() {
-        d4lClient.fetchFhirStu3Records(of: QuestionnaireResponse.self) { result in
-            let records = try? result.get().map { $0.fhirResource.authored }
-            print("Got Stu3 Records: \(records ?? [])")
         }
     }
 }

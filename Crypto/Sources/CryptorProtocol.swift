@@ -92,7 +92,6 @@ private extension Data4LifeCryptor {
 // MARK: - AES No Padding GCM
 private extension Data4LifeCryptor {
     static func encryptAesNoPaddingGcm(data: Data, key: Data, iv: Data) throws -> Data {
-
         let nonce = try AES.GCM.Nonce(data: iv)
         let symmetricKey = SymmetricKey(data: key)
         let sealedBox = try AES.GCM.seal(data, using: symmetricKey, nonce: nonce)

@@ -35,7 +35,7 @@ extension FhirSDKResource {
         if Self.resourceTypeString != baseResourceTypeString {
             tags[TaggingService.Keys.resourceType.rawValue] = Self.resourceTypeString
         }
-        //tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
+        tags[TaggingService.Keys.fhirVersion.rawValue] = Self.fhirVersion
         return tags.lowercased
     }
 }

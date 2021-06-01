@@ -46,10 +46,19 @@ class DocumentService: DocumentServiceType {
 
     func create(document: BlobDocument, key: Key) -> SDKFuture<BlobDocument> {
         return combineAsync {
+            let documentId = UUID().uuidString.prefix(10)
+
+            let start = DispatchTime.now().uptimeNanoseconds
+
             let userId = try self.keychainService.get(.userId)
             let encryptedData = try self.cryptoService.encrypt(data: document.data, key: key)
             let route = Router.createDocument(userId: userId, headers: [("Content-Type", "application/octet-stream")])
+            print("--- --- start uploading attachment: \(documentId), size: \(document.data.byteCount)")
             let response: DocumentResponse = try combineAwait(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
+            print("--- --- end uploading attachment: \(documentId), size: \(document.data.byteCount)")
+            let end = DispatchTime.now().uptimeNanoseconds
+            let time = Double(Double(end) - Double(start)) / Double(1_000_000_000)
+            print("--- --- time elapsed: \(time) --- ---")
             return BlobDocument(id: response.identifier, data: document.data)
         }
     }

@@ -58,6 +58,8 @@ final class AttachmentService: AttachmentServiceType {
                                         document: BlobDocument(data: data))
             }
 
+            print("--- start uploading main attachments")
+            let start = DispatchTime.now().uptimeNanoseconds
             let combineResult = combineAwait(unfoldedDocuments.map { unfoldedDocument -> (String, SDKFuture<UnfoldedBlobDocument>) in
                 let identifier = UUID().uuidString
                 let future = self.documentService.create(document: unfoldedDocument.document, key: key)
@@ -69,11 +71,16 @@ final class AttachmentService: AttachmentServiceType {
                     .asyncFuture()
                 return (identifier, future)
             })
-
+            print("--- end uploading main attachments")
+            let end = DispatchTime.now().uptimeNanoseconds
+            let time = Double(Double(end) - Double(start)) / Double(1_000_000_000)
+            print("--- time elapsed: \(time) --- ")
+            
             try combineResult.throwIfErrored()
+
+            print("--- start uploading thumbnails attachments")
+            let startTwo = DispatchTime.now().uptimeNanoseconds
             let identifiedUnfoldedDocuments = combineResult.successRequests.map { $0.1 }
-
-
             let documentsWithAdditionalIds = try identifiedUnfoldedDocuments.map { identifiedUnfoldedDocument -> (AttachmentType, [String]) in
                 var thumbnailsIds: [String]?
                 if let attachmentId = identifiedUnfoldedDocument.document.id, self.imageResizer.isResizable(identifiedUnfoldedDocument.document.data) {
@@ -82,7 +89,10 @@ final class AttachmentService: AttachmentServiceType {
 
                 return (identifiedUnfoldedDocument.attachment, thumbnailsIds ?? [])
             }
-
+            print("--- end uploading thumbnails attachments")
+            let endTwo = DispatchTime.now().uptimeNanoseconds
+            let timeTwo = Double(Double(endTwo) - Double(startTwo)) / Double(1_000_000_000)
+            print("--- time elapsed: \(timeTwo) --- ")
             return documentsWithAdditionalIds
         }
     }
