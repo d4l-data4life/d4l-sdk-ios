@@ -70,7 +70,7 @@ final class OAuthService: OAuthServiceType {
     var isRefreshing = false
 
     private let retryQueue = DispatchQueue(label: "d4l.oauthservice.retry.queue")
-    
+
     init(clientId: String,
          clientSecret: String,
          redirectURL: URL,
