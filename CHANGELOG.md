@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Replaces Then with Combine
 
+## [1.14.2] - 2021-06-01
+### Fixed
+- Refreshing the access token now returns a result
+
 ## [1.14.1] - 2021-05-25
 ### Fixed
 - SDk doesnt automatically logout on update from 1.12.3
@@ -449,7 +453,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.1...main
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.2...main
+[1.14.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.1...1.14.2
 [1.14.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.0...1.14.1
 [1.14.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.1...1.14.0
 [1.13.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.0...1.13.1
