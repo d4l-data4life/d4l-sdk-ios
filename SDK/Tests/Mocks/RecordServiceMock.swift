@@ -36,7 +36,7 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
         guard let resource = resource as? MockR else {
             fatalError()
         }
-        
+
         updateRecordCalledWith = (AnySDKResource<MockR>(resource: resource), annotations, userId, recordId, attachmentKey)
         return updateRecordResult as? SDKFuture<DR> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
     }

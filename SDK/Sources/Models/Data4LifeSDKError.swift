@@ -51,7 +51,7 @@ public enum Data4LifeSDKError: LocalizedError {
     case emptyAnnotationNotAllowed
     case invalidCharacterInTag
     case firstBatchError(Error)
-    
+
     // AppAuth errors (https://github.com/openid/AppAuth-iOS/blob/master/Source/OIDError.h)
     case appAuth(Error)
     case userCanceledAuthFlow
