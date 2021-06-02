@@ -18,26 +18,20 @@ import UIKit
 
 @testable import Data4LifeSDK
 
-class ImageResizerMock: Resizable {
+class ImageResizerMock: DataResizer {
     var isResizableCalledWith: (Data)?
     var isResizableResult = false
-    func isResizable(_ data: Data) -> Bool {
+    func isImageData(_ data: Data) -> Bool {
         isResizableCalledWith = data
         return isResizableResult
     }
 
-    var getSizeCalledWith: (ImageSize, UIImage)?
-    var getSizeResult: CGSize?
-    func getSize(_ imageSize: ImageSize, for image: UIImage) -> CGSize {
-        getSizeCalledWith = (imageSize, image)
-        return getSizeResult ?? CGSize(width: 0, height: 0)
-    }
-
-    var resizeCalledWith: (UIImage, CGSize)?
+    var resizeCalledWith: (UIImage, ThumbnailHeight)?
     var resizeResult: (Data?, Error?)?
     var resizeResults: [(Data?, Error?)]?
-    func resize(_ image: UIImage, for size: CGSize) throws -> Data? {
-        resizeCalledWith = (image, size)
+
+    func resizedData(of image: UIImage, with thumbnailHeight: ThumbnailHeight) throws -> Data {
+        resizeCalledWith = (image, thumbnailHeight)
         if let results = resizeResults, let first = results.first {
             resizeResults = Array(results.dropFirst())
             if let data = first.0 {
@@ -46,9 +40,11 @@ class ImageResizerMock: Resizable {
                 throw first.1!
             }
         }
+
         if let error = resizeResult?.1 {
             throw error
         }
-        return resizeResult?.0
+
+        return resizeResult!.0!
     }
 }

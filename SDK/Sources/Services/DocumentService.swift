@@ -19,10 +19,10 @@ import Foundation
 import Combine
 
 protocol DocumentServiceType {
-    func create(document: BlobDocument, key: Key) -> SDKFuture<BlobDocument>
-    func create(documents: [BlobDocument], key: Key) -> SDKFuture<[BlobDocument]>
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<BlobDocument>
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[BlobDocument]>
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument>
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]>
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument>
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]>
     func deleteDocument(withId: String) -> SDKFuture<Void>
     func deleteDocuments(withIds identifiers: [String]) -> SDKFuture<Void>
 }
@@ -44,7 +44,7 @@ class DocumentService: DocumentServiceType {
         }
     }
 
-    func create(document: BlobDocument, key: Key) -> SDKFuture<BlobDocument> {
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument> {
         return combineAsync {
             let documentId = UUID().uuidString.prefix(10)
 
@@ -59,11 +59,11 @@ class DocumentService: DocumentServiceType {
             let end = DispatchTime.now().uptimeNanoseconds
             let time = Double(Double(end) - Double(start)) / Double(1_000_000_000)
             print("--- --- time elapsed: \(time) --- ---")
-            return BlobDocument(id: response.identifier, data: document.data)
+            return AttachmentDocument(id: response.identifier, data: document.data)
         }
     }
 
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<BlobDocument> {
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument> {
 
         return SDKFuture { promise in
             do {
@@ -82,7 +82,7 @@ class DocumentService: DocumentServiceType {
 
                 let encryptedData = try combineAwait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
-                promise(.success(BlobDocument(id: identifier, data: decryptedData)))
+                promise(.success(AttachmentDocument(id: identifier, data: decryptedData)))
             } catch {
                 promise(.failure(error))
             }
@@ -102,12 +102,12 @@ class DocumentService: DocumentServiceType {
         return Publishers.MergeMany(requests).last().eraseToAnyPublisher().asyncFuture()
     }
 
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[BlobDocument]> {
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]> {
         let requests = identifiers.map { self.fetchDocument(withId: $0, key: key, parentProgress: parentProgress) }
         return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }
 
-    func create(documents: [BlobDocument], key: Key) -> SDKFuture<[BlobDocument]> {
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]> {
         let requests = documents.map { self.create(document: $0, key: key) }
         return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }

@@ -20,7 +20,7 @@ import Combine
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]>
+                           key: Key) -> SDKFuture<[UnfoldedAttachmentDocument]>
     func fetchAttachments(for resourceWithAttachments: HasAttachments,
                           attachmentIds: [String],
                           downloadType: DownloadType,
@@ -31,7 +31,7 @@ protocol AttachmentServiceType {
 final class AttachmentService: AttachmentServiceType {
 
     private let documentService: DocumentServiceType
-    private let imageResizer: Resizable
+    private let imageResizer: DataResizer
 
     init(container: DIContainer) {
         do {
@@ -43,57 +43,76 @@ final class AttachmentService: AttachmentServiceType {
     }
 
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+                           key: Key) -> SDKFuture<[UnfoldedAttachmentDocument]> {
 
         return combineAsync {
 
-            let unfoldedDocuments = try attachments.map { attachment -> UnfoldedBlobDocument in
+            let unfoldedDocuments = try attachments.map { attachment -> UnfoldedAttachmentDocument in
                 guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
                     throw Data4LifeSDKError.invalidAttachmentMissingData
                 }
                 do { try attachment.validatePayloadType() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadType }
                 do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
 
-                return UnfoldedBlobDocument(attachment: attachment,
-                                        document: BlobDocument(data: data))
+                return UnfoldedAttachmentDocument(attachment: attachment,
+                                            document: AttachmentDocument(data: data))
             }
 
-            print("--- start uploading main attachments")
-            let start = DispatchTime.now().uptimeNanoseconds
-            let combineResult = combineAwait(unfoldedDocuments.map { unfoldedDocument -> (String, SDKFuture<UnfoldedBlobDocument>) in
+            let identifiedDocumentFutures = unfoldedDocuments.map { unfoldedDocument -> (String, SDKFuture<UnfoldedAttachmentDocument>) in
                 let identifier = UUID().uuidString
                 let future = self.documentService.create(document: unfoldedDocument.document, key: key)
-                    .map { document -> UnfoldedBlobDocument in
+                    .map { document -> UnfoldedAttachmentDocument in
                         let newAttachment = unfoldedDocument.attachment.copy() as! AttachmentType
                         newAttachment.attachmentId = document.id
-                        return UnfoldedBlobDocument(attachment: newAttachment, document: document)
+                        return UnfoldedAttachmentDocument(attachment: newAttachment, document: document)
                     }
                     .asyncFuture()
                 return (identifier, future)
-            })
-            print("--- end uploading main attachments")
-            let end = DispatchTime.now().uptimeNanoseconds
-            let time = Double(Double(end) - Double(start)) / Double(1_000_000_000)
-            print("--- time elapsed: \(time) --- ")
-            
+            }
+
+            let combineResult = combineAwait(identifiedDocumentFutures)
             try combineResult.throwIfErrored()
 
-            print("--- start uploading thumbnails attachments")
-            let startTwo = DispatchTime.now().uptimeNanoseconds
             let identifiedUnfoldedDocuments = combineResult.successRequests.map { $0.1 }
-            let documentsWithAdditionalIds = try identifiedUnfoldedDocuments.map { identifiedUnfoldedDocument -> (AttachmentType, [String]) in
-                var thumbnailsIds: [String]?
-                if let attachmentId = identifiedUnfoldedDocument.document.id, self.imageResizer.isResizable(identifiedUnfoldedDocument.document.data) {
+            let identifiedUnfoldedDocumentsWithThumbnailsIds = try identifiedUnfoldedDocuments.map { identifiedUnfoldedDocument -> UnfoldedAttachmentDocument in
+                var thumbnailsIds: [ThumbnailHeight: String]?
+                if let attachmentId = identifiedUnfoldedDocument.id, self.imageResizer.isImageData(identifiedUnfoldedDocument.document.data) {
                     thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: identifiedUnfoldedDocument.document.data, key: key))
                 }
 
-                return (identifiedUnfoldedDocument.attachment, thumbnailsIds ?? [])
+                var identifiedUnfoldedDocument = identifiedUnfoldedDocument
+                identifiedUnfoldedDocument.thumbnailsIDs = thumbnailsIds ?? [:]
+                return identifiedUnfoldedDocument
             }
-            print("--- end uploading thumbnails attachments")
-            let endTwo = DispatchTime.now().uptimeNanoseconds
-            let timeTwo = Double(Double(endTwo) - Double(startTwo)) / Double(1_000_000_000)
-            print("--- time elapsed: \(timeTwo) --- ")
-            return documentsWithAdditionalIds
+            return identifiedUnfoldedDocumentsWithThumbnailsIds
+        }
+    }
+
+    private func createThumbnails(attachmentId: String,
+                                  originalData: Data,
+                                  key: Key) -> SDKFuture<[ThumbnailHeight: String]> {
+        return combineAsync {
+
+            guard let imageToResize = UIImage(data: originalData) else {
+                return [:]
+            }
+
+            var thumbnailsIds = [ThumbnailHeight: String]()
+            for thumbnailHeight in ThumbnailHeight.allCases {
+                do {
+                    let resizedData = try self.imageResizer.resizedData(of: imageToResize, with: thumbnailHeight)
+                    let uploaded = try combineAwait(self.documentService.create(document: AttachmentDocument(data: resizedData), key: key))
+                    guard let thumbnailId = uploaded.id else {
+                        // A created document should always have got an id
+                        return [:]
+                    }
+                    thumbnailsIds[thumbnailHeight] = thumbnailId
+                } catch Data4LifeSDKError.resizingImageSmallerThanOriginalOne {
+
+                }
+            }
+
+            return thumbnailsIds
         }
     }
 
@@ -113,8 +132,7 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 var selectedDocumentId: String?
-                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifiable,
-                   downloadType.isThumbnailType {
+                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifiable, downloadType.isThumbnailType {
                     selectedDocumentId = try self.selectDocumentId(resourceWithIdentifiableAttachments, downloadType: downloadType, for: attachmentId)
                     attachment.attachmentId = ThumbnailsIdFactory.displayAttachmentId(attachmentId, for: selectedDocumentId)
                 }
@@ -130,7 +148,6 @@ final class AttachmentService: AttachmentServiceType {
                 }
 
                 if downloadType.isThumbnailType {
-                    // Update hash and size for thumbnails attachments
                     attachmentCopy.attachmentHash = data.sha1Hash
                     attachmentCopy.attachmentSize = data.count
                 } else {
@@ -143,42 +160,6 @@ final class AttachmentService: AttachmentServiceType {
             }
 
             return filledAttachments
-        }
-    }
-
-    private func createThumbnails(attachmentId: String,
-                                  originalData: Data,
-                                  key: Key) -> SDKFuture<[String]> {
-        return combineAsync {
-            // Convert imageData to UIImage
-            guard let imageToResize = UIImage(data: originalData) else {
-                // Data is not an image. This case should never happen, because the mimeType is actually an image
-                return []
-            }
-
-            var thumbnailsIds = [String]()
-
-            
-            for imageSize in ImageSize.allCases {
-                let selectedSize = self.imageResizer.getSize(imageSize, for: imageToResize)
-                do {
-                    guard let resizedData = try self.imageResizer.resize(imageToResize, for: selectedSize) else {
-                        // This case should never happen
-                        return []
-                    }
-
-                    let uploaded = try combineAwait(self.documentService.create(document: BlobDocument(data: resizedData), key: key))
-                    guard let thumbnailId = uploaded.id else {
-                        // A created document should always have got an id
-                        return []
-                    }
-                    thumbnailsIds.append(thumbnailId)
-                } catch Data4LifeSDKError.resizingImageSmallerThanOriginalOne {
-                    thumbnailsIds.append(attachmentId)
-                }
-            }
-
-            return thumbnailsIds
         }
     }
 

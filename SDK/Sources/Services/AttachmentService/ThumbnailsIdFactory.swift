@@ -18,20 +18,8 @@ struct ThumbnailsIdFactory {
     static let splitChar: Character = "#"
     static let downscaledAttachmentIdsFormat = "d4l_f_p_t"
 
-    static func createAdditionalId(from attachmentWithIds: (attachment: AttachmentType, thumbnailIds: [String])) -> String? {
-        let attachment = attachmentWithIds.0
-        let ids = attachmentWithIds.1
-
-        guard !ids.isEmpty, let attachmentId = attachment.attachmentId, ids.count == 2 else {
-            return nil
-        }
-
-        var additionalAttachmentId = "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)"
-        for additionalId in ids {
-            additionalAttachmentId.append("\(splitChar)\(additionalId)")
-        }
-
-        return additionalAttachmentId
+    static func createAdditionalId(from unfoldedAttachmentDocument: UnfoldedAttachmentDocument) -> String? {
+        return unfoldedAttachmentDocument.tripleIdentifier
     }
 
     static func setDocumentId(additionalId: String, for downloadType: DownloadType) throws -> String? {

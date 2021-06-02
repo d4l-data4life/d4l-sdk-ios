@@ -57,17 +57,17 @@ extension FhirService {
             }
 
             let generatedKey = try combineAwait(self.cryptoService.generateGCKey(.attachment))
-            let uploadedAttachmentsWithIds: [(AttachmentType, [String])] =
+            let uploadedAttachmentsWithIds: [UnfoldedAttachmentDocument] =
                 try combineAwait(self.attachmentService.uploadAttachments(validatedAttachments,
-                                                                   key: generatedKey))
-            var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 } as [AttachmentType]
+                                                                          key: generatedKey))
+            var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
 
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &uploadedAttachments)
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
-                let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) }
+                let thumbnailAdditionalIdentifiers = uploadedAttachmentsWithIds.compactMap { $0.tripleIdentifier }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailAdditionalIdentifiers)
                 return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
             } else {
@@ -99,8 +99,8 @@ extension FhirService {
 
             let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate()
 
-            let uploadedAttachmentsWithIds = try combineAwait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
-            let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.0 }
+            let uploadedAttachmentsWithIds: [UnfoldedAttachmentDocument] = try combineAwait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
+            let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
@@ -109,7 +109,7 @@ extension FhirService {
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
-                resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { ThumbnailsIdFactory.createAdditionalId(from: $0) })
+                resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { $0.tripleIdentifier })
                 let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
                                                                                                     attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
                 return (cleanedResource as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
@@ -123,14 +123,12 @@ extension FhirService {
 // MARK: - Utils
 extension FhirService {
 
-    private func uploadAttachments(
-        _ attachments: [AttachmentType],
-        attachmentKey: Key) -> SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+    private func uploadAttachments(_ attachments: [AttachmentType], attachmentKey: Key) -> SDKFuture<[UnfoldedAttachmentDocument]> {
         return combineAsync {
             if !attachments.isEmpty {
-                let updatedAttachmentsWithThumbnailsIds: [(AttachmentType, [String])] =
+                let updatedAttachmentsWithThumbnailsIds: [UnfoldedAttachmentDocument] =
                     try combineAwait(self.attachmentService.uploadAttachments(attachments,
-                                                                       key: attachmentKey))
+                                                                              key: attachmentKey))
                 return updatedAttachmentsWithThumbnailsIds
             } else {
                 return []

@@ -26,25 +26,27 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3ImageAttachmentElement()
         attachment.id = attachmentId
-        let ids = ["addId1", "addId2"]
-        let attWidhIds = (attachment, ids)
+        let ids = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let document = UnfoldedAttachmentDocument(attachment: attachment,
+                                                  document: AttachmentDocument(id: attachmentId, data: Data()),
+                                                  thumbnailsIDs: [.mediumHeight: "addId1", .smallHeight: "addId2"])
 
-        let result = ThumbnailsIdFactory.createAdditionalId(from: attWidhIds)
+        let result = ThumbnailsIdFactory.createAdditionalId(from: document)
 
         XCTAssertNotNil(result)
 
-        let finalAdditionalId = "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(ids[0])\(splitChar)\(ids[1])"
+        let finalAdditionalId = "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(ids[.mediumHeight]!)\(splitChar)\(ids[.smallHeight]!)"
         XCTAssert(result == finalAdditionalId)
     }
 
     func testCreateAdditionalIdFailsBuildingId() {
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = UUID().uuidString
+        let document = UnfoldedAttachmentDocument(attachment: attachment,
+                                                  document: AttachmentDocument(id: attachment.id, data: Data()),
+                                                  thumbnailsIDs: [.mediumHeight: "testId"])
 
-        let ids = ["testId"]
-        let attWidhIds = (attachment, ids)
-
-        let result = ThumbnailsIdFactory.createAdditionalId(from: attWidhIds)
+        let result = ThumbnailsIdFactory.createAdditionalId(from: document)
 
         XCTAssertNil(result)
     }
@@ -53,9 +55,9 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
-        let thumbnailsId = ["addId1", "addId2"]
+        let thumbnailsId = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
         let additionalId =
-        "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
+            "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[.mediumHeight]!)\(splitChar)\(thumbnailsId[.smallHeight]!)"
 
         let result = try! ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: .full)
 
@@ -66,34 +68,34 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
-        let thumbnailsId = ["addId1", "addId2"]
+        let thumbnailsId = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
         let additionalId =
-        "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
+            "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[.mediumHeight]!)\(splitChar)\(thumbnailsId[.smallHeight]!)"
 
         let result = try! ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: .medium)
 
-        XCTAssertEqual(result, thumbnailsId[0])
+        XCTAssertEqual(result, thumbnailsId[.mediumHeight])
     }
 
     func testSetDocumentIdForDownloadTypeSmall() {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
-        let thumbnailsId = ["addId1", "addId2"]
+        let thumbnailsId = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
         let additionalId =
-        "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
+            "\(downscaledAttachmentIdsFormat)\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[.mediumHeight]!)\(splitChar)\(thumbnailsId[.smallHeight]!)"
 
         let result = try! ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: .small)
 
-        XCTAssertEqual(result, thumbnailsId[1])
+        XCTAssertEqual(result, thumbnailsId[.smallHeight])
     }
 
     func testSetDocumentIdForDownloadInvalidFormatAccordingFormat() {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
-        let thumbnailsId = ["addId1", "addId2"]
-        let additionalId = "\(downscaledAttachmentIdsFormat)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
+        let thumbnailsId = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let additionalId = "\(downscaledAttachmentIdsFormat)\(attachmentId)\(splitChar)\(thumbnailsId[.mediumHeight]!)\(splitChar)\(thumbnailsId[.smallHeight]!)"
         let expectedError = Data4LifeSDKError.malformedAttachmentAdditionalId
         do {
             _ = try ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: .small)
@@ -109,8 +111,8 @@ class ThumbnailsIdFactoryTests: XCTestCase {
         let attachmentId = UUID().uuidString
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
-        let thumbnailsId = ["addId1", "addId2"]
-        let additionalId = "\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[0])\(splitChar)\(thumbnailsId[1])"
+        let thumbnailsId = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let additionalId = "\(splitChar)\(attachmentId)\(splitChar)\(thumbnailsId[.mediumHeight]!)\(splitChar)\(thumbnailsId[.smallHeight]!)"
 
         let result = try! ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: .small)
 

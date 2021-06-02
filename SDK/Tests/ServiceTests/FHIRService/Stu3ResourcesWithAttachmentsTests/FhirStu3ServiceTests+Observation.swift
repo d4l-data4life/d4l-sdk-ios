@@ -61,8 +61,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         let fixtureObservation = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2])
 
-        let additionalIds = [String]()
-
         let expectedObservation = fixtureObservation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
@@ -82,7 +80,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureObservation.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { ($0, additionalIds) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { UnfoldedAttachmentDocument.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -125,8 +123,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
                                                                 components: [observationComponent1,
                                                                              observationComponent2])
 
-        let additionalIds = [String]()
-
         let expectedObservation = observation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
@@ -146,7 +142,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         observation.id = expectedRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResult.map { ($0, additionalIds) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResult.map { UnfoldedAttachmentDocument.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -188,8 +184,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fixtureComponent3 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: nil)
         let fixtureObservation = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2, fixtureComponent3])
 
-        let additionalIds = [String]()
-
         let expectedObservation = fixtureObservation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
@@ -209,7 +203,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureObservation.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { ($0, additionalIds) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { UnfoldedAttachmentDocument.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -324,7 +318,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment)
         fhirResource.id = resourceId
 
-        let additionalIds = [String]()
         let record = DecryptedRecordFactory.create(fhirResource)
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         updatedResource.allAttachments?.forEach { $0.attachmentDataString = nil }
@@ -333,7 +326,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         keychainService[.userId] = userId
         let uploadedAttachment = attachment.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment.id = UUID().uuidString
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([UnfoldedAttachmentDocument.make(uploadedAttachment)]).asyncFuture()
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
@@ -454,8 +447,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
 
-        let additionalIds = [String]()
-
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
@@ -484,9 +475,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
         attachmentService.uploadAttachmentsResults = [Just([
-            (updatedAttachment!, additionalIds),
-            (newAttachment, additionalIds),
-            (newAttachmentWithId, additionalIds)]).asyncFuture()]
+            UnfoldedAttachmentDocument.make(updatedAttachment!),
+            UnfoldedAttachmentDocument.make(newAttachment),
+            UnfoldedAttachmentDocument.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -529,8 +520,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
 
-        let additionalIds = [String]()
-
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
@@ -559,9 +548,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
         attachmentService.uploadAttachmentsResults = [Just([
-            (updatedAttachment!, additionalIds),
-            (newAttachment, additionalIds),
-            (newAttachmentWithId, additionalIds)]).asyncFuture()]
+            UnfoldedAttachmentDocument.make(updatedAttachment!),
+            UnfoldedAttachmentDocument.make(newAttachment),
+            UnfoldedAttachmentDocument.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -600,9 +589,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment1, components: [component])
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
-
-        let additionalIds = [String]()
-
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
@@ -626,9 +612,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([(updatedAttachment!, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachment, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachmentWithId, additionalIds)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([UnfoldedAttachmentDocument.make(updatedAttachment!)]).asyncFuture(),
+                                                      Just([UnfoldedAttachmentDocument.make(newAttachment)]).asyncFuture(),
+                                                      Just([UnfoldedAttachmentDocument.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -656,8 +642,8 @@ extension FhirStu3ServiceObservationTests {
         fixtureAttachment.id = attachmentId
         let fixtureResource = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
-        let additionalPayloadsIds = ["addId1", "addId2"]
-        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
+        let additionalPayloadsIds = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
 
         let expectedResource = fixtureResource.copy() as! Observation // swiftlint:disable:this force_cast
         expectedResource.setAdditionalIds(expectedAdditionalId)
@@ -669,7 +655,7 @@ extension FhirStu3ServiceObservationTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(fixtureAttachment, additionalPayloadsIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([UnfoldedAttachmentDocument.make(fixtureAttachment, ids: additionalPayloadsIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record with additional id")
@@ -698,7 +684,7 @@ extension FhirStu3ServiceObservationTests {
         let expectedAttachmentId = UUID().uuidString
         let fixtureResource = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
-        let additionalIds = ["addId1"]
+        let additionalIds = [ThumbnailHeight.mediumHeight: "addId1"]
         let expectedAdditionalIds = [String]()
 
         let expectedResource = fixtureResource.copy() as! Observation // swiftlint:disable:this force_cast
@@ -713,7 +699,7 @@ extension FhirStu3ServiceObservationTests {
         uploadedAttachment.id = expectedAttachmentId
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([UnfoldedAttachmentDocument.make(uploadedAttachment, ids: additionalIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")
