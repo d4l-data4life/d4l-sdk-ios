@@ -13,11 +13,27 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-@_implementationOnly import Alamofire
 import Foundation
+import Combine
+import XCTest
 
-extension Request {
-    static var backgroundQueue: DispatchQueue {
-        return DispatchQueue.global(qos: .background)
+private var testStorage: Set<AnyCancellable> = []
+
+extension Publisher {
+
+    func then(_ onValue: @escaping (Output) -> Void = { _ in XCTFail("Got value but expected an error instead") },
+              onError: @escaping (Failure) -> Void = { _ in XCTFail("Got error but expected a value instead") },
+              finally: @escaping () -> Void = {}) {
+        sink { sinkResult in
+            switch sinkResult {
+            case .finished:
+                break
+            case .failure(let error):
+                onError(error)
+            }
+            finally()
+        } receiveValue: { value in
+            onValue(value)
+        }.store(in: &testStorage)
     }
 }

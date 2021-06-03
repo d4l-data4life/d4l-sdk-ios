@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
 import Data4LifeCrypto
 
@@ -44,7 +44,7 @@ class DocumentServiceTests: XCTestCase {
         }
 
         Router.baseUrl = "https://example.com"
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     func testCreateSingleDocument() {
@@ -68,9 +68,9 @@ class DocumentServiceTests: XCTestCase {
                 XCTAssertEqual(result.data, data)
                 XCTAssertRouteCalled("POST", "/users/\(userId)/documents")
                 XCTAssertRequestDataEquals("POST", "/users/\(userId)/documents", with: encryptedData as Any)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(String(describing: error))
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -98,9 +98,9 @@ class DocumentServiceTests: XCTestCase {
                 XCTAssertEqual(result.first?.data, data)
                 XCTAssertRouteCalled("POST", "/users/\(userId)/documents")
                 XCTAssertRequestDataEquals("POST", "/users/\(userId)/documents", with: encryptedData as Any)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(String(describing: error))
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -125,9 +125,9 @@ class DocumentServiceTests: XCTestCase {
                 XCTAssertEqual(result.first?.id, documentId)
                 XCTAssertEqual(result.first?.data, data)
                 XCTAssertRouteCalled("GET", "/users/\(userId)/documents/\(documentId)")
-            }.onError { error in
+            } onError: { error in
                 XCTFail(String(describing: error))
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -150,9 +150,9 @@ class DocumentServiceTests: XCTestCase {
         documentService.fetchDocumentDelayed(withId: documentId, key: key, parentProgress: progress)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual((error as? URLError)?.code, URLError.cancelled)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -172,9 +172,9 @@ class DocumentServiceTests: XCTestCase {
         documentService.deleteDocument(withId: documentId)
             .then {
                 XCTAssertRouteCalled("DELETE", "/users/\(userId)/documents/\(documentId)")
-            }.onError { error in
+            } onError: { error in
                 XCTFail(String(describing: error))
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -188,16 +188,16 @@ class DocumentServiceTests: XCTestCase {
         let key = KeyFactory.createKey(.attachment)
 
         keychainService[.userId] = userId
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         let asyncExpectation = expectation(description: "Should fetch a document")
         documentService.fetchDocuments(withIds: [documentId], key: key, parentProgress: progress)
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
         }
 
@@ -207,12 +207,11 @@ class DocumentServiceTests: XCTestCase {
 
 fileprivate extension DocumentService {
 
-    func fetchDocumentDelayed(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<Document> {
+    func fetchDocumentDelayed(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<Document> {
 
-        return Async { (resolve: @escaping (Document) -> Void, reject: @escaping (Error) -> Void) in
-
+        return SDKFuture<Document> { promise in
             do {
-                let userId = try wait(self.keychainService.get(.userId))
+                let userId = try self.keychainService.get(.userId)
                 let route = Router.fetchDocument(userId: userId, documentId: identifier)
                 let request = try self.sessionService.request(route: route)
 
@@ -222,17 +221,17 @@ fileprivate extension DocumentService {
                 // This provides cancel functionality
                 request.downloadProgress.cancellationHandler = { [weak request] in
                     request?.cancel()
-                    reject(URLError.init(URLError.cancelled))
+                    promise(.failure(URLError.init(URLError.cancelled)))
                 }
 
-                let encryptedData = try wait(request.responseData())
+                let encryptedData = try combineAwait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
-                    resolve(Document(id: identifier, data: decryptedData))
+                    promise(.success(Document(id: identifier, data: decryptedData)))
                 }
             } catch {
-                reject(error)
+                promise(.failure(error))
             }
-        }
+        }.asyncFuture()
     }
 }

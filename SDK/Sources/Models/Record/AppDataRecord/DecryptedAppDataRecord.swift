@@ -15,7 +15,6 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 
 struct DecryptedAppDataRecord: DecryptedRecord {
     var id: String
@@ -27,8 +26,8 @@ struct DecryptedAppDataRecord: DecryptedRecord {
     let attachmentKey: Key? = nil
     let modelVersion: Int
 
-    static func from(encryptedRecord: EncryptedRecord, cryptoService: CryptoServiceType, commonKeyService: CommonKeyServiceType) -> Async<DecryptedAppDataRecord> {
-        return async {
+    static func from(encryptedRecord: EncryptedRecord, cryptoService: CryptoServiceType, commonKeyService: CommonKeyServiceType) throws -> DecryptedAppDataRecord {
+
             let commonKey = try decryptCommonKey(from: encryptedRecord, commonKeyService: commonKeyService)
             let dataKey = try decryptDataKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
 
@@ -45,7 +44,6 @@ struct DecryptedAppDataRecord: DecryptedRecord {
                                           annotations: decryptedTagGroup.annotations,
                                           dataKey: dataKey,
                                           modelVersion: encryptedRecord.modelVersion)
-        }
     }
 }
 

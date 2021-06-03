@@ -14,11 +14,11 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
+import Combine
 
 protocol TaggingServiceType {
-    func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String], annotations: [String]?) -> Async<TagGroup>
-    func makeTagGroup<R: SDKResource>(for type: R.Type, annotations: [String]?) -> Async<TagGroup>
+    func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String], annotations: [String]?) -> TagGroup
+    func makeTagGroup<R: SDKResource>(for type: R.Type, annotations: [String]?) -> TagGroup
 }
 
 struct TaggingService: TaggingServiceType {
@@ -45,28 +45,15 @@ struct TaggingService: TaggingServiceType {
         self.clientId = clientId
         self.partnerId = partnerId
     }
+}
 
-    // MARK: Internal API
-    func makeTagGroup<R: SDKResource>(for type: R.Type, annotations: [String]? = nil) -> Async<TagGroup> {
-        return Async { resolve, _ in
-            resolve({
-                return TagGroup(tags: self.makeTags(for: type), annotations: annotations?.lowercased ?? [])
-            }())
-        }
+extension TaggingService {
+
+    func makeTagGroup<R: SDKResource>(for type: R.Type, annotations: [String]? = nil) -> TagGroup {
+        return TagGroup(tags: type.searchTags, annotations: annotations?.lowercased ?? [])
     }
 
-    private func makeTags<R: SDKResource>(for type: R.Type) -> [String:String] {
-        return type.searchTags
-    }
-
-    func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> Async<TagGroup> {
-        return Async { resolve, _ in
-            resolve(self.makeTagGroup(for: resource, oldTags: oldTags, annotations: annotations))
-        }
-    }
-
-    // MARK: Private API
-    private func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> TagGroup {
+    func makeTagGroup<R: SDKResource>(for resource: R, oldTags: [String: String] = [:], annotations: [String]?) -> TagGroup {
         var tags = makeCommonTags(fromOldTags: oldTags)
         tags.merge(R.searchTags) { (tagsValue, _) -> String in
             return tagsValue

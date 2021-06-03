@@ -14,11 +14,11 @@
 //  contact D4L by email to help@data4life.care.
 
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 @_implementationOnly import Alamofire
+import Combine
 
 protocol UserServiceType {
-    func fetchUserInfo() -> Async<Void>
+    func fetchUserInfo() -> SDKFuture<Void>
     func getUserId() throws -> String
 }
 
@@ -40,9 +40,9 @@ class UserService: UserServiceType {
         }
     }
 
-    func fetchUserInfo() -> Async<Void> {
-        return async {
-            let response: UserInfoResponse = try wait(self.sessionService.request(route: Router.userInfo).responseDecodable())
+    func fetchUserInfo() -> SDKFuture<Void> {
+        return combineAsync {
+            let response: UserInfoResponse = try combineAwait(self.sessionService.request(route: Router.userInfo).responseDecodable())
 
             guard
                 let encryptedCommonKey = Data(base64Encoded: response.commonKey),
@@ -60,13 +60,13 @@ class UserService: UserServiceType {
 
             let decryptedTagEncryptionKeyData = try self.cryptoService.decrypt(data: encryptedTagEncryptionKey, key: commonKey)
             let tagKey: Key = try JSONDecoder().decode(Key.self, from: decryptedTagEncryptionKeyData)
-            self.cryptoService.tagEncryptionKey = tagKey
 
-            try wait(self.keychainService.set(response.userId, forKey: .userId))
+            self.cryptoService.tagEncryptionKey = tagKey
+            self.keychainService.set(response.userId, forKey: .userId)
         }
     }
 
     func getUserId() throws -> String {
-        try wait(self.keychainService.get(.userId))
+        try self.keychainService.get(.userId)
     }
 }

@@ -14,7 +14,6 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 import ModelsR4
 
 extension Data4LifeClient {

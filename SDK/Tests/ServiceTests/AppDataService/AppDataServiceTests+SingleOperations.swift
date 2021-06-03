@@ -15,8 +15,19 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
+
+enum JustError: Swift.Error {
+    case dummy
+}
+
+extension Just {
+    func asyncFuture() -> Future<Output, Error> {
+        mapError { _ in JustError.dummy }
+        .asyncFuture()
+    }
+}
 
 extension AppDataServiceTests {
     func testcreateAppDataResourceData() {
@@ -25,21 +36,21 @@ extension AppDataServiceTests {
         let record = DecryptedRecordFactory.create(appData)
 
         keychainService[.userId] = userId
-        recordService.createRecordResult = Async.resolve(record)
+        recordService.createRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
-        appDataService.createAppDataRecord(appData)
-            .then { result in
+        appDataService.createAppDataRecord(appData).complete({ result in
+            switch result {
+            case .success(let result):
                 XCTAssertNotNil(result)
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, appData)
                 XCTAssertEqual(appData, result.data)
                 XCTAssertEqual(result.id, record.id)
-        }.onError { error in
-            XCTFail(error.localizedDescription)
-        }.finally {
-            asyncExpectation.fulfill()
-        }
-
+                asyncExpectation.fulfill()
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        })
         waitForExpectations(timeout: 5)
     }
 
@@ -50,7 +61,7 @@ extension AppDataServiceTests {
         let record = DecryptedRecordFactory.create(appData)
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResult = Async.resolve(record)
+        recordService.fetchRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a resource")
         appDataService.fetchAppDataRecord(withId: resourceId)
@@ -59,12 +70,10 @@ extension AppDataServiceTests {
                 XCTAssertEqual(appData, result.data)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId)
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId)
-        }.onError { error in
-            XCTFail(error.localizedDescription)
-        }.finally {
-            asyncExpectation.fulfill()
-        }
-
+                asyncExpectation.fulfill()
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -83,7 +92,7 @@ extension AppDataServiceTests {
         let updatedRecord = record.copy(with: updatedResource)
 
         keychainService[.userId] = userId
-        recordService.updateRecordResult = Async.resolve(updatedRecord)
+        recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
 
         let asyncExpectation = expectation(description: "should update language property")
         appDataService.updateAppDataRecord(updatedResource, recordId: record.id)
@@ -92,11 +101,11 @@ extension AppDataServiceTests {
                 XCTAssertNotEqual(result.data, appData)
                 XCTAssertEqual(result.data, updatedResource)
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.0.resource, updatedResource)
-        }.onError { error in
+                asyncExpectation.fulfill()
+            } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
-            asyncExpectation.fulfill()
         }
+
         waitForExpectations(timeout: 5)
     }
 
@@ -104,19 +113,18 @@ extension AppDataServiceTests {
         let userId = UUID().uuidString
         let resourceId = UUID().uuidString
 
-        recordService.deleteRecordResult = Async.resolve()
+        recordService.deleteRecordResult = Just(()).asyncFuture()
         keychainService[.userId] = userId
 
         let asyncExpectation = expectation(description: "should return success")
         appDataService.deleteAppDataRecord(withId: resourceId)
             .then { _ in
                 XCTAssertTrue(self.recordService.deleteRecordCalledWith! == (resourceId, userId))
-        }.onError { error in
-            XCTAssertNil(error.localizedDescription)
-        }.finally {
-            asyncExpectation.fulfill()
-        }
-
+            } onError: { error in
+                XCTAssertNil(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 }

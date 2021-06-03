@@ -16,7 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Alamofire
-import Then
+import Combine
 @testable import AppAuth
 
 class OAuthServiceTests: XCTestCase {
@@ -59,7 +59,7 @@ class OAuthServiceTests: XCTestCase {
         keychainService = KeychainServiceMock()
         authState = AuthStateMock()
         versionValidator = SDKVersionValidatorMock()
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(VersionStatus.supported).asyncFuture()
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator)
         numberOfRetries = 2
 
@@ -102,9 +102,9 @@ class OAuthServiceTests: XCTestCase {
                 XCTAssertTrue(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.0 is AuthStateMock)
                 XCTAssertNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.1)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCalledWith)
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -134,13 +134,13 @@ class OAuthServiceTests: XCTestCase {
                                   authStateType: authStateType)
             .then { _ in
                 XCTFail("Should fail with error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertNotNil(userAgent.presentCalledWith)
                 XCTAssertNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.0)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.1)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCalledWith)
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.authNetworkError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -169,13 +169,13 @@ class OAuthServiceTests: XCTestCase {
                                   authStateType: authStateType)
             .then { _ in
                 XCTFail("Should fail with error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertNil(userAgent.presentCalledWith)
                 XCTAssertNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.0)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.1)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCalledWith)
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.authServerError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -204,13 +204,13 @@ class OAuthServiceTests: XCTestCase {
                                   authStateType: authStateType)
             .then { _ in
                 XCTFail("Should fail with error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertNil(userAgent.presentCalledWith)
                 XCTAssertNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.0)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.1)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCalledWith)
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.appAuth(authError))
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -242,13 +242,13 @@ class OAuthServiceTests: XCTestCase {
                                   authStateType: authStateType)
             .then { _ in
                 XCTFail("Should fail with error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertNil(userAgent.presentCalledWith)
                 XCTAssertNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.0)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCallbackResult?.1)
                 XCTAssertNotNil(AuthStateMock.authStateByPresentingExternalUserAgentCalledWith)
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.userCanceledAuthFlow)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -398,13 +398,13 @@ class OAuthServiceTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "should return empty response")
 
-        oAuthService.logout().then {
+        oAuthService.logout().then ({
             defer { asyncExpectation.fulfill() }
             XCTAssertNil(self.keychainService[.authState])
             XCTAssertTrue(self.keychainService.clearCalled)
             XCTAssertRequestDataEquals("POST", "/oauth/revoke", with: postData as Any)
             XCTAssertRequestHeadersContain("POST", "/oauth/revoke", headers: ["Authorization": "Basic \(headerValue)"])
-        }
+        })
 
         waitForExpectations(timeout: 5)
     }
@@ -420,9 +420,9 @@ class OAuthServiceTests: XCTestCase {
         oAuthService.isSessionActive()
             .then { _ in
                 XCTAssertRouteCalled("GET", "/userinfo")
-            }.onError { error in
+            } onError: { error in
                 XCTFail(error.localizedDescription)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -436,9 +436,9 @@ class OAuthServiceTests: XCTestCase {
         oAuthService.isSessionActive()
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 
@@ -454,10 +454,10 @@ class OAuthServiceTests: XCTestCase {
         oAuthService.isSessionActive()
             .then { _ in
                 XCTFail("Should return an error")
-            }.onError { error in
+            } onError: { error in
                 XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
                 XCTAssertRouteCalled("GET", "/userinfo")
-            }.finally {
+            } finally: {
                 asyncExpectation.fulfill()
             }
 

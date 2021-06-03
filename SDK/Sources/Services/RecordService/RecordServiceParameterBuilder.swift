@@ -156,7 +156,7 @@ extension RecordServiceParameterBuilder {
     }
 
     private func encryptedBodyValue<R: SDKResource>(resource: R, encryptedWith dataKey: Key) throws -> String {
-        let encryptedResource: Data = try wait(self.cryptoService.encrypt(value: resource, key: dataKey))
+        let encryptedResource: Data = try combineAwait(self.cryptoService.encrypt(value: resource, key: dataKey))
         return encryptedResource.base64EncodedString()
     }
 

@@ -16,7 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Alamofire
-import Then
+import Combine
 
 class SessionAdapterTests: XCTestCase {
     var sessionService: SessionService!

@@ -79,6 +79,8 @@ class SDKVersionValidatorTests: XCTestCase {
             XCTAssertEqual(result, VersionStatus.supported)
             XCTAssertTrue(self.infoService.fetchSDKVersionCalled, "This method wasn't called")
             XCTAssertTrue(self.sdkFileManager.readVersionConfigCalled, "This method wasn't called with the expected arguments")
+        } onError: { error in
+            XCTFail("Should not receive error: \(error.localizedDescription)")
         }
 
         waitForExpectations(timeout: 5)
@@ -90,11 +92,13 @@ class SDKVersionValidatorTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "should fetch current version status")
         validator.fetchCurrentVersionStatus().then { result in
-            defer { asyncExpectation.fulfill() }
-
             XCTAssertEqual(result, VersionStatus.unknown)
             XCTAssertTrue(self.infoService.fetchSDKVersionCalled, "This method wasn't called")
             XCTAssertTrue(self.sdkFileManager.readVersionConfigCalled, "This method wasn't called with the expected arguments")
+        } onError: { error in
+            XCTFail("Should not receive error: \(error.localizedDescription)")
+        } finally: {
+            asyncExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 5)
@@ -106,11 +110,11 @@ class SDKVersionValidatorTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "should fetch current version status")
         validator.fetchCurrentVersionStatus().then { result in
-            defer { asyncExpectation.fulfill() }
-
             XCTAssertEqual(result, VersionStatus.deprecated)
             XCTAssertTrue(self.infoService.fetchSDKVersionCalled, "This method wasn't called")
             XCTAssertTrue(self.sdkFileManager.readVersionConfigCalled, "This method wasn't called with the expected arguments")
+        } finally: {
+            asyncExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 5)
@@ -122,11 +126,12 @@ class SDKVersionValidatorTests: XCTestCase {
 
         let asyncExpectation = expectation(description: "should fetch current version status")
         validator.fetchCurrentVersionStatus().then { result in
-            defer { asyncExpectation.fulfill() }
 
             XCTAssertEqual(result, VersionStatus.unsupported)
             XCTAssertTrue(self.infoService.fetchSDKVersionCalled, "This method wasn't called")
             XCTAssertTrue(self.sdkFileManager.readVersionConfigCalled, "This method wasn't called with the expected arguments")
+        } finally: {
+            asyncExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 5)
@@ -139,8 +144,9 @@ class SDKVersionValidatorTests: XCTestCase {
         let asyncExpectation = expectation(description: "should fetch version config remotely")
 
         validator.fetchVersionConfigurationRemotely().then { _ in
-            defer { asyncExpectation.fulfill() }
             XCTAssertNotNil(self.sdkFileManager.saveVersionConfigCalledWith)
+        } finally: {
+            asyncExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 5)
@@ -154,9 +160,9 @@ class SDKVersionValidatorTests: XCTestCase {
 
         validator.fetchVersionConfigurationRemotely().then { _ in
             XCTFail("Shouldn't return an error")
-        }.onError { error in
+        } onError: { error in
             XCTAssertNotNil(error is Data4LifeSDKError)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 

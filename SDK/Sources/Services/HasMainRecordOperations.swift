@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
+import Combine
 
 protocol HasRecordOperationsDependencies {
     var recordService: RecordServiceType { get }
@@ -23,39 +23,39 @@ protocol HasRecordOperationsDependencies {
 }
 
 protocol HasMainRecordOperations {
-    func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int>
-    func deleteRecord(withId identifier: String) -> Promise<Void>
+    func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> SDKFuture<Int>
+    func deleteRecord(withId identifier: String) -> SDKFuture<Void>
     func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
-                                                             decryptedRecordType: DR.Type) -> Promise<Record> where Record.Resource == DR.Resource
+                                                             decryptedRecordType: DR.Type) -> SDKFuture<Record> where Record.Resource == DR.Resource
     func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
                                                               recordType: Record.Type,
                                                               annotations: [String],
                                                               from startDate: Date?,
                                                               to endDate: Date?,
                                                               pageSize: Int?,
-                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource
+                                                              offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource
 }
 
 extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
-    func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            return try wait(self.recordService.countRecords(userId: userId, resourceType: type, annotations: annotations))
+    func countRecords<R: SDKResource>(of type: R.Type, annotations: [String]) -> SDKFuture<Int> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            return try combineAwait(self.recordService.countRecords(userId: userId, resourceType: type, annotations: annotations))
         }
     }
 
-    func deleteRecord(withId identifier: String) -> Promise<Void> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            return try wait(self.recordService.deleteRecord(recordId: identifier, userId: userId))
+    func deleteRecord(withId identifier: String) -> SDKFuture<Void> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            return try combineAwait(self.recordService.deleteRecord(recordId: identifier, userId: userId))
         }
     }
 
     func fetchRecord<DR: DecryptedRecord, Record: SDKRecord>(withId identifier: String,
-                                                             decryptedRecordType: DR.Type = DR.self) -> Promise<Record> where Record.Resource == DR.Resource {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let decryptedRecord: DR = try wait(self.recordService.fetchRecord(recordId: identifier, userId: userId))
+                                                             decryptedRecordType: DR.Type = DR.self) -> SDKFuture<Record> where Record.Resource == DR.Resource {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            let decryptedRecord: DR = try combineAwait(self.recordService.fetchRecord(recordId: identifier, userId: userId))
             return Record(decryptedRecord: decryptedRecord)
         }
     }
@@ -66,10 +66,10 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
                                                               from startDate: Date?,
                                                               to endDate: Date?,
                                                               pageSize: Int?,
-                                                              offset: Int?) -> Promise<[Record]> where Record.Resource == DR.Resource {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let decryptedRecords: [DR] = try wait(self.recordService.searchRecords(for: userId,
+                                                              offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
+            let decryptedRecords: [DR] = try combineAwait(self.recordService.searchRecords(for: userId,
                                                                                     from: startDate,
                                                                                     to: endDate,
                                                                                     pageSize: pageSize,

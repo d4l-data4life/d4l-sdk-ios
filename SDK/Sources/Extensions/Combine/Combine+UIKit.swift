@@ -14,8 +14,26 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 
-@discardableResult func wait<T>(_ promise: Promise<T>) throws -> T {
-    return try `await`(promise)
+extension UIViewController {
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool) -> NoErrorFuture<Void> {
+        return NoErrorFuture { promise in
+            DispatchQueue.main.async {
+                viewControllerToPresent.modalPresentationStyle = .fullScreen
+                self.present(viewControllerToPresent, animated: animated) {
+                    promise(.success(()))
+                }
+            }
+        }
+    }
+
+    func dismiss(animated: Bool) -> NoErrorFuture<Void> {
+        return NoErrorFuture { promise in
+            DispatchQueue.main.async {
+                self.dismiss(animated: animated) {
+                    promise(.success(()))
+                }
+            }
+        }
+    }
 }

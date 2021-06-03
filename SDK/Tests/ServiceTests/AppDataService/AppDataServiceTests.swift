@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeFHIR
 import Foundation
 
@@ -58,7 +58,7 @@ final class AppDataServiceTests: XCTestCase {
         let to = Date()
 
         keychainService[.userId] = userId
-        recordService.searchRecordsResult = Async.resolve([record])
+        recordService.searchRecordsResult = Just([record]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return resources")
         appDataService.fetchAppDataRecords(from: from, to: to, pageSize: pageSize, offset: offset)
@@ -69,9 +69,9 @@ final class AppDataServiceTests: XCTestCase {
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.1)
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.2)
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.3)
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 
@@ -83,16 +83,16 @@ final class AppDataServiceTests: XCTestCase {
         let count = 1
 
         keychainService[.userId] = userId
-        recordService.countRecordsResult = Async.resolve(count)
+        recordService.countRecordsResult = Just(count).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return count of resources")
         appDataService.countAppDataRecords()
             .then { result in
                 XCTAssertEqual(count, result)
                 XCTAssertTrue(self.recordService.countRecordsCalledWith?.1 == Data.self)
-        }.onError { error in
+        } onError: { error in
             XCTFail(error.localizedDescription)
-        }.finally {
+        } finally: {
             asyncExpectation.fulfill()
         }
 

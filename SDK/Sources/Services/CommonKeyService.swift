@@ -15,14 +15,13 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 
 protocol CommonKeyServiceType {
     static var initialId: String { get }
     var currentId: String? { get }
     var currentKey: Key? { get }
 
-    func fetchKey(with: String) -> Async<Key>
+    func fetchKey(with: String) -> SDKFuture<Key>
     func storeKey(_ key: Key, id: String, isCurrent: Bool)
 }
 
@@ -70,10 +69,10 @@ class CommonKeyService: CommonKeyServiceType {
         }
     }
 
-    func fetchKey(with commonKeyId: String) -> Async<Key> {
-        return async {
+    func fetchKey(with commonKeyId: String) -> SDKFuture<Key> {
+        return combineAsync {
             if !self.hasCommonKey(id: commonKeyId) {
-                try wait(self.fetchKeyRemotely(with: commonKeyId))
+                try combineAwait(self.fetchKeyRemotely(with: commonKeyId))
             }
 
             guard let commonKey = self.fetchKeyLocally(with: commonKeyId) else {
@@ -104,11 +103,11 @@ class CommonKeyService: CommonKeyServiceType {
         return transformCommonKey(commonKey)
     }
 
-    private func fetchKeyRemotely(with id: String) -> Async<Void> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
+    private func fetchKeyRemotely(with id: String) -> SDKFuture<Void> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
             let route = Router.fetchCommonKey(userId: userId, commonKeyId: id)
-            let response: CommonKeyResponse = try wait(self.sessionService.request(route: route).responseDecodable())
+            let response: CommonKeyResponse = try combineAwait(self.sessionService.request(route: route).responseDecodable())
 
             guard let eckData = Data(base64Encoded: response.commonKey) else {
                     throw Data4LifeSDKError.couldNotReadBase64EncodedData

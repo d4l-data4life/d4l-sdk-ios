@@ -45,13 +45,16 @@ extension Data4LifeClient {
 
         viewController
             .present(loginViewController, animated: animated)
-            .chain { presentationCompletion?() }
-            .then(loginViewController.presentLoginScreen)
+            .map { presentationCompletion?() }
+            .complete { _ in loginViewController.presentLoginScreen() }
 
         loginViewController
-            .successHandler
-            .chain(loginViewController.dismiss(animated: animated))
-            .complete(loginCompletion)
+            .loginPublisher
+            .complete { [unowned loginViewController] result in
+                loginViewController.dismiss(animated: animated).complete { _ in
+                    loginCompletion(result)
+                }
+            }
     }
 
     /**
@@ -63,7 +66,7 @@ extension Data4LifeClient {
                        completion: @escaping DefaultResultBlock) {
         oAuthService
             .logout()
-            .then(cryptoService.deleteKeyPair())
+            .tryMap { try self.cryptoService.deleteKeyPair() }
             .complete(queue: queue, completion)
     }
 
@@ -79,7 +82,9 @@ extension Data4LifeClient {
             return
         }
 
-        oAuthService.isSessionActive().complete(queue: queue, completion)
+        oAuthService
+            .isSessionActive()
+            .complete(queue: queue, completion)
     }
 
     /**

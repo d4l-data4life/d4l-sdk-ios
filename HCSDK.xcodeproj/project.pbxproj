@@ -51,9 +51,13 @@
 		36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */; };
 		36087E4D264C27AE0098E8BF /* Data4LifeFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4C264C27AE0098E8BF /* Data4LifeFHIR */; };
 		36087E4F264C27AE0098E8BF /* ModelsR4 in Frameworks */ = {isa = PBXBuildFile; productRef = 36087E4E264C27AE0098E8BF /* ModelsR4 */; };
+		36087E51264ED4360098E8BF /* FutureExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E50264ED4360098E8BF /* FutureExecutor.swift */; };
+		36087E532652B8550098E8BF /* Combine+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E522652B8550098E8BF /* Combine+Helpers.swift */; };
+		36087E552652D8C10098E8BF /* Combine+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E542652D8C10098E8BF /* Combine+Test.swift */; };
+		36087E5726564D190098E8BF /* Combine+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E5626564D190098E8BF /* Combine+UIKit.swift */; };
+		36087E5D2657B5DD0098E8BF /* FutureExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */; };
 		360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */; };
 		360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5232636F8BF00D8F8E9 /* Alamofire */; };
-		360EC5262636F8BF00D8F8E9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 360EC5252636F8BF00D8F8E9 /* Then */; };
 		360EC54F2636FB5400D8F8E9 /* libSDKSPMDependencies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */; };
 		36238DB2252F3CE200923F22 /* InitializationVectorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */; };
 		3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */; };
@@ -87,7 +91,6 @@
 		3679AAB725923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3679AAB625923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift */; };
 		3682F78B26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */; };
 		3682F78D264024C200C03F55 /* Data4LifeClient+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */; };
-		3682F78F2640381E00C03F55 /* Await+Swift6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78E2640381E00C03F55 /* Await+Swift6.swift */; };
 		3685D42D25920C5C00F97F9E /* FhirR4ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */; };
 		3685D44B25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */; };
 		3685D4552592154400F97F9E /* r4-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4542592154400F97F9E /* r4-questionnaire.json */; };
@@ -184,7 +187,7 @@
 		CD1091CA225B8FC400325389 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091C0225B8FC300325389 /* LoadingCell.swift */; };
 		CD1091CB225B8FC400325389 /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091C2225B8FC300325389 /* UIViewController+Alerts.swift */; };
 		CD109236225B901E00325389 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091CE225B901E00325389 /* LoginViewModel.swift */; };
-		CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D1225B901E00325389 /* DataRequestExtension.swift */; };
+		CD109238225B901E00325389 /* Alamofire+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D1225B901E00325389 /* Alamofire+Combine.swift */; };
 		CD109239225B901E00325389 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D2225B901E00325389 /* AuthState.swift */; };
 		CD10923A225B901E00325389 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D3225B901E00325389 /* Reachability.swift */; };
 		CD10923B225B901E00325389 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091D4225B901E00325389 /* Router.swift */; };
@@ -204,12 +207,7 @@
 		CD10924F225B901E00325389 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1091EF225B901E00325389 /* LoginViewController.swift */; };
 		CD109264225B901E00325389 /* PartnerId+CustomIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */; };
 		CD109266225B901E00325389 /* Data4LifeSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = CD10920D225B901E00325389 /* Data4LifeSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CD109267225B901E00325389 /* Alamofire+BackgroundQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */; };
-		CD109269225B901E00325389 /* Async+Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109214225B901E00325389 /* Async+Chain.swift */; };
-		CD10926A225B901E00325389 /* Async+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109215225B901E00325389 /* Async+UIViewController.swift */; };
-		CD10926B225B901E00325389 /* Async+RecordTransformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109216225B901E00325389 /* Async+RecordTransformations.swift */; };
-		CD10926C225B901E00325389 /* Async+ResultBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109217225B901E00325389 /* Async+ResultBlock.swift */; };
-		CD10926D225B901E00325389 /* Async+CryptoServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109218225B901E00325389 /* Async+CryptoServiceType.swift */; };
+		CD10926D225B901E00325389 /* Combine+CryptoServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109218225B901E00325389 /* Combine+CryptoServiceType.swift */; };
 		CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10921C225B901E00325389 /* Date+CustomFormatter.swift */; };
 		CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109221225B901E00325389 /* Data4LifeClient.swift */; };
 		CD109275225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */; };
@@ -254,7 +252,6 @@
 		CD841E29225CBE80002656D5 /* CarePlan.json in Resources */ = {isa = PBXBuildFile; fileRef = CD841DD1225CBE80002656D5 /* CarePlan.json */; };
 		CD841E2A225CBE80002656D5 /* Assert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD3225CBE80002656D5 /* Assert.swift */; };
 		CD841E2B225CBE80002656D5 /* StubbedURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */; };
-		CD841E2D225CBE80002656D5 /* Async+ResultBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */; };
 		CD841E30225CBE80002656D5 /* *.gesundheitscloud.de.cer in Resources */ = {isa = PBXBuildFile; fileRef = CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */; };
 		CD841E32225CBE80002656D5 /* Data+UTF8String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */; };
 		CD841E33225CBE80002656D5 /* Bundle+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DDF225CBE80002656D5 /* Bundle+Data.swift */; };
@@ -445,6 +442,11 @@
 		36080C34237DB05900085476 /* DIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIError.swift; sourceTree = "<group>"; };
 		36080C36237DB12900085476 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		36080C38237DB14200085476 /* DIResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIResolver.swift; sourceTree = "<group>"; };
+		36087E50264ED4360098E8BF /* FutureExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureExecutor.swift; sourceTree = "<group>"; };
+		36087E522652B8550098E8BF /* Combine+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Helpers.swift"; sourceTree = "<group>"; };
+		36087E542652D8C10098E8BF /* Combine+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Test.swift"; sourceTree = "<group>"; };
+		36087E5626564D190098E8BF /* Combine+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+UIKit.swift"; sourceTree = "<group>"; };
+		36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureExecutorTests.swift; sourceTree = "<group>"; };
 		360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDKSPMDependencies.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKSPMDependencies.swift; sourceTree = "<group>"; };
 		36238DB1252F3CE200923F22 /* InitializationVectorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationVectorGenerator.swift; sourceTree = "<group>"; };
@@ -481,7 +483,6 @@
 		367B87F023F6D86200A6155E /* stu3-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire.json"; sourceTree = "<group>"; };
 		3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+UserServiceModuleTests.swift"; sourceTree = "<group>"; };
 		3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+User.swift"; sourceTree = "<group>"; };
-		3682F78E2640381E00C03F55 /* Await+Swift6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Await+Swift6.swift"; sourceTree = "<group>"; };
 		3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirR4ServiceTests.swift; sourceTree = "<group>"; };
 		3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		3685D4542592154400F97F9E /* r4-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire.json"; sourceTree = "<group>"; };
@@ -581,7 +582,7 @@
 		CD1091C0225B8FC300325389 /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		CD1091C2225B8FC300325389 /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		CD1091CE225B901E00325389 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		CD1091D1225B901E00325389 /* DataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRequestExtension.swift; sourceTree = "<group>"; };
+		CD1091D1225B901E00325389 /* Alamofire+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire+Combine.swift"; sourceTree = "<group>"; };
 		CD1091D2225B901E00325389 /* AuthState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		CD1091D3225B901E00325389 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		CD1091D4225B901E00325389 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -602,12 +603,7 @@
 		CD10920B225B901E00325389 /* PartnerId+CustomIdentifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PartnerId+CustomIdentifiable.swift"; sourceTree = "<group>"; };
 		CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Data4LifeSDK-Version.plist"; sourceTree = "<group>"; };
 		CD10920D225B901E00325389 /* Data4LifeSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data4LifeSDK.h; sourceTree = "<group>"; };
-		CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire+BackgroundQueue.swift"; sourceTree = "<group>"; };
-		CD109214225B901E00325389 /* Async+Chain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+Chain.swift"; sourceTree = "<group>"; };
-		CD109215225B901E00325389 /* Async+UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+UIViewController.swift"; sourceTree = "<group>"; };
-		CD109216225B901E00325389 /* Async+RecordTransformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+RecordTransformations.swift"; sourceTree = "<group>"; };
-		CD109217225B901E00325389 /* Async+ResultBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+ResultBlock.swift"; sourceTree = "<group>"; };
-		CD109218225B901E00325389 /* Async+CryptoServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+CryptoServiceType.swift"; sourceTree = "<group>"; };
+		CD109218225B901E00325389 /* Combine+CryptoServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Combine+CryptoServiceType.swift"; sourceTree = "<group>"; };
 		CD10921C225B901E00325389 /* Date+CustomFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+CustomFormatter.swift"; sourceTree = "<group>"; };
 		CD109221225B901E00325389 /* Data4LifeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data4LifeClient.swift; sourceTree = "<group>"; };
 		CD109223225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3Resource.swift"; sourceTree = "<group>"; };
@@ -653,7 +649,6 @@
 		CD841DD1225CBE80002656D5 /* CarePlan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CarePlan.json; sourceTree = "<group>"; };
 		CD841DD3225CBE80002656D5 /* Assert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assert.swift; sourceTree = "<group>"; };
 		CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubbedURLProtocol.swift; sourceTree = "<group>"; };
-		CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Async+ResultBlockTests.swift"; sourceTree = "<group>"; };
 		CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "*.gesundheitscloud.de.cer"; sourceTree = "<group>"; };
 		CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+UTF8String.swift"; sourceTree = "<group>"; };
 		CD841DDF225CBE80002656D5 /* Bundle+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Data.swift"; sourceTree = "<group>"; };
@@ -717,7 +712,6 @@
 				36087E4D264C27AE0098E8BF /* Data4LifeFHIR in Frameworks */,
 				36087E4F264C27AE0098E8BF /* ModelsR4 in Frameworks */,
 				36087E48264C27250098E8BF /* Data4LifeSDKUtils in Frameworks */,
-				360EC5262636F8BF00D8F8E9 /* Then in Frameworks */,
 				36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */,
 				36DD22A3263C7C3300679F74 /* AppAuth in Frameworks */,
 				360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */,
@@ -863,6 +857,22 @@
 				36080C36237DB12900085476 /* Wrapper.swift */,
 			);
 			path = DIFramework;
+			sourceTree = "<group>";
+		};
+		36087E5A2657B2190098E8BF /* Concurrency */ = {
+			isa = PBXGroup;
+			children = (
+				36087E50264ED4360098E8BF /* FutureExecutor.swift */,
+			);
+			path = Concurrency;
+			sourceTree = "<group>";
+		};
+		36087E5B2657B5C60098E8BF /* ConcurrencyTests */ = {
+			isa = PBXGroup;
+			children = (
+				36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */,
+			);
+			path = ConcurrencyTests;
 			sourceTree = "<group>";
 		};
 		360EC5162636F8AC00D8F8E9 /* SDKSPMDependencies */ = {
@@ -1284,6 +1294,7 @@
 		CD1091CC225B901E00325389 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				36087E5A2657B2190098E8BF /* Concurrency */,
 				3607BCCC2379B8AB004C45F3 /* DI */,
 				CD109224225B901E00325389 /* Info.plist */,
 				CD10920D225B901E00325389 /* Data4LifeSDK.h */,
@@ -1313,7 +1324,6 @@
 			isa = PBXGroup;
 			children = (
 				36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */,
-				CD1091D1225B901E00325389 /* DataRequestExtension.swift */,
 				CD1091D2225B901E00325389 /* AuthState.swift */,
 				CD1091D3225B901E00325389 /* Reachability.swift */,
 				CD1091D4225B901E00325389 /* Router.swift */,
@@ -1421,7 +1431,7 @@
 			isa = PBXGroup;
 			children = (
 				CD10920F225B901E00325389 /* Alamofire */,
-				CD109213225B901E00325389 /* Async */,
+				CD109213225B901E00325389 /* Combine */,
 				CD109219225B901E00325389 /* Foundation */,
 			);
 			path = Extensions;
@@ -1430,22 +1440,19 @@
 		CD10920F225B901E00325389 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
-				CD109210225B901E00325389 /* Alamofire+BackgroundQueue.swift */,
+				CD1091D1225B901E00325389 /* Alamofire+Combine.swift */,
 			);
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
-		CD109213225B901E00325389 /* Async */ = {
+		CD109213225B901E00325389 /* Combine */ = {
 			isa = PBXGroup;
 			children = (
-				CD109214225B901E00325389 /* Async+Chain.swift */,
-				CD109215225B901E00325389 /* Async+UIViewController.swift */,
-				CD109216225B901E00325389 /* Async+RecordTransformations.swift */,
-				CD109217225B901E00325389 /* Async+ResultBlock.swift */,
-				CD109218225B901E00325389 /* Async+CryptoServiceType.swift */,
-				3682F78E2640381E00C03F55 /* Await+Swift6.swift */,
+				CD109218225B901E00325389 /* Combine+CryptoServiceType.swift */,
+				36087E522652B8550098E8BF /* Combine+Helpers.swift */,
+				36087E5626564D190098E8BF /* Combine+UIKit.swift */,
 			);
-			path = Async;
+			path = Combine;
 			sourceTree = "<group>";
 		};
 		CD109219225B901E00325389 /* Foundation */ = {
@@ -1542,6 +1549,7 @@
 		CD841DB2225CBE80002656D5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				36087E5B2657B5C60098E8BF /* ConcurrencyTests */,
 				CD841DE0225CBE80002656D5 /* BenchmarkClient */,
 				CD841DC9225CBE80002656D5 /* ClientTests */,
 				CD841DFD225CBE80002656D5 /* Data4LifeSDK-Version.plist */,
@@ -1647,7 +1655,6 @@
 		CD841DD5225CBE80002656D5 /* HelperTests */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DD7225CBE80002656D5 /* Async+ResultBlockTests.swift */,
 			);
 			path = HelperTests;
 			sourceTree = "<group>";
@@ -1665,6 +1672,7 @@
 			children = (
 				CD841DDE225CBE80002656D5 /* Data+UTF8String.swift */,
 				CD841DDF225CBE80002656D5 /* Bundle+Data.swift */,
+				36087E542652D8C10098E8BF /* Combine+Test.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1865,7 +1873,6 @@
 			name = SDKSPMDependencies;
 			packageProductDependencies = (
 				360EC5232636F8BF00D8F8E9 /* Alamofire */,
-				360EC5252636F8BF00D8F8E9 /* Then */,
 				36DD22A2263C7C3300679F74 /* AppAuth */,
 				36087E47264C27250098E8BF /* Data4LifeSDKUtils */,
 				36087E4A264C27AE0098E8BF /* Data4LifeFHIRCore */,
@@ -2034,7 +2041,6 @@
 			mainGroup = 8374639C1E854E7500AB500F;
 			packageReferences = (
 				36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */,
 				36DD22A1263C7C3300679F74 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				36087E46264C27250098E8BF /* XCRemoteSwiftPackageReference "d4l-utils-ios" */,
 				36087E49264C27AE0098E8BF /* XCRemoteSwiftPackageReference "d4l-fhir-ios" */,
@@ -2178,10 +2184,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD10926A225B901E00325389 /* Async+UIViewController.swift in Sources */,
-				CD109267225B901E00325389 /* Alamofire+BackgroundQueue.swift in Sources */,
 				CDA407A622E5E2A100B29A0D /* DocumentService.swift in Sources */,
-				CD10926B225B901E00325389 /* Async+RecordTransformations.swift in Sources */,
 				CD10927E225B901E00325389 /* TaggingService.swift in Sources */,
 				36080C33237DB04000085476 /* DIScope.swift in Sources */,
 				CD10927F225B901E00325389 /* FhirService.swift in Sources */,
@@ -2208,7 +2211,7 @@
 				CDE0336E22A7B39300002282 /* FhirService+AttachmentOperations.swift in Sources */,
 				CD109246225B901E00325389 /* Data4LifeSDKError.swift in Sources */,
 				CDC9D6B7229D8ECA0068E3D5 /* OAuthExternalUserAgent.swift in Sources */,
-				CD10926D225B901E00325389 /* Async+CryptoServiceType.swift in Sources */,
+				CD10926D225B901E00325389 /* Combine+CryptoServiceType.swift in Sources */,
 				3600188723966DBF004D9048 /* LoggerContainer.swift in Sources */,
 				CD109249225B901E00325389 /* FHIRModelVersionType.swift in Sources */,
 				CD109270225B901E00325389 /* Date+CustomFormatter.swift in Sources */,
@@ -2237,6 +2240,7 @@
 				0A4FF1E0232FBD550065DDBA /* CommonKeyResponse.swift in Sources */,
 				CDCB9DE4225F5647004A565F /* SecKey+Data.swift in Sources */,
 				CD109244225B901E00325389 /* EncryptedRecord.swift in Sources */,
+				36087E51264ED4360098E8BF /* FutureExecutor.swift in Sources */,
 				368AFB0C23744D56004AE88F /* LoggerService.swift in Sources */,
 				CD109278225B901E00325389 /* UserService.swift in Sources */,
 				0A3934B62404ED2E00DDCE2B /* SDKFileManager.swift in Sources */,
@@ -2246,13 +2250,14 @@
 				0A4EB42123E92C4500D0A4AA /* AttachmentComparison.swift in Sources */,
 				3659BC8223D74E0A009970DA /* Attachment+Validation.swift in Sources */,
 				CD109273225B901E00325389 /* Data4LifeClient.swift in Sources */,
-				CD109269225B901E00325389 /* Async+Chain.swift in Sources */,
 				3689D7FE24EABBAE004295D9 /* DecryptedAppDataRecord.swift in Sources */,
+				36087E5726564D190098E8BF /* Combine+UIKit.swift in Sources */,
 				CD109283225B901E00325389 /* SessionService.swift in Sources */,
 				36080C35237DB05900085476 /* DIError.swift in Sources */,
 				CD109275225B901E00325389 /* Data4LifeClient+FhirStu3Resource.swift in Sources */,
-				CD109238225B901E00325389 /* DataRequestExtension.swift in Sources */,
+				CD109238225B901E00325389 /* Alamofire+Combine.swift in Sources */,
 				CD7B2922228031A50091A8EA /* UserInfoResponse.swift in Sources */,
+				36087E532652B8550098E8BF /* Combine+Helpers.swift in Sources */,
 				CD109243225B901E00325389 /* DecryptedRecord.swift in Sources */,
 				0AF4C09522DDEC8900C5CD67 /* DownloadType.swift in Sources */,
 				CD109247225B901E00325389 /* FHIRElement.swift in Sources */,
@@ -2260,7 +2265,6 @@
 				0A4EB42423E97F9E00D0A4AA /* AttachmentSchema.swift in Sources */,
 				36DD7A5B255ED0D600FA6EB7 /* Encodable+Data.swift in Sources */,
 				3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */,
-				3682F78F2640381E00C03F55 /* Await+Swift6.swift in Sources */,
 				36635EC5253DD5E000DAB5FD /* FhirAttachmentOperations.swift in Sources */,
 				36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */,
 				CD109277225B901E00325389 /* RecordService.swift in Sources */,
@@ -2269,7 +2273,6 @@
 				36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */,
 				365525EE250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift in Sources */,
 				3689D7FA24EABABB004295D9 /* AppDataRecord.swift in Sources */,
-				CD10926C225B901E00325389 /* Async+ResultBlock.swift in Sources */,
 				3689D7F824EABA34004295D9 /* SDKRecord.swift in Sources */,
 				CDE39AE822E7467800ABE043 /* DocumentResponse.swift in Sources */,
 				36AE9503257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift in Sources */,
@@ -2299,6 +2302,7 @@
 				0AA455992417A21B008B788C /* InfoServiceMock.swift in Sources */,
 				CD841E18225CBE80002656D5 /* OAuthServiceMock.swift in Sources */,
 				CD5CB01A22A53A0800A91DE8 /* OAuthExternalUserAgentTests.swift in Sources */,
+				36087E5D2657B5DD0098E8BF /* FutureExecutorTests.swift in Sources */,
 				CD841E16225CBE80002656D5 /* CryptoServiceMock.swift in Sources */,
 				3600188A23991125004D9048 /* RouterTests.swift in Sources */,
 				0A8D847823C5D6E300D7DDD3 /* HasAttachmentsProtocolTests.swift in Sources */,
@@ -2306,6 +2310,7 @@
 				CD841E58225CBE80002656D5 /* FhirStu3ServiceTests+DocumentReference.swift in Sources */,
 				CD841E5A225CBE80002656D5 /* KeychainServiceTests.swift in Sources */,
 				CD841E53225CBE80002656D5 /* OAuthServiceTests.swift in Sources */,
+				36087E552652D8C10098E8BF /* Combine+Test.swift in Sources */,
 				CD841E12225CBE80002656D5 /* Data4LifeClientMock.swift in Sources */,
 				CD841E50225CBE80002656D5 /* SessionAdapterTests.swift in Sources */,
 				CD841E55225CBE80002656D5 /* FhirStu3ServiceTests+BatchOperations.swift in Sources */,
@@ -2344,7 +2349,6 @@
 				36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */,
 				0AF4C09922E205C300C5CD67 /* ImageResizerMock.swift in Sources */,
 				CD841E4F225CBE80002656D5 /* TaggingServiceTests.swift in Sources */,
-				CD841E2D225CBE80002656D5 /* Async+ResultBlockTests.swift in Sources */,
 				CD841E1A225CBE80002656D5 /* TaggingServiceMock.swift in Sources */,
 				366A44752588E5BC0003FBCE /* RecordServiceTests+FhirR4.swift in Sources */,
 				CD841E1C225CBE80002656D5 /* KeychainServiceMock.swift in Sources */,
@@ -2789,6 +2793,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SDK/Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2811,6 +2816,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SDK/Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3107,14 +3113,6 @@
 				version = 5.4.1;
 			};
 		};
-		36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/freshOS/Then";
-			requirement = {
-				kind = exactVersion;
-				version = 5.1.2;
-			};
-		};
 		36DD22A1263C7C3300679F74 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
@@ -3150,11 +3148,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		360EC5252636F8BF00D8F8E9 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B6E9DB260CD17800CA3250 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
 		};
 		36DD22A2263C7C3300679F74 /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -15,7 +15,7 @@
 
 import XCTest
 @testable import Data4LifeSDK
-import Then
+import Combine
 
 class KeychainServiceTests: XCTestCase {
     var keychain: KeychainService!
@@ -114,30 +114,31 @@ class KeychainServiceTests: XCTestCase {
         XCTAssertEqual(keychain[.accessToken], second)
     }
 
-    func testUpdateTokenAsync() {
+    func testUpdateTokenAsync() throws {
         let first = UUID().uuidString
         let second = UUID().uuidString
         keychain.set(first, forKey: .accessToken)
-            .then { self.keychain.get(.accessToken) }
-            .then { XCTAssertEqual($0, first) }
-            .then { self.keychain.set(second, forKey: .accessToken) }
-            .then { self.keychain.get(.accessToken) }
-            .then { XCTAssertEqual($0, second) }
-            .onError { XCTFail($0.localizedDescription) }
+        var accessToken = try self.keychain.get(.accessToken)
+        XCTAssertEqual(accessToken, first)
+        self.keychain.set(second, forKey: .accessToken)
+        accessToken = try self.keychain.get(.accessToken)
+        XCTAssertEqual(accessToken, second)
     }
 
-    func testKeychainKeyNotFound() {
+    func testKeychainKeyNotFound() throws {
         let expectedError = Data4LifeSDKError.keychainItemNotFound("access_token")
-        keychain.get(.accessToken)
-            .then { _ in XCTFail("Should not have accessToken") }
-            .onError { XCTAssertEqual($0 as? Data4LifeSDKError, expectedError) }
+        XCTAssertThrowsError(try keychain.get(.accessToken),
+        "should throw error", { error in
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+        })
     }
 
-    func testKeychainKeyCustomError() {
+    func testKeychainKeyCustomError() throws {
         let expectedError = Data4LifeSDKError.notLoggedIn
-        keychain.get(.userId)
-            .then { _ in XCTFail("Should not have user id") }
-            .onError { XCTAssertEqual($0 as? Data4LifeSDKError, expectedError) }
+        XCTAssertThrowsError(try keychain.get(.userId),
+        "should throw error", { error in
+            XCTAssertEqual(error as? Data4LifeSDKError, expectedError)
+        })
     }
 
     func testGroupKeychain() {

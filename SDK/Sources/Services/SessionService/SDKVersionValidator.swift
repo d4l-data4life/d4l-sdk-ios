@@ -14,12 +14,12 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
+import Combine
 
 protocol SDKVersionValidatorType {
     var sessionService: SessionService? { get }
-    func fetchCurrentVersionStatus() -> Async<VersionStatus>
-    func fetchVersionConfigurationRemotely() -> AsyncTask
+    func fetchCurrentVersionStatus() -> SDKFuture<VersionStatus>
+    func fetchVersionConfigurationRemotely() -> SDKFuture<Void>
     func setSessionService(_ sessionService: SessionService)
 }
 
@@ -44,23 +44,23 @@ class SDKVersionValidator: SDKVersionValidatorType {
         }
     }
 
-    func fetchCurrentVersionStatus() -> Async<VersionStatus> {
-            return async {
-                let currentVersion = self.infoService.fetchSDKVersion()
-                let versionConfiguration = try wait(self.fetchVersionConfigurationLocally())
-                return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
-            }
+    func fetchCurrentVersionStatus() -> SDKFuture<VersionStatus> {
+        return combineAsync {
+            let currentVersion = self.infoService.fetchSDKVersion()
+            let versionConfiguration = try combineAwait(self.fetchVersionConfigurationLocally())
+            return self.fetchStatus(currentVersion: currentVersion, versionConfiguration: versionConfiguration)
+        }
     }
 
-    func fetchVersionConfigurationRemotely() -> AsyncTask {
-        return async {
+    func fetchVersionConfigurationRemotely() -> SDKFuture<Void> {
+        return combineAsync {
             guard let sessionService = self.sessionService else {
                 fatalError("Session service required to use the VersionValidator")
             }
 
-            let versionConfiguration: SDKVersionConfiguration = try wait(
+            let versionConfiguration: SDKVersionConfiguration = try combineAwait(
                 sessionService.request(route:
-                    Router.versionInfo(version: ValidatorVersion.v1.rawValue))
+                                        Router.versionInfo(version: ValidatorVersion.v1.rawValue))
                     .responseDecodable())
             let versionConfigurationData = try JSONEncoder().encode(versionConfiguration)
             try? self.sdkFileManager.saveVersionConfiguration(data: versionConfigurationData)
@@ -71,11 +71,16 @@ class SDKVersionValidator: SDKVersionValidatorType {
         self.sessionService = sessionService
     }
 
-    private func fetchVersionConfigurationLocally() -> Async<SDKVersionConfiguration?> {
-        return async {
-            let fileData = try self.sdkFileManager.readVersionConfiguration()
-            return try JSONDecoder().decode(SDKVersionConfiguration.self, from: fileData)
-        }.recover(with: nil)
+    private func fetchVersionConfigurationLocally() -> SDKFuture<SDKVersionConfiguration?> {
+        return combineAsync {
+            do {
+                let fileData = try self.sdkFileManager.readVersionConfiguration()
+                let configuration = try JSONDecoder().decode(SDKVersionConfiguration.self, from: fileData)
+                return configuration
+            } catch {
+                return nil
+            }
+        }
     }
 
     private func fetchStatus(currentVersion: String, versionConfiguration: SDKVersionConfiguration?) -> VersionStatus {
