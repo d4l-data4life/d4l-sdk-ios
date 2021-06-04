@@ -94,7 +94,7 @@ extension AttachmentDocumentInfo {
         if !downloadType.isThumbnailType {
             try attachment.validatePayloadHash()
         }
-        try attachment.validatePayloadType() 
+        try attachment.validatePayloadType()
         return self
     }
 }

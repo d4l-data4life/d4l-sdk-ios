@@ -42,7 +42,7 @@ struct CombineBatchResult<Identifier, Value, Error> {
 
     func throwIfErrored() throws -> Self {
         guard let firstError = failedRequests.first?.1 as? Data4LifeSDKError else {
-            return self 
+            return self
         }
         throw firstError
     }
