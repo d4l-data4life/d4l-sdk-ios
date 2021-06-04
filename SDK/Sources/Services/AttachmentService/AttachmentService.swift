@@ -57,7 +57,7 @@ final class AttachmentService: AttachmentServiceType {
                     guard let data = attachmentDocumentInfo.data,
                           let attachmentId = attachmentDocumentInfo.fullAttachmentId,
                           self.imageResizer.isImageData(data) else {
-                        return nil
+                        return attachmentDocumentInfo
                     }
 
                     let thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
@@ -104,13 +104,10 @@ final class AttachmentService: AttachmentServiceType {
 
             for thumbnailHeight in ThumbnailHeight.allCases {
                 guard let resizedData = try? self.imageResizer.resizedData(imageToResize, for: thumbnailHeight) else {
-                    return [:]
+                    continue
                 }
                 let uploaded = try combineAwait(self.documentService.create(document: AttachmentDocument(data: resizedData), key: key))
-                guard let thumbnailId = uploaded.id else {
-                    return [:]
-                }
-                thumbnailsIds[thumbnailHeight] = thumbnailId
+                thumbnailsIds[thumbnailHeight] = uploaded.id
             }
 
             return thumbnailsIds

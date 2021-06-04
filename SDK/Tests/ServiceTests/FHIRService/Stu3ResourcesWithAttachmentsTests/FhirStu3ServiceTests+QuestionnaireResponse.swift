@@ -1,14 +1,14 @@
 //  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
-//  
+//
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
 //  including any intellectual property rights that subsist in the SDK.
-//  
+//
 //  The SDK and its documentation may be accessed and used for viewing/review purposes only.
 //  Any usage of the SDK for other purposes, including usage for the development of
 //  applications/third-party applications shall require the conclusion of a license agreement
 //  between you and D4L.
-//  
+//
 //  If you are interested in licensing the SDK for your own applications/third-party
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
@@ -133,11 +133,11 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         unmatchableAttachment.id = "you cant match me"
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.attachmentHash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment0, []),
-                                                                   (uploadedAttachment1, []),
-                                                                   (uploadedAttachment2, []),
-                                                                   (uploadedAttachment3, []),
-                                                                   (unmatchableAttachment, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment0),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment1),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment2),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment3),
+                                                          AttachmentDocumentInfo.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -328,7 +328,9 @@ class FhirStu3ServiceQuestionnaireResponseTests: XCTestCase {
         let uploadedAttachment3 = newAttachment2.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment3.id = uploadedNewAttachmentId3
 
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment1),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment2),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment3)]).asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedRecord).asyncFuture()

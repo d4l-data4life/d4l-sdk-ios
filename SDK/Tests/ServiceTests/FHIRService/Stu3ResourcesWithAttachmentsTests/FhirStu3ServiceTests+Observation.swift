@@ -1,14 +1,14 @@
 //  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
-//  
+//
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
 //  including any intellectual property rights that subsist in the SDK.
-//  
+//
 //  The SDK and its documentation may be accessed and used for viewing/review purposes only.
 //  Any usage of the SDK for other purposes, including usage for the development of
 //  applications/third-party applications shall require the conclusion of a license agreement
 //  between you and D4L.
-//  
+//
 //  If you are interested in licensing the SDK for your own applications/third-party
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
@@ -61,8 +61,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         let fixtureObservation = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2])
 
-        let additionalIds = [String]()
-
         let expectedObservation = fixtureObservation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
@@ -82,7 +80,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureObservation.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { ($0, additionalIds) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -98,11 +96,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource)?.allAttachments as? [Attachment], expectedObservation.allAttachments as? [Attachment])
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, expectedObservation, "The created record differs from the expected resource")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -122,10 +120,8 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let observationComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: observationComponentAttachment2)
 
         let observation = FhirFactory.createStu3ObservationResource(valueAttachment: observationAttachment,
-                                                                components: [observationComponent1,
-                                                                             observationComponent2])
-
-        let additionalIds = [String]()
+                                                                    components: [observationComponent1,
+                                                                                 observationComponent2])
 
         let expectedObservation = observation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
@@ -146,7 +142,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         observation.id = expectedRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResult.map { ($0, additionalIds) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResult.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -166,11 +162,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
                                observation.allAttachments as? [Attachment])
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource),
                                observation)
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -187,8 +183,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fixtureComponent2 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: fixtureComponentAttachment2)
         let fixtureComponent3 = FhirFactory.createStu3ObservationComponentResource(valueAttachment: nil)
         let fixtureObservation = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: [fixtureComponent1, fixtureComponent2, fixtureComponent3])
-
-        let additionalIds = [String]()
 
         let expectedObservation = fixtureObservation.copy() as! Observation // swiftlint:disable:this force_cast
         expectedObservation.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
@@ -209,7 +203,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureObservation.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { ($0, additionalIds) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -225,11 +219,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource)?.allAttachments as? [Attachment], expectedObservation.allAttachments as? [Attachment])
                 XCTAssertEqual(self.recordService.createRecordCalledWith?.0.resource, expectedObservation, "The created record differs from the expected resource")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -253,11 +247,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
                 XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
                 XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -280,14 +274,14 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -305,14 +299,14 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirService.createFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -324,7 +318,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment)
         fhirResource.id = resourceId
 
-        let additionalIds = [String]()
         let record = DecryptedRecordFactory.create(fhirResource)
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         updatedResource.allAttachments?.forEach { $0.attachmentDataString = nil }
@@ -333,7 +326,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         keychainService[.userId] = userId
         let uploadedAttachment = attachment.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment.id = UUID().uuidString
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment)]).asyncFuture()
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
@@ -353,11 +346,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
                 XCTAssertEqual(self.attachmentService.uploadAttachmentsCalledWith?.0.first?.testable, attachment.testable, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -374,11 +367,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
             .then { _ in
                 XCTFail("Should throw an error")
-        } onError: { error in
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidResourceMissingId, "Expected error didn't happen")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidResourceMissingId, "Expected error didn't happen")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -398,14 +391,14 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't happen")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't happen")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -428,14 +421,14 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fhirService.updateFhirRecord(fhirResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't happen")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't happen")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -453,8 +446,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
-
-        let additionalIds = [String]()
 
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
@@ -484,9 +475,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
         attachmentService.uploadAttachmentsResults = [Just([
-            (updatedAttachment!, additionalIds),
-            (newAttachment, additionalIds),
-            (newAttachmentWithId, additionalIds)]).asyncFuture()]
+                                                            AttachmentDocumentInfo.make(updatedAttachment!),
+                                                            AttachmentDocumentInfo.make(newAttachment),
+                                                            AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -505,11 +496,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId, "A param in the method doesn't match the expectation")
 
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -528,8 +519,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
 
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
-
-        let additionalIds = [String]()
 
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
@@ -559,9 +548,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
         attachmentService.uploadAttachmentsResults = [Just([
-            (updatedAttachment!, additionalIds),
-            (newAttachment, additionalIds),
-            (newAttachmentWithId, additionalIds)]).asyncFuture()]
+                                                            AttachmentDocumentInfo.make(updatedAttachment!),
+                                                            AttachmentDocumentInfo.make(newAttachment),
+                                                            AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -580,11 +569,11 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId, "A param in the method doesn't match the expectation")
 
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -600,9 +589,6 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         let fhirResource = FhirFactory.createStu3ObservationResource(valueAttachment: attachment1, components: [component])
         fhirResource.id = resourceId
         let record = DecryptedRecordFactory.create(fhirResource)
-
-        let additionalIds = [String]()
-
         let updatedResource = fhirResource.copy() as! Observation // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as? Attachment
@@ -626,20 +612,20 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([(updatedAttachment!, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachment, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachmentWithId, additionalIds)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentInfo.make(updatedAttachment!)]).asyncFuture(),
+                                                      Just([AttachmentDocumentInfo.make(newAttachment)]).asyncFuture(),
+                                                      Just([AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
             .then { _ in
                 XCTFail("Error expected")
-        } onError: { error in
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadHash, "Expected error didn't occur")
-            XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadHash, "Expected error didn't occur")
+                XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 }
@@ -656,8 +642,8 @@ extension FhirStu3ServiceObservationTests {
         fixtureAttachment.id = attachmentId
         let fixtureResource = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
-        let additionalPayloadsIds = ["addId1", "addId2"]
-        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
+        let additionalPayloadsIds = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
 
         let expectedResource = fixtureResource.copy() as! Observation // swiftlint:disable:this force_cast
         expectedResource.setAdditionalIds(expectedAdditionalId)
@@ -669,7 +655,7 @@ extension FhirStu3ServiceObservationTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(fixtureAttachment, additionalPayloadsIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(fixtureAttachment, ids: additionalPayloadsIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record with additional id")
@@ -687,7 +673,7 @@ extension FhirStu3ServiceObservationTests {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -698,7 +684,7 @@ extension FhirStu3ServiceObservationTests {
         let expectedAttachmentId = UUID().uuidString
         let fixtureResource = FhirFactory.createStu3ObservationResource(valueAttachment: fixtureAttachment, components: nil)
 
-        let additionalIds = ["addId1"]
+        let additionalIds = [ThumbnailHeight.mediumHeight: "addId1"]
         let expectedAdditionalIds = [String]()
 
         let expectedResource = fixtureResource.copy() as! Observation // swiftlint:disable:this force_cast
@@ -713,7 +699,7 @@ extension FhirStu3ServiceObservationTests {
         uploadedAttachment.id = expectedAttachmentId
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment, ids: additionalIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")
@@ -730,7 +716,7 @@ extension FhirStu3ServiceObservationTests {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -769,11 +755,11 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                                fhirResource.identifier, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.attachmentService.fetchAttachmentsCalledWith?.1,
                                [attachmentId], "A param in the method doesn't match the expectation")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -796,11 +782,11 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId, "A param in the method doesn't match the expectation")
                 XCTAssertNil(self.attachmentService.fetchAttachmentsCalledWith, "A param in the method doesn't match the expectation")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -845,11 +831,9 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 } // swiftlint:disable:this file_length

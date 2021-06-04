@@ -1,14 +1,14 @@
 //  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
-//  
+//
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
 //  including any intellectual property rights that subsist in the SDK.
-//  
+//
 //  The SDK and its documentation may be accessed and used for viewing/review purposes only.
 //  Any usage of the SDK for other purposes, including usage for the development of
 //  applications/third-party applications shall require the conclusion of a license agreement
 //  between you and D4L.
-//  
+//
 //  If you are interested in licensing the SDK for your own applications/third-party
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
@@ -129,11 +129,11 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.attachmentHash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment0, []),
-                                                                   (uploadedAttachment1, []),
-                                                                   (uploadedAttachment2, []),
-                                                                   (uploadedAttachment3, []),
-                                                                   (unmatchableAttachment, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment0),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment1),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment2),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment3),
+                                                          AttachmentDocumentInfo.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -266,11 +266,11 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         expectedQuestionnaire.item?[1].initialAttachment?.id = newAttachment1Id.asFHIRStringPrimitive()
         expectedQuestionnaire.item?.first?.item?.first?.initialAttachment?.id = newAttachment2Id.asFHIRStringPrimitive()
         expectedQuestionnaire.item?.first?.item?.first?.item?.first?.initialAttachment?.id = newAttachment3Id.asFHIRStringPrimitive()
-        let additionalPayloadsIds = ["addId1", "addId2"]
-        let expected0AdditionalId = ["d4l_f_p_t#\(newAttachment0Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
-        let expected1AdditionalId = ["d4l_f_p_t#\(newAttachment1Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
-        let expected2AdditionalId = ["d4l_f_p_t#\(newAttachment2Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
-        let expected3AdditionalId = ["d4l_f_p_t#\(newAttachment3Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
+        let additionalPayloadsIds = [ThumbnailHeight.mediumHeight: "addId1", ThumbnailHeight.smallHeight: "addId2"]
+        let expected0AdditionalId = ["d4l_f_p_t#\(newAttachment0Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
+        let expected1AdditionalId = ["d4l_f_p_t#\(newAttachment1Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
+        let expected2AdditionalId = ["d4l_f_p_t#\(newAttachment2Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
+        let expected3AdditionalId = ["d4l_f_p_t#\(newAttachment3Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
         expectedQuestionnaire.setAdditionalIds(expected0AdditionalId)
         expectedQuestionnaire.setAdditionalIds(expected1AdditionalId)
         expectedQuestionnaire.setAdditionalIds(expected2AdditionalId)
@@ -284,11 +284,11 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.attachmentHash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment0, expected0AdditionalId),
-                                                                   (uploadedAttachment1, expected1AdditionalId),
-                                                                   (uploadedAttachment2, expected2AdditionalId),
-                                                                   (uploadedAttachment3, expected3AdditionalId),
-                                                                   (unmatchableAttachment, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment0, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment1, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment2, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment3, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentInfo.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -396,7 +396,9 @@ class FhirR4ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(uploadedNewAttachmentId2)
         let uploadedAttachment3 = newAttachment2.copyWithId(uploadedNewAttachmentId3)
 
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment1),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment2),
+                                                          AttachmentDocumentInfo.make(uploadedAttachment3)]).asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedRecord).asyncFuture()

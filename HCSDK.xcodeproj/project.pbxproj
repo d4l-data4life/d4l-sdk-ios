@@ -132,6 +132,7 @@
 		36F6F08C237C17020054DE4A /* DIContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F6F08B237C17020054DE4A /* DIContainerTests.swift */; };
 		36FB754725B87D430001FB19 /* TagGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB754625B87D430001FB19 /* TagGroup.swift */; };
 		36FB755125B881D80001FB19 /* RecordServiceParameterBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */; };
+		36FD13E0266A8392009344CF /* ModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FD13DF266A8392009344CF /* ModelFactory.swift */; };
 		7F20B7152367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		7F20B7162367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
@@ -517,6 +518,7 @@
 		36F6F08B237C17020054DE4A /* DIContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainerTests.swift; sourceTree = "<group>"; };
 		36FB754625B87D430001FB19 /* TagGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagGroup.swift; sourceTree = "<group>"; };
 		36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordServiceParameterBuilderTests.swift; sourceTree = "<group>"; };
+		36FD13DF266A8392009344CF /* ModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFactory.swift; sourceTree = "<group>"; };
 		7F20B7142367128100B21680 /* data4life.care.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = data4life.care.der; sourceTree = "<group>"; };
 		837463A61E854E7500AB500F /* Data4LifeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		837463AF1E854E7500AB500F /* Data4LifeSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Data4LifeSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1551,7 +1553,6 @@
 				CD841DDC225CBE80002656D5 /* Extensions */,
 				CD841DF8225CBE80002656D5 /* Factories */,
 				CD841DD2225CBE80002656D5 /* Helpers */,
-				CD841DD5225CBE80002656D5 /* HelperTests */,
 				CD841DFE225CBE80002656D5 /* Info.plist */,
 				CD841DB3225CBE80002656D5 /* Mocks */,
 				CD841DF0225CBE80002656D5 /* ModelTests */,
@@ -1646,13 +1647,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		CD841DD5225CBE80002656D5 /* HelperTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = HelperTests;
-			sourceTree = "<group>";
-		};
 		CD841DDA225CBE80002656D5 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -1723,6 +1717,7 @@
 				CD841DFA225CBE80002656D5 /* RecordFactory.swift */,
 				CD841DFB225CBE80002656D5 /* EncryptedRecordFactory.swift */,
 				CD841DFC225CBE80002656D5 /* FhirFactory.swift */,
+				36FD13DF266A8392009344CF /* ModelFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -2291,6 +2286,7 @@
 				0AC728D923A2779500A8E453 /* CommonKeyServiceMock.swift in Sources */,
 				0AA4559724167197008B788C /* SDKFileManagerMock.swift in Sources */,
 				CD841E27225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift in Sources */,
+				36FD13E0266A8392009344CF /* ModelFactory.swift in Sources */,
 				CD841E59225CBE80002656D5 /* SessionServiceTests.swift in Sources */,
 				0AA455992417A21B008B788C /* InfoServiceMock.swift in Sources */,
 				CD841E18225CBE80002656D5 /* OAuthServiceMock.swift in Sources */,
