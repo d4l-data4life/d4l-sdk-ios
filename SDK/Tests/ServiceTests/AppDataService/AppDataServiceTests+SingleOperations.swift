@@ -23,7 +23,7 @@ enum JustError: Swift.Error {
 }
 
 extension Just {
-    func asyncFuture() -> Future<Output, Error> {
+    func asyncFuture(queue: DispatchQueue = FutureExecutor.asyncQueue) -> Future<Output, Error> {
         mapError { _ in JustError.dummy }
         .asyncFuture()
     }

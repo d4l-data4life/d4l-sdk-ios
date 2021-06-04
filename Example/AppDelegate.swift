@@ -53,9 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:])
         -> Bool {
-
             Data4LifeClient.default.handle(url: url)
-
         return true
     }
 }

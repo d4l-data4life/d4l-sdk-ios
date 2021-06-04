@@ -18,14 +18,14 @@ import XCTest
 import Combine
 import Data4LifeFHIR
 
-class AttachmentServiceTests: XCTestCase {
+final class AttachmentServiceTests: XCTestCase {
 
     private var bundle = Foundation.Bundle.current
+    private var documentService: DocumentServiceMock!
+    private var imageResizer: ImageResizerMock!
+    private var attachmentService: AttachmentService!
 
-    var documentService: DocumentServiceMock!
-    var imageResizer: ImageResizerMock!
-    var attachmentService: AttachmentService!
-
+    private let testSerialQueue = DispatchQueue(label: "test.serial.queue")
     override func setUp() {
         super.setUp()
 
@@ -123,47 +123,43 @@ class AttachmentServiceTests: XCTestCase {
                 XCTAssertEqual(result.first?.thumbnailsIDs, [:])
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, payload.data)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
-                XCTAssertNil(self.imageResizer.resizeCalledWith)
+                XCTAssertNil(self.imageResizer.resizedDataCalledWith)
         }
 
         waitForExpectations(timeout: 5)
     }
 
-    #warning("Test to rewrite due to async")
-//    func testUploadAttachmentWithThumbnailsIds() {
-//        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
-//        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
-//        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
-//        let record = DecryptedRecordFactory.create(document)
-//        let attachmentId = UUID().uuidString
-//        let payload = AttachmentDocument(id: attachmentId, data: attachment.attachmentData!)
-//
-//        let expectedThumbnailsIds = [UUID().uuidString, UUID().uuidString]
-//        let thumbnailPayloads = expectedThumbnailsIds.map { AttachmentDocument(id: $0, data: imageData) }
-//        documentService.createDocumentResults = Dictionary(([payload] + thumbnailPayloads)
-//                                                            .map { ($0, Just($0).asyncFuture()) },
-//                                                           uniquingKeysWith: { $1 })
-//
-//        imageResizer.isResizableResult = true
-//        let selectedSize = CGSize(width: 220, height: 200)
-//        imageResizer.getSizeResult = selectedSize
-//        imageResizer.resizeResult = (imageData, nil)
-//
-//        let asyncExpectation = expectation(description: "should upload data with thumbnails ids and return document")
-//        attachmentService.uploadAttachments([attachment],
-//                                            key: record.attachmentKey!)
-//            .then { result in
-//                defer { asyncExpectation.fulfill() }
-//                XCTAssertEqual(result.first?.attachment.attachmentId, attachmentId)
-//                XCTAssertEqual(result.first?.attachment.attachmentDataString, attachment.attachmentDataString)
-//                XCTAssertEqual(result.first?.thumbnailIds, expectedThumbnailsIds)
-//                XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayloads.last?.data)
-//                XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
-//                XCTAssert(self.imageResizer.resizeCalledWith?.1 == selectedSize)
-//        }
-//
-//        waitForExpectations(timeout: 5)
-//    }
+    func testUploadAttachmentWithThumbnailsIds() {
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
+        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
+        let attachmentKey = DecryptedRecordFactory.create(document).attachmentKey
+        let attachmentId = UUID().uuidString
+
+        imageResizer.isResizableResult = true
+        imageResizer.resizedDataResult = (imageData, nil)
+        documentService.createDocumentResult = Just(AttachmentDocument(id: attachmentId, data: imageData)).asyncFuture()
+
+        let expectedThumbnailsIds = [ThumbnailHeight.mediumHeight: attachmentId, .smallHeight: attachmentId]
+        let asyncExpectation = expectation(description: "should upload data with thumbnails ids and return document")
+
+        attachmentService.uploadAttachments([attachment], key: attachmentKey!).complete { result in
+            switch result {
+            case .success(let attachmentDocumentInfos):
+                XCTAssertEqual(attachmentDocumentInfos.first?.attachment.attachmentId, attachmentId)
+                XCTAssertEqual(attachmentDocumentInfos.first?.attachment.attachmentDataString, attachment.attachmentDataString)
+                XCTAssertEqual(attachmentDocumentInfos.first?.thumbnailsIDs, expectedThumbnailsIds)
+                XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, imageData)
+                XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, attachmentKey)
+                XCTAssert(self.imageResizer.resizedDataCalledWith?.1 == .smallHeight)
+                asyncExpectation.fulfill()
+            case .failure(let error):
+                XCTFail("Expected value, instead received error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 10)
+    }
 
     // Test image saved as jpeg with an invalid format as image
     func testUploadAttachmentInvalidImageData() {
@@ -181,13 +177,13 @@ class AttachmentServiceTests: XCTestCase {
                                             key: record.attachmentKey!)
             .then { result in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(result.first?.id, attachmentId)
+                XCTAssertEqual(result.first?.fullAttachmentId, attachmentId)
                 XCTAssertEqual(result.first?.attachment.attachmentDataString, attachment.attachmentDataString)
                 XCTAssertEqual(result.first?.thumbnailsIDs, [:])
 
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, payload.data)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
-                XCTAssertNil(self.imageResizer.resizeCalledWith)
+                XCTAssertNil(self.imageResizer.resizedDataCalledWith)
         }
 
         waitForExpectations(timeout: 5)
@@ -206,7 +202,7 @@ class AttachmentServiceTests: XCTestCase {
 
         documentService.createDocumentResult = Just(payload).asyncFuture()
         imageResizer.isResizableResult = true
-        imageResizer.resizeResults = [(nil, expectedError), (nil, expectedError)]
+        imageResizer.resizedDataResultBuilder = { (nil, expectedError) }
 
         let asyncExpectation = expectation(description: "should upload data (1 payload - original) for thumbnails and return document")
         attachmentService.uploadAttachments([attachment],
@@ -219,52 +215,59 @@ class AttachmentServiceTests: XCTestCase {
 
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, payload.data)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
-                XCTAssert(self.imageResizer.resizeCalledWith?.1 == .smallHeight)
+                XCTAssert(self.imageResizer.resizedDataCalledWith?.1 == .smallHeight)
         }
 
         waitForExpectations(timeout: 5)
     }
 
-//    func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanSmallThumbnail() {
-//        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
-//        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
-//        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
-//        let record = DecryptedRecordFactory.create(document)
-//        let attachmentId = UUID().uuidString
-//        let payload = AttachmentDocument(id: attachmentId, data: attachment.attachmentData!)
-//
-//        let mediumThumbnailId = UUID().uuidString
-//        let expectedThumbnailsIds = [mediumThumbnailId, attachmentId]
-//        let thumbnailPayload = AttachmentDocument(id: mediumThumbnailId, data: imageData)
-//        let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
-//
-//        documentService.createDocumentResults = Dictionary([payload, thumbnailPayload]
-//                                                            .map { ($0, Just($0).asyncFuture()) },
-//                                                           uniquingKeysWith: { $1 })
-//
-//
-//        imageResizer.isResizableResult = true
-//        let selectedSize = CGSize(width: 220, height: 200)
-//        imageResizer.getSizeResult = selectedSize
-//        imageResizer.resizeResults = [(imageData, nil), (nil, expectedError)]
-//
-//        let asyncExpectation = expectation(description:
-//            "should upload data (2 payload - original, medium) for thumbnails and return document")
-//        attachmentService.uploadAttachments([attachment],
-//                                            key: record.attachmentKey!)
-//            .then { result in
-//                defer { asyncExpectation.fulfill() }
-//                XCTAssertEqual(result.first?.0.attachmentId, attachmentId)
-//                XCTAssertEqual(result.first?.0.attachmentDataString, attachment.attachmentDataString)
-//                XCTAssertEqual(result.first?.1, expectedThumbnailsIds)
-//
-//                XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayload.data)
-//                XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
-//                XCTAssert(self.imageResizer.resizeCalledWith?.1 == selectedSize)
-//        }
-//
-//        waitForExpectations(timeout: 5)
-//    }
+    func testUploadAttachmentWithThumbnailsIdsOriginalSmallerThanSmallThumbnail() {
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
+        let attachment = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
+        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment])
+        let record = DecryptedRecordFactory.create(document)
+        let attachmentId = UUID().uuidString
+        let payload = AttachmentDocument(id: attachmentId, data: attachment.attachmentData!)
+
+        let mediumThumbnailId = UUID().uuidString
+        let expectedThumbnailsIds = [ThumbnailHeight.mediumHeight: mediumThumbnailId]
+        let thumbnailPayload = AttachmentDocument(id: mediumThumbnailId, data: imageData)
+        let expectedError = Data4LifeSDKError.resizingImageSmallerThanOriginalOne
+
+        var payloadReturned = false
+
+        documentService.createDocumentResultBuilder = { [ payload, thumbnailPayload] _ in
+            if !payloadReturned {
+                payloadReturned = true
+                return payload
+            } else {
+                return thumbnailPayload
+            }
+        }
+
+        var imageResizerResults: [(Data?, Error?)] = [(imageData, nil), (nil, expectedError)]
+        imageResizer.isResizableResult = true
+        imageResizer.resizedDataResultBuilder = { () -> (Data?, Error?) in
+            imageResizerResults.removeFirst()
+        }
+
+        let asyncExpectation = expectation(description:
+            "should upload data (2 payload - original, medium) for thumbnails and return document")
+        attachmentService.uploadAttachments([attachment],
+                                            key: record.attachmentKey!)
+            .then { result in
+                defer { asyncExpectation.fulfill() }
+                XCTAssertEqual(result.first?.fullAttachmentId, attachmentId)
+                XCTAssertEqual(result.first?.attachment.attachmentDataString, attachment.attachmentDataString)
+                XCTAssertEqual(result.first?.thumbnailsIDs, expectedThumbnailsIds)
+
+                XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayload.data)
+                XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
+                XCTAssert(self.imageResizer.resizedDataCalledWith?.1 == .smallHeight)
+        }
+
+        waitForExpectations(timeout: 5)
+    }
 
     func testUploadAttachmentsFailMissingData() {
         let attachment = FhirFactory.createStu3AttachmentElement()
@@ -392,7 +395,7 @@ class AttachmentServiceTests: XCTestCase {
 
         let attachmentKey = KeyFactory.createKey()
 
-        let expectedError = Data4LifeSDKError.invalidAttachmentAdditionalId("Attachment Id: \(attachment.attachmentId!)")
+        let expectedError = Data4LifeSDKError.malformedAttachmentAdditionalId
         let asyncExpectation = expectation(description: "should throw error invalid thumbnails format")
 
         attachmentService.fetchAttachments(for: document,
@@ -411,52 +414,50 @@ class AttachmentServiceTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-//    func testUploadTwoAttachmentsWithSameHash() {
-//        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
-//        let attachment1 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
-//        let attachment2 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
-//        let document = FhirFactory.createStu3DocumentReferenceResource(with: [attachment1, attachment2])
-//
-//        let record = DecryptedRecordFactory.create(document)
-//        let attachmentId1 = UUID().uuidString
-//        let attachmentId2 = UUID().uuidString
-//        let payload1 = AttachmentDocument(id: attachmentId1, data: attachment1.attachmentData!)
-//        let payload2 = AttachmentDocument(id: attachmentId2, data: attachment2.attachmentData!)
-//
-//        let expectedThumbnailsIds1 = [UUID().uuidString, UUID().uuidString]
-//        let thumbnailPayloads1 = expectedThumbnailsIds1.map { AttachmentDocument(id: $0, data: imageData) }
-//        let expectedThumbnailsIds2 = [UUID().uuidString, UUID().uuidString]
-//        let thumbnailPayloads2 = expectedThumbnailsIds2.map { AttachmentDocument(id: $0, data: imageData) }
-//
-//        documentService.createDocumentResults = Dictionary(([payload1] + thumbnailPayloads1 + [payload2] + thumbnailPayloads2)
-//                                                            .map { ($0, Just($0).asyncFuture()) },
-//                                                           uniquingKeysWith: { $1 })
-//
-//        imageResizer.isResizableResult = true
-//        let selectedSize = CGSize(width: 220, height: 200)
-//        imageResizer.resizeResult = (imageData, nil)
-//
-//        let asyncExpectation = expectation(description: "should upload data with thumbnails ids and return document")
-//        attachmentService.uploadAttachments([attachment1, attachment2],
-//                                            key: record.attachmentKey!)
-//            .then ({ result in
-//                defer { asyncExpectation.fulfill() }
-//                XCTAssertNotEqual(result.first!.attachment.attachmentId!, result[1].attachment.attachmentId!)
-//
-//                XCTAssertEqual(result.first!.attachment.attachmentId, attachmentId1)
-//                XCTAssertEqual(result.first!.attachment.attachmentDataString, attachment1.attachmentDataString)
-//                XCTAssertEqual(result.first!.thumbnailIds, expectedThumbnailsIds1)
-//                XCTAssertEqual(result[1].attachment.attachmentId, attachmentId2)
-//                XCTAssertEqual(result[1].attachment.attachmentDataString, attachment2.attachmentDataString)
-//                XCTAssertEqual(result[1].thumbnailIds, expectedThumbnailsIds2)
-//
-//                XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, thumbnailPayloads1.last!.data)
-//                XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)
-//                XCTAssert(self.imageResizer.resizeCalledWith?.1 == selectedSize)
-//            })
-//
-//           waitForExpectations(timeout: 5)
-//    }
+    func testUploadTwoAttachmentsWithSameHash() {
+
+        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
+        let attachment1 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
+        let attachment2 = FhirFactory.createStu3ImageAttachmentElement(imageData: imageData)
+        let documentReference = FhirFactory.createStu3DocumentReferenceResource(with: [attachment1, attachment2])
+        let attachmentKey = DecryptedRecordFactory.create(documentReference).attachmentKey!
+
+        let attachmentId = UUID().uuidString
+        let expectedThumbnailsIds1 = [ThumbnailHeight.mediumHeight: attachmentId,
+                                      ThumbnailHeight.smallHeight: attachmentId]
+
+        let expectedThumbnailsIds2 = [ThumbnailHeight.mediumHeight: attachmentId,
+                                      ThumbnailHeight.smallHeight: attachmentId]
+
+        documentService.createDocumentResult = Just(AttachmentDocument(id: attachmentId, data: imageData)).asyncFuture()
+        imageResizer.isResizableResult = true
+        imageResizer.resizedDataResult = (imageData, nil)
+
+        let asyncExpectation = expectation(description: "should upload data with thumbnails ids and return document")
+        attachmentService.uploadAttachments([attachment1, attachment2],
+                                            key: attachmentKey)
+            .complete ({ result in
+                switch result {
+                case .success(let result):
+                    defer { asyncExpectation.fulfill() }
+
+                    XCTAssertEqual(result.first!.attachment.attachmentId, attachmentId)
+                    XCTAssertEqual(result.first!.attachment.attachmentDataString, attachment1.attachmentDataString)
+                    XCTAssertEqual(result.first!.thumbnailsIDs, expectedThumbnailsIds1)
+                    XCTAssertEqual(result[1].attachment.attachmentId, attachmentId)
+                    XCTAssertEqual(result[1].attachment.attachmentDataString, attachment2.attachmentDataString)
+                    XCTAssertEqual(result[1].thumbnailsIDs, expectedThumbnailsIds2)
+
+                    XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, imageData)
+                    XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, attachmentKey)
+                    XCTAssert(self.imageResizer.resizedDataCalledWith?.1 == .smallHeight)
+                case .failure(let error):
+                    XCTFail("Expected value instead got error: \(error)")
+                }
+            })
+
+           waitForExpectations(timeout: 5)
+    }
 
     func testDownloadWrongHashAttachment() {
         let progress = Progress()

@@ -48,6 +48,7 @@ final class ErasedSDKResource: Equatable {
     }
 
     func getValue<T: SDKResource>(as type: T.Type = T.self) -> T {
+        // swiftlint:disable force_cast
         resource as! T
     }
 

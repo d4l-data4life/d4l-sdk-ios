@@ -16,7 +16,6 @@
 import Foundation
 import Combine
 import XCTest
-
 private var testStorage: Set<AnyCancellable> = []
 
 extension Publisher {
@@ -25,13 +24,14 @@ extension Publisher {
               onError: @escaping (Failure) -> Void = { _ in XCTFail("Got error but expected a value instead") },
               finally: @escaping () -> Void = {}) {
         sink { sinkResult in
-            switch sinkResult {
-            case .finished:
-                break
-            case .failure(let error):
-                onError(error)
-            }
-            finally()
+                switch sinkResult {
+                case .finished:
+                    break
+                case .failure(let error):
+                    onError(error)
+                }
+                finally()
+
         } receiveValue: { value in
             onValue(value)
         }.store(in: &testStorage)

@@ -40,11 +40,19 @@ struct CombineBatchResult<Identifier, Value, Error> {
     let successRequests: [(Identifier, Value)]
     let failedRequests: [(Identifier, Error)]
 
-    func throwIfErrored() throws {
+    func throwIfErrored() throws -> Self {
         guard let firstError = failedRequests.first?.1 as? Data4LifeSDKError else {
-            return
+            return self 
         }
-        throw Data4LifeSDKError.firstBatchError(firstError)
+        throw firstError
+    }
+
+    var identifiers: [Identifier] {
+        successRequests.map { $0.0 }
+    }
+
+    var values: [Value] {
+        successRequests.map { $0.1 }
     }
 }
 
@@ -83,7 +91,7 @@ final class FutureExecutor {
 
     private static var asyncStorage: Set<AnyCancellable> = []
     private static let asyncStorageQueue: DispatchQueue = DispatchQueue(label: "combine.async.storageQueue")
-    fileprivate static let asyncQueue: DispatchQueue = DispatchQueue(label: "combine.async.queue", attributes: .concurrent)
+    static let asyncQueue: DispatchQueue = DispatchQueue(label: "combine.async.queue", attributes: .concurrent)
 
     @discardableResult fileprivate static func combineAwait<Value,Error>(_ future: Future<Value, Error>) throws -> Value {
         var result: Value!

@@ -23,7 +23,7 @@ extension FhirService {
         return combineAsync {
             let identifiedFutures = resources.map { ($0, createFhirRecord($0, annotations: annotations, decryptedRecordType: decryptedRecordType)) }
             let combineResult = combineAwait(identifiedFutures)
-            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
+            return (combineResult.values, combineResult.failedRequests)
         }
     }
 
@@ -33,7 +33,7 @@ extension FhirService {
         return combineAsync {
             let identifiedFutures = resources.map { ($0, updateFhirRecord($0, annotations: annotations, decryptedRecordType: decryptedRecordType)) }
             let combineResult = combineAwait(identifiedFutures)
-            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
+            return (combineResult.values, combineResult.failedRequests)
         }
     }
 
@@ -42,7 +42,7 @@ extension FhirService {
         return combineAsync {
             let identifiedFutures = identifiers.map { ($0, fetchFhirRecord(withId: $0, decryptedRecordType: decryptedRecordType)) }
             let combineResult = combineAwait(identifiedFutures)
-            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
+            return (combineResult.values, combineResult.failedRequests)
         }
     }
 
@@ -50,18 +50,18 @@ extension FhirService {
         return combineAsync {
             let identifiedFutures = identifiers.map { ($0, deleteRecord(withId: $0)) }
             let combineResult = combineAwait(identifiedFutures)
-            return (combineResult.successRequests.map { $0.0 }, combineResult.failedRequests)
+            return (combineResult.identifiers, combineResult.failedRequests)
         }
     }
 
     func  downloadFhirRecordsWithAttachments<DR: DecryptedRecord>(withIds identifiers: [String],
-                                                                 decryptedRecordType: DR.Type = DR.self,
-                                                                 parentProgress: Progress)
+                                                                  decryptedRecordType: DR.Type = DR.self,
+                                                                  parentProgress: Progress)
     -> NoErrorFuture<BatchResult<FhirRecord<DR.Resource>, String>> where DR.Resource: FhirSDKResource {
         return combineAsync {
             let identifiedFutures = identifiers.map { ($0, downloadFhirRecordWithAttachments(withId: $0, decryptedRecordType: decryptedRecordType)) }
             let combineResult = combineAwait(identifiedFutures, progress: parentProgress)
-            return (combineResult.successRequests.map { $0.1 }, combineResult.failedRequests)
+            return (combineResult.values, combineResult.failedRequests)
         }
     }
 }

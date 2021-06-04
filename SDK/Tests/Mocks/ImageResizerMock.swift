@@ -19,6 +19,7 @@ import UIKit
 @testable import Data4LifeSDK
 
 class ImageResizerMock: DataResizer {
+
     var isResizableCalledWith: (Data)?
     var isResizableResult = false
     func isImageData(_ data: Data) -> Bool {
@@ -26,25 +27,25 @@ class ImageResizerMock: DataResizer {
         return isResizableResult
     }
 
-    var resizeCalledWith: (UIImage, ThumbnailHeight)?
-    var resizeResult: (Data?, Error?)?
-    var resizeResults: [(Data?, Error?)]?
+    var resizedDataCalledWith: (UIImage, ThumbnailHeight)?
+    var resizedDataResult: (Data?, Error?)?
+    var resizedDataResultBuilder: (() -> (Data?, Error?))?
 
     func resizedData(of image: UIImage, with thumbnailHeight: ThumbnailHeight) throws -> Data {
-        resizeCalledWith = (image, thumbnailHeight)
-        if let results = resizeResults, let first = results.first {
-            resizeResults = Array(results.dropFirst())
-            if let data = first.0 {
+        resizedDataCalledWith = (image, thumbnailHeight)
+        if let resizedDataResultBuilder = resizedDataResultBuilder {
+            let response = resizedDataResultBuilder()
+            if let data = response.0 {
                 return data
             } else {
-                throw first.1!
+                throw response.1!
             }
         }
 
-        if let error = resizeResult?.1 {
+        if let error = resizedDataResult?.1 {
             throw error
         }
 
-        return resizeResult!.0!
+        return resizedDataResult!.0!
     }
 }

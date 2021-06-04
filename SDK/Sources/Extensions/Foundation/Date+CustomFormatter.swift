@@ -40,3 +40,13 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 }
+
+func debugTaskTime<T>(name: String = "Task", task: () throws -> T) rethrows -> T {
+    debugPrint("--- started task \(name)")
+    let startingTime = DispatchTime.now()
+    let value = try task()
+    let endTime = DispatchTime.now()
+    let interval = (Double(endTime.uptimeNanoseconds) - Double(startingTime.uptimeNanoseconds)) / 1_000_000_000
+    debugPrint("--- finished task \(name) after \(interval) seconds")
+    return value
+}

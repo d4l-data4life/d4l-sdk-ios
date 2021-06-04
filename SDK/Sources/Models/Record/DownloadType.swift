@@ -26,4 +26,15 @@ public enum DownloadType {
     var isThumbnailType: Bool {
         return self == .medium || self == .small
     }
+
+    var thumbnailHeight: ThumbnailHeight? {
+        switch self {
+        case .full:
+            return nil
+        case .medium:
+            return .mediumHeight
+        case .small:
+            return .smallHeight
+        }
+    }
 }

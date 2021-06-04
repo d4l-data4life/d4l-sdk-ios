@@ -24,14 +24,16 @@ enum DocumentServiceMockError: Error {
 
 final class DocumentServiceMock: DocumentServiceType {
 
+    private let queue = DispatchQueue(label: "document.service.mock.queue")
+
     var createDocumentCalledWith: (AttachmentDocument, Key)?
     var createDocumentResult: SDKFuture<AttachmentDocument>?
-    var createDocumentResults: [SDKFuture<AttachmentDocument>]?
+    var createDocumentResultBuilder: ((AttachmentDocument) -> AttachmentDocument)?
+
     func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument> {
         createDocumentCalledWith = (document, key)
-        if let results = createDocumentResults, let first = results.first {
-            createDocumentResults = Array(results.dropFirst())
-            return first
+        if let builder = createDocumentResultBuilder {
+            return Just(builder(document)).asyncFuture(queue: queue)
         }
 
         return createDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()

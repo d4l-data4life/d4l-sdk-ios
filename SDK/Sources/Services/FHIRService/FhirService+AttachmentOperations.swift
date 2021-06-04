@@ -28,21 +28,24 @@ extension FhirService {
             let record = FhirRecord<DR.Resource>(decryptedRecord: decryptedRecord)
             guard let attachmentKey = decryptedRecord.attachmentKey else { return record }
 
-            if let resourceWithAttachments = record.fhirResource.copy() as? HasAttachments {
-                let ids = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId }
-                let downloadedAttachments: [AttachmentType] = try combineAwait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
-                                                                                                                       attachmentIds: ids ?? [],
-                                                                                                                       downloadType: .full,
-                                                                                                                       key: attachmentKey,
-                                                                                                                       parentProgress: Progress()))
-                var downloadedGenericAttachments = downloadedAttachments as [AttachmentType]
-                let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &downloadedGenericAttachments)
-                resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
-                let record = FhirRecord<DR.Resource>(id: record.id, resource: resourceWithAttachments as! DR.Resource, metadata: record.metadata, annotations: record.annotations)
-                return record
-            } else {
+            guard let resourceWithAttachments = record.fhirResource.copy() as? HasAttachments else {
                 return record
             }
+
+            let ids = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId }
+            let downloadedAttachments: [AttachmentType] = try combineAwait(self.attachmentService.fetchAttachments(for: resourceWithAttachments,
+                                                                                                                   attachmentIds: ids ?? [],
+                                                                                                                   downloadType: .full,
+                                                                                                                   key: attachmentKey,
+                                                                                                                   parentProgress: Progress()))
+            var downloadedGenericAttachments = downloadedAttachments as [AttachmentType]
+            let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &downloadedGenericAttachments)
+            resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
+            let recordWithAttachments = FhirRecord<DR.Resource>(id: record.id, resource: resourceWithAttachments as! DR.Resource,
+                                                                metadata: record.metadata,
+                                                                annotations: record.annotations)
+            return recordWithAttachments
+
         }
     }
 
@@ -57,7 +60,7 @@ extension FhirService {
             }
 
             let generatedKey = try combineAwait(self.cryptoService.generateGCKey(.attachment))
-            let uploadedAttachmentsWithIds: [UnfoldedAttachmentDocument] =
+            let uploadedAttachmentsWithIds: [AttachmentDocumentInfo] =
                 try combineAwait(self.attachmentService.uploadAttachments(validatedAttachments,
                                                                           key: generatedKey))
             var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
@@ -99,7 +102,7 @@ extension FhirService {
 
             let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate()
 
-            let uploadedAttachmentsWithIds: [UnfoldedAttachmentDocument] = try combineAwait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
+            let uploadedAttachmentsWithIds: [AttachmentDocumentInfo] = try combineAwait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
             let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
@@ -110,9 +113,8 @@ extension FhirService {
 
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { $0.tripleIdentifier })
-                let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
-                                                                                                    attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
-                return (cleanedResource as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
+                try resourceWithIdentifier.cleanObsoleteThumbnailIdentifiers(currentAttachmentIDs: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
+                return (resourceWithIdentifier as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
             } else {
                 return (resource, attachmentKey)
             }
@@ -122,17 +124,38 @@ extension FhirService {
 
 // MARK: - Utils
 extension FhirService {
-
-    private func uploadAttachments(_ attachments: [AttachmentType], attachmentKey: Key) -> SDKFuture<[UnfoldedAttachmentDocument]> {
+    private func uploadAttachments(_ attachments: [AttachmentType], attachmentKey: Key) -> SDKFuture<[AttachmentDocumentInfo]> {
         return combineAsync {
-            if !attachments.isEmpty {
-                let updatedAttachmentsWithThumbnailsIds: [UnfoldedAttachmentDocument] =
-                    try combineAwait(self.attachmentService.uploadAttachments(attachments,
-                                                                              key: attachmentKey))
-                return updatedAttachmentsWithThumbnailsIds
-            } else {
+            guard !attachments.isEmpty else {
                 return []
             }
+            return try combineAwait(self.attachmentService.uploadAttachments(attachments,
+                                                                             key: attachmentKey))
         }
+    }
+}
+
+fileprivate extension CustomIdentifiable {
+    func cleanObsoleteThumbnailIdentifiers(currentAttachmentIDs: [String]) throws {
+        guard let identifiers = customIdentifiers else {
+            return
+        }
+
+        let updatedIdentifiers = try identifiers.compactMap { identifier -> FhirIdentifierType? in
+            guard identifier.valueString?.contains(AttachmentDocumentInfo.tripleIdentifierPrefix) ?? false else {
+                return identifier
+            }
+            guard let ids = identifier.valueString?.split(separator: AttachmentDocumentInfo.thumbnailIdentifierSeparator),
+                  ids.count == 4
+            else {
+                throw Data4LifeSDKError.malformedAttachmentAdditionalId
+            }
+
+            let attachmentId = String(ids[1])
+            let identifierIsInUse = currentAttachmentIDs.contains(attachmentId)
+            return identifierIsInUse ? identifier : nil
+        }
+
+        customIdentifiers = updatedIdentifiers.isEmpty ? nil : updatedIdentifiers
     }
 }

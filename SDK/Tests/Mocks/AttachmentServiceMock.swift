@@ -36,10 +36,10 @@ class AttachmentServiceMock: AttachmentServiceType {
     }
 
     var uploadAttachmentsCalledWith: ([AttachmentType], Key)?
-    var uploadAttachmentsResult: SDKFuture<[UnfoldedAttachmentDocument]>?
-    var uploadAttachmentsResults: [SDKFuture<[UnfoldedAttachmentDocument]>]?
+    var uploadAttachmentsResult: SDKFuture<[AttachmentDocumentInfo]>?
+    var uploadAttachmentsResults: [SDKFuture<[AttachmentDocumentInfo]>]?
 
-    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> SDKFuture<[UnfoldedAttachmentDocument]> {
+    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> SDKFuture<[AttachmentDocumentInfo]> {
         uploadAttachmentsCalledWith = (attachments, key)
         if let results = uploadAttachmentsResults, let first = results.first {
             uploadAttachmentsResults = Array(results.dropFirst())

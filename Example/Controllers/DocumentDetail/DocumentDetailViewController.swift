@@ -93,7 +93,8 @@ class DocumentDetailViewController: UIViewController {
         }
         switch document {
         case .stu3:
-            cancellableRequest = Data4LifeClient.default.downloadFhirStu3Attachments(withIds: document.attachmentIdentifiers, recordId: documentId, onProgressUpdated: { [weak self] progress in
+            cancellableRequest = Data4LifeClient.default.downloadFhirStu3Attachments(withIds: document.attachmentIdentifiers, recordId: documentId, downloadType: .small,
+                                                                                     onProgressUpdated: { [weak self] progress in
                 DispatchQueue.main.async {
                     self?.progressView.setProgress(Float(progress.fractionCompleted), animated: true)
                 }
@@ -108,7 +109,8 @@ class DocumentDetailViewController: UIViewController {
                 uiCompletion()
             })
         case .r4:
-            cancellableRequest = Data4LifeClient.default.downloadFhirR4Attachments(withIds: document.attachmentIdentifiers, recordId: documentId, onProgressUpdated: { [weak self] progress in
+            cancellableRequest = Data4LifeClient.default.downloadFhirR4Attachments(withIds: document.attachmentIdentifiers, recordId: documentId, downloadType: .small,
+                                                                                   onProgressUpdated: { [weak self] progress in
                 DispatchQueue.main.async {
                     self?.progressView.setProgress(Float(progress.fractionCompleted), animated: true)
                 }

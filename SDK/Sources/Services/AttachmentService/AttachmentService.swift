@@ -20,7 +20,7 @@ import Combine
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> SDKFuture<[UnfoldedAttachmentDocument]>
+                           key: Key) -> SDKFuture<[AttachmentDocumentInfo]>
     func fetchAttachments(for resourceWithAttachments: HasAttachments,
                           attachmentIds: [String],
                           downloadType: DownloadType,
@@ -43,53 +43,75 @@ final class AttachmentService: AttachmentServiceType {
     }
 
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> SDKFuture<[UnfoldedAttachmentDocument]> {
+                           key: Key) -> SDKFuture<[AttachmentDocumentInfo]> {
 
         return combineAsync {
 
-            let unfoldedDocuments = try attachments.map { attachment -> UnfoldedAttachmentDocument in
-                guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
-                    throw Data4LifeSDKError.invalidAttachmentMissingData
+            let attachmentDocumentInfos = try attachments.map { try AttachmentDocumentInfo.makeForUploadRequest(attachment: $0) }
+
+            let identifiedCreateDocumentFutures = attachmentDocumentInfos.compactMap { attachmentDocumentInfo -> (String, SDKFuture<AttachmentDocumentInfo>)? in
+                guard let attachmentData = attachmentDocumentInfo.document.data else {
+                    return nil
                 }
-                do { try attachment.validatePayloadType() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadType }
-                do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
+                let futureIdentifier = "combined attachment upload: " + UUID().uuidString
 
-                return UnfoldedAttachmentDocument(attachment: attachment,
-                                            document: AttachmentDocument(data: data))
-            }
-
-            let identifiedDocumentFutures = unfoldedDocuments.map { unfoldedDocument -> (String, SDKFuture<UnfoldedAttachmentDocument>) in
-                let futureIdentifier = UUID().uuidString
-                let mainAttachmentFuture = self.documentService
-                    .create(document: unfoldedDocument.document, key: key)
-                    .compactMap { document -> UnfoldedAttachmentDocument? in
-                        guard let newAttachment = unfoldedDocument.attachment.copy() as? AttachmentType else {
-                            return nil
-                        }
-                        newAttachment.attachmentId = document.id
-                        return UnfoldedAttachmentDocument(attachment: newAttachment, document: document)
-                    }
+                let mainAttachmentFuture = self
+                    .documentService.create(document: attachmentDocumentInfo.document, key: key)
+                    .compactMap { attachmentDocumentInfo.updatingInfo(withCreated: $0) }
                     .asyncFuture()
-                let thumbnailsFuture = self.createThumbnails(originalData: unfoldedDocument.document.data, key: key)
+
+                let thumbnailsFuture = self
+                    .createThumbnails(originalData: attachmentData, key: key)
+
                 let combinedFuture = Publishers.CombineLatest(mainAttachmentFuture, thumbnailsFuture)
-                    .map { tuple -> UnfoldedAttachmentDocument in
+                    .map { tuple -> AttachmentDocumentInfo in
                         let attachmentDocument = tuple.0
                         let thumbnailIds = tuple.1
-                        return UnfoldedAttachmentDocument(attachment: attachmentDocument.attachment,
-                                                          document: attachmentDocument.document,
-                                                          thumbnailsIDs: thumbnailIds)
+                        return AttachmentDocumentInfo(document: attachmentDocument.document,
+                                                      attachment: attachmentDocument.attachment,
+                                                      thumbnailsIDs: thumbnailIds)
                     }.asyncFuture()
+
                 return (futureIdentifier, combinedFuture)
             }
 
-            let combineResult = combineAwait(identifiedDocumentFutures)
-            try combineResult.throwIfErrored()
-
-            let identifiedUnfoldedDocumentsWithThumbnailsIds = combineResult.successRequests.map { $0.1 }
-            return identifiedUnfoldedDocumentsWithThumbnailsIds
+            let combineResult = try combineAwait(identifiedCreateDocumentFutures).throwIfErrored()
+            return combineResult.values
         }
     }
 
+    func fetchAttachments(for resourceWithAttachments: HasAttachments,
+                          attachmentIds: [String],
+                          downloadType: DownloadType,
+                          key: Key,
+                          parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
+
+        return combineAsync {
+
+            let attachmentDocumentInfos = try AttachmentDocumentInfo.makeForFetchRequest(resource: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
+
+            let identifiedDocumentFutures = attachmentDocumentInfos.compactMap { attachmentDocumentInfo -> (String, SDKFuture<AttachmentType>)? in
+                guard let fullAttachmentId = attachmentDocumentInfo.document.id else {
+                    return nil
+                }
+                let futureIdentifier = "attachment fetch: " + UUID().uuidString
+                let attachmentIdToFetch = attachmentDocumentInfo.attachmentThumbnailIdentifier(for: downloadType) ?? fullAttachmentId
+                let fetchAttachmentFuture = self.documentService
+                    .fetchDocument(withId: attachmentIdToFetch, key: key, parentProgress: parentProgress)
+                    .tryCompactMap { try attachmentDocumentInfo.updatingInfo(withFetched: $0, for: downloadType) }
+                    .tryMap { try $0.validateFetched(as: downloadType).attachment }
+                    .asyncFuture()
+
+                return (futureIdentifier, fetchAttachmentFuture)
+            }
+
+            let combineResult = try combineAwait(identifiedDocumentFutures).throwIfErrored()
+            return combineResult.values
+        }
+    }
+}
+
+extension AttachmentService {
     private func createThumbnails(originalData: Data,
                                   key: Key) -> SDKFuture<[ThumbnailHeight: String]> {
         return combineAsync {
@@ -101,90 +123,29 @@ final class AttachmentService: AttachmentServiceType {
                 guard let resizedData = try? self.imageResizer.resizedData(of: imageToResize, with: thumbnailHeight) else {
                     return nil
                 }
-                let resizedDocument = AttachmentDocument(data: resizedData)
-                let futureIdentifier = UUID().uuidString
-                let future = self.documentService
-                    .create(document: resizedDocument, key: key)
-                    .compactMap { document -> (ThumbnailHeight, String)? in
-                        guard let id = document.id else {
-                            return nil
-                        }
-                        return (thumbnailHeight, id)
+
+                let futureIdentifier = "thumbnail upload: " + UUID().uuidString
+                let createDocumentFuture: SDKFuture<(ThumbnailHeight, String)> = combineAsync { () -> (ThumbnailHeight, String?) in
+                    let document = try combineAwait(self.documentService.create(document: AttachmentDocument(data: resizedData), key: key))
+                    return (thumbnailHeight, document.id)
+                }
+                .compactMap { tuple -> (ThumbnailHeight, String)? in
+                    guard let id = tuple.1 else {
+                        return nil
                     }
-                    .asyncFuture()
-                return (futureIdentifier, future)
+                    return (tuple.0, id)
+                }
+                .asyncFuture()
+                return (futureIdentifier, createDocumentFuture)
             }
 
-            let result = combineAwait(singleThumbnailFutures)
-            try result.throwIfErrored()
-            return Dictionary(result.successRequests.map { $0.1 }, uniquingKeysWith: { $1 })
-        }
-    }
+            let result = try combineAwait(singleThumbnailFutures).throwIfErrored()
 
-    func fetchAttachments(for resourceWithAttachments: HasAttachments,
-                          attachmentIds: [String],
-                          downloadType: DownloadType,
-                          key: Key,
-                          parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
-        return combineAsync {
-            guard let attachments = resourceWithAttachments.allAttachments else { return [] }
-
-            let filledAttachments = try attachments.compactMap { attachment -> AttachmentType? in
-                guard let attachmentId = attachment.attachmentId, attachmentIds.contains(attachmentId) else { return nil }
-                // Size validation has to be done from the fhir property in order to avoid the attachment's downloading time
-                do { try attachment.validatePayloadSize() } catch {
-                    throw Data4LifeSDKError.invalidAttachmentPayloadSize
-                }
-
-                var selectedDocumentId: String?
-                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifiable, downloadType.isThumbnailType {
-                    selectedDocumentId = try self.selectDocumentId(resourceWithIdentifiableAttachments, downloadType: downloadType, for: attachmentId)
-                    attachment.attachmentId = ThumbnailsIdFactory.displayAttachmentId(attachmentId, for: selectedDocumentId)
-                }
-
-                let documentId: String = selectedDocumentId ?? attachmentId
-                let data = try combineAwait(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
-
-                let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-                attachmentCopy.attachmentDataString = data.base64EncodedString()
-
-                do { try attachmentCopy.validatePayloadType() } catch {
-                    throw Data4LifeSDKError.invalidAttachmentPayloadType
-                }
-
-                if downloadType.isThumbnailType {
-                    attachmentCopy.attachmentHash = data.sha1Hash
-                    attachmentCopy.attachmentSize = data.count
-                } else {
-                    do { try attachmentCopy.validatePayloadHash() } catch {
-                        throw Data4LifeSDKError.invalidAttachmentPayloadHash
-                    }
-                }
-
-                return attachmentCopy
+            var dictionary: [ThumbnailHeight: String] = [:]
+            result.values.forEach { tuple in
+                dictionary[tuple.0] = tuple.1
             }
-
-            return filledAttachments
+            return dictionary
         }
-    }
-
-    private func selectDocumentId(_ resourceWithIdentifiableAttachments: CustomIdentifiable, downloadType: DownloadType,
-                                  for attachmentId: String) throws -> String? {
-        guard let identifiers = resourceWithIdentifiableAttachments.customIdentifiers else { return attachmentId }
-
-        let additionalIds = identifiers.compactMap { $0.valueString }
-
-        let selectedDocumentId = try additionalIds.filter {
-            return $0.contains(attachmentId)
-        }.compactMap { additionalId -> String? in
-            do {
-                let documentId = try ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: downloadType)
-                return documentId
-            } catch Data4LifeSDKError.malformedAttachmentAdditionalId {
-                throw Data4LifeSDKError.invalidAttachmentAdditionalId("Attachment Id: \(attachmentId)")
-            }
-        }
-
-        return selectedDocumentId.first ?? nil
     }
 }
