@@ -20,7 +20,7 @@ import Data4LifeFHIRCore
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]>
+                           key: Key) -> Promise<[AttachmentDocumentInfo]>
     func fetchAttachments(for resourceWithAttachments: HasAttachments,
                           attachmentIds: [String],
                           downloadType: DownloadType,
@@ -30,8 +30,8 @@ protocol AttachmentServiceType {
 
 final class AttachmentService: AttachmentServiceType {
 
-    let documentService: DocumentServiceType
-    let imageResizer: Resizable
+    private let documentService: DocumentServiceType
+    private let imageResizer: ImageResizer
 
     init(container: DIContainer) {
         do {
@@ -43,23 +43,21 @@ final class AttachmentService: AttachmentServiceType {
     }
 
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+                           key: Key) -> Promise<[AttachmentDocumentInfo]> {
         return async {
-            let documentsWithAdditionalIds = try attachments.map { attachment -> (AttachmentType, [String]) in
+            let documentsWithAdditionalIds = try attachments.map { attachment -> AttachmentDocumentInfo in
                 guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
                     throw Data4LifeSDKError.invalidAttachmentMissingData
                 }
                 do { try attachment.validatePayloadType() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadType }
                 do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
 
-                let document = Document(data: data)
+                let document = AttachmentDocument(data: data)
                 let uploaded = try wait(self.documentService.create(document: document, key: key))
 
                 var thumbnailsIds: [String]?
-                if let attachmentId = uploaded.id {
-                    if self.imageResizer.isResizable(document.data) {
-                        thumbnailsIds = try wait(self.createThumbnails(attachmentId: attachmentId, originalData: document.data, key: key))
-                    }
+                if let attachmentId = uploaded.id, let data = document.data, self.imageResizer.isImageData(data) {
+                    thumbnailsIds = try wait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
                 }
 
                 let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
@@ -97,7 +95,7 @@ final class AttachmentService: AttachmentServiceType {
                 let data = try wait(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
 
                 let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-                attachmentCopy.attachmentDataString = data.base64EncodedString()
+                attachmentCopy.attachmentDataString = data?.base64EncodedString()
 
                 do { try attachmentCopy.validatePayloadType() } catch {
                     throw Data4LifeSDKError.invalidAttachmentPayloadType
@@ -105,8 +103,8 @@ final class AttachmentService: AttachmentServiceType {
 
                 if downloadType.isThumbnailType {
                     // Update hash and size for thumbnails attachments
-                    attachmentCopy.attachmentHash = data.sha1Hash
-                    attachmentCopy.attachmentSize = data.count
+                    attachmentCopy.attachmentHash = data?.sha1Hash
+                    attachmentCopy.attachmentSize = data?.count
                 } else {
                     do { try attachmentCopy.validatePayloadHash() } catch {
                         throw Data4LifeSDKError.invalidAttachmentPayloadHash
@@ -132,15 +130,14 @@ final class AttachmentService: AttachmentServiceType {
 
             var thumbnailsIds = [String]()
 
-            for imageSize in ImageSize.allCases {
-                let selectedSize = self.imageResizer.getSize(imageSize, for: imageToResize)
+            for thumbnailHeight in ThumbnailHeight.allCases {
                 do {
-                    guard let resizedData = try self.imageResizer.resize(imageToResize, for: selectedSize) else {
+                    guard let resizedData = try self.imageResizer.resizedData(imageToResize, for: thumbnailHeight) else {
                         // This case should never happen
                         return []
                     }
 
-                    let uploaded = try wait(self.documentService.create(document: Document(data: resizedData), key: key))
+                    let uploaded = try wait(self.documentService.create(document: AttachmentDocument(data: resizedData), key: key))
                     guard let thumbnailId = uploaded.id else {
                         // A created document should always have got an id
                         return []

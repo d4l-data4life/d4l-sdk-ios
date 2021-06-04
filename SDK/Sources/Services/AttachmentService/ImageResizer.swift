@@ -17,13 +17,12 @@
 import Foundation
 import UIKit
 
-protocol Resizable {
-    func isResizable(_ data: Data) -> Bool
-    func getSize(_ imageSize: ImageSize, for image: UIImage) -> CGSize
-    func resize(_ image: UIImage, for size: CGSize) throws -> Data?
+protocol ImageResizer {
+    func isImageData(_ data: Data) -> Bool
+    func resizedData(_ image: UIImage, for thumbnailHeight: ThumbnailHeight) throws -> Data?
 }
 
-enum ImageSize: CGFloat, CaseIterable {
+enum ThumbnailHeight: CGFloat, CaseIterable {
     case mediumHeight
     case smallHeight
 
@@ -35,10 +34,10 @@ enum ImageSize: CGFloat, CaseIterable {
     }
 }
 
-struct ImageResizer: Resizable {
+struct DefaultImageResizer: ImageResizer {
     private let compressionQuality: CGFloat = 0.8
 
-    func isResizable(_ data: Data) -> Bool {
+    func isImageData(_ data: Data) -> Bool {
         guard let mimeType = MIMEType.of(data) else {
             return false
         }
@@ -46,13 +45,8 @@ struct ImageResizer: Resizable {
         return mimeType == .jpeg || mimeType == .png || mimeType == .tiff
     }
 
-    func getSize(_ imageSize: ImageSize, for image: UIImage) -> CGSize {
-        // Calculate the width of the image according to the selected height
-        let width = (imageSize.floatValue * image.size.width) / image.size.height
-        return CGSize(width: width, height: imageSize.floatValue)
-    }
-
-    func resize(_ image: UIImage, for size: CGSize) throws -> Data? {
+    func resizedData(_ image: UIImage, for thumbnailHeight: ThumbnailHeight) throws -> Data? {
+        let size = size(of: image, scaledTo: thumbnailHeight)
         guard image.size.height > size.height, image.size.width > size.width else {
             throw Data4LifeSDKError.resizingImageSmallerThanOriginalOne
         }
@@ -63,5 +57,13 @@ struct ImageResizer: Resizable {
         return renderer.jpegData(withCompressionQuality: compressionQuality) { (_) in
              image.draw(in: CGRect(origin: .zero, size: size))
         }
+    }
+}
+
+extension DefaultImageResizer {
+    private func size(of image: UIImage, scaledTo height: ThumbnailHeight) -> CGSize {
+        // Calculate the width of the image according to the selected height
+        let width = (height.floatValue * image.size.width) / image.size.height
+        return CGSize(width: width, height: height.floatValue)
     }
 }

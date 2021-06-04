@@ -31,7 +31,7 @@ class ImageResizerTest: XCTestCase {
         let image = UIImage(data: imageData)!
         let givenSize = imageResizer.getSize(.smallHeight, for: image)
 
-        let imageDataResult = try! imageResizer.resize(image, for: givenSize)!
+        let imageDataResult = try! imageResizer.resizedData(image, for: givenSize)!
         let imageResult = UIImage(data: imageDataResult)!
 
         XCTAssertTrue(imageResult.size.height == givenSize.height)
@@ -44,7 +44,7 @@ class ImageResizerTest: XCTestCase {
         let givenSize = imageResizer.getSize(.smallHeight, for: image)
 
         do {
-            _ = try imageResizer.resize(image, for: givenSize)
+            _ = try imageResizer.resizedData(image, for: givenSize)
             XCTFail("Should throw an error")
         } catch {
             guard let sdkError = error as? Data4LifeSDKError else { XCTFail("Expecting SDK error"); return }
@@ -82,7 +82,7 @@ class ImageResizerTest: XCTestCase {
 
         let imageSize = imageResizer.getSize(.smallHeight, for: image)
 
-        XCTAssertTrue(imageSize.height == ImageSize.smallHeight.floatValue)
+        XCTAssertTrue(imageSize.height == ThumbnailHeight.smallHeight.floatValue)
         // Here we just test that the width has changed. 
         XCTAssertTrue(imageSize.width != image.size.width)
     }

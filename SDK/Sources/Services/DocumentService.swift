@@ -19,10 +19,10 @@ import Foundation
 @_implementationOnly import Alamofire
 
 protocol DocumentServiceType {
-    func create(document: Document, key: Key) -> Promise<Document>
-    func create(documents: [Document], key: Key) -> Promise<[Document]>
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<Document>
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> Promise<[Document]>
+    func create(document: AttachmentDocument, key: Key) -> Promise<AttachmentDocument>
+    func create(documents: [AttachmentDocument], key: Key) -> Promise<[AttachmentDocument]>
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<AttachmentDocument>
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> Promise<[AttachmentDocument]>
     func deleteDocument(withId: String) -> Promise<Void>
     func deleteDocuments(withIds identifiers: [String]) -> Promise<[Void]>
 }
@@ -44,19 +44,19 @@ class DocumentService: DocumentServiceType {
         }
     }
 
-    func create(document: Document, key: Key) -> Promise<Document> {
+    func create(document: AttachmentDocument, key: Key) -> Promise<AttachmentDocument> {
         return async {
             let userId = try wait(self.keychainService.get(.userId))
             let encryptedData = try self.cryptoService.encrypt(data: document.data, key: key)
             let route = Router.createDocument(userId: userId, headers: [("Content-Type", "application/octet-stream")])
             let response: DocumentResponse = try wait(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
-            return Document(id: response.identifier, data: document.data)
+            return AttachmentDocument(id: response.identifier, data: document.data)
         }
     }
 
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<Document> {
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<AttachmentDocument> {
 
-        return Async { (resolve: @escaping (Document) -> Void, reject: @escaping (Error) -> Void) in
+        return Async { (resolve: @escaping (AttachmentDocument) -> Void, reject: @escaping (Error) -> Void) in
 
             do {
                 let userId = try wait(self.keychainService.get(.userId))
@@ -74,7 +74,7 @@ class DocumentService: DocumentServiceType {
 
                 let encryptedData = try wait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
-                resolve(Document(id: identifier, data: decryptedData))
+                resolve(AttachmentDocument(id: identifier, data: decryptedData))
             } catch {
                 reject(error)
             }
@@ -94,12 +94,12 @@ class DocumentService: DocumentServiceType {
         return Promises.whenAll(requests)
     }
 
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> Promise<[Document]> {
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> Promise<[AttachmentDocument]> {
         let requests = identifiers.map { self.fetchDocument(withId: $0, key: key, parentProgress: parentProgress) }
         return Promises.whenAll(requests)
     }
 
-    func create(documents: [Document], key: Key) -> Promise<[Document]> {
+    func create(documents: [AttachmentDocument], key: Key) -> Promise<[AttachmentDocument]> {
         let requests = documents.map { self.create(document: $0, key: key) }
         return Promises.whenAll(requests)
     }

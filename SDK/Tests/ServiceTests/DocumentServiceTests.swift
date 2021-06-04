@@ -53,7 +53,7 @@ class DocumentServiceTests: XCTestCase {
         let data = Data([0x00, 0x00])
         let encryptedData = Data([0x01, 0x01, 0x01])
         let key = KeyFactory.createKey(.attachment)
-        let document = Document(data: data)
+        let document = AttachmentDocument(data: data)
         let documentResponse = DocumentResponse(identifier: documentId)
         let responseData = try! JSONEncoder().encode(documentResponse)
 
@@ -83,7 +83,7 @@ class DocumentServiceTests: XCTestCase {
         let data = Data([0x00, 0x00])
         let encryptedData = Data([0x01, 0x01, 0x01])
         let key = KeyFactory.createKey(.attachment)
-        let document = Document(data: data)
+        let document = AttachmentDocument(data: data)
         let documentResponse = DocumentResponse(identifier: documentId)
         let responseData = try! JSONEncoder().encode(documentResponse)
 
@@ -207,9 +207,9 @@ class DocumentServiceTests: XCTestCase {
 
 fileprivate extension DocumentService {
 
-    func fetchDocumentDelayed(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<Document> {
+    func fetchDocumentDelayed(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<AttachmentDocument> {
 
-        return Async { (resolve: @escaping (Document) -> Void, reject: @escaping (Error) -> Void) in
+        return Async { (resolve: @escaping (AttachmentDocument) -> Void, reject: @escaping (Error) -> Void) in
 
             do {
                 let userId = try wait(self.keychainService.get(.userId))
@@ -228,7 +228,7 @@ fileprivate extension DocumentService {
                 let encryptedData = try wait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
-                    resolve(Document(id: identifier, data: decryptedData))
+                    resolve(AttachmentDocument(id: identifier, data: decryptedData))
                 }
             } catch {
                 reject(error)
