@@ -15,7 +15,7 @@
 
 import Foundation
 @_implementationOnly import Alamofire
-@_implementationOnly import Then
+import Combine
 
 public typealias Parameters = [String : Any]
 
@@ -64,11 +64,11 @@ extension SessionService {
         }
 
         if route.needsVersionValidation {
-            try wait(validateSDKVersion())
+            try combineAwait(validateSDKVersion())
         }
 
-        return session.request(route, interceptor: interceptor)
-            .logged
+        return session
+            .request(route, interceptor: interceptor)
             .validate()
             .response(completionHandler: { [weak self] response in
                 self?.log(response)
@@ -80,10 +80,9 @@ extension SessionService {
             throw Data4LifeSDKError.networkUnavailable
         }
 
-        try wait(validateSDKVersion())
+        try combineAwait(validateSDKVersion())
 
         return session.request(url, method: method, interceptor: interceptor)
-            .logged
             .validate()
             .response(completionHandler: {  [weak self] response in
                 self?.log(response)
@@ -96,11 +95,10 @@ extension SessionService {
         }
 
         if route.needsVersionValidation {
-            try wait(validateSDKVersion())
+            try combineAwait(validateSDKVersion())
         }
 
         return session.upload(data, with: route, interceptor: interceptor)
-            .logged
             .response(completionHandler: { [weak self] response in
                 self?.log(response)
             })
@@ -110,6 +108,16 @@ extension SessionService {
 private extension SessionService {
 
     func log(_ response: AFDataResponse<Data?>) {
+
+        if let request = response.request, let method = request.httpMethod {
+            logDebug("Request: \(method) \(request.debugDescription)")
+            if let requestHeaders = request.allHTTPHeaderFields {
+                logDebug("Request headers: \(requestHeaders)")
+            }
+            if let requestBody = request.httpBody, let bodyDescription = String(data: requestBody, encoding: .utf8) {
+                logDebug("Request body: \(bodyDescription)")
+            }
+        }
 
         if let httpUrlResponseDescription = response.response?.description {
             logDebug("Response Headers: \(httpUrlResponseDescription)")
@@ -128,12 +136,12 @@ private extension SessionService {
         }
     }
 
-    private func validateSDKVersion() -> Async<Void> {
-        return async {
-            var versionStatus = try wait(self.versionValidator.fetchCurrentVersionStatus())
+    private func validateSDKVersion() -> SDKFuture<Void> {
+        return combineAsync {
+            var versionStatus = try combineAwait(self.versionValidator.fetchCurrentVersionStatus())
             if versionStatus == .unknown {
-                try wait(self.versionValidator.fetchVersionConfigurationRemotely())
-                versionStatus = try wait(self.versionValidator.fetchCurrentVersionStatus())
+                try combineAwait(self.versionValidator.fetchVersionConfigurationRemotely())
+                versionStatus = try combineAwait(self.versionValidator.fetchCurrentVersionStatus())
             }
 
             try self.alertIfNeeded(for: versionStatus)
@@ -151,12 +159,5 @@ private extension SessionService {
         case .supported:
             break
         }
-    }
-}
-
-private extension DataRequest {
-    var logged: DataRequest {
-        logDebug("Request cURL: \(self.description)")
-        return self
     }
 }

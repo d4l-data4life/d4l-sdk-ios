@@ -14,24 +14,33 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
+import Combine
 
-extension Async {
+typealias SDKFuture<T> = Future<T, Error>
+typealias NoErrorFuture<T> = Future<T, Never>
+
+extension Publisher {
+    @discardableResult
     func complete(queue: DispatchQueue = DispatchQueue.main,
-                  _ completion: @escaping ResultBlock<T>,
-                  finally: (() -> Void)? = nil) {
-        then { value in
-            queue.async {
+                  _ completion: @escaping ResultBlock<Output>,
+                  finally: (() -> Void)? = nil) -> AnyCancellable {
+        let cancellable =
+            receive(on: queue)
+            .sink { sinkResult in
+
+                switch sinkResult {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .finished:
+                    break
+                }
+                finally?()
+
+            } receiveValue: { value in
                 completion(.success(value))
             }
-        }.onError { error in
-            queue.async {
-                completion(.failure(error))
-            }
-        }.finally {
-            queue.async {
-                finally?()
-            }
-        }
+
+        FutureExecutor.storeTaskHandler(cancellable)
+        return cancellable
     }
 }

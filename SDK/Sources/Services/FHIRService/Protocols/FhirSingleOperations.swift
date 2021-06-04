@@ -14,25 +14,25 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
+import Combine
 
 protocol FhirSingleOperations {
-    func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
+    func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
     func fetchFhirRecords<DR: DecryptedRecord>(from: Date?,
                                                to: Date?,
                                                pageSize: Int?,
                                                offset: Int?,
                                                annotations: [String],
-                                               decryptedRecordType: DR.Type) -> Promise<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource
-    func deleteFhirRecord(withId identifier: String) -> Promise<Void>
-    func countFhirRecords<R: FhirSDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int>
-    func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String], decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
-    func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String]?, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
+                                               decryptedRecordType: DR.Type) -> SDKFuture<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource
+    func deleteFhirRecord(withId identifier: String) -> SDKFuture<Void>
+    func countFhirRecords<R: FhirSDKResource>(of type: R.Type, annotations: [String]) -> SDKFuture<Int>
+    func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String], decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
+    func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource, annotations: [String]?, decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
 }
 
 extension FhirSingleOperations where Self: HasMainRecordOperations {
 
-    func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
+    func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
         return fetchRecord(withId: identifier, decryptedRecordType: decryptedRecordType)
     }
 
@@ -41,7 +41,7 @@ extension FhirSingleOperations where Self: HasMainRecordOperations {
                                                pageSize: Int?,
                                                offset: Int?,
                                                annotations: [String],
-                                               decryptedRecordType: DR.Type) -> Promise<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource {
+                                               decryptedRecordType: DR.Type) -> SDKFuture<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource {
         fetchRecords(decryptedRecordType: decryptedRecordType,
                      recordType: FhirRecord<DR.Resource>.self,
                      annotations: annotations,
@@ -51,11 +51,11 @@ extension FhirSingleOperations where Self: HasMainRecordOperations {
                      offset: offset)
     }
 
-    func deleteFhirRecord(withId identifier: String) -> Promise<Void> {
+    func deleteFhirRecord(withId identifier: String) -> SDKFuture<Void> {
         return deleteRecord(withId: identifier)
     }
 
-    func countFhirRecords<R: FhirSDKResource>(of type: R.Type, annotations: [String]) -> Promise<Int> {
+    func countFhirRecords<R: FhirSDKResource>(of type: R.Type, annotations: [String]) -> SDKFuture<Int> {
         countRecords(of: R.self, annotations: annotations)
     }
 }

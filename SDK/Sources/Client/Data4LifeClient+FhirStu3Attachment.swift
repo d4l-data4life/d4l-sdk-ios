@@ -14,7 +14,6 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 import Data4LifeFHIR
 
 extension Data4LifeClient {
@@ -73,7 +72,7 @@ extension Data4LifeClient {
                                            onProgressUpdated: ((Progress) -> Void)? = nil,
                                            completion: @escaping ResultBlock<Data4LifeFHIR.Attachment>) -> Cancellable {
         let task = makeProgressTask(fileCount: 1, onProgressUpdated)
-        fhirService
+        let cancellable = fhirService
             .downloadAttachment(of: Attachment.self,
                                 decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
                                 withId: identifier,
@@ -81,6 +80,7 @@ extension Data4LifeClient {
                                 downloadType: downloadType,
                                 parentProgress: task.progress)
             .complete(queue: queue, completion)
+        task.cancellableFuture = cancellable
         return task
     }
 
@@ -105,7 +105,7 @@ extension Data4LifeClient {
                                             completion: @escaping ResultBlock<[Data4LifeFHIR.Attachment]>) -> Cancellable {
 
         let task = makeProgressTask(fileCount: identifiers.count, onProgressUpdated)
-        fhirService
+        let cancellable = fhirService
             .downloadAttachments(of: Data4LifeFHIR.Attachment.self,
                                  decryptedRecordType: DecryptedFhirStu3Record<FhirStu3Resource>.self,
                                  withIds: identifiers,
@@ -113,6 +113,7 @@ extension Data4LifeClient {
                                  downloadType: downloadType,
                                  parentProgress: task.progress)
             .complete(queue: queue, completion)
+        task.cancellableFuture = cancellable
         return task
     }
 }

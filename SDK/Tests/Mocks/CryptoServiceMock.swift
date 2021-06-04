@@ -16,13 +16,17 @@
 import Foundation
 @testable import Data4LifeSDK
 import Data4LifeCrypto
-import Then
+import Combine
 
 enum CryptoMockError: Error {
     case missingResult
 }
 
 class CryptoServiceMock: CryptoServiceType {
+
+    static var encoder: JSONEncoder = JSONEncoder()
+    static var decoder: JSONDecoder = JSONDecoder()
+
     let missingResultError = CryptoMockError.missingResult
 
     var didSetKeyPairTag = false
@@ -35,10 +39,10 @@ class CryptoServiceMock: CryptoServiceType {
     var tagEncryptionKey: Key?
 
     var encryptValueCalledWith: (Encodable, Key)?
-    var encryptValueResult: Promise<Data>?
-    func encrypt<T: Encodable>(value: T, key: Key) -> Promise<Data> {
+    var encryptValueResult: SDKFuture<Data>?
+    func encrypt<T: Encodable>(value: T, key: Key) -> SDKFuture<Data> {
         encryptValueCalledWith = (value, key)
-        return encryptValueResult ?? Promise.reject()
+        return encryptValueResult ?? Fail(error: CryptoMockError.missingResult).asyncFuture()
     }
 
     var decryptStringCalledWith: (String, Key)?

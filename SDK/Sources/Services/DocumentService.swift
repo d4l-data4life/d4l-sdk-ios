@@ -15,16 +15,16 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 @_implementationOnly import Alamofire
+import Combine
 
 protocol DocumentServiceType {
-    func create(document: AttachmentDocument, key: Key) -> Promise<AttachmentDocument>
-    func create(documents: [AttachmentDocument], key: Key) -> Promise<[AttachmentDocument]>
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<AttachmentDocument>
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> Promise<[AttachmentDocument]>
-    func deleteDocument(withId: String) -> Promise<Void>
-    func deleteDocuments(withIds identifiers: [String]) -> Promise<[Void]>
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument>
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]>
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument>
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]>
+    func deleteDocument(withId: String) -> SDKFuture<Void>
+    func deleteDocuments(withIds identifiers: [String]) -> SDKFuture<Void>
 }
 
 class DocumentService: DocumentServiceType {
@@ -44,22 +44,25 @@ class DocumentService: DocumentServiceType {
         }
     }
 
-    func create(document: AttachmentDocument, key: Key) -> Promise<AttachmentDocument> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let encryptedData = try self.cryptoService.encrypt(data: document.data, key: key)
+
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument> {
+        return combineAsync {
+            guard let data = document.data else {
+                throw Data4LifeSDKError.invalidAttachmentMissingData
+            }
+            let userId = try self.keychainService.get(.userId)
+            let encryptedData = try self.cryptoService.encrypt(data: data, key: key)
             let route = Router.createDocument(userId: userId, headers: [("Content-Type", "application/octet-stream")])
-            let response: DocumentResponse = try wait(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
+            let response: DocumentResponse = try combineAwait(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
             return AttachmentDocument(id: response.identifier, data: document.data)
         }
     }
 
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> Promise<AttachmentDocument> {
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument> {
 
-        return Async { (resolve: @escaping (AttachmentDocument) -> Void, reject: @escaping (Error) -> Void) in
-
+        return SDKFuture { promise in
             do {
-                let userId = try wait(self.keychainService.get(.userId))
+                let userId = try self.keychainService.get(.userId)
                 let route = Router.fetchDocument(userId: userId, documentId: identifier)
                 let request = try self.sessionService.request(route: route)
 
@@ -69,38 +72,38 @@ class DocumentService: DocumentServiceType {
                 // This provides cancel functionality
                 request.downloadProgress.cancellationHandler = { [weak request] in
                     request?.cancel()
-                    reject(URLError.init(URLError.cancelled))
+                    promise(.failure(Data4LifeSDKError.downloadActionWasCancelled))
                 }
 
-                let encryptedData = try wait(request.responseData())
+                let encryptedData = try combineAwait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
-                resolve(AttachmentDocument(id: identifier, data: decryptedData))
+                promise(.success(AttachmentDocument(id: identifier, data: decryptedData)))
             } catch {
-                reject(error)
+                promise(.failure(error))
             }
-        }
+        }.asyncFuture()
     }
 
-    func deleteDocument(withId identifier: String) -> Promise<Void> {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
+    func deleteDocument(withId identifier: String) -> SDKFuture<Void> {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
             let route = Router.deleteDocument(userId: userId, documentId: identifier)
-            return try wait(self.sessionService.request(route: route).responseEmpty())
+            return try combineAwait(self.sessionService.request(route: route).responseEmpty())
         }
     }
 
-    func deleteDocuments(withIds identifiers: [String]) -> Promise<[Void]> {
+    func deleteDocuments(withIds identifiers: [String]) -> SDKFuture<Void> {
         let requests = identifiers.map { self.deleteDocument(withId: $0) }
-        return Promises.whenAll(requests)
+        return Publishers.MergeMany(requests).last().eraseToAnyPublisher().asyncFuture()
     }
 
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> Promise<[AttachmentDocument]> {
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]> {
         let requests = identifiers.map { self.fetchDocument(withId: $0, key: key, parentProgress: parentProgress) }
-        return Promises.whenAll(requests)
+        return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }
 
-    func create(documents: [AttachmentDocument], key: Key) -> Promise<[AttachmentDocument]> {
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]> {
         let requests = documents.map { self.create(document: $0, key: key) }
-        return Promises.whenAll(requests)
+        return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }
 }

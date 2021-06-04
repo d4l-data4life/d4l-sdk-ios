@@ -14,8 +14,8 @@
 //  contact D4L by email to help@data4life.care.
 
 @_implementationOnly import Alamofire
-@_implementationOnly import Then
 @_implementationOnly import AppAuth
+import Combine
 
 protocol OAuthServiceType: RequestRetrier {
     var clientId: String { get }
@@ -23,13 +23,13 @@ protocol OAuthServiceType: RequestRetrier {
     var sessionStateChanged: ((Bool) -> Void)? { get set }
 
     func handleRedirect(url: URL)
-    func logout() -> Async<Void>
-    func isSessionActive() -> Async<Void>
+    func logout() -> SDKFuture<Void>
+    func isSessionActive() -> SDKFuture<Void>
     func presentLogin(with userAgent: OAuthExternalUserAgentType,
                       publicKey: String,
                       scopes: [String],
                       animated: Bool,
-                      authStateType: AuthStateType.Type) -> Async<Void>
+                      authStateType: AuthStateType.Type) -> SDKFuture<Void>
     func refreshTokens(completion: @escaping DefaultResultBlock)
 }
 
@@ -157,7 +157,7 @@ final class OAuthService: OAuthServiceType {
                       publicKey: String,
                       scopes: [String],
                       animated: Bool,
-                      authStateType: AuthStateType.Type) -> Async<Void> {
+                      authStateType: AuthStateType.Type) -> SDKFuture<Void> {
         let authRequest =  OIDAuthorizationRequest(configuration: serviceConfiguration,
                                                    clientId: clientId,
                                                    clientSecret: clientSecret,
@@ -165,38 +165,38 @@ final class OAuthService: OAuthServiceType {
                                                    redirectURL: redirectURL,
                                                    responseType: OIDResponseTypeCode,
                                                    additionalParameters: ["public_key": publicKey])
-        return Async { (resolve: @escaping () -> Void, reject: @escaping (Error) -> Void) in
+        return SDKFuture { promise in
             self.externalUserAgentSession = authStateType.authState(byPresenting: authRequest,
                                                                     presenting: userAgent,
                                                                     callback: { (state, error) in
                                                                         if let error = error {
                                                                             let nsError = error as NSError
                                                                             guard let errorCode = OIDErrorCode(rawValue: nsError.code) else {
-                                                                                reject(Data4LifeSDKError.appAuth(error))
+                                                                                promise(.failure(Data4LifeSDKError.appAuth(error)))
                                                                                 return
                                                                             }
 
                                                                             switch errorCode {
                                                                             case .userCanceledAuthorizationFlow:
-                                                                                reject(Data4LifeSDKError.userCanceledAuthFlow)
+                                                                                promise(.failure(Data4LifeSDKError.userCanceledAuthFlow))
                                                                             case .serverError:
-                                                                                reject(Data4LifeSDKError.authServerError)
+                                                                                promise(.failure(Data4LifeSDKError.authServerError))
                                                                             case .networkError:
-                                                                                reject(Data4LifeSDKError.authNetworkError)
+                                                                                promise(.failure(Data4LifeSDKError.authNetworkError))
                                                                             default:
-                                                                                reject(Data4LifeSDKError.appAuth(error))
+                                                                                promise(.failure(Data4LifeSDKError.appAuth(error)))
                                                                             }
                                                                         } else if let state = state {
                                                                             do {
                                                                                 try self.saveAuthState(state)
                                                                                 self.sessionStateChanged?(true)
-                                                                                resolve()
+                                                                                promise(.success(()))
                                                                             } catch {
-                                                                                reject(error)
+                                                                                promise(.failure(error))
                                                                             }
                                                                         }
                                                                     })
-        }
+        }.asyncFuture()
     }
 
     func saveAuthState(_ state: AuthStateType) throws {
@@ -210,17 +210,19 @@ final class OAuthService: OAuthServiceType {
         }
     }
 
-    func isSessionActive() -> Async<Void> {
-        return async {
+    func isSessionActive() -> SDKFuture<Void> {
+        return combineAsync {
             guard let state = self.storedAuthState, state.lastTokenResponse?.refreshToken != nil else {
                 throw Data4LifeSDKError.notLoggedIn
             }
-            return try wait(self.sessionService.request(route: Router.userInfo).responseEmpty())
-        }.bridgeError { error in
-            guard (error as? AFError)?.responseCode == 401 else {
-                throw Data4LifeSDKError.network(error)
+            do {
+                try combineAwait(self.sessionService.request(route: Router.userInfo).responseEmpty())
+            } catch let error {
+                guard (error as? AFError)?.responseCode == 401 else {
+                    throw Data4LifeSDKError.network(error)
+                }
+                throw Data4LifeSDKError.notLoggedIn
             }
-            throw Data4LifeSDKError.notLoggedIn
         }
     }
 
@@ -232,16 +234,16 @@ final class OAuthService: OAuthServiceType {
         externalUserAgentSession = nil
     }
 
-    func logout() -> Async<Void> {
+    func logout() -> SDKFuture<Void> {
         guard let encodedClientInfo = "\(clientId):\(clientSecret)".data(using: .utf8)?.base64EncodedString() else {
-            return Async.reject(Data4LifeSDKError.notLoggedIn)
+            return Fail(error: Data4LifeSDKError.notLoggedIn).asyncFuture()
         }
 
-        return async {
-            let refreshToken = try wait(self.keychainService.get(.refreshToken))
+        return combineAsync {
+            let refreshToken = try self.keychainService.get(.refreshToken)
             let route = Router.revokeToken(parameters: ["token": refreshToken],
                                            headers: [("Authorization", "Basic \(encodedClientInfo)")])
-            _ = try wait(self.sessionService.request(route: route).responseEmpty())
+            _ = try combineAwait(self.sessionService.request(route: route).responseEmpty())
             self.keychainService.clear()
             self.sessionStateChanged?(false)
         }

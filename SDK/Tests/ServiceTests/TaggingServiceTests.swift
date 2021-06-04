@@ -45,30 +45,20 @@ class TaggingServiceTests: XCTestCase {
                             TaggingService.Keys.partner.rawValue: self.taggingService.partnerId.lowercased()]
         let expectedAnnotations = ["exampleannotation1", "exampleannotation2"]
 
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: document, oldTags: [:], annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
-        }
-
-        waitForExpectations(timeout: 5)
+        let tagGroup = taggingService.makeTagGroup(for: document, oldTags: [:], annotations: expectedAnnotations)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
     }
 
     func testStu3DocumentReferenceTypeTag() {
         let expectedAnnotations = ["exampleAnnotation1"]
         let expectedTags = [TaggingService.Keys.resourceType.rawValue: Data4LifeFHIR.DocumentReference.resourceType.lowercased(),
                             TaggingService.Keys.fhirVersion.rawValue: Data4LifeFHIR.DocumentReference.fhirVersion.lowercased()]
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: Data4LifeFHIR.DocumentReference.self, annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations.map { $0.lowercased() }, "Expected annotations doesn't match the saved annotations")
-        }
 
-        waitForExpectations(timeout: 5)
+        let tagGroup = taggingService.makeTagGroup(for: Data4LifeFHIR.DocumentReference.self, annotations: expectedAnnotations)
+
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations.map { $0.lowercased() }, "Expected annotations doesn't match the saved annotations")
     }
 
     func testStu3DocumentReferenceUpdatedByClientTag() {
@@ -78,16 +68,12 @@ class TaggingServiceTests: XCTestCase {
                        TaggingService.Keys.client.rawValue: creator.lowercased()]
         let expectedAnnotations = ["example-annotation1", "example-annotation2"]
 
-        let asyncExpectation = expectation(description: "should create updated by client tag")
-        taggingService.makeTagGroup(for: document, oldTags: oldTags, annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags[TaggingService.Keys.updatedByClient.rawValue.lowercased()], self.clientId.lowercased())
-                XCTAssertEqual(tagGroup.tags[TaggingService.Keys.client.rawValue.lowercased()], creator)
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
-        }
+        let tagGroup = taggingService.makeTagGroup(for: document, oldTags: oldTags, annotations: expectedAnnotations)
 
-        waitForExpectations(timeout: 5)
+        XCTAssertEqual(tagGroup.tags[TaggingService.Keys.updatedByClient.rawValue.lowercased()], self.clientId.lowercased())
+        XCTAssertEqual(tagGroup.tags[TaggingService.Keys.client.rawValue.lowercased()], creator)
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
+
     }
 
     func testStu3DocumentReferenceUpdatedByPartnerTag() {
@@ -95,30 +81,19 @@ class TaggingServiceTests: XCTestCase {
         let creator = "some-other-partner"
         let oldTags = [TaggingService.Keys.resourceType.rawValue: type(of: document).resourceType,
                        TaggingService.Keys.partner.rawValue: creator]
-        let asyncExpectation = expectation(description: "should create updated by partner tag")
-        taggingService.makeTagGroup(for: document, oldTags: oldTags, annotations: nil)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags[TaggingService.Keys.updatedByPartner.rawValue.lowercased()], self.taggingService.partnerId.lowercased())
-                XCTAssertEqual(tagGroup.tags[TaggingService.Keys.partner.rawValue.lowercased()], creator)
-        }
+        let tagGroup = taggingService.makeTagGroup(for: document, oldTags: oldTags, annotations: nil)
 
-        waitForExpectations(timeout: 5)
+        XCTAssertEqual(tagGroup.tags[TaggingService.Keys.updatedByPartner.rawValue.lowercased()], self.taggingService.partnerId.lowercased())
+        XCTAssertEqual(tagGroup.tags[TaggingService.Keys.partner.rawValue.lowercased()], creator)
+
     }
 
     func testStu3DomainResourceTypeTag() {
         let expectedAnnotations = ["example-annotation1"]
         let expectedTags = [TaggingService.Keys.fhirVersion.rawValue: Data4LifeFHIR.DocumentReference.fhirVersion]
-
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: FhirStu3Resource.self, annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
-            }
-
-        waitForExpectations(timeout: 5)
+        let tagGroup = taggingService.makeTagGroup(for: FhirStu3Resource.self, annotations: expectedAnnotations)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
     }
 }
 
@@ -131,15 +106,10 @@ extension TaggingServiceTests {
                             TaggingService.Keys.partner.rawValue: self.taggingService.partnerId.lowercased()]
         let exampleAnnotations = ["ExampleAnnotation1", "ExampleAnnotation2"]
         let expectedAnnotations = ["exampleannotation1", "exampleannotation2"]
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: document, oldTags: [:], annotations: exampleAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
-            }
+        let tagGroup = taggingService.makeTagGroup(for: document, oldTags: [:], annotations: exampleAnnotations)
 
-        waitForExpectations(timeout: 5)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
     }
 
     func testR4DocumentReferenceTypeTag() {
@@ -147,30 +117,18 @@ extension TaggingServiceTests {
         let expectedTags = [TaggingService.Keys.resourceType.rawValue: ModelsR4.DocumentReference.resourceType.rawValue.lowercased(),
                             TaggingService.Keys.fhirVersion.rawValue:  ModelsR4.DocumentReference.fhirVersion.lowercased()]
 
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: ModelsR4.DocumentReference.self, annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations.map { $0.lowercased() }, "Expected annotations doesn't match the saved annotations")
-            }
+        let tagGroup = taggingService.makeTagGroup(for: ModelsR4.DocumentReference.self, annotations: expectedAnnotations)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations.map { $0.lowercased() }, "Expected annotations doesn't match the saved annotations")
 
-        waitForExpectations(timeout: 5)
     }
 
     func testR4DomainResourceTypeTag() {
         let expectedAnnotations = ["example-annotation1"]
         let expectedTags = [TaggingService.Keys.fhirVersion.rawValue: ModelsR4.DocumentReference.fhirVersion.lowercased()]
-
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: FhirR4Resource.self, annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
-            }
-
-        waitForExpectations(timeout: 5)
+        let tagGroup = taggingService.makeTagGroup(for: FhirR4Resource.self, annotations: expectedAnnotations)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations, "Expected annotations doesn't match the saved annotations")
     }
 }
 
@@ -181,28 +139,18 @@ extension TaggingServiceTests {
         let expectedTags = [TaggingService.Keys.client.rawValue: self.clientId.lowercased(),
                             TaggingService.Keys.partner.rawValue: self.taggingService.partnerId.lowercased(),
                             TaggingService.Keys.flag.rawValue : TaggingService.FlagKey.appData.rawValue.lowercased()]
-        let asyncExpectation = expectation(description: "should create tags")
         let expectedAnnotations = ["ExampleAnnotation1", "ExampleAnnotation2"]
 
-        taggingService.makeTagGroup(for: appData, annotations: expectedAnnotations)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-                XCTAssertEqual(tagGroup.annotations, expectedAnnotations.map { $0.lowercased() }, "Expected annotations doesn't match the saved annotations")
-        }
+        let tagGroup = taggingService.makeTagGroup(for: appData, annotations: expectedAnnotations)
 
-        waitForExpectations(timeout: 5)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
+        XCTAssertEqual(tagGroup.annotations, expectedAnnotations.map { $0.lowercased() }, "Expected annotations doesn't match the saved annotations")
     }
 
     func testAppDataTypeTag() {
         let expectedTags = [TaggingService.Keys.flag.rawValue : TaggingService.FlagKey.appData.rawValue.lowercased()]
-        let asyncExpectation = expectation(description: "should create tags")
-        taggingService.makeTagGroup(for: Data.self)
-            .then { tagGroup in
-                asyncExpectation.fulfill()
-                XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
-        }
 
-        waitForExpectations(timeout: 5)
+        let tagGroup = taggingService.makeTagGroup(for: Data.self)
+        XCTAssertEqual(tagGroup.tags, expectedTags, "Expected tags doesn't match the saved tags")
     }
 }

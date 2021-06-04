@@ -14,33 +14,37 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-import Then
+import Combine
 @testable import Data4LifeSDK
 import Data4LifeCrypto
 import Data4LifeFHIR
 
+enum AttachmentServiceMockError: Error {
+    case noResultSet
+}
+
 class AttachmentServiceMock: AttachmentServiceType {
     var fetchAttachmentsCalledWith: (HasAttachments, [String], DownloadType, Key, Progress)?
-    var fetchAttachmentsResult: Async<[AttachmentType]>?
+    var fetchAttachmentsResult: SDKFuture<[AttachmentType]>?
     func fetchAttachments(for resourceWithAttachments: HasAttachments,
                           attachmentIds: [String],
                           downloadType: DownloadType,
                           key: Key,
-                          parentProgress: Progress) -> Promise<[AttachmentType]> {
+                          parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
         fetchAttachmentsCalledWith = (resourceWithAttachments, attachmentIds, downloadType, key, parentProgress)
-        return fetchAttachmentsResult ?? Async.reject()
+        return fetchAttachmentsResult ?? Fail(error: AttachmentServiceMockError.noResultSet).asyncFuture()
     }
 
     var uploadAttachmentsCalledWith: ([AttachmentType], Key)?
-    var uploadAttachmentsResult: Async<[(attachment: AttachmentType, thumbnailIds: [String])]>?
-    var uploadAttachmentsResults: [Async<[(attachment: AttachmentType, thumbnailIds: [String])]>]?
+    var uploadAttachmentsResult: SDKFuture<[AttachmentDocumentInfo]>?
+    var uploadAttachmentsResults: [SDKFuture<[AttachmentDocumentInfo]>]?
 
-    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> Promise<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> SDKFuture<[AttachmentDocumentInfo]> {
         uploadAttachmentsCalledWith = (attachments, key)
         if let results = uploadAttachmentsResults, let first = results.first {
             uploadAttachmentsResults = Array(results.dropFirst())
             return first
         }
-        return uploadAttachmentsResult ?? Async.reject()
+        return uploadAttachmentsResult ?? Fail(error: AttachmentServiceMockError.noResultSet).asyncFuture()
     }
 }

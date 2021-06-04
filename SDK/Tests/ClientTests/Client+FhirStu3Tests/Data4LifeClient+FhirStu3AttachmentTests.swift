@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-import Then
+import Combine
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
@@ -25,7 +25,7 @@ extension Data4LifeClientFhirStu3Tests {
         let attachment = FhirFactory.createStu3AttachmentElement()
         attachment.id = attachmentId
 
-        fhirService.downloadAttachmentResult = Promise.resolve(attachment)
+        fhirService.downloadAttachmentResult = Just(attachment).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return a attachment")
         client.downloadFhirStu3Attachment(withId: attachmentId, recordId: recordId) { result in
@@ -50,7 +50,7 @@ extension Data4LifeClientFhirStu3Tests {
 
         firstAttachment.id = firstAttachmentId
         secondAttachment.id = secondAttachmentId
-        fhirService.downloadAttachmentsResult = Promise.resolve([firstAttachment, secondAttachment])
+        fhirService.downloadAttachmentsResult = Just([firstAttachment, secondAttachment]).asyncFuture()
 
         let ids = [firstAttachmentId, secondAttachmentId]
         let asyncExpectation = expectation(description: "Should return a attachment")

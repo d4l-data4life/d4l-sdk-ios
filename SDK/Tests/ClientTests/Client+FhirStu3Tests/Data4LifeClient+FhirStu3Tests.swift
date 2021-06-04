@@ -16,7 +16,7 @@
 import XCTest
 import Alamofire
 import SafariServices
-import Then
+import Combine
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 import Data4LifeCrypto
@@ -82,7 +82,7 @@ extension Data4LifeClientFhirStu3Tests {
         let annotations = [UUID().uuidString]
         let resource = FhirFactory.createStu3DocumentReferenceResource()
         let record = RecordFactory.create(resource, annotations: annotations)
-        fhirService.createFhirRecordResult = Async.resolve(record)
+        fhirService.createFhirRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.createFhirStu3Record(resource, annotations: annotations) { result in
@@ -103,7 +103,7 @@ extension Data4LifeClientFhirStu3Tests {
         let updateResource = FhirFactory.createStu3DocumentReferenceResource()
         let record = RecordFactory.create(updateResource, annotations: annotations)
 
-        fhirService.updateFhirRecordResult = Async.resolve(record)
+        fhirService.updateFhirRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateFhirStu3Record(updateResource, annotations: annotations) { result in
@@ -127,7 +127,7 @@ extension Data4LifeClientFhirStu3Tests {
         resource.id = resourceId
         let record = RecordFactory.create(resource)
 
-        fhirService.fetchRecordWithIdResult = Async.resolve(record)
+        fhirService.fetchRecordWithIdResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchFhirStu3Record(withId: resourceId, of: Data4LifeFHIR.DocumentReference.self) { result in
@@ -144,7 +144,7 @@ extension Data4LifeClientFhirStu3Tests {
 
     func testDeleteResource() {
         let resourceId = UUID().uuidString
-        fhirService.deleteRecordResult = Async.resolve()
+        fhirService.deleteRecordResult = Just(()).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.deleteFhirStu3Record(withId: resourceId) { result in
@@ -162,7 +162,7 @@ extension Data4LifeClientFhirStu3Tests {
         let annotations = [UUID().uuidString]
         let resources = [FhirFactory.createStu3DocumentReferenceResource(), FhirFactory.createStu3DocumentReferenceResource()]
         let records = resources.map { RecordFactory.create($0, annotations: annotations) }
-        fhirService.fetchRecordsResult = Async.resolve(records)
+        fhirService.fetchRecordsResult = Just(records).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchFhirStu3Records(of: Data4LifeFHIR.DocumentReference.self, annotations: annotations) { result in
@@ -185,7 +185,7 @@ extension Data4LifeClientFhirStu3Tests {
         let resourceCount = 2
         let resourceType = Data4LifeFHIR.DocumentReference.self
 
-        fhirService.countRecordsResult = Async.resolve(resourceCount)
+        fhirService.countRecordsResult = Just(resourceCount).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.countFhirStu3Records(of: resourceType, annotations: annotations) { result in

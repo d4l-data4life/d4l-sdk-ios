@@ -15,17 +15,18 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 import Data4LifeFHIRCore
+import Combine
 
 protocol AttachmentServiceType {
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> Promise<[AttachmentDocumentInfo]>
+                           key: Key) -> SDKFuture<[AttachmentDocumentInfo]>
+
     func fetchAttachments(for resourceWithAttachments: HasAttachments,
                           attachmentIds: [String],
                           downloadType: DownloadType,
                           key: Key,
-                          parentProgress: Progress) -> Promise<[AttachmentType]>
+                          parentProgress: Progress) -> SDKFuture<[AttachmentType]>
 }
 
 final class AttachmentService: AttachmentServiceType {
@@ -43,29 +44,27 @@ final class AttachmentService: AttachmentServiceType {
     }
 
     func uploadAttachments(_ attachments: [AttachmentType],
-                           key: Key) -> Promise<[AttachmentDocumentInfo]> {
-        return async {
-            let documentsWithAdditionalIds = try attachments.map { attachment -> AttachmentDocumentInfo in
-                guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
-                    throw Data4LifeSDKError.invalidAttachmentMissingData
+                           key: Key) -> SDKFuture<[AttachmentDocumentInfo]> {
+        return combineAsync {
+            return try attachments
+                .map { try AttachmentDocumentInfo.makeForUploadRequest(attachment: $0) }
+                .map { try $0.validatedBeforeUploading() }
+                .map { attachmentDocumentInfo -> AttachmentDocumentInfo in
+                    let attachmentDocument = try combineAwait(self.documentService.create(document: attachmentDocumentInfo.document, key: key))
+                    return attachmentDocumentInfo.updatingInfo(withCreated: attachmentDocument)
                 }
-                do { try attachment.validatePayloadType() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadType }
-                do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
+                .compactMap { attachmentDocumentInfo -> AttachmentDocumentInfo? in
+                    guard let data = attachmentDocumentInfo.data,
+                          let attachmentId = attachmentDocumentInfo.fullAttachmentId,
+                          self.imageResizer.isImageData(data) else {
+                        return nil
+                    }
 
-                let document = AttachmentDocument(data: data)
-                let uploaded = try wait(self.documentService.create(document: document, key: key))
-
-                var thumbnailsIds: [String]?
-                if let attachmentId = uploaded.id, let data = document.data, self.imageResizer.isImageData(data) {
-                    thumbnailsIds = try wait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
+                    let thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
+                    return AttachmentDocumentInfo(document: attachmentDocumentInfo.document,
+                                                  attachment: attachmentDocumentInfo.attachment,
+                                                  thumbnailsIDs: thumbnailsIds)
                 }
-
-                let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-                attachmentCopy.attachmentId = uploaded.id
-                return (attachmentCopy, thumbnailsIds ?? [])
-            }
-
-            return documentsWithAdditionalIds
         }
     }
 
@@ -73,102 +72,48 @@ final class AttachmentService: AttachmentServiceType {
                           attachmentIds: [String],
                           downloadType: DownloadType,
                           key: Key,
-                          parentProgress: Progress) -> Promise<[AttachmentType]> {
-        return async {
-            guard let attachments = resourceWithAttachments.allAttachments else { return [] }
+                          parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
 
-            let filledAttachments = try attachments.compactMap { attachment -> AttachmentType? in
-                guard let attachmentId = attachment.attachmentId, attachmentIds.contains(attachmentId) else { return nil }
-                // Size validation has to be done from the fhir property in order to avoid the attachment's downloading time
-                do { try attachment.validatePayloadSize() } catch {
-                    throw Data4LifeSDKError.invalidAttachmentPayloadSize
-                }
-
-                var selectedDocumentId: String?
-                if let resourceWithIdentifiableAttachments = resourceWithAttachments as? CustomIdentifiable,
-                    downloadType.isThumbnailType {
-                    selectedDocumentId = try self.selectDocumentId(resourceWithIdentifiableAttachments, downloadType: downloadType, for: attachmentId)
-                    attachment.attachmentId = ThumbnailsIdFactory.displayAttachmentId(attachmentId, for: selectedDocumentId)
-                }
-
-                let documentId: String = selectedDocumentId ?? attachmentId
-                let data = try wait(self.documentService.fetchDocument(withId: documentId, key: key, parentProgress: parentProgress)).data
-
-                let attachmentCopy = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-                attachmentCopy.attachmentDataString = data?.base64EncodedString()
-
-                do { try attachmentCopy.validatePayloadType() } catch {
-                    throw Data4LifeSDKError.invalidAttachmentPayloadType
-                }
-
-                if downloadType.isThumbnailType {
-                    // Update hash and size for thumbnails attachments
-                    attachmentCopy.attachmentHash = data?.sha1Hash
-                    attachmentCopy.attachmentSize = data?.count
-                } else {
-                    do { try attachmentCopy.validatePayloadHash() } catch {
-                        throw Data4LifeSDKError.invalidAttachmentPayloadHash
+        return combineAsync {
+            let attachments = try AttachmentDocumentInfo.makeForFetchRequest(resource: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
+                .map { try $0.validatedBeforeDownloading() }
+                .compactMap { attachmentDocumentInfo -> AttachmentDocumentInfo? in
+                    guard let fullAttachmentId = attachmentDocumentInfo.document.id else {
+                        return nil
                     }
+
+                    let attachmentIdToFetch = attachmentDocumentInfo.attachmentThumbnailIdentifier(for: downloadType) ?? fullAttachmentId
+                    let attachmentDocument = try combineAwait(self.documentService.fetchDocument(withId: attachmentIdToFetch, key: key, parentProgress: parentProgress))
+                    return try attachmentDocumentInfo.updatingInfo(withFetched: attachmentDocument, for: downloadType)
                 }
-
-                return attachmentCopy
-            }
-
-            return filledAttachments
+                .map { try $0.validated(afterDownloadingWith: downloadType) }
+                .map { $0.attachment }
+            return attachments
         }
     }
 
     private func createThumbnails(attachmentId: String,
                                   originalData: Data,
-                                  key: Key) -> Promise<[String]> {
-        return async {
-            // Convert imageData to UIImage
+                                  key: Key) -> SDKFuture<[ThumbnailHeight: String]> {
+        return combineAsync {
             guard let imageToResize = UIImage(data: originalData) else {
-                // Data is not an image. This case should never happen, because the mimeType is actually an image
-                return []
+                return [:]
             }
 
-            var thumbnailsIds = [String]()
+            var thumbnailsIds = [ThumbnailHeight: String]()
 
             for thumbnailHeight in ThumbnailHeight.allCases {
-                do {
-                    guard let resizedData = try self.imageResizer.resizedData(imageToResize, for: thumbnailHeight) else {
-                        // This case should never happen
-                        return []
-                    }
-
-                    let uploaded = try wait(self.documentService.create(document: AttachmentDocument(data: resizedData), key: key))
-                    guard let thumbnailId = uploaded.id else {
-                        // A created document should always have got an id
-                        return []
-                    }
-                    thumbnailsIds.append(thumbnailId)
-                } catch Data4LifeSDKError.resizingImageSmallerThanOriginalOne {
-                        thumbnailsIds.append(attachmentId)
+                guard let resizedData = try? self.imageResizer.resizedData(imageToResize, for: thumbnailHeight) else {
+                    return [:]
                 }
+                let uploaded = try combineAwait(self.documentService.create(document: AttachmentDocument(data: resizedData), key: key))
+                guard let thumbnailId = uploaded.id else {
+                    return [:]
+                }
+                thumbnailsIds[thumbnailHeight] = thumbnailId
             }
 
             return thumbnailsIds
         }
-    }
-
-    private func selectDocumentId(_ resourceWithIdentifiableAttachments: CustomIdentifiable, downloadType: DownloadType,
-                                  for attachmentId: String) throws -> String? {
-        guard let identifiers = resourceWithIdentifiableAttachments.customIdentifiers else { return attachmentId }
-
-        let additionalIds = identifiers.compactMap { $0.valueString }
-
-        let selectedDocumentId = try additionalIds.filter {
-            return $0.contains(attachmentId)
-            }.compactMap { additionalId -> String? in
-                do {
-                    let documentId = try ThumbnailsIdFactory.setDocumentId(additionalId: additionalId, for: downloadType)
-                    return documentId
-                } catch Data4LifeSDKError.malformedAttachmentAdditionalId {
-                    throw Data4LifeSDKError.invalidAttachmentAdditionalId("Attachment Id: \(attachmentId)")
-                }
-        }
-
-        return selectedDocumentId.first ?? nil
     }
 }

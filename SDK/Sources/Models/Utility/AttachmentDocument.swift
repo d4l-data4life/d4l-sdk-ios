@@ -40,8 +40,6 @@ extension AttachmentDocumentInfo {
         return try attachments.compactMap { attachment -> AttachmentDocumentInfo? in
 
             guard let attachmentId = attachment.attachmentId, attachmentIdentifiers.contains(attachmentId) else { return nil }
-            do { try attachment.validatePayloadSize() } catch { throw Data4LifeSDKError.invalidAttachmentPayloadSize }
-
             let document = AttachmentDocument(id: attachmentId)
             let thumbnailIDs = try thumbnailIdentifiers(for: attachmentId, from: resource)
             return AttachmentDocumentInfo(document: document, attachment: attachment,
@@ -54,8 +52,6 @@ extension AttachmentDocumentInfo {
         guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
             throw Data4LifeSDKError.invalidAttachmentMissingData
         }
-        try attachment.validatePayloadType()
-        try attachment.validatePayloadSize()
 
         return AttachmentDocumentInfo(document: AttachmentDocument(data: data),
                                       attachment: attachment)
@@ -90,7 +86,18 @@ extension AttachmentDocumentInfo {
                                       thumbnailsIDs: thumbnailsIDs)
     }
 
-    func validateFetched(as downloadType: DownloadType) throws -> AttachmentDocumentInfo {
+    func validatedBeforeUploading() throws -> AttachmentDocumentInfo {
+        try attachment.validatePayloadType()
+        try attachment.validatePayloadSize()
+        return self
+    }
+
+    func validatedBeforeDownloading() throws -> AttachmentDocumentInfo {
+        try attachment.validatePayloadSize()
+        return self 
+    }
+
+    func validated(afterDownloadingWith downloadType: DownloadType) throws -> AttachmentDocumentInfo {
         if !downloadType.isThumbnailType {
             try attachment.validatePayloadHash()
         }

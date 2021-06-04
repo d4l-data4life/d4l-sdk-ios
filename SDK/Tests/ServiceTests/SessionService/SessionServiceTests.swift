@@ -16,7 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Alamofire
-import Then
+import Combine
 
 class SessionServiceTests: XCTestCase {
 
@@ -37,7 +37,7 @@ class SessionServiceTests: XCTestCase {
         versionValidator = SDKVersionValidatorMock()
         networkReachabilityManager = ReachabilityMock()
         sessionService = SessionService.stubbedSessionService(versionValidator: versionValidator, networkManager: networkReachabilityManager)
-        versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.supported)
+        versionValidator.fetchCurrentVersionStatusResult = Just(.supported).asyncFuture()
     }
 
     func testNetworkUnavailable() {
@@ -99,7 +99,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestRouteFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -116,7 +116,7 @@ class SessionServiceTests: XCTestCase {
     func testRequestURLFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
         let env = Environment.staging
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -131,7 +131,7 @@ class SessionServiceTests: XCTestCase {
 
     func testUploadFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
-        self.versionValidator.fetchCurrentVersionStatusResult = Async.resolve(.unsupported)
+        self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
@@ -152,14 +152,16 @@ class SessionServiceTests: XCTestCase {
         let asyncExpectation = expectation(description: "Should return an error")
         do {
             try session.request(url: env.apiBaseURL, method: .get)
-                .responseData()
-                .onError { error in
-                    let nsError = error as NSError
-                    XCTAssertNotEqual(nsError.code, 11)
-                    XCTAssertTrue((error as? AFError)?.responseCode == 404)
-                }.finally {
+                .responseData().then(onError: { error in
+                    guard case Data4LifeSDKError.network(let sdkError) = error, let afError = sdkError as? AFError else {
+                        XCTFail("Wrong error is returned")
+                        return
+                    }
+                    XCTAssertEqual(afError.isResponseValidationError, true)
+                    XCTAssertEqual(afError.responseCode, 404)
+                }, finally: {
                     asyncExpectation.fulfill()
-                }
+                })
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -178,10 +180,13 @@ class SessionServiceTests: XCTestCase {
                 .responseData()
                 .then { _ in
                     XCTFail("Should return an error")
-                }.onError { error in
-                    let nsError = error as NSError
-                    XCTAssertEqual(nsError.code, 11)
-                }.finally {
+                } onError: { error in
+                    guard case Data4LifeSDKError.network(let sdkError) = error, let afError = sdkError as? AFError else {
+                        XCTFail("Wrong error is returned")
+                        return
+                    }
+                    XCTAssertEqual(afError.isServerTrustEvaluationError, true)
+                } finally: {
                     asyncExpectation.fulfill()
                 }
         } catch {

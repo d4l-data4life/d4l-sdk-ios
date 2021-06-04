@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import XCTest
-import Then
+import Combine
 @testable import Data4LifeSDK
 import ModelsR4
 
@@ -24,7 +24,7 @@ extension Data4LifeClientFhirR4Tests {
         let resource = FhirFactory.createR4DocumentReferenceResource()
         let record = RecordFactory.create(resource)
 
-        fhirService.createFhirRecordResult = Promise.resolve(record)
+        fhirService.createFhirRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.createFhirR4Record(resource) { result in
@@ -48,7 +48,7 @@ extension Data4LifeClientFhirR4Tests {
         let records = [firstRecord, secondRecord]
         let resources = [firstResource, secondResource]
 
-        fhirService.createFhirRecordsResult = Promise.resolve((records, []))
+        fhirService.createFhirRecordsResult = Just((records, [])).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.createFhirR4Records(resources) { result in
@@ -69,7 +69,7 @@ extension Data4LifeClientFhirR4Tests {
         updateResource.id = resourceId.asFHIRStringPrimitive()
         let record = RecordFactory.create(updateResource)
 
-        fhirService.updateFhirRecordResult = Async.resolve(record)
+        fhirService.updateFhirRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateFhirR4Record(updateResource) { result in
@@ -99,7 +99,7 @@ extension Data4LifeClientFhirR4Tests {
         let records: [FhirRecord<ModelsR4.DocumentReference>] = [firstRecord, secondRecord]
         let resources: [ModelsR4.DocumentReference]  = [firstResource, secondResource]
 
-        fhirService.updateFhirRecordsResult = Promise.resolve((records, []))
+        fhirService.updateFhirRecordsResult = Just((records, [])).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.updateFhirR4Records(resources) { result in
@@ -122,7 +122,7 @@ extension Data4LifeClientFhirR4Tests {
         let resource = FhirFactory.createR4DocumentReferenceResource()
         resource.id = resourceId.asFHIRStringPrimitive()
         let record = RecordFactory.create(resource)
-        fhirService.downloadSpecificRecordResult = Promise.resolve(record)
+        fhirService.downloadSpecificRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.downloadFhirR4Record(withId: resourceId, of: ModelsR4.DocumentReference.self) { result in

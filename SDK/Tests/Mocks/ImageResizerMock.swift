@@ -18,37 +18,30 @@ import UIKit
 
 @testable import Data4LifeSDK
 
-class ImageResizerMock: Resizable {
-    var isResizableCalledWith: (Data)?
-    var isResizableResult = false
-    func isResizable(_ data: Data) -> Bool {
-        isResizableCalledWith = data
-        return isResizableResult
+class ImageResizerMock: ImageResizer {
+    var isImageDataCalledWith: (Data)?
+    var isImageDataResult = false
+    func isImageData(_ data: Data) -> Bool {
+        isImageDataCalledWith = data
+        return isImageDataResult
     }
 
-    var getSizeCalledWith: (ImageSize, UIImage)?
-    var getSizeResult: CGSize?
-    func getSize(_ imageSize: ImageSize, for image: UIImage) -> CGSize {
-        getSizeCalledWith = (imageSize, image)
-        return getSizeResult ?? CGSize(width: 0, height: 0)
-    }
-
-    var resizeCalledWith: (UIImage, CGSize)?
-    var resizeResult: (Data?, Error?)?
-    var resizeResults: [(Data?, Error?)]?
-    func resize(_ image: UIImage, for size: CGSize) throws -> Data? {
-        resizeCalledWith = (image, size)
-        if let results = resizeResults, let first = results.first {
-            resizeResults = Array(results.dropFirst())
+    var resizedDataCalledWith: (UIImage, ThumbnailHeight)?
+    var resizedDataResult: (Data?, Error?)?
+    var resizedDataResults: [(Data?, Error?)]?
+    func resizedData(_ image: UIImage, for thumbnailHeight: ThumbnailHeight) throws -> Data? {
+        resizedDataCalledWith = (image, thumbnailHeight)
+        if let results = resizedDataResults, let first = results.first {
+            resizedDataResults = Array(results.dropFirst())
             if let data = first.0 {
                 return data
             } else {
                 throw first.1!
             }
         }
-        if let error = resizeResult?.1 {
+        if let error = resizedDataResult?.1 {
             throw error
         }
-        return resizeResult?.0
+        return resizedDataResult?.0
     }
 }

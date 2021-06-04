@@ -13,23 +13,29 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Then
+import Combine
 @testable import Data4LifeSDK
 
 class TaggingServiceMock: TaggingServiceType {
-    func makeTagGroup<R>(for resource: R, oldTags: [String : String], annotations: [String]?) -> Async<TagGroup> where R : SDKResource {
+    func makeTagGroup<R>(for resource: R, oldTags: [String : String], annotations: [String]?) -> TagGroup where R : SDKResource {
         tagResourceCalledWith = (resource, oldTags, annotations)
-        return tagResourceResult ?? Async.reject()
+        guard let tagResourceResult = tagResourceResult else {
+            fatalError("TaggingServiceMock result Not set")
+        }
+        return tagResourceResult
     }
 
-    func makeTagGroup<R>(for type: R.Type, annotations: [String]?) -> Async<TagGroup> where R : SDKResource {
+    func makeTagGroup<R>(for type: R.Type, annotations: [String]?) -> TagGroup where R : SDKResource {
         tagTypeCalledWith = (type, annotations)
-        return tagTypeResult ?? Async.reject()
+        guard let tagTypeResult = tagTypeResult else {
+            fatalError("TaggingServiceMock result Not set")
+        }
+        return tagTypeResult
     }
 
     var tagResourceCalledWith: (SDKResource?, [String: String]?, [String]?)?
-    var tagResourceResult: Async<TagGroup>?
+    var tagResourceResult: TagGroup?
 
     var tagTypeCalledWith: (SDKResource.Type, [String]?)?
-    var tagTypeResult: Async<TagGroup>?
+    var tagTypeResult: TagGroup?
 }

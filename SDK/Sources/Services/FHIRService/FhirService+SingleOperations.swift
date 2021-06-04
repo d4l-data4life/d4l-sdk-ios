@@ -14,18 +14,18 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
-@_implementationOnly import Then
 @_implementationOnly import Data4LifeCrypto
+import Combine
 
 extension FhirService {
     func createFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,
                                                annotations: [String] = [],
                                                decryptedRecordType: DR.Type = DR.self) ->
-    Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
-            let resourceWithKey = try wait(self.uploadAttachments(creating: resource))
-            let decryptedRecord = try wait(self.recordService.createRecord(forResource: resourceWithKey.resource,
+    SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
+        return combineAsync {
+            let userId = try keychainService.get(.userId)
+            let resourceWithKey = try combineAwait(self.uploadAttachments(creating: resource))
+            let decryptedRecord = try combineAwait(self.recordService.createRecord(forResource: resourceWithKey.resource,
                                                                             annotations: annotations,
                                                                             userId: userId,
                                                                             attachmentKey: resourceWithKey.key,
@@ -36,14 +36,14 @@ extension FhirService {
 
     func updateFhirRecord<DR: DecryptedRecord>(_ resource: DR.Resource,
                                                annotations: [String]? = nil,
-                                               decryptedRecordType: DR.Type = DR.self) -> Promise<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
-        return async {
-            let userId = try wait(self.keychainService.get(.userId))
+                                               decryptedRecordType: DR.Type = DR.self) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource {
+        return combineAsync {
+            let userId = try self.keychainService.get(.userId)
             guard let recordId = resource.fhirIdentifier else { throw Data4LifeSDKError.invalidResourceMissingId }
 
-            let resourceWithKey = try wait(self.uploadAttachments(updating: resource, decryptedRecordType: decryptedRecordType))
+            let resourceWithKey = try combineAwait(self.uploadAttachments(updating: resource, decryptedRecordType: decryptedRecordType))
 
-            let updatedRecord = try wait(self.recordService.updateRecord(forResource: resourceWithKey.resource,
+            let updatedRecord = try combineAwait(self.recordService.updateRecord(forResource: resourceWithKey.resource,
                                                                           annotations: annotations,
                                                                           userId: userId,
                                                                           recordId: recordId,

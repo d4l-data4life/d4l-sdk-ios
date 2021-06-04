@@ -19,7 +19,6 @@ import Data4LifeFHIRCore
 import ModelsR4
 
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 
 struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
     var id: String
@@ -33,8 +32,8 @@ struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
 
     static func from(encryptedRecord: EncryptedRecord,
                      cryptoService: CryptoServiceType,
-                     commonKeyService: CommonKeyServiceType) -> Async<DecryptedFhirStu3Record<T>> {
-        return async {
+                     commonKeyService: CommonKeyServiceType) throws -> DecryptedFhirStu3Record<T> {
+
             guard encryptedRecord.modelVersion <= T.modelVersion else {
                 throw Data4LifeSDKError.invalidRecordModelVersionNotSupported
             }
@@ -46,9 +45,9 @@ struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
             let dataKey = try decryptDataKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
             let attachmentKey = try decryptAttachmentKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
 
-            let anyResource = try wait(cryptoService.decrypt(data: encryptedData,
-                                                              to: AnyResource<T>.self,
-                                                              key: dataKey))
+            let anyResource = try combineAwait(cryptoService.decrypt(data: encryptedData,
+                                                             to: AnyResource<T>.self,
+                                                             key: dataKey))
             let meta = metaData(from: encryptedRecord)
             anyResource.resource.id = encryptedRecord.id
             return DecryptedFhirStu3Record(id: encryptedRecord.id,
@@ -59,7 +58,7 @@ struct DecryptedFhirStu3Record<T: FhirStu3Resource>: DecryptedRecord {
                                            dataKey: dataKey,
                                            attachmentKey: attachmentKey,
                                            modelVersion: encryptedRecord.modelVersion)
-        }
+
     }
 }
 
@@ -87,8 +86,8 @@ struct DecryptedFhirR4Record<T: FhirR4Resource>: DecryptedRecord {
 
     static func from(encryptedRecord: EncryptedRecord,
                      cryptoService: CryptoServiceType,
-                     commonKeyService: CommonKeyServiceType) -> Async<DecryptedFhirR4Record<T>> {
-        return async {
+                     commonKeyService: CommonKeyServiceType) throws -> DecryptedFhirR4Record<T> {
+
             guard encryptedRecord.modelVersion <= T.modelVersion else {
                 throw Data4LifeSDKError.invalidRecordModelVersionNotSupported
             }
@@ -100,9 +99,9 @@ struct DecryptedFhirR4Record<T: FhirR4Resource>: DecryptedRecord {
             let dataKey = try decryptDataKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
             let attachmentKey = try decryptAttachmentKey(from: encryptedRecord, commonKey: commonKey, cryptoService: cryptoService)
 
-            let resourceProxy = try wait(cryptoService.decrypt(data: encryptedData,
-                                                                to: ResourceProxy.self,
-                                                                key: dataKey))
+            let resourceProxy = try combineAwait(cryptoService.decrypt(data: encryptedData,
+                                                               to: ResourceProxy.self,
+                                                               key: dataKey))
             guard let resource = resourceProxy.get(if: T.self) else {
                 throw Data4LifeSDKError.invalidResourceCouldNotConvertToType(String(describing: T.self))
             }
@@ -117,7 +116,6 @@ struct DecryptedFhirR4Record<T: FhirR4Resource>: DecryptedRecord {
                                          dataKey: dataKey,
                                          attachmentKey: attachmentKey,
                                          modelVersion: encryptedRecord.modelVersion)
-        }
     }
 }
 

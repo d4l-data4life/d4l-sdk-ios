@@ -14,7 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 @testable import Data4LifeSDK
-import Then
+import Combine
 import Data4LifeCrypto
 
 class RecordServiceParameterBuilderMock: RecordServiceParameterBuilderProtocol {

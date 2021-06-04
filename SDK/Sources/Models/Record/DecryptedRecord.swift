@@ -15,7 +15,6 @@
 
 import Foundation
 @_implementationOnly import Data4LifeCrypto
-@_implementationOnly import Then
 
 protocol DecryptedRecord {
     associatedtype Resource: SDKResource
@@ -31,14 +30,14 @@ protocol DecryptedRecord {
 
     static func from(encryptedRecord: EncryptedRecord,
                      cryptoService: CryptoServiceType,
-                     commonKeyService: CommonKeyServiceType) -> Async<Self>
+                     commonKeyService: CommonKeyServiceType) throws -> Self
 }
 
 extension DecryptedRecord {
 
     static func decryptCommonKey(from encryptedRecord: EncryptedRecord, commonKeyService: CommonKeyServiceType) throws -> Key {
         let recordCommonKeyId = encryptedRecord.commonKeyId ?? CommonKeyService.initialId
-        return try wait(commonKeyService.fetchKey(with: recordCommonKeyId))
+        return try combineAwait(commonKeyService.fetchKey(with: recordCommonKeyId))
     }
     static func decryptDataKey(from encryptedRecord: EncryptedRecord, commonKey: Key, cryptoService: CryptoServiceType) throws -> Key {
         guard let dataKeyPayload = Data(base64Encoded: encryptedRecord.encryptedDataKey) else {
@@ -52,9 +51,7 @@ extension DecryptedRecord {
         guard let tagKey = cryptoService.tagEncryptionKey else {
             throw Data4LifeSDKError.missingTagKey
         }
-        return try wait(
-            unwrap(TagGroup(from: cryptoService.decrypt(values: encryptedRecord.encryptedTags, key: tagKey)))
-        )
+        return TagGroup(from: try cryptoService.decrypt(values: encryptedRecord.encryptedTags, key: tagKey))
     }
     static func resourceData(from encryptedRecord: EncryptedRecord) throws -> Data {
         guard let resourceData = Data(base64Encoded: encryptedRecord.encryptedBody) else {

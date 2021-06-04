@@ -13,7 +13,7 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Then
+import Combine
 @testable import Data4LifeSDK
 
 class KeychainServiceMock: KeychainServiceType {
@@ -22,11 +22,11 @@ class KeychainServiceMock: KeychainServiceType {
 
     subscript(key: KeychainKey) -> String? {
         get {
-            return try? wait(get(key))
+            return try? get(key)
         }
 
         set {
-            try? wait(set(newValue, forKey: key))
+            set(newValue, forKey: key)
         }
     }
 
@@ -37,19 +37,18 @@ class KeychainServiceMock: KeychainServiceType {
     }
 
     var setItemCalledWith: [(String?, KeychainKey)]  = []
-    func set(_ item: String?, forKey key: KeychainKey) -> AsyncTask {
+    func set(_ item: String?, forKey key: KeychainKey) {
         setItemCalledWith.append((item, key))
         values[key.rawValue] = item
-        return Async.resolve()
     }
 
     var getItemCalledWith: [KeychainKey] = []
-    func get(_ key: KeychainKey) -> Async<String> {
+    func get(_ key: KeychainKey) throws -> String {
         getItemCalledWith.append(key)
         if let value = values[key.rawValue] {
-            return Async.resolve(value)
+            return value
         } else {
-            return Async.reject(Data4LifeSDKError.keychainItemNotFound(key.rawValue)).bridgeError(to: Data4LifeSDKError.notLoggedIn)
+            throw Data4LifeSDKError.notLoggedIn
         }
     }
 
