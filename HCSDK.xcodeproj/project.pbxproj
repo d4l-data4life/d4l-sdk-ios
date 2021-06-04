@@ -37,7 +37,6 @@
 		0AF4C09522DDEC8900C5CD67 /* DownloadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09422DDEC8900C5CD67 /* DownloadType.swift */; };
 		0AF4C09922E205C300C5CD67 /* ImageResizerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09822E205C300C5CD67 /* ImageResizerMock.swift */; };
 		0AF4C09C22E5D12200C5CD67 /* ImageResizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09B22E5D12200C5CD67 /* ImageResizerTests.swift */; };
-		0AF4C09E22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09D22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift */; };
 		3600188723966DBF004D9048 /* LoggerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600188623966DBF004D9048 /* LoggerContainer.swift */; };
 		3600188A23991125004D9048 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600188923991125004D9048 /* RouterTests.swift */; };
 		3607BCCE2379B8C3004C45F3 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3607BCCD2379B8C3004C45F3 /* DIContainer.swift */; };
@@ -431,7 +430,6 @@
 		0AF4C09422DDEC8900C5CD67 /* DownloadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadType.swift; sourceTree = "<group>"; };
 		0AF4C09822E205C300C5CD67 /* ImageResizerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizerMock.swift; sourceTree = "<group>"; };
 		0AF4C09B22E5D12200C5CD67 /* ImageResizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizerTests.swift; sourceTree = "<group>"; };
-		0AF4C09D22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailsIdFactoryTests.swift; sourceTree = "<group>"; };
 		3600188623966DBF004D9048 /* LoggerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerContainer.swift; sourceTree = "<group>"; };
 		3600188923991125004D9048 /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		3607BCCD2379B8C3004C45F3 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
@@ -804,7 +802,6 @@
 			isa = PBXGroup;
 			children = (
 				CD841E05225CBE80002656D5 /* AttachmentServiceTests.swift */,
-				0AF4C09D22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift */,
 				0AF4C09B22E5D12200C5CD67 /* ImageResizerTests.swift */,
 			);
 			path = AttachmentService;
@@ -2338,7 +2335,6 @@
 				3634699424ED4B63001EEE66 /* RecordServiceTests+AppData.swift in Sources */,
 				CD841E33225CBE80002656D5 /* Bundle+Data.swift in Sources */,
 				CD841E15225CBE80002656D5 /* FHIRServiceMock.swift in Sources */,
-				0AF4C09E22E72D2900C5CD67 /* ThumbnailsIdFactoryTests.swift in Sources */,
 				CD841E25225CBE80002656D5 /* EnvironmentTests.swift in Sources */,
 				CD841E4C225CBE80002656D5 /* FhirFactory.swift in Sources */,
 				0A62616B2371CE410091DFB7 /* DownloadTypeTest.swift in Sources */,

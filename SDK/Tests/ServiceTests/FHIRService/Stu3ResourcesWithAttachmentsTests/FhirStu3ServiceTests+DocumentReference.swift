@@ -1,14 +1,14 @@
 //  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
-//  
+//
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
 //  including any intellectual property rights that subsist in the SDK.
-//  
+//
 //  The SDK and its documentation may be accessed and used for viewing/review purposes only.
 //  Any usage of the SDK for other purposes, including usage for the development of
 //  applications/third-party applications shall require the conclusion of a license agreement
 //  between you and D4L.
-//  
+//
 //  If you are interested in licensing the SDK for your own applications/third-party
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
@@ -54,10 +54,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         fixtureDocumentReference.content = [DocumentReferenceContent(attachment: fixtureAttachment)]
 
-        let additionalIds = [String]()
-
         let expectedDocumentReference = fixtureDocumentReference.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
-        expectedDocumentReference.setAdditionalIds(additionalIds)
         expectedDocumentReference.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
@@ -70,7 +67,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         fixtureDocumentReference.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just([(uploadAttachmentResultWithId, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadAttachmentResultWithId)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -89,7 +86,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -129,7 +126,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         documentReference.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { ($0, additionalIds)}).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -147,7 +144,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -175,7 +172,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -205,7 +202,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -231,7 +228,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -245,7 +242,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         let attachment = FhirFactory.createStu3AttachmentElement()
         documentReference.id = resourceId
         documentReference.content = [DocumentReferenceContent(attachment: attachment)]
-        let additionalIds = [String]()
+
         let originalRecord = DecryptedRecordFactory.create(documentReference)
 
         let updatedDocumentReference = documentReference.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
@@ -258,7 +255,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         let expectedUpdatedRecord = originalRecord.copy(with: expectedDocumentReference)
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just([(attachmentWithId, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(attachmentWithId)]).asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedUpdatedRecord).asyncFuture()
@@ -282,7 +279,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -302,7 +299,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidResourceMissingId, "Expected error didn't happen")
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -330,7 +327,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't happen")
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -361,7 +358,7 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't happen")
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -384,7 +381,6 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
 
         let originalRecord = DecryptedRecordFactory.create(documentReference)
 
-        let additionalIds = [String]()
         let updatedDocumentReference = documentReference.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment1 = updatedDocumentReference.allAttachments!.first! as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
@@ -412,8 +408,8 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedUpdatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([(updatedAttachment1, additionalIds),
-                                                            (uploadedNewAttachment, additionalIds)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentInfo.make(updatedAttachment1),
+                                                            AttachmentDocumentInfo.make(uploadedNewAttachment)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedDocumentReference, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
@@ -432,11 +428,11 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.1, userId, "A param in the method doesn't match the expectation")
 
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -453,8 +449,6 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         attachment.attachmentId = attachmentId
         fhirResource.content = [DocumentReferenceContent(attachment: attachment), DocumentReferenceContent(attachment: attachment2)]
         let record = DecryptedRecordFactory.create(fhirResource)
-
-        let additionalIds = [String]()
 
         let updatedResource = fhirResource.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
@@ -477,20 +471,20 @@ class FhirStu3ServiceDocumentReferenceTests: XCTestCase {
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([(updatedAttachment, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachment, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachmentWithId, additionalIds)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentInfo.make(updatedAttachment)]).asyncFuture(),
+                                                      Just([AttachmentDocumentInfo.make(newAttachment)]).asyncFuture(),
+                                                      Just([AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { _ in
                 XCTFail("Error expected")
-        } onError: { error in
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadHash, "Expected error didn't occur")
-            XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadHash, "Expected error didn't occur")
+                XCTAssertNil(self.recordService.updateRecordCalledWith, "This method shouldn't have been called")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 }
@@ -508,8 +502,8 @@ extension FhirStu3ServiceDocumentReferenceTests {
         fixtureAttachment.attachmentId = attachmentId
         fixtureDocumentReference.content = [DocumentReferenceContent(attachment: fixtureAttachment)]
 
-        let additionalPayloadsIds = ["addId1", "addId2"]
-        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
+        let additionalPayloadsIds = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
 
         let expectedDocumentReference = fixtureDocumentReference.copy() as! Data4LifeFHIR.DocumentReference // swiftlint:disable:this force_cast
         expectedDocumentReference.setAdditionalIds(expectedAdditionalId)
@@ -521,7 +515,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(fixtureAttachment, additionalPayloadsIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(fixtureAttachment, ids: additionalPayloadsIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record with additional id")
@@ -539,7 +533,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -552,7 +546,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
         let fixtureAttachment = FhirFactory.createStu3AttachmentElement()
         fixtureDocumentReference.content = [DocumentReferenceContent(attachment: fixtureAttachment)]
 
-        let additionalIds = ["addId1"]
+        let additionalIds = [ThumbnailHeight.mediumHeight: "addId1"]
         let expectedAdditionalIds = [String]()
 
         let attachmentId = UUID().uuidString
@@ -566,7 +560,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(expectedAttachment, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(expectedAttachment, ids: additionalIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")
@@ -583,7 +577,7 @@ extension FhirStu3ServiceDocumentReferenceTests {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -627,7 +621,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -654,7 +648,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -680,7 +674,7 @@ extension FhirStu3ServiceAttachmentOperationsTests {
         secondResource.id = secondResourceId
 
         keychainService[.userId] = userId
-        recordService.fetchRecordResults = [Just(firstRecord).asyncFuture()]
+        recordService.fetchRecordResults = [firstResourceId: Just(firstRecord).asyncFuture()]
         attachmentService.fetchAttachmentsResult = Just([firstAttachment]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return a record")
@@ -699,11 +693,9 @@ extension FhirStu3ServiceAttachmentOperationsTests {
                 XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
-            } onError: { error in
-                XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
-        }
+            }
         waitForExpectations(timeout: 5)
     }
 }

@@ -28,30 +28,30 @@ extension CustomIdentifiable {
     @inlinable public func getAdditionalIds() -> [String]? {
         getAdditionalIds(assignedTo: Resource.partnerId)
     }
+}
 
-    func cleanObsoleteAdditionalIdentifiers(resourceId: String?, attachmentIds: [String]) throws -> Self {
+extension CustomIdentifiable {
+
+    func removeUnusedThumbnailIdentifier(currentAttachmentIDs: [String]) throws {
         guard let identifiers = customIdentifiers else {
-            return self
+            return
         }
 
         let updatedIdentifiers = try identifiers.compactMap { identifier -> FhirIdentifierType? in
-            guard identifier.valueString?.contains(ThumbnailsIdFactory.downscaledAttachmentIdsFormat) ?? false else {
+            guard identifier.valueString?.contains(AttachmentDocumentInfo.tripleIdentifierPrefix) ?? false else {
                 return identifier
             }
-            guard
-                let ids = identifier.valueString?.split(separator: ThumbnailsIdFactory.splitChar),
-                ids.count == 4
+            guard let ids = identifier.valueString?.split(separator: AttachmentDocumentInfo.thumbnailIdentifierSeparator),
+                  ids.count == 4
             else {
-                let resourceId = resourceId ?? "Not available"
-                throw Data4LifeSDKError.invalidAttachmentAdditionalId("Resource Id: \(resourceId)")
+                throw Data4LifeSDKError.malformedAttachmentAdditionalId
             }
 
             let attachmentId = String(ids[1])
-            let identifierIsInUse = attachmentIds.contains(attachmentId)
-
+            let identifierIsInUse = currentAttachmentIDs.contains(attachmentId)
             return identifierIsInUse ? identifier : nil
         }
+
         customIdentifiers = updatedIdentifiers.isEmpty ? nil : updatedIdentifiers
-        return self
     }
 }

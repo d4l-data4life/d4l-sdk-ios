@@ -208,17 +208,14 @@ class AttachmentServiceTests: XCTestCase {
         imageResizer.isImageDataResult = true
         imageResizer.resizedDataResults = [(nil, expectedError), (nil, expectedError)]
 
-        let selectedSize = CGSize(width: 220, height: 200)
-        imageResizer.getSizeResult = selectedSize
-
         let asyncExpectation = expectation(description: "should upload data (1 payload - original) for thumbnails and return document")
         attachmentService.uploadAttachments([attachment],
                                             key: record.attachmentKey!)
             .then { result in
                 defer { asyncExpectation.fulfill() }
-                XCTAssertEqual(result.first?.0.attachmentId, attachmentId)
-                XCTAssertEqual(result.first?.0.attachmentDataString, attachment.attachmentDataString)
-                XCTAssertEqual(result.first?.1, expectedThumbnailsIds)
+                XCTAssertEqual(result.first?.fullAttachmentId, attachmentId)
+                XCTAssertEqual(result.first?.attachment.attachmentDataString, attachment.attachmentDataString)
+                XCTAssertEqual(result.first?.thumbnailsIDs, expectedThumbnailsIds)
 
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, payload.data)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, record.attachmentKey)

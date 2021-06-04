@@ -102,16 +102,15 @@ extension FhirService {
             let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
+            
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
-
-            // We don't wanna upload base64 encoded data (in case of old downloaded attachments)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
                 resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { $0.tripleIdentifier })
-                let cleanedResource = try resourceWithIdentifier.cleanObsoleteAdditionalIdentifiers(resourceId: resource.fhirIdentifier,
-                                                                                                    attachmentIds: resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? [])
-                return (cleanedResource as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
+                let attachmentIDs = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? []
+                try resourceWithIdentifier.removeUnusedThumbnailIdentifier(currentAttachmentIDs: attachmentIDs)
+                return (resourceWithIdentifier as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast
             } else {
                 return (resource, attachmentKey)
             }
