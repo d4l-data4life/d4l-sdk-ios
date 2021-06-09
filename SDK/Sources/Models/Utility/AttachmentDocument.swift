@@ -35,7 +35,7 @@ struct AttachmentDocumentContext {
 }
 
 extension AttachmentDocumentContext {
-    static func makeAllFetchRequests(for resource: HasAttachments, attachmentIdentifiers: [String]) throws -> [AttachmentDocumentContext] {
+    static func makeForAllFetchRequests(for resource: HasAttachments, attachmentIdentifiers: [String]) throws -> [AttachmentDocumentContext] {
         guard let attachments = resource.allAttachments else { return [] }
         return try attachments.compactMap { attachment -> AttachmentDocumentContext? in
 

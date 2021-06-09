@@ -73,7 +73,7 @@ final class AttachmentService: AttachmentServiceType {
                           parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
 
         return combineAsync {
-            return try AttachmentDocumentContext.makeAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
+            return try AttachmentDocumentContext.makeForAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
                 .map { try $0.validatedBeforeDownloading() }
                 .compactMap { attachmentDocumentContext -> AttachmentDocumentContext? in
                     guard let fullAttachmentId = attachmentDocumentContext.document.id else {
