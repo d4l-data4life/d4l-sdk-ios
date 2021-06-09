@@ -49,19 +49,19 @@ final class AttachmentService: AttachmentServiceType {
             return try attachments
                 .map { try AttachmentDocumentContext.makeForUploadRequest(attachment: $0) }
                 .map { try $0.validatedBeforeUploading() }
-                .map { attachmentDocumentInfo -> AttachmentDocumentContext in
-                    let attachmentDocument = try combineAwait(self.documentService.create(document: attachmentDocumentInfo.document, key: key))
-                    return attachmentDocumentInfo.updatingInfo(withCreated: attachmentDocument)
+                .map { attachmentDocumentContext -> AttachmentDocumentContext in
+                    let attachmentDocument = try combineAwait(self.documentService.create(document: attachmentDocumentContext.document, key: key))
+                    return attachmentDocumentContext.updatingInfo(withCreated: attachmentDocument)
                 }
-                .map { attachmentDocumentInfo -> AttachmentDocumentContext in
-                    guard let data = attachmentDocumentInfo.data,
-                          let attachmentId = attachmentDocumentInfo.fullAttachmentId,
+                .map { attachmentDocumentContext -> AttachmentDocumentContext in
+                    guard let data = attachmentDocumentContext.data,
+                          let attachmentId = attachmentDocumentContext.fullAttachmentId,
                           self.imageResizer.isImageData(data) else {
-                        return attachmentDocumentInfo
+                        return attachmentDocumentContext
                     }
 
                     let thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
-                    return attachmentDocumentInfo.updatingThumbnailsIds(thumbnailsIds)
+                    return attachmentDocumentContext.updatingThumbnailsIds(thumbnailsIds)
                 }
         }
     }
@@ -73,20 +73,19 @@ final class AttachmentService: AttachmentServiceType {
                           parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
 
         return combineAsync {
-            let attachments = try AttachmentDocumentContext.makeAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
+            return try AttachmentDocumentContext.makeAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
                 .map { try $0.validatedBeforeDownloading() }
-                .compactMap { attachmentDocumentInfo -> AttachmentDocumentContext? in
-                    guard let fullAttachmentId = attachmentDocumentInfo.document.id else {
+                .compactMap { attachmentDocumentContext -> AttachmentDocumentContext? in
+                    guard let fullAttachmentId = attachmentDocumentContext.document.id else {
                         return nil
                     }
 
-                    let attachmentIdToFetch = attachmentDocumentInfo.attachmentThumbnailIdentifier(for: downloadType) ?? fullAttachmentId
+                    let attachmentIdToFetch = attachmentDocumentContext.attachmentThumbnailIdentifier(for: downloadType) ?? fullAttachmentId
                     let attachmentDocument = try combineAwait(self.documentService.fetchDocument(withId: attachmentIdToFetch, key: key, parentProgress: parentProgress))
-                    return try attachmentDocumentInfo.updatingInfo(withFetched: attachmentDocument, for: downloadType)
+                    return try attachmentDocumentContext.updatingInfo(withFetched: attachmentDocument, for: downloadType)
                 }
                 .map { try $0.validated(afterDownloadingWith: downloadType) }
                 .map { $0.attachment }
-            return attachments
         }
     }
 }

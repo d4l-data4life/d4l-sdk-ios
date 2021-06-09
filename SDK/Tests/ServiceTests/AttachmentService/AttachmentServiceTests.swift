@@ -145,10 +145,10 @@ final class AttachmentServiceTests: XCTestCase {
 
         attachmentService.uploadAttachments([attachment], key: attachmentKey!).complete { result in
             switch result {
-            case .success(let attachmentDocumentInfos):
-                XCTAssertEqual(attachmentDocumentInfos.first?.attachment.attachmentId, attachmentId)
-                XCTAssertEqual(attachmentDocumentInfos.first?.attachment.attachmentDataString, attachment.attachmentDataString)
-                XCTAssertEqual(attachmentDocumentInfos.first?.thumbnailsIDs, expectedThumbnailsIds)
+            case .success(let attachmentDocumentContexts):
+                XCTAssertEqual(attachmentDocumentContexts.first?.attachment.attachmentId, attachmentId)
+                XCTAssertEqual(attachmentDocumentContexts.first?.attachment.attachmentDataString, attachment.attachmentDataString)
+                XCTAssertEqual(attachmentDocumentContexts.first?.thumbnailsIDs, expectedThumbnailsIds)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.0.data, imageData)
                 XCTAssertEqual(self.documentService.createDocumentCalledWith?.1, attachmentKey)
                 XCTAssert(self.imageResizer.resizedDataCalledWith?.1 == .smallHeight)
