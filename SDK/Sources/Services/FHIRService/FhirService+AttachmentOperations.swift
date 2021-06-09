@@ -102,7 +102,7 @@ extension FhirService {
             let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
-            
+
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
