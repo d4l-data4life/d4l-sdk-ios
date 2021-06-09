@@ -59,6 +59,10 @@ final class SessionServiceInterceptor: RequestInterceptorType {
                       for session: Session,
                       dueTo error: Error,
                       completion: @escaping (RetryResult) -> Void) {
-        retrier?.retry(request, for: session, dueTo: error, completion: completion)
+        if let retrier = retrier {
+            retrier.retry(request, for: session, dueTo: error, completion: completion)
+        } else {
+            completion(.doNotRetry)
+        }
     }
 }

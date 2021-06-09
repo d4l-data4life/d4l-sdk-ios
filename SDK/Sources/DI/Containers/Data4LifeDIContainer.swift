@@ -35,7 +35,7 @@ extension Data4LifeDIContainer {
             }.register(scope: .containerInstance) { (container) -> KeychainServiceType in
                 let keychainName = try clientConfiguration.keychainName()
                 return KeychainService(container: container, name: keychainName, groupId: clientConfiguration.keychainGroupId)
-            }.register(scope: .containerInstance) { (container) -> RequestInterceptorType in
+            }.register(scope: .globalInstance) { (container) -> RequestInterceptorType in
                 let infoService: InfoServiceType = try container.resolve()
                 let sdkVersion = infoService.fetchSDKVersion()
                 return SessionServiceInterceptor(keychainService: try container.resolve(),
