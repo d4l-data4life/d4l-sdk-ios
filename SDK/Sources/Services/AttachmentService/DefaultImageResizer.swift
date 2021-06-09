@@ -46,16 +46,16 @@ struct DefaultImageResizer: ImageResizer {
     }
 
     func resizedData(_ image: UIImage, for thumbnailHeight: ThumbnailHeight) throws -> Data? {
-        let size = size(of: image, scaledTo: thumbnailHeight)
-        guard image.size.height > size.height, image.size.width > size.width else {
+        let scaledSize = size(of: image, scaledTo: thumbnailHeight)
+        guard image.size.height > scaledSize.height, image.size.width > scaledSize.width else {
             throw Data4LifeSDKError.resizingImageSmallerThanOriginalOne
         }
         // Fix the scale for the renderer. Otherwise it might change the size of the thumbnails depending on the device
         let format = UIGraphicsImageRendererFormat(for: UITraitCollection.init())
         format.scale = 1.0
-        let renderer = UIGraphicsImageRenderer(size: size, format: format)
+        let renderer = UIGraphicsImageRenderer(size: scaledSize, format: format)
         return renderer.jpegData(withCompressionQuality: compressionQuality) { (_) in
-             image.draw(in: CGRect(origin: .zero, size: size))
+             image.draw(in: CGRect(origin: .zero, size: scaledSize))
         }
     }
 }
