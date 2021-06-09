@@ -9,9 +9,9 @@
 import Foundation
 @testable import Data4LifeSDK
 
-extension AttachmentDocumentInfo {
-    static func make(_ attachment: AttachmentType, ids: [ThumbnailHeight: String] = [:]) -> AttachmentDocumentInfo {
-        AttachmentDocumentInfo(document: AttachmentDocument(id: attachment.attachmentId, data: Data()),
+extension AttachmentDocumentContext {
+    static func make(_ attachment: AttachmentType, ids: [ThumbnailHeight: String] = [:]) -> AttachmentDocumentContext {
+        AttachmentDocumentContext(document: AttachmentDocument(id: attachment.attachmentId, data: Data()),
                                attachment: attachment,
                                thumbnailsIDs: ids)
     }

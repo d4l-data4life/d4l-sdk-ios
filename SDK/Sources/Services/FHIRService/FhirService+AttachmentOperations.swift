@@ -56,7 +56,7 @@ extension FhirService {
             }
 
             let generatedKey = try combineAwait(self.cryptoService.generateGCKey(.attachment))
-            let uploadedAttachmentsWithIds: [AttachmentDocumentInfo] =
+            let uploadedAttachmentsWithIds: [AttachmentDocumentContext] =
                 try combineAwait(self.attachmentService.uploadAttachments(validatedAttachments,
                                                                    key: generatedKey))
             var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment } as [AttachmentType]
@@ -123,10 +123,10 @@ extension FhirService {
 
     private func uploadAttachments(
         _ attachments: [AttachmentType],
-        attachmentKey: Key) -> SDKFuture<[AttachmentDocumentInfo]> {
+        attachmentKey: Key) -> SDKFuture<[AttachmentDocumentContext]> {
         return combineAsync {
             if !attachments.isEmpty {
-                let updatedAttachmentsWithThumbnailsIds: [AttachmentDocumentInfo] =
+                let updatedAttachmentsWithThumbnailsIds: [AttachmentDocumentContext] =
                     try combineAwait(self.attachmentService.uploadAttachments(attachments,
                                                                        key: attachmentKey))
                 return updatedAttachmentsWithThumbnailsIds

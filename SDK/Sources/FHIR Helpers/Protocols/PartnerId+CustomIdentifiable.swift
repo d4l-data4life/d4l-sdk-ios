@@ -38,10 +38,10 @@ extension CustomIdentifiable {
         }
 
         let updatedIdentifiers = try identifiers.compactMap { identifier -> FhirIdentifierType? in
-            guard identifier.valueString?.contains(AttachmentDocumentInfo.tripleIdentifierPrefix) ?? false else {
+            guard identifier.valueString?.contains(AttachmentDocumentContext.tripleIdentifierPrefix) ?? false else {
                 return identifier
             }
-            guard let ids = identifier.valueString?.split(separator: AttachmentDocumentInfo.thumbnailIdentifierSeparator),
+            guard let ids = identifier.valueString?.split(separator: AttachmentDocumentContext.thumbnailIdentifierSeparator),
                   ids.count == 4
             else {
                 throw Data4LifeSDKError.malformedAttachmentAdditionalId

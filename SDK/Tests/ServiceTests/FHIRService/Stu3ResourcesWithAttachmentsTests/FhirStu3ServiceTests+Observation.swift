@@ -80,7 +80,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureObservation.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentContext.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -142,7 +142,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         observation.id = expectedRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResult.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResult.map { AttachmentDocumentContext.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -203,7 +203,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         fixtureObservation.id = createdRecord.id
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentInfo.make($0) }).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentContext.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -326,7 +326,7 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         keychainService[.userId] = userId
         let uploadedAttachment = attachment.copy() as! Data4LifeFHIR.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment.id = UUID().uuidString
-        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment)]).asyncFuture()
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
@@ -475,9 +475,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
         attachmentService.uploadAttachmentsResults = [Just([
-                                                            AttachmentDocumentInfo.make(updatedAttachment!),
-                                                            AttachmentDocumentInfo.make(newAttachment),
-                                                            AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
+                                                            AttachmentDocumentContext.make(updatedAttachment!),
+                                                            AttachmentDocumentContext.make(newAttachment),
+                                                            AttachmentDocumentContext.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -548,9 +548,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
         attachmentService.uploadAttachmentsResults = [Just([
-                                                            AttachmentDocumentInfo.make(updatedAttachment!),
-                                                            AttachmentDocumentInfo.make(newAttachment),
-                                                            AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
+                                                            AttachmentDocumentContext.make(updatedAttachment!),
+                                                            AttachmentDocumentContext.make(newAttachment),
+                                                            AttachmentDocumentContext.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -612,9 +612,9 @@ class FhirStu3ServiceObservationTests: XCTestCase { // swiftlint:disable:this ty
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentInfo.make(updatedAttachment!)]).asyncFuture(),
-                                                      Just([AttachmentDocumentInfo.make(newAttachment)]).asyncFuture(),
-                                                      Just([AttachmentDocumentInfo.make(newAttachmentWithId)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentContext.make(updatedAttachment!)]).asyncFuture(),
+                                                      Just([AttachmentDocumentContext.make(newAttachment)]).asyncFuture(),
+                                                      Just([AttachmentDocumentContext.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirStu3Record<Observation>.self)
@@ -655,7 +655,7 @@ extension FhirStu3ServiceObservationTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(fixtureAttachment, ids: additionalPayloadsIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(fixtureAttachment, ids: additionalPayloadsIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record with additional id")
@@ -699,7 +699,7 @@ extension FhirStu3ServiceObservationTests {
         uploadedAttachment.id = expectedAttachmentId
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment, ids: additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment, ids: additionalIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")

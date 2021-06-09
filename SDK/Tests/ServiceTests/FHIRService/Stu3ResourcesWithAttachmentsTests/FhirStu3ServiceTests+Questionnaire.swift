@@ -136,11 +136,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.hash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment0),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment1),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment2),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment3),
-                                                          AttachmentDocumentInfo.make(unmatchableAttachment)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment0),
+                                                          AttachmentDocumentContext.make(uploadedAttachment1),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3),
+                                                          AttachmentDocumentContext.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -291,11 +291,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.hash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment0, ids: additionalPayloadsIds),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment1, ids: additionalPayloadsIds),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment2, ids: additionalPayloadsIds),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment3, ids: additionalPayloadsIds),
-                                                          AttachmentDocumentInfo.make(unmatchableAttachment)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment0, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(uploadedAttachment1, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -403,9 +403,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(uploadedNewAttachmentId2)
         let uploadedAttachment3 = newAttachment2.copyWithId(uploadedNewAttachmentId3)
 
-        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentInfo.make(uploadedAttachment1),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment2),
-                                                          AttachmentDocumentInfo.make(uploadedAttachment3)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment1),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3)]).asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedRecord).asyncFuture()

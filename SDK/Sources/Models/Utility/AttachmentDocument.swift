@@ -25,7 +25,7 @@ struct AttachmentDocument {
     }
 }
 
-struct AttachmentDocumentInfo {
+struct AttachmentDocumentContext {
     static var tripleIdentifierPrefix = "d4l_f_p_t"
     static var thumbnailIdentifierSeparator: Character = "#"
 
@@ -34,79 +34,31 @@ struct AttachmentDocumentInfo {
     private(set) var thumbnailsIDs: [ThumbnailHeight: String] = [:]
 }
 
-extension AttachmentDocumentInfo {
-    static func makeForFetchRequest(resource: HasAttachments, attachmentIdentifiers: [String]) throws -> [AttachmentDocumentInfo] {
+extension AttachmentDocumentContext {
+    static func makeForAllFetchRequests(for resource: HasAttachments, attachmentIdentifiers: [String]) throws -> [AttachmentDocumentContext] {
         guard let attachments = resource.allAttachments else { return [] }
-        return try attachments.compactMap { attachment -> AttachmentDocumentInfo? in
+        return try attachments.compactMap { attachment -> AttachmentDocumentContext? in
 
             guard let attachmentId = attachment.attachmentId, attachmentIdentifiers.contains(attachmentId) else { return nil }
             let document = AttachmentDocument(id: attachmentId)
             let thumbnailIDs = try thumbnailIdentifiers(for: attachmentId, from: resource)
-            return AttachmentDocumentInfo(document: document, attachment: attachment,
+            return AttachmentDocumentContext(document: document, attachment: attachment,
                                           thumbnailsIDs: thumbnailIDs)
         }
     }
 
-    static func makeForUploadRequest(attachment: AttachmentType) throws -> AttachmentDocumentInfo {
+    static func makeForUploadRequest(attachment: AttachmentType) throws -> AttachmentDocumentContext {
 
         guard let base64EncodedString = attachment.attachmentDataString, let data = Data(base64Encoded: base64EncodedString) else {
             throw Data4LifeSDKError.invalidAttachmentMissingData
         }
 
-        return AttachmentDocumentInfo(document: AttachmentDocument(data: data),
+        return AttachmentDocumentContext(document: AttachmentDocument(data: data),
                                       attachment: attachment)
     }
 }
 
-extension AttachmentDocumentInfo {
-    func updatingInfo(withCreated createdAttachmentDocument: AttachmentDocument) -> AttachmentDocumentInfo {
-        let newAttachment = attachment.copy() as! AttachmentType
-        newAttachment.attachmentId = createdAttachmentDocument.id
-        return AttachmentDocumentInfo(document: createdAttachmentDocument, attachment: newAttachment, thumbnailsIDs: thumbnailsIDs)
-    }
-
-    func updatingInfo(withFetched fetchedAttachmentDocument: AttachmentDocument, for downloadType: DownloadType) throws -> AttachmentDocumentInfo {
-        guard let data = fetchedAttachmentDocument.data else {
-            throw Data4LifeSDKError.invalidAttachmentMissingData
-        }
-
-        let newAttachment = attachment.copy() as! AttachmentType // swiftlint:disable:this force_cast
-
-        newAttachment.attachmentDataString = data.base64EncodedString()
-        if downloadType.isThumbnailType {
-            newAttachment.attachmentHash = data.sha1Hash
-            newAttachment.attachmentSize = data.count
-        }
-
-        let newIdentifier = thumbnailDisplayIdentifier(for: downloadType) ?? newAttachment.attachmentId
-        newAttachment.attachmentId = newIdentifier
-
-        return AttachmentDocumentInfo(document: fetchedAttachmentDocument,
-                                      attachment: newAttachment,
-                                      thumbnailsIDs: thumbnailsIDs)
-    }
-
-    func validatedBeforeUploading() throws -> AttachmentDocumentInfo {
-        try attachment.validatePayloadType()
-        try attachment.validatePayloadSize()
-        return self
-    }
-
-    func validatedBeforeDownloading() throws -> AttachmentDocumentInfo {
-        try attachment.validatePayloadSize()
-        return self 
-    }
-
-    func validated(afterDownloadingWith downloadType: DownloadType) throws -> AttachmentDocumentInfo {
-        if !downloadType.isThumbnailType {
-            try attachment.validatePayloadHash()
-        }
-        try attachment.validatePayloadType()
-        return self
-    }
-}
-
-extension AttachmentDocumentInfo {
+extension AttachmentDocumentContext {
     var fullAttachmentId: String? {
         attachment.attachmentId
     }
@@ -121,7 +73,7 @@ extension AttachmentDocumentInfo {
 
         let mediumID = thumbnailsIDs[.mediumHeight] ?? fullID
         let smallID = thumbnailsIDs[.smallHeight] ?? thumbnailsIDs[.mediumHeight] ?? fullID
-        return [AttachmentDocumentInfo.tripleIdentifierPrefix, fullID, mediumID, smallID].joined(separator: String(AttachmentDocumentInfo.thumbnailIdentifierSeparator))
+        return [AttachmentDocumentContext.tripleIdentifierPrefix, fullID, mediumID, smallID].joined(separator: String(AttachmentDocumentContext.thumbnailIdentifierSeparator))
     }
 
     func attachmentThumbnailIdentifier(for downloadType: DownloadType) -> String? {
@@ -134,18 +86,9 @@ extension AttachmentDocumentInfo {
             return thumbnailsIDs[.smallHeight] ?? thumbnailsIDs[.mediumHeight] ?? fullAttachmentId
         }
     }
-
-    private func thumbnailDisplayIdentifier(for downloadType: DownloadType) -> String? {
-        guard let fullID = attachment.attachmentId,
-              let thumbnailHeight = downloadType.thumbnailHeight,
-              let thumbnailID = thumbnailsIDs[thumbnailHeight] else {
-            return nil
-        }
-        return [fullID, thumbnailID].joined(separator: String(AttachmentDocumentInfo.thumbnailIdentifierSeparator))
-    }
 }
 
-extension AttachmentDocumentInfo {
+extension AttachmentDocumentContext {
     private static func thumbnailIdentifiers(for attachmentId: String, from resourceWithAttachments: HasAttachments) throws -> [ThumbnailHeight: String] {
         guard let customIdentifiableResource = resourceWithAttachments as? CustomIdentifiable,
               let identifiers = customIdentifiableResource.customIdentifiers,
@@ -155,7 +98,7 @@ extension AttachmentDocumentInfo {
             return [:]
         }
 
-        let singleIdentifiers = combinedIdentifier.split(separator: AttachmentDocumentInfo.thumbnailIdentifierSeparator)
+        let singleIdentifiers = combinedIdentifier.split(separator: AttachmentDocumentContext.thumbnailIdentifierSeparator)
         guard singleIdentifiers.count == 4 else {
             throw Data4LifeSDKError.malformedAttachmentAdditionalId
         }

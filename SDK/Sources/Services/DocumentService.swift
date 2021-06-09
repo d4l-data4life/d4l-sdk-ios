@@ -44,7 +44,6 @@ class DocumentService: DocumentServiceType {
         }
     }
 
-
     func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument> {
         return combineAsync {
             guard let data = document.data else {
