@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.14.3] - 2021-06-09
 ### Changed
 - Replaces Then with Combine
+### Fixed
+- Adds work around for data race on retrier
 
 ## [1.14.2] - 2021-06-01
 ### Fixed
@@ -453,7 +457,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.2...main
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.3...main
+[1.14.3]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.2...1.14.3
 [1.14.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.1...1.14.2
 [1.14.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.0...1.14.1
 [1.14.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.13.1...1.14.0
