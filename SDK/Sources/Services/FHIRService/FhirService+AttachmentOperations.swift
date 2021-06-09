@@ -56,17 +56,17 @@ extension FhirService {
             }
 
             let generatedKey = try combineAwait(self.cryptoService.generateGCKey(.attachment))
-            let uploadedAttachmentsWithIds: [AttachmentDocumentContext] =
+            let uploadedAttachmentDocumentContexts: [AttachmentDocumentContext] =
                 try combineAwait(self.attachmentService.uploadAttachments(validatedAttachments,
                                                                    key: generatedKey))
-            var uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment } as [AttachmentType]
+            var uploadedAttachments = uploadedAttachmentDocumentContexts.map { $0.attachment } as [AttachmentType]
 
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &uploadedAttachments)
             resourceWithAttachments.updateAttachments(from: newAttachmentSchema)
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
-                let thumbnailCombinedIdentifiers = uploadedAttachmentsWithIds.compactMap { $0.tripleIdentifier }
+                let thumbnailCombinedIdentifiers = uploadedAttachmentDocumentContexts.compactMap { $0.tripleIdentifier }
                 resourceWithIdentifier.updateIdentifiers(additionalIds: thumbnailCombinedIdentifiers)
                 return (resourceWithIdentifier as! R, generatedKey) // swiftlint:disable:this force_cast
             } else {
@@ -98,8 +98,8 @@ extension FhirService {
 
             let validatedAttachmentsToUpload = try (preparedModifiedAttachments + classifiedAttachments.new).validate()
 
-            let uploadedAttachmentsWithIds = try combineAwait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
-            let uploadedAttachments = uploadedAttachmentsWithIds.map { $0.attachment }
+            let uploadedAttachmentDocumentContexts = try combineAwait(self.uploadAttachments(validatedAttachmentsToUpload, attachmentKey: attachmentKey))
+            let uploadedAttachments = uploadedAttachmentDocumentContexts.map { $0.attachment }
             var allFilledAttachments = classifiedAttachments.unmodified + uploadedAttachments
             let newAttachmentSchema = try resourceWithAttachments.makeFilledSchema(byMatchingTo: &allFilledAttachments)
 
@@ -107,7 +107,7 @@ extension FhirService {
             resourceWithAttachments.allAttachments?.forEach { $0.attachmentDataString = nil }
 
             if let resourceWithIdentifier = resourceWithAttachments as? CustomIdentifiable {
-                resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentsWithIds.compactMap { $0.tripleIdentifier })
+                resourceWithIdentifier.updateIdentifiers(additionalIds: uploadedAttachmentDocumentContexts.compactMap { $0.tripleIdentifier })
                 let attachmentIDs = resourceWithAttachments.allAttachments?.compactMap { $0.attachmentId } ?? []
                 try resourceWithIdentifier.removeUnusedThumbnailIdentifier(currentAttachmentIDs: attachmentIDs)
                 return (resourceWithIdentifier as! DR.Resource, attachmentKey) // swiftlint:disable:this force_cast

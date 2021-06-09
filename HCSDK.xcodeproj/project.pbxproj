@@ -133,6 +133,7 @@
 		36FB754725B87D430001FB19 /* TagGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB754625B87D430001FB19 /* TagGroup.swift */; };
 		36FB755125B881D80001FB19 /* RecordServiceParameterBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */; };
 		36FD13E0266A8392009344CF /* ModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FD13DF266A8392009344CF /* ModelFactory.swift */; };
+		36FD13E22670FFFB009344CF /* AttachmentDocumentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FD13E12670FFFB009344CF /* AttachmentDocumentContext.swift */; };
 		7F20B7152367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		7F20B7162367128100B21680 /* data4life.care.der in Resources */ = {isa = PBXBuildFile; fileRef = 7F20B7142367128100B21680 /* data4life.care.der */; };
 		837463B01E854E7500AB500F /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
@@ -519,6 +520,7 @@
 		36FB754625B87D430001FB19 /* TagGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagGroup.swift; sourceTree = "<group>"; };
 		36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordServiceParameterBuilderTests.swift; sourceTree = "<group>"; };
 		36FD13DF266A8392009344CF /* ModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFactory.swift; sourceTree = "<group>"; };
+		36FD13E12670FFFB009344CF /* AttachmentDocumentContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentDocumentContext.swift; sourceTree = "<group>"; };
 		7F20B7142367128100B21680 /* data4life.care.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = data4life.care.der; sourceTree = "<group>"; };
 		837463A61E854E7500AB500F /* Data4LifeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		837463AF1E854E7500AB500F /* Data4LifeSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Data4LifeSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1058,6 +1060,15 @@
 			path = R4ResourcesWithAttachmentTests;
 			sourceTree = "<group>";
 		};
+		36FD13E32671002C009344CF /* DocumentService */ = {
+			isa = PBXGroup;
+			children = (
+				CDE39AEB22E746AB00ABE043 /* AttachmentDocument.swift */,
+				CDA407A522E5E2A100B29A0D /* DocumentService.swift */,
+			);
+			path = DocumentService;
+			sourceTree = "<group>";
+		};
 		8374639C1E854E7500AB500F = {
 			isa = PBXGroup;
 			children = (
@@ -1392,7 +1403,6 @@
 			children = (
 				CD2B2AA323155B620037C869 /* Task.swift */,
 				CD1091EB225B901E00325389 /* Resource.swift */,
-				CDE39AEB22E746AB00ABE043 /* AttachmentDocument.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1480,6 +1490,7 @@
 		CD109225225B901E00325389 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				36FD13E32671002C009344CF /* DocumentService */,
 				366BC2B926443F5500C33C37 /* RecordService */,
 				3689D7F224EAB2D2004295D9 /* AppDataService */,
 				CD10922A225B901E00325389 /* AttachmentService */,
@@ -1488,7 +1499,6 @@
 				0A3934AD23FE5D3700DDCE2B /* SessionService */,
 				0A64853323A0E98100B00E7A /* CommonKeyService.swift */,
 				CD1090AF225B893A00325389 /* CryptoService.swift */,
-				CDA407A522E5E2A100B29A0D /* DocumentService.swift */,
 				3689D7EF24EAB285004295D9 /* HasMainRecordOperations.swift */,
 				CD10922E225B901E00325389 /* InfoService.swift */,
 				CD10922C225B901E00325389 /* KeychainService.swift */,
@@ -1504,6 +1514,7 @@
 			children = (
 				0A4EB42023E92C4500D0A4AA /* AttachmentComparison.swift */,
 				CD10922B225B901E00325389 /* AttachmentService.swift */,
+				36FD13E12670FFFB009344CF /* AttachmentDocumentContext.swift */,
 				0AF4C09222DDD18900C5CD67 /* DefaultImageResizer.swift */,
 			);
 			path = AttachmentService;
@@ -2181,6 +2192,7 @@
 				0A8D847623C5ABF300D7DDD3 /* HasAttachmentsProtocol.swift in Sources */,
 				36080C39237DB14200085476 /* DIResolver.swift in Sources */,
 				CD10923F225B901E00325389 /* Environment.swift in Sources */,
+				36FD13E22670FFFB009344CF /* AttachmentDocumentContext.swift in Sources */,
 				CD109240225B901E00325389 /* VersionInfo.swift in Sources */,
 				CD10927A225B901E00325389 /* AttachmentService.swift in Sources */,
 				CD109281225B901E00325389 /* FhirService+SingleOperations.swift in Sources */,

@@ -15,16 +15,6 @@
 
 import Foundation
 
-struct AttachmentDocument {
-    let id: String?
-    let data: Data?
-
-    init(id: String? = nil, data: Data? = nil) {
-        self.id = id
-        self.data = data
-    }
-}
-
 struct AttachmentDocumentContext {
     static var tripleIdentifierPrefix = "d4l_f_p_t"
     static var thumbnailIdentifierSeparator: Character = "#"
