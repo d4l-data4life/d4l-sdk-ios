@@ -62,7 +62,6 @@ struct DefaultImageResizer: ImageResizer {
 
 extension DefaultImageResizer {
     private func size(of image: UIImage, scaledTo height: ThumbnailHeight) -> CGSize {
-        // Calculate the width of the image according to the selected height
         let width = (height.floatValue * image.size.width) / image.size.height
         return CGSize(width: width, height: height.floatValue)
     }

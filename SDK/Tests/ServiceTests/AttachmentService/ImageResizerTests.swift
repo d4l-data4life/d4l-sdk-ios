@@ -27,7 +27,7 @@ class ImageResizerTest: XCTestCase {
     }
 
     func testResizeThumbnail() throws {
-        let imageData = bundle.data(forResource: "sample", withExtension: "jpg")!
+        let imageData = bundle.data(forResource: "sample-jfif", withExtension: "jpg")!
         let image = UIImage(data: imageData)!
         let resizedImageData = try imageResizer.resizedData(image, for: .smallHeight)!
         let resizedImage = UIImage(data: resizedImageData)!

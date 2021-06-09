@@ -33,7 +33,7 @@
 		0ACB53FF241B9EF600928401 /* VersionConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A3934B024037EB700DDCE2B /* VersionConfiguration.json */; };
 		0AD36C97240799A100584D9B /* SDKVersionValidatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD36C94240798D200584D9B /* SDKVersionValidatorMock.swift */; };
 		0AE123512408DBA1001B6BA4 /* SDKVersionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE123502408DBA1001B6BA4 /* SDKVersionValidatorTests.swift */; };
-		0AF4C09322DDD18900C5CD67 /* ImageResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09222DDD18900C5CD67 /* ImageResizer.swift */; };
+		0AF4C09322DDD18900C5CD67 /* DefaultImageResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09222DDD18900C5CD67 /* DefaultImageResizer.swift */; };
 		0AF4C09522DDEC8900C5CD67 /* DownloadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09422DDEC8900C5CD67 /* DownloadType.swift */; };
 		0AF4C09922E205C300C5CD67 /* ImageResizerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09822E205C300C5CD67 /* ImageResizerMock.swift */; };
 		0AF4C09C22E5D12200C5CD67 /* ImageResizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09B22E5D12200C5CD67 /* ImageResizerTests.swift */; };
@@ -427,7 +427,7 @@
 		0AC79E33235DC0AC007BC681 /* TaskTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTest.swift; sourceTree = "<group>"; };
 		0AD36C94240798D200584D9B /* SDKVersionValidatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKVersionValidatorMock.swift; sourceTree = "<group>"; };
 		0AE123502408DBA1001B6BA4 /* SDKVersionValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKVersionValidatorTests.swift; sourceTree = "<group>"; };
-		0AF4C09222DDD18900C5CD67 /* ImageResizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizer.swift; sourceTree = "<group>"; };
+		0AF4C09222DDD18900C5CD67 /* DefaultImageResizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultImageResizer.swift; sourceTree = "<group>"; };
 		0AF4C09422DDEC8900C5CD67 /* DownloadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadType.swift; sourceTree = "<group>"; };
 		0AF4C09822E205C300C5CD67 /* ImageResizerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizerMock.swift; sourceTree = "<group>"; };
 		0AF4C09B22E5D12200C5CD67 /* ImageResizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizerTests.swift; sourceTree = "<group>"; };
@@ -1504,7 +1504,7 @@
 			children = (
 				0A4EB42023E92C4500D0A4AA /* AttachmentComparison.swift */,
 				CD10922B225B901E00325389 /* AttachmentService.swift */,
-				0AF4C09222DDD18900C5CD67 /* ImageResizer.swift */,
+				0AF4C09222DDD18900C5CD67 /* DefaultImageResizer.swift */,
 			);
 			path = AttachmentService;
 			sourceTree = "<group>";
@@ -2215,7 +2215,7 @@
 				3689D7F124EAB288004295D9 /* HasMainRecordOperations.swift in Sources */,
 				CD10924F225B901E00325389 /* LoginViewController.swift in Sources */,
 				36080C37237DB12900085476 /* Wrapper.swift in Sources */,
-				0AF4C09322DDD18900C5CD67 /* ImageResizer.swift in Sources */,
+				0AF4C09322DDD18900C5CD67 /* DefaultImageResizer.swift in Sources */,
 				3682F78D264024C200C03F55 /* Data4LifeClient+User.swift in Sources */,
 				CD109279225B901E00325389 /* OAuthService.swift in Sources */,
 				0A4EB42623EA850D00D0A4AA /* HasIdentifiableAttachments.swift in Sources */,
