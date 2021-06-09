@@ -50,11 +50,11 @@ extension FhirAttachmentOperations where Self: HasAttachmentOperationsDependenci
                                                                     parentProgress: Progress) -> SDKFuture<A> {
         return combineAsync {
             let attachments: [A] = try combineAwait(self.downloadAttachments(of: type,
-                                                                      decryptedRecordType: decryptedRecordType,
-                                                                      withIds: [identifier],
-                                                                      recordId: recordId,
-                                                                      downloadType: downloadType,
-                                                                      parentProgress: parentProgress))
+                                                                             decryptedRecordType: decryptedRecordType,
+                                                                             withIds: [identifier],
+                                                                             recordId: recordId,
+                                                                             downloadType: downloadType,
+                                                                             parentProgress: parentProgress))
             guard
                 let attachment = attachments.first,
                 let attachmentId = attachment.attachmentId,
