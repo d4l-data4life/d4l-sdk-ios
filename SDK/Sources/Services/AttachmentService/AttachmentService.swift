@@ -61,9 +61,7 @@ final class AttachmentService: AttachmentServiceType {
                     }
 
                     let thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
-                    return AttachmentDocumentContext(document: attachmentDocumentInfo.document,
-                                                     attachment: attachmentDocumentInfo.attachment,
-                                                     thumbnailsIDs: thumbnailsIds)
+                    return attachmentDocumentInfo.updatingThumbnailsIds(thumbnailsIds)
                 }
         }
     }
@@ -75,7 +73,7 @@ final class AttachmentService: AttachmentServiceType {
                           parentProgress: Progress) -> SDKFuture<[AttachmentType]> {
 
         return combineAsync {
-            let attachments = try AttachmentDocumentContext.makeForAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
+            let attachments = try AttachmentDocumentContext.makeAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
                 .map { try $0.validatedBeforeDownloading() }
                 .compactMap { attachmentDocumentInfo -> AttachmentDocumentContext? in
                     guard let fullAttachmentId = attachmentDocumentInfo.document.id else {
@@ -119,6 +117,7 @@ extension AttachmentService {
 
 fileprivate extension AttachmentDocumentContext {
     func updatingInfo(withCreated createdAttachmentDocument: AttachmentDocument) -> AttachmentDocumentContext {
+        // swiftlint:disable force_cast
         let newAttachment = attachment.copy() as! AttachmentType
         newAttachment.attachmentId = createdAttachmentDocument.id
         return AttachmentDocumentContext(document: createdAttachmentDocument, attachment: newAttachment, thumbnailsIDs: thumbnailsIDs)

@@ -35,7 +35,7 @@ struct AttachmentDocumentContext {
 }
 
 extension AttachmentDocumentContext {
-    static func makeForAllFetchRequests(for resource: HasAttachments, attachmentIdentifiers: [String]) throws -> [AttachmentDocumentContext] {
+    static func makeAllFetchRequests(for resource: HasAttachments, attachmentIdentifiers: [String]) throws -> [AttachmentDocumentContext] {
         guard let attachments = resource.allAttachments else { return [] }
         return try attachments.compactMap { attachment -> AttachmentDocumentContext? in
 
@@ -43,7 +43,7 @@ extension AttachmentDocumentContext {
             let document = AttachmentDocument(id: attachmentId)
             let thumbnailIDs = try thumbnailIdentifiers(for: attachmentId, from: resource)
             return AttachmentDocumentContext(document: document, attachment: attachment,
-                                          thumbnailsIDs: thumbnailIDs)
+                                             thumbnailsIDs: thumbnailIDs)
         }
     }
 
@@ -54,11 +54,16 @@ extension AttachmentDocumentContext {
         }
 
         return AttachmentDocumentContext(document: AttachmentDocument(data: data),
-                                      attachment: attachment)
+                                         attachment: attachment)
     }
 }
 
 extension AttachmentDocumentContext {
+
+    func updatingThumbnailsIds(_ thumbnailsIDs: [ThumbnailHeight: String]) -> AttachmentDocumentContext {
+        AttachmentDocumentContext(document: document, attachment: attachment, thumbnailsIDs: thumbnailsIDs)
+    }
+
     var fullAttachmentId: String? {
         attachment.attachmentId
     }
