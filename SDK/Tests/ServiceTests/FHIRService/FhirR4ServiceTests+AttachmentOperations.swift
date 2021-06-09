@@ -160,7 +160,7 @@ class FhirR4ServiceAttachmentOperationsTests: XCTestCase {
         recordService.fetchRecordResult = Just(record).asyncFuture()
 
         let asyncExpectation = expectation(description: "should fail loading attachment")
-        fhirService.downloadAttachment(of: Data4LifeFHIR.Attachment.self,
+        fhirService.downloadAttachment(of: ModelsR4.Attachment.self,
                                        decryptedRecordType: DecryptedFhirR4Record<FhirR4Resource>.self,
                                        withId: attachmentId,
                                        recordId: record.id,
