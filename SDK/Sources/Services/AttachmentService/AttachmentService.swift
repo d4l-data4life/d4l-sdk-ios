@@ -54,13 +54,11 @@ final class AttachmentService: AttachmentServiceType {
                     return attachmentDocumentContext.updatingInfo(withCreated: attachmentDocument)
                 }
                 .map { attachmentDocumentContext -> AttachmentDocumentContext in
-                    guard let data = attachmentDocumentContext.data,
-                          let attachmentId = attachmentDocumentContext.fullAttachmentId,
-                          self.imageResizer.isImageData(data) else {
+                    guard let data = attachmentDocumentContext.data, self.imageResizer.isImageData(data) else {
                         return attachmentDocumentContext
                     }
 
-                    let thumbnailsIds = try combineAwait(self.createThumbnails(attachmentId: attachmentId, originalData: data, key: key))
+                    let thumbnailsIds = try combineAwait(self.createThumbnails(originalData: data, key: key))
                     return attachmentDocumentContext.updatingThumbnailsIds(thumbnailsIds)
                 }
         }
@@ -76,11 +74,10 @@ final class AttachmentService: AttachmentServiceType {
             return try AttachmentDocumentContext.makeForAllFetchRequests(for: resourceWithAttachments, attachmentIdentifiers: attachmentIds)
                 .map { try $0.validatedBeforeDownloading() }
                 .compactMap { attachmentDocumentContext -> AttachmentDocumentContext? in
-                    guard let fullAttachmentId = attachmentDocumentContext.document.id else {
+                    guard let attachmentIdToFetch = attachmentDocumentContext.attachmentThumbnailIdentifier(for: downloadType) else {
                         return nil
                     }
 
-                    let attachmentIdToFetch = attachmentDocumentContext.attachmentThumbnailIdentifier(for: downloadType) ?? fullAttachmentId
                     let attachmentDocument = try combineAwait(self.documentService.fetchDocument(withId: attachmentIdToFetch, key: key, parentProgress: parentProgress))
                     return try attachmentDocumentContext.updatingInfo(withFetched: attachmentDocument, for: downloadType)
                 }
@@ -91,9 +88,7 @@ final class AttachmentService: AttachmentServiceType {
 }
 
 extension AttachmentService {
-    private func createThumbnails(attachmentId: String,
-                                  originalData: Data,
-                                  key: Key) -> SDKFuture<[ThumbnailHeight: String]> {
+    private func createThumbnails(originalData: Data, key: Key) -> SDKFuture<[ThumbnailHeight: String]> {
         return combineAsync {
             guard let imageToResize = UIImage(data: originalData) else {
                 return [:]
