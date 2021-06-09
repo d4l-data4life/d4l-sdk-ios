@@ -1557,7 +1557,6 @@
 				CD841DDC225CBE80002656D5 /* Extensions */,
 				CD841DF8225CBE80002656D5 /* Factories */,
 				CD841DD2225CBE80002656D5 /* Helpers */,
-				CD841DD5225CBE80002656D5 /* HelperTests */,
 				CD841DFE225CBE80002656D5 /* Info.plist */,
 				CD841DB3225CBE80002656D5 /* Mocks */,
 				CD841DF0225CBE80002656D5 /* ModelTests */,
@@ -1650,13 +1649,6 @@
 				CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		CD841DD5225CBE80002656D5 /* HelperTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = HelperTests;
 			sourceTree = "<group>";
 		};
 		CD841DDA225CBE80002656D5 /* Certificates */ = {
