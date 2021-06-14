@@ -78,11 +78,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
 
                 XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
                 XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -136,11 +136,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.hash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment0, []),
-                                                                   (uploadedAttachment1, []),
-                                                                   (uploadedAttachment2, []),
-                                                                   (uploadedAttachment3, []),
-                                                                   (unmatchableAttachment, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment0),
+                                                          AttachmentDocumentContext.make(uploadedAttachment1),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3),
+                                                          AttachmentDocumentContext.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -160,11 +160,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                questionnaire.allAttachments as? [Attachment])
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource),
                                questionnaire)
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -190,14 +190,14 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -221,14 +221,14 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         fhirService.createFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -273,11 +273,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         expectedQuestionnaire.item?[1].initialAttachment?.id = newAttachment1Id
         expectedQuestionnaire.item?.first?.item?.first?.initialAttachment?.id = newAttachment2Id
         expectedQuestionnaire.item?.first?.item?.first?.item?.first?.initialAttachment?.id = newAttachment3Id
-        let additionalPayloadsIds = ["addId1", "addId2"]
-        let expected0AdditionalId = ["d4l_f_p_t#\(newAttachment0Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
-        let expected1AdditionalId = ["d4l_f_p_t#\(newAttachment1Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
-        let expected2AdditionalId = ["d4l_f_p_t#\(newAttachment2Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
-        let expected3AdditionalId = ["d4l_f_p_t#\(newAttachment3Id)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
+        let additionalPayloadsIds = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let expected0AdditionalId = ["d4l_f_p_t#\(newAttachment0Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
+        let expected1AdditionalId = ["d4l_f_p_t#\(newAttachment1Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
+        let expected2AdditionalId = ["d4l_f_p_t#\(newAttachment2Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
+        let expected3AdditionalId = ["d4l_f_p_t#\(newAttachment3Id)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
         expectedQuestionnaire.setAdditionalIds(expected0AdditionalId)
         expectedQuestionnaire.setAdditionalIds(expected1AdditionalId)
         expectedQuestionnaire.setAdditionalIds(expected2AdditionalId)
@@ -291,11 +291,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let unmatchableAttachment = newAttachment3.copyWithId("you cant match me")
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.hash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment0, expected0AdditionalId),
-                                                                   (uploadedAttachment1, expected1AdditionalId),
-                                                                   (uploadedAttachment2, expected2AdditionalId),
-                                                                   (uploadedAttachment3, expected3AdditionalId),
-                                                                   (unmatchableAttachment, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment0, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(uploadedAttachment1, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3, ids: additionalPayloadsIds),
+                                                          AttachmentDocumentContext.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -315,11 +315,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                questionnaire.allAttachments as? [Attachment])
                 XCTAssertEqual((self.recordService.createRecordCalledWith?.0.resource),
                                questionnaire)
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -350,16 +350,16 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                 XCTAssertNotNil(result, "The result shouldn't be nil")
                 XCTAssertEqual(result.fhirResource, expectedQuestionnaire, "The result doesn't match the expected resource")
                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.0.resource, updatedQuestionnaire, "The updated record differs from the expected resource")
-                 XCTAssertEqual(self.recordService.updateRecordCalledWith?.3, resourceId, "A param in the method doesn't match the expectation")
+                XCTAssertEqual(self.recordService.updateRecordCalledWith?.3, resourceId, "A param in the method doesn't match the expectation")
                 XCTAssertNil(self.recordService.updateRecordCalledWith?.4, "A param in the method doesn't match the expectation")
                 XCTAssertNil(result.fhirResource.allAttachments?.first?.attachmentDataString, "Data in the attachment is expected to be nil")
                 XCTAssertNil(self.cryptoService.generateGCKeyCalledWith, "This method shouldn't have been called")
                 XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -403,7 +403,9 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         let uploadedAttachment2 = newAttachment2.copyWithId(uploadedNewAttachmentId2)
         let uploadedAttachment3 = newAttachment2.copyWithId(uploadedNewAttachmentId3)
 
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment1),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3)]).asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedRecord).asyncFuture()
@@ -423,11 +425,11 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
                                [newAttachment2, newAttachment3, newAttachment1].map { $0.testable }, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.cryptoService.generateGCKeyCalledWith, KeyType.attachment, "A param in the method doesn't match the expectation")
                 XCTAssertEqual(self.recordService.fetchRecordCalledWith?.0, resourceId, "A param in the method doesn't match the expectation")
-        } onError: { error in
-            XCTFail(error.localizedDescription)
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTFail(error.localizedDescription)
+            } finally: {
+                asyncExpectation.fulfill()
+            }
         waitForExpectations(timeout: 5)
     }
 
@@ -454,13 +456,13 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         fhirService.updateFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadSize, "Expected error didn't occur")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }
@@ -486,13 +488,13 @@ class FhirStu3ServiceQuestionnaireTests: XCTestCase {
         fhirService.updateFhirRecord(questionnaire, decryptedRecordType: DecryptedFhirStu3Record<Questionnaire>.self)
             .then { _ in
                 XCTFail("Should return an error")
-        } onError: { error in
-            XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
-            XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
-            XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
-        } finally: {
-            asyncExpectation.fulfill()
-        }
+            } onError: { error in
+                XCTAssertNil(self.attachmentService.uploadAttachmentsCalledWith, "This method shouldn't have been called")
+                XCTAssertNil(self.recordService.createRecordCalledWith, "This method shouldn't have been called")
+                XCTAssertEqual(error as? Data4LifeSDKError, Data4LifeSDKError.invalidAttachmentPayloadType, "Expected error didn't occur")
+            } finally: {
+                asyncExpectation.fulfill()
+            }
 
         waitForExpectations(timeout: 5)
     }

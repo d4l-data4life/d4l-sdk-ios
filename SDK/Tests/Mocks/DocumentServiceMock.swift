@@ -24,10 +24,10 @@ enum DocumentServiceMockError: Error {
 
 class DocumentServiceMock: DocumentServiceType {
 
-    var createDocumentCalledWith: (Document, Key)?
-    var createDocumentResult: SDKFuture<Document>?
-    var createDocumentResults: [SDKFuture<Document>]?
-    func create(document: Document, key: Key) -> SDKFuture<Document> {
+    var createDocumentCalledWith: (AttachmentDocument, Key)?
+    var createDocumentResult: SDKFuture<AttachmentDocument>?
+    var createDocumentResults: [SDKFuture<AttachmentDocument>]?
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument> {
         createDocumentCalledWith = (document, key)
         if let results = createDocumentResults, let first = results.first {
             createDocumentResults = Array(results.dropFirst())
@@ -37,23 +37,23 @@ class DocumentServiceMock: DocumentServiceType {
         return createDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
-    var createDocumentsCalledWith: ([Document], Key)?
-    var createDocumentsResult: SDKFuture<[Document]>?
-    func create(documents: [Document], key: Key) -> SDKFuture<[Document]> {
+    var createDocumentsCalledWith: ([AttachmentDocument], Key)?
+    var createDocumentsResult: SDKFuture<[AttachmentDocument]>?
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]> {
         createDocumentsCalledWith = (documents, key)
         return createDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var fetchDocumentCalledWith: (String, Key, Progress)?
-    var fetchDocumentResult: SDKFuture<Document>?
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<Document> {
+    var fetchDocumentResult: SDKFuture<AttachmentDocument>?
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument> {
         fetchDocumentCalledWith = (identifier, key, parentProgress)
         return fetchDocumentResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }
 
     var fetchDocumentsCalledWith: ([String], Key, Progress)?
-    var fetchDocumentsResult: SDKFuture<[Document]>?
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[Document]> {
+    var fetchDocumentsResult: SDKFuture<[AttachmentDocument]>?
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]> {
         fetchDocumentsCalledWith = (identifiers, key, parentProgress)
         return fetchDocumentsResult ?? Fail(error: DocumentServiceMockError.noResultSet).asyncFuture()
     }

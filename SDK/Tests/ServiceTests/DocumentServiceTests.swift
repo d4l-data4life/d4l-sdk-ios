@@ -53,7 +53,7 @@ class DocumentServiceTests: XCTestCase {
         let data = Data([0x00, 0x00])
         let encryptedData = Data([0x01, 0x01, 0x01])
         let key = KeyFactory.createKey(.attachment)
-        let document = Document(data: data)
+        let document = AttachmentDocument(data: data)
         let documentResponse = DocumentResponse(identifier: documentId)
         let responseData = try! JSONEncoder().encode(documentResponse)
 
@@ -83,7 +83,7 @@ class DocumentServiceTests: XCTestCase {
         let data = Data([0x00, 0x00])
         let encryptedData = Data([0x01, 0x01, 0x01])
         let key = KeyFactory.createKey(.attachment)
-        let document = Document(data: data)
+        let document = AttachmentDocument(data: data)
         let documentResponse = DocumentResponse(identifier: documentId)
         let responseData = try! JSONEncoder().encode(documentResponse)
 
@@ -207,9 +207,9 @@ class DocumentServiceTests: XCTestCase {
 
 fileprivate extension DocumentService {
 
-    func fetchDocumentDelayed(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<Document> {
+    func fetchDocumentDelayed(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument> {
 
-        return SDKFuture<Document> { promise in
+        return SDKFuture<AttachmentDocument> { promise in
             do {
                 let userId = try self.keychainService.get(.userId)
                 let route = Router.fetchDocument(userId: userId, documentId: identifier)
@@ -227,7 +227,7 @@ fileprivate extension DocumentService {
                 let encryptedData = try combineAwait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
-                    promise(.success(Document(id: identifier, data: decryptedData)))
+                    promise(.success(AttachmentDocument(id: identifier, data: decryptedData)))
                 }
             } catch {
                 promise(.failure(error))

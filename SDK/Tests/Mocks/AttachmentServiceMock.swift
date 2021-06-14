@@ -22,6 +22,7 @@ import Data4LifeFHIR
 enum AttachmentServiceMockError: Error {
     case noResultSet
 }
+
 class AttachmentServiceMock: AttachmentServiceType {
     var fetchAttachmentsCalledWith: (HasAttachments, [String], DownloadType, Key, Progress)?
     var fetchAttachmentsResult: SDKFuture<[AttachmentType]>?
@@ -35,10 +36,10 @@ class AttachmentServiceMock: AttachmentServiceType {
     }
 
     var uploadAttachmentsCalledWith: ([AttachmentType], Key)?
-    var uploadAttachmentsResult: SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]>?
-    var uploadAttachmentsResults: [SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]>]?
+    var uploadAttachmentsResult: SDKFuture<[AttachmentDocumentContext]>?
+    var uploadAttachmentsResults: [SDKFuture<[AttachmentDocumentContext]>]?
 
-    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> SDKFuture<[(attachment: AttachmentType, thumbnailIds: [String])]> {
+    func uploadAttachments(_ attachments: [AttachmentType], key: Key) -> SDKFuture<[AttachmentDocumentContext]> {
         uploadAttachmentsCalledWith = (attachments, key)
         if let results = uploadAttachmentsResults, let first = results.first {
             uploadAttachmentsResults = Array(results.dropFirst())

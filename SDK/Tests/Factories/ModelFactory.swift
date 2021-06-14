@@ -14,13 +14,12 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+@testable import Data4LifeSDK
 
-struct Document {
-    let id: String?
-    let data: Data
-
-    init(id: String? = nil, data: Data) {
-        self.id = id
-        self.data = data
+extension AttachmentDocumentContext {
+    static func make(_ attachment: AttachmentType, ids: [ThumbnailHeight: String] = [:]) -> AttachmentDocumentContext {
+        AttachmentDocumentContext(document: AttachmentDocument(id: attachment.attachmentId, data: Data()),
+                               attachment: attachment,
+                               thumbnailsIDs: ids)
     }
 }

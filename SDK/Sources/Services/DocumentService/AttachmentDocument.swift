@@ -15,26 +15,12 @@
 
 import Foundation
 
-/// Allows to download not only the original one attachment, but also medium or small attachment previews if they are available
-///
-/// - full: Downloads the original attachment
-/// - medium: Medium size attachment
-/// - small: Smallest size attachment
-public enum DownloadType {
-    case full, medium, small
+struct AttachmentDocument {
+    let id: String?
+    let data: Data?
 
-    var isThumbnailType: Bool {
-        return self == .medium || self == .small
-    }
-
-    var thumbnailHeight: ThumbnailHeight? {
-        switch self {
-        case .full:
-            return nil
-        case .medium:
-            return .mediumHeight
-        case .small:
-            return .smallHeight
-        }
+    init(id: String? = nil, data: Data? = nil) {
+        self.id = id
+        self.data = data
     }
 }

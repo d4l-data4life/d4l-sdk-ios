@@ -19,10 +19,10 @@ import Foundation
 import Combine
 
 protocol DocumentServiceType {
-    func create(document: Document, key: Key) -> SDKFuture<Document>
-    func create(documents: [Document], key: Key) -> SDKFuture<[Document]>
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<Document>
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[Document]>
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument>
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]>
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument>
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]>
     func deleteDocument(withId: String) -> SDKFuture<Void>
     func deleteDocuments(withIds identifiers: [String]) -> SDKFuture<Void>
 }
@@ -44,17 +44,20 @@ class DocumentService: DocumentServiceType {
         }
     }
 
-    func create(document: Document, key: Key) -> SDKFuture<Document> {
+    func create(document: AttachmentDocument, key: Key) -> SDKFuture<AttachmentDocument> {
         return combineAsync {
+            guard let data = document.data else {
+                throw Data4LifeSDKError.invalidAttachmentMissingData
+            }
             let userId = try self.keychainService.get(.userId)
-            let encryptedData = try self.cryptoService.encrypt(data: document.data, key: key)
+            let encryptedData = try self.cryptoService.encrypt(data: data, key: key)
             let route = Router.createDocument(userId: userId, headers: [("Content-Type", "application/octet-stream")])
             let response: DocumentResponse = try combineAwait(self.sessionService.upload(data: encryptedData, route: route).responseDecodable())
-            return Document(id: response.identifier, data: document.data)
+            return AttachmentDocument(id: response.identifier, data: document.data)
         }
     }
 
-    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<Document> {
+    func fetchDocument(withId identifier: String, key: Key, parentProgress: Progress) -> SDKFuture<AttachmentDocument> {
 
         return SDKFuture { promise in
             do {
@@ -73,7 +76,7 @@ class DocumentService: DocumentServiceType {
 
                 let encryptedData = try combineAwait(request.responseData())
                 let decryptedData = try self.cryptoService.decrypt(data: encryptedData, key: key)
-                promise(.success(Document(id: identifier, data: decryptedData)))
+                promise(.success(AttachmentDocument(id: identifier, data: decryptedData)))
             } catch {
                 promise(.failure(error))
             }
@@ -93,12 +96,12 @@ class DocumentService: DocumentServiceType {
         return Publishers.MergeMany(requests).last().eraseToAnyPublisher().asyncFuture()
     }
 
-    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[Document]> {
+    func fetchDocuments(withIds identifiers: [String], key: Key, parentProgress: Progress) -> SDKFuture<[AttachmentDocument]> {
         let requests = identifiers.map { self.fetchDocument(withId: $0, key: key, parentProgress: parentProgress) }
         return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }
 
-    func create(documents: [Document], key: Key) -> SDKFuture<[Document]> {
+    func create(documents: [AttachmentDocument], key: Key) -> SDKFuture<[AttachmentDocument]> {
         let requests = documents.map { self.create(document: $0, key: key) }
         return Publishers.MergeMany(requests).collect().eraseToAnyPublisher().asyncFuture()
     }

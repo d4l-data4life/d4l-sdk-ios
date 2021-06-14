@@ -54,10 +54,7 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         let fixtureAttachment = FhirFactory.createR4AttachmentElement()
         fixtureDocumentReference.content = [DocumentReferenceContent(attachment: fixtureAttachment)]
 
-        let additionalIds = [String]()
-
         let expectedDocumentReference = fixtureDocumentReference.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
-        expectedDocumentReference.setAdditionalIds(additionalIds)
         expectedDocumentReference.allAttachments?.forEach { $0.attachmentId = UUID().uuidString }
 
         // We expect that result of the uploadAttachments method return the uploaded attachments with an Id
@@ -70,7 +67,7 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         fixtureDocumentReference.id = createdRecord.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just([(uploadAttachmentResultWithId, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadAttachmentResultWithId)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -129,7 +126,7 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         documentReference.id = createdRecord.id.asFHIRStringPrimitive()
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { ($0, additionalIds)}).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just(uploadAttachmentsResultWithId.map { AttachmentDocumentContext.make($0) }).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
 
@@ -245,7 +242,6 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         let attachment = FhirFactory.createR4AttachmentElement()
         documentReference.id = resourceId.asFHIRStringPrimitive()
         documentReference.content = [DocumentReferenceContent(attachment: attachment)]
-        let additionalIds = [String]()
         let originalRecord = DecryptedRecordFactory.create(documentReference)
 
         let updatedDocumentReference = documentReference.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
@@ -258,7 +254,7 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         let expectedUpdatedRecord = originalRecord.copy(with: expectedDocumentReference)
 
         keychainService[.userId] = userId
-        attachmentService.uploadAttachmentsResult = Just([(attachmentWithId, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(attachmentWithId)]).asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedUpdatedRecord).asyncFuture()
@@ -384,7 +380,6 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
 
         let originalRecord = DecryptedRecordFactory.create(documentReference)
 
-        let additionalIds = [String]()
         let updatedDocumentReference = documentReference.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment1 = updatedDocumentReference.allAttachments!.first! as! ModelsR4.Attachment // swiftlint:disable:this force_cast
@@ -412,8 +407,8 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedUpdatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([(updatedAttachment1, additionalIds),
-                                                                     (uploadedNewAttachment, additionalIds)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentContext.make(updatedAttachment1),
+                                                            AttachmentDocumentContext.make(uploadedNewAttachment)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedDocumentReference, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
@@ -454,8 +449,6 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         fhirResource.content = [DocumentReferenceContent(attachment: attachment), DocumentReferenceContent(attachment: attachment2)]
         let record = DecryptedRecordFactory.create(fhirResource)
 
-        let additionalIds = [String]()
-
         let updatedResource = fhirResource.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         let newData = Data([0xFF, 0xD8, 0xFF, 0xDB, 0x01, 0x03, 0x03, 0x07, 0x01, 0x03, 0x03, 0x07])
         let updatedAttachment = updatedResource.allAttachments!.first! as! ModelsR4.Attachment // swiftlint:disable:this force_cast
@@ -477,9 +470,9 @@ class FhirR4ServiceDocumentReferenceTests: XCTestCase {
         recordService.fetchRecordResult = Just(record).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(updatedRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResults = [Just([(updatedAttachment, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachment, additionalIds)]).asyncFuture(),
-                                                      Just([(newAttachmentWithId, additionalIds)]).asyncFuture()]
+        attachmentService.uploadAttachmentsResults = [Just([AttachmentDocumentContext.make(updatedAttachment)]).asyncFuture(),
+                                                      Just([AttachmentDocumentContext.make(newAttachment)]).asyncFuture(),
+                                                      Just([AttachmentDocumentContext.make(newAttachmentWithId)]).asyncFuture()]
 
         let asyncExpectation = expectation(description: "should return record")
         fhirService.updateFhirRecord(updatedResource, decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
@@ -508,8 +501,8 @@ extension FhirR4ServiceDocumentReferenceTests {
         fixtureAttachment.attachmentId = attachmentId
         fixtureDocumentReference.content = [DocumentReferenceContent(attachment: fixtureAttachment)]
 
-        let additionalPayloadsIds = ["addId1", "addId2"]
-        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[0])#\(additionalPayloadsIds[1])"]
+        let additionalPayloadsIds = [ThumbnailHeight.mediumHeight: "addId1", .smallHeight: "addId2"]
+        let expectedAdditionalId = ["d4l_f_p_t#\(attachmentId)#\(additionalPayloadsIds[.mediumHeight]!)#\(additionalPayloadsIds[.smallHeight]!)"]
 
         let expectedDocumentReference = fixtureDocumentReference.copy() as! ModelsR4.DocumentReference // swiftlint:disable:this force_cast
         expectedDocumentReference.setAdditionalIds(expectedAdditionalId)
@@ -521,7 +514,7 @@ extension FhirR4ServiceDocumentReferenceTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(fixtureAttachment, additionalPayloadsIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(fixtureAttachment, ids: additionalPayloadsIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record with additional id")
@@ -552,7 +545,7 @@ extension FhirR4ServiceDocumentReferenceTests {
         let fixtureAttachment = FhirFactory.createR4AttachmentElement()
         fixtureDocumentReference.content = [DocumentReferenceContent(attachment: fixtureAttachment)]
 
-        let additionalIds = ["addId1"]
+        let additionalIds = [ThumbnailHeight.mediumHeight: "addId1"]
         let expectedAdditionalIds = [String]()
 
         let attachmentId = UUID().uuidString
@@ -566,7 +559,7 @@ extension FhirR4ServiceDocumentReferenceTests {
 
         keychainService[.userId] = userId
         recordService.createRecordResult = Just(createdRecord).asyncFuture()
-        attachmentService.uploadAttachmentsResult = Just([(expectedAttachment, additionalIds)]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(expectedAttachment, ids: additionalIds)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
 
         let asyncExpectation = expectation(description: "should return record")
@@ -702,8 +695,6 @@ extension FhirR4ServiceAttachmentOperationsTests {
                 XCTAssertEqual((self.attachmentService.fetchAttachmentsCalledWith?.0 as? CustomIdentifiable)?.customIdentifiers as? [ModelsR4.Identifier],
                                firstResource.identifier, "A param in the method doesn't match the expectation")
 
-            } onError: { error in
-                XCTFail(error.localizedDescription)
             } finally: {
                 asyncExpectation.fulfill()
             }

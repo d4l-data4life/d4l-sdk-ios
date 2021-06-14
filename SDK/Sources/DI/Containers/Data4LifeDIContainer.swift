@@ -76,8 +76,8 @@ extension Data4LifeDIContainer {
                 DocumentService(container: container)
             }.register(scope: .containerInstance) { (container) -> AttachmentServiceType in
                 AttachmentService(container: container)
-            }.register(scope: .transientInstance) { (_) -> Resizable in
-                ImageResizer()
+            }.register(scope: .transientInstance) { (_) -> ImageResizer in
+                DefaultImageResizer()
             }.register(scope: .containerInstance) { (container) -> RecordServiceType in
                 RecordService(container: container)
             }.register(scope: .containerInstance) { (container) -> FhirServiceType in

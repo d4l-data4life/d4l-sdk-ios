@@ -133,11 +133,11 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         unmatchableAttachment.id = "you cant match me"
         unmatchableAttachment.attachmentDataString = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).base64EncodedString()
         unmatchableAttachment.attachmentHash = Data([0x25, 0x50, 0x44, 0x46, 0x2d, 0x01]).sha1Hash
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment0, []),
-                                                                   (uploadedAttachment1, []),
-                                                                   (uploadedAttachment2, []),
-                                                                   (uploadedAttachment3, []),
-                                                                   (unmatchableAttachment, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment0),
+                                                          AttachmentDocumentContext.make(uploadedAttachment1),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3),
+                                                          AttachmentDocumentContext.make(unmatchableAttachment)]).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.createRecordResult = Just(expectedRecord).asyncFuture()
 
@@ -179,7 +179,7 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
-                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
+                                                                                        FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
         recordService.createRecordResult = Just(originalRecord).asyncFuture()
@@ -211,7 +211,7 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         let attachment = FhirFactory.createR4AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
-                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
+                                                                                        FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
         let originalRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
         recordService.createRecordResult = Just(originalRecord).asyncFuture()
@@ -328,7 +328,10 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         let uploadedAttachment3 = newAttachment2.copy() as! ModelsR4.Attachment // swiftlint:disable:this force_cast
         uploadedAttachment3.id = uploadedNewAttachmentId3.asFHIRStringPrimitive()
 
-        attachmentService.uploadAttachmentsResult = Just([(uploadedAttachment1, []), (uploadedAttachment2, []), (uploadedAttachment3, [])]).asyncFuture()
+        attachmentService.uploadAttachmentsResult = Just([AttachmentDocumentContext.make(uploadedAttachment1),
+                                                          AttachmentDocumentContext.make(uploadedAttachment2),
+                                                          AttachmentDocumentContext.make(uploadedAttachment3)])
+            .asyncFuture()
         recordService.fetchRecordResult = Just(originalRecord).asyncFuture()
         cryptoService.generateGCKeyResult = KeyFactory.createKey(.attachment)
         recordService.updateRecordResult = Just(expectedRecord).asyncFuture()
@@ -369,7 +372,7 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         guard let currentData = attachment.attachmentData else { fatalError("Attachment should have data") }
         attachment.attachmentDataString = (currentData + blankData).base64EncodedString()
         questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
-                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
+                                                                                        FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
@@ -402,7 +405,7 @@ class FhirR4ServiceQuestionnaireResponseTests: XCTestCase {
         let attachment = FhirFactory.createR4AttachmentElement()
         attachment.attachmentDataString = Data([0x00]).base64EncodedString()
         questionnaireResponse.item? = [FhirFactory.createR4QuestionnaireResponseItem(answers: [
-                                                                                    FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
+                                                                                        FhirFactory.createR4QuestionnaireResponseItemAnswer(attachment: attachment)])]
 
         let updatedRecord = DecryptedRecordFactory.create(questionnaireResponse)
 
