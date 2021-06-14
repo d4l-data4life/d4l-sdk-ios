@@ -53,6 +53,7 @@ jobs:
       run: |
            xcrun llvm-profdata merge build/DerivedData/Build/ProfileData/*/*.profdata -output merged.profdata
            xcrun --run llvm-cov show build/DerivedData/Build/Products/Debug-iphonesimulator/Data4LifeSDK.framework/Data4LifeSDK --instr-profile merged.profdata >> sonarqube-swift-coverage
+           xcrun --run llvm-cov show build/DerivedData/Build/Products/Debug-iphonesimulator/Data4LifeCrypto.framework/Data4LifeCrypto --instr-profile merged.profdata >> sonarqube-swift-coverage
     - name: SonarCloud PR Scan
       if: github.event_name == 'pull_request'
       run: sonar-scanner -Dsonar.login=$SONAR_TOKEN -Dsonar.pullrequest.base=$GITHUB_BASE_REF -Dsonar.pullrequest.branch=$GITHUB_HEAD_REF -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} -Dsonar.pullrequest.provider=GitHub
