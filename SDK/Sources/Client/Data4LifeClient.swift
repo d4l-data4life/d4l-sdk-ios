@@ -191,15 +191,3 @@ extension Data4LifeClient {
         oAuthService.handleRedirect(url: url)
     }
 }
-
-extension Data4LifeClient {
-    public func newUntestedCode() -> String {
-        debugPrint("This should definitely trigger something")
-        return "Test"
-    }
-
-    public func newUntestedAndDuplicatedCode() -> String {
-        debugPrint("This should definitely trigger something")
-        return "Test"
-    }
-}
