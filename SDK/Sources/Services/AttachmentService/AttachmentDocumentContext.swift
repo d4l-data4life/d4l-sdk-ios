@@ -14,6 +14,7 @@
 //  contact D4L by email to help@data4life.care.
 
 import Foundation
+import Data4LifeFHIRCore
 
 struct AttachmentDocumentContext {
     static var tripleIdentifierPrefix = "d4l_f_p_t"

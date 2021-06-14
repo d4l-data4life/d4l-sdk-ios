@@ -13,8 +13,7 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-#import <UIKit/UIKit.h>
-#import <Data4LifeFHIR/Data4LifeFHIR.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for Data4LifeSDK.
 FOUNDATION_EXPORT double Data4LifeSDKVersionNumber;

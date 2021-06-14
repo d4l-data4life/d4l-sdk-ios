@@ -16,6 +16,7 @@
 import XCTest
 @testable import Data4LifeSDK
 import Combine
+import Data4LifeFHIR
 
 fileprivate extension TagGroup {
     static var annotationLowercased: TagGroup = TagGroup(tags: ["tag": "value"], annotations: ["valid"])

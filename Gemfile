@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 
-gem "fastlane", "2.182.0"
+gem "fastlane"
 gem "cocoapods", "1.10.1"
-gem "asciidoctor", "2.0.12"
+gem "asciidoctor"
