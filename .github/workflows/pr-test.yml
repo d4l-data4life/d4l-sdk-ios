@@ -19,8 +19,10 @@ jobs:
     steps:
     - name: Display runner context
       run: hostname -s
-    - name: Check out repo
+    - name: Check out repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Cache gems
       uses: actions/cache@v2
       with:
