@@ -192,7 +192,6 @@ extension Data4LifeClient {
     }
 }
 
-
 extension Data4LifeClient {
     public func newUntestedCode() -> String {
         debugPrint("This should definitely trigger something")
