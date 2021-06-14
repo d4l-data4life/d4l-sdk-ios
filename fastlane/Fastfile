@@ -22,7 +22,9 @@ platform :ios do
     scan(
       scheme: "Example",
       derived_data_path: "build/DerivedData",
-      devices: device
+      devices: device,
+      code_coverage: true,
+      clean: true
     )
   end
 
@@ -141,7 +143,7 @@ platform :ios do
           sh("pod spec lint --sources='https://github.com/d4l-data4life/d4l-cocoapods-specs,https://github.com/CocoaPods/Specs'")
         end
   end
-  
+
   desc "Build xcframework for distribution"
   lane :build_xcframeworks do |options|
     if options[:sdk_version] == nil
