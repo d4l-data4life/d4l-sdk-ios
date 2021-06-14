@@ -17,6 +17,7 @@ import UIKit
 import Data4LifeSDK
 import Data4LifeSDKUtils
 import ModelsR4
+import Data4LifeFHIR
 
 class DocumentDetailViewController: UIViewController {
 
