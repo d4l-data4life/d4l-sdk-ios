@@ -17,7 +17,7 @@ import Foundation
 
 public typealias KeyExchangeFormat = (algorithm: AlgorithmType, size: KeySize)
 
-public struct KeyExhangeFactory {
+public class KeyExhangeFactory {
     public static func create(type: KeyType, version: Int = 1) throws -> KeyExchangeFormat {
         guard version == 1 else {
             throw Data4LifeCryptoError.invalidKeyAlgorithmVersion(type.rawValue)

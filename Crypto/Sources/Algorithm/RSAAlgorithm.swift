@@ -19,13 +19,13 @@ public struct RSAAlgorithm: AlgorithmType {
     public var cipher: CipherType
     public var padding: Padding
     public var blockMode: BlockMode?
-    public var hash: HashType?
+    public var hashType: HashType?
     public var iv: String?
 
     public init() {
         self.cipher = .rsa
         self.padding = .oaep
         self.blockMode = nil
-        self.hash = .sha256
+        self.hashType = .sha256
     }
 }

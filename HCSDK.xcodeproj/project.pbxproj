@@ -95,6 +95,14 @@
 		3685D45F2592262300F97F9E /* FhirR4ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */; };
 		3685D4692592297700F97F9E /* r4-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4682592297700F97F9E /* r4-questionnaire-response.json */; };
 		3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */; };
+		36874C1526A715F200F03527 /* Data4LifeCryptoObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 36874C1326A715F200F03527 /* Data4LifeCryptoObjC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		36874C1A26A7167700F03527 /* Data4LifeCryptorObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36874C1926A7167700F03527 /* Data4LifeCryptorObjC.swift */; };
+		36874C1B26A7169200F03527 /* Data4LifeCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD109095225B88BE00325389 /* Data4LifeCrypto.framework */; };
+		36874C2326A83E9600F03527 /* KeyPairObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36874C2226A83E9600F03527 /* KeyPairObjC.swift */; };
+		36874C2526A85EAF00F03527 /* KeyOptionsObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36874C2426A85EAF00F03527 /* KeyOptionsObjC.swift */; };
+		36874C2726A85EE800F03527 /* AlgorithmTypeObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36874C2626A85EE800F03527 /* AlgorithmTypeObjC.swift */; };
+		36874C2926A85F5400F03527 /* KeyTypeObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36874C2826A85F5400F03527 /* KeyTypeObjC.swift */; };
+		36874C2B26A8600300F03527 /* KeyObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36874C2A26A8600300F03527 /* KeyObjC.swift */; };
 		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
 		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
 		3689D7EE24EAA535004295D9 /* Data4LifeClient+AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */; };
@@ -333,6 +341,13 @@
 			remoteGlobalIDString = 839E81381E86DE5300C42094;
 			remoteInfo = Example;
 		};
+		36874C1D26A7169200F03527 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CD108FF0225B88BE00325389;
+			remoteInfo = Data4LifeCrypto;
+		};
 		36B6E9EF260CD22300CA3250 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8374639D1E854E7500AB500F /* Project object */;
@@ -487,6 +502,15 @@
 		3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Patient.swift"; sourceTree = "<group>"; };
 		3685D4682592297700F97F9E /* r4-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire-response.json"; sourceTree = "<group>"; };
 		3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
+		36874C1126A715F200F03527 /* Data4LifeCryptoObjC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data4LifeCryptoObjC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		36874C1326A715F200F03527 /* Data4LifeCryptoObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Data4LifeCryptoObjC.h; sourceTree = "<group>"; };
+		36874C1426A715F200F03527 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		36874C1926A7167700F03527 /* Data4LifeCryptorObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data4LifeCryptorObjC.swift; sourceTree = "<group>"; };
+		36874C2226A83E9600F03527 /* KeyPairObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPairObjC.swift; sourceTree = "<group>"; };
+		36874C2426A85EAF00F03527 /* KeyOptionsObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyOptionsObjC.swift; sourceTree = "<group>"; };
+		36874C2626A85EE800F03527 /* AlgorithmTypeObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmTypeObjC.swift; sourceTree = "<group>"; };
+		36874C2826A85F5400F03527 /* KeyTypeObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTypeObjC.swift; sourceTree = "<group>"; };
+		36874C2A26A8600300F03527 /* KeyObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyObjC.swift; sourceTree = "<group>"; };
 		36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionServiceInterceptor.swift; sourceTree = "<group>"; };
 		36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptorMock.swift; sourceTree = "<group>"; };
 		3689D7EC24EAA531004295D9 /* Data4LifeClient+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+AppData.swift"; sourceTree = "<group>"; };
@@ -715,6 +739,14 @@
 				36087E4B264C27AE0098E8BF /* Data4LifeFHIRCore in Frameworks */,
 				36DD22A3263C7C3300679F74 /* AppAuth in Frameworks */,
 				360EC5242636F8BF00D8F8E9 /* Alamofire in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		36874C0E26A715F200F03527 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36874C1B26A7169200F03527 /* Data4LifeCrypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -977,6 +1009,37 @@
 			path = RecordService;
 			sourceTree = "<group>";
 		};
+		36874C1226A715F200F03527 /* Data4LifeCryptoObjC */ = {
+			isa = PBXGroup;
+			children = (
+				36874C2026A83C2000F03527 /* Sources */,
+				36874C1326A715F200F03527 /* Data4LifeCryptoObjC.h */,
+				36874C1426A715F200F03527 /* Info.plist */,
+			);
+			path = Data4LifeCryptoObjC;
+			sourceTree = "<group>";
+		};
+		36874C2026A83C2000F03527 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				36874C2126A83E3200F03527 /* Models */,
+				36874C1926A7167700F03527 /* Data4LifeCryptorObjC.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		36874C2126A83E3200F03527 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				36874C2226A83E9600F03527 /* KeyPairObjC.swift */,
+				36874C2426A85EAF00F03527 /* KeyOptionsObjC.swift */,
+				36874C2626A85EE800F03527 /* AlgorithmTypeObjC.swift */,
+				36874C2826A85F5400F03527 /* KeyTypeObjC.swift */,
+				36874C2A26A8600300F03527 /* KeyObjC.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		3689D7F224EAB2D2004295D9 /* AppDataService */ = {
 			isa = PBXGroup;
 			children = (
@@ -1075,6 +1138,7 @@
 				839E813A1E86DE5300C42094 /* Example */,
 				CD87351B225384C300DA8E5F /* SDK */,
 				CD87348E2253801F00DA8E5F /* Crypto */,
+				36874C1226A715F200F03527 /* Data4LifeCryptoObjC */,
 				360EC5162636F8AC00D8F8E9 /* SDKSPMDependencies */,
 				837463D11E85663300AB500F /* Frameworks */,
 				837463A71E854E7500AB500F /* Products */,
@@ -1090,6 +1154,7 @@
 				CD109095225B88BE00325389 /* Data4LifeCrypto.framework */,
 				CD109138225B89D600325389 /* Data4LifeCryptoTests.xctest */,
 				360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */,
+				36874C1126A715F200F03527 /* Data4LifeCryptoObjC.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1839,6 +1904,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		36874C0C26A715F200F03527 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36874C1526A715F200F03527 /* Data4LifeCryptoObjC.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		837463A31E854E7500AB500F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1882,6 +1955,25 @@
 			productName = SDKSPMDependencies;
 			productReference = 360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		36874C1026A715F200F03527 /* Data4LifeCryptoObjC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36874C1626A715F200F03527 /* Build configuration list for PBXNativeTarget "Data4LifeCryptoObjC" */;
+			buildPhases = (
+				36874C0C26A715F200F03527 /* Headers */,
+				36874C0D26A715F200F03527 /* Sources */,
+				36874C0E26A715F200F03527 /* Frameworks */,
+				36874C0F26A715F200F03527 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				36874C1E26A7169200F03527 /* PBXTargetDependency */,
+			);
+			name = Data4LifeCryptoObjC;
+			productName = Data4LifeCryptoObjC;
+			productReference = 36874C1126A715F200F03527 /* Data4LifeCryptoObjC.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		837463A51E854E7500AB500F /* Data4LifeSDK */ = {
 			isa = PBXNativeTarget;
@@ -1992,12 +2084,16 @@
 		8374639D1E854E7500AB500F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "HPS Gesundheitscloud gGmbH";
 				TargetAttributes = {
 					360EC5142636F8AC00D8F8E9 = {
 						CreatedOnToolsVersion = 12.4;
+					};
+					36874C1026A715F200F03527 = {
+						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
 					};
 					837463A51E854E7500AB500F = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -2051,8 +2147,9 @@
 			targets = (
 				839E81381E86DE5300C42094 /* Example */,
 				837463A51E854E7500AB500F /* Data4LifeSDK */,
-				837463AE1E854E7500AB500F /* Data4LifeSDKTests */,
 				CD108FF0225B88BE00325389 /* Data4LifeCrypto */,
+				36874C1026A715F200F03527 /* Data4LifeCryptoObjC */,
+				837463AE1E854E7500AB500F /* Data4LifeSDKTests */,
 				CD109137225B89D600325389 /* Data4LifeCryptoTests */,
 				360EC5142636F8AC00D8F8E9 /* SDKSPMDependencies */,
 			);
@@ -2060,6 +2157,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		36874C0F26A715F200F03527 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		837463A41E854E7500AB500F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2177,6 +2281,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				360EC5182636F8AD00D8F8E9 /* SDKSPMDependencies.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		36874C0D26A715F200F03527 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36874C1A26A7167700F03527 /* Data4LifeCryptorObjC.swift in Sources */,
+				36874C2926A85F5400F03527 /* KeyTypeObjC.swift in Sources */,
+				36874C2726A85EE800F03527 /* AlgorithmTypeObjC.swift in Sources */,
+				36874C2326A83E9600F03527 /* KeyPairObjC.swift in Sources */,
+				36874C2526A85EAF00F03527 /* KeyOptionsObjC.swift in Sources */,
+				36874C2B26A8600300F03527 /* KeyObjC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2463,6 +2580,11 @@
 			target = 839E81381E86DE5300C42094 /* Example */;
 			targetProxy = 36185286257015F8005D15A5 /* PBXContainerItemProxy */;
 		};
+		36874C1E26A7169200F03527 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD108FF0225B88BE00325389 /* Data4LifeCrypto */;
+			targetProxy = 36874C1D26A7169200F03527 /* PBXContainerItemProxy */;
+		};
 		36B6E9F0260CD22300CA3250 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 837463A51E854E7500AB500F /* Data4LifeSDK */;
@@ -2552,6 +2674,72 @@
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		36874C1726A715F200F03527 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = D2QJWMP9SU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Data4LifeCryptoObjC/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.Data4LifeCryptoObjC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		36874C1826A715F200F03527 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = D2QJWMP9SU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Data4LifeCryptoObjC/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.Data4LifeCryptoObjC;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3028,6 +3216,15 @@
 			buildConfigurations = (
 				360EC51A2636F8AD00D8F8E9 /* Debug */,
 				360EC51B2636F8AD00D8F8E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		36874C1626A715F200F03527 /* Build configuration list for PBXNativeTarget "Data4LifeCryptoObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36874C1726A715F200F03527 /* Debug */,
+				36874C1826A715F200F03527 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

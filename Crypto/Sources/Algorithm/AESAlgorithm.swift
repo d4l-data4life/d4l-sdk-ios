@@ -19,12 +19,12 @@ struct AESAlgorithm: AlgorithmType {
     var cipher: CipherType
     var padding: Padding
     var blockMode: BlockMode?
-    var hash: HashType?
+    var hashType: HashType?
 
     init(cipher: CipherType, padding: Padding, blockMode: BlockMode, hash: HashType?) {
         self.cipher = cipher
         self.padding = padding
         self.blockMode = blockMode
-        self.hash = hash
+        self.hashType = hash
     }
 }

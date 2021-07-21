@@ -230,11 +230,18 @@ platform :ios do
     end
   end
 
-  desc "Build xcframework for distribution"
+  desc "Build crypto xcframework for distribution"
   lane :build_crypto_xcframework do |options|
     build_project_xcframework(schemeName: cryptoScheme,
                               frameworkName: cryptoName,
                               outputPath: "#{cryptoName}.xcframework")
+  end
+
+  desc "Build crypto objc xcframework for distribution"
+  lane :build_crypto_objc_xcframework do |options|
+    build_project_xcframework(schemeName: "Data4LifeCryptoObjC",
+                              frameworkName: "Data4LifeCryptoObjC",
+                              outputPath: "Data4LifeCryptoObjC.xcframework")
   end
 
   desc "Build xcframework for distribution"

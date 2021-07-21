@@ -61,7 +61,12 @@ Build any project xcframework
 ```
 fastlane ios build_crypto_xcframework
 ```
-Build xcframework for distribution
+Build crypto xcframework for distribution
+### ios build_crypto_objc_xcframework
+```
+fastlane ios build_crypto_objc_xcframework
+```
+Build crypto objc xcframework for distribution
 ### ios build_sdk_xcframework
 ```
 fastlane ios build_sdk_xcframework

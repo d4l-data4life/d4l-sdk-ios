@@ -19,12 +19,12 @@ public protocol AlgorithmType {
     var cipher: CipherType { get }
     var padding: Padding { get }
     var blockMode: BlockMode? { get }
-    var hash: HashType? { get }
+    var hashType: HashType? { get }
 }
 
 extension AlgorithmType {
     var type: (CipherType, Padding, BlockMode?, HashType?) {
-        return (cipher, padding, blockMode, hash)
+        return (cipher, padding, blockMode, hashType)
     }
 }
 
