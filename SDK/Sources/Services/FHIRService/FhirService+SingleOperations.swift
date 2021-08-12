@@ -26,10 +26,10 @@ extension FhirService {
             let userId = try keychainService.get(.userId)
             let resourceWithKey = try combineAwait(self.uploadAttachments(creating: resource))
             let decryptedRecord = try combineAwait(self.recordService.createRecord(forResource: resourceWithKey.resource,
-                                                                            annotations: annotations,
-                                                                            userId: userId,
-                                                                            attachmentKey: resourceWithKey.key,
-                                                                            decryptedRecordType: decryptedRecordType))
+                                                                                   annotations: annotations,
+                                                                                   userId: userId,
+                                                                                   attachmentKey: resourceWithKey.key,
+                                                                                   decryptedRecordType: decryptedRecordType))
             return FhirRecord(decryptedRecord: decryptedRecord)
         }
     }

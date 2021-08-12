@@ -163,7 +163,7 @@ extension RecordServiceParameterBuilderTests {
     func testEncodableSymbolAnnotationForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationContainsEncodableSymbols
         let parameters = try builder.searchParameters(tagGroup: tagGroup)
-        XCTAssertEqual(parameters["tags"] as? String, "tag=value,(custom=%3d,custom==,custom=%3D)")
+        XCTAssertEqual(parameters["tags"] as? String, "tag=value,(custom=%3d,custom=%3D,custom==)")
     }
 
     func testLowercasedAnnotationForSearchSupportingLegacyTags() throws {
@@ -180,14 +180,14 @@ extension RecordServiceParameterBuilderTests {
     func testJSCustomEncodableSymbolAnnotationForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationContainsJSCustomEncodableSymbols
         let parameters = try builder.searchParameters(tagGroup: tagGroup)
-        XCTAssertEqual(parameters["tags"] as? String, "tag=value,(custom=%21%28%29%2e,custom=!().)")
+        XCTAssertEqual(parameters["tags"] as? String, "tag=value,(custom=%21%28%29%2e,custom=%21%28%29%2E,custom=!().)")
     }
 
     func testMixedAnnotationsForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.annotationMixedValid
         let parameters = try builder.searchParameters(tagGroup: tagGroup)
         XCTAssertEqual(parameters["tags"] as? String, // swiftlint:disable line_length
-                       "tag=value,(custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid,custom=valid ---==%%123.321%%==--- valid,custom=valid%20%2d%2d%2d%3D%3D%25%25123%2e321%25%25%3D%3D%2d%2d%2d%20valid)")
+                       "tag=value,(custom=valid%20%2d%2d%2d%3d%3d%25%25123%2e321%25%25%3d%3d%2d%2d%2d%20valid,custom=valid%20%2D%2D%2D%3D%3D%25%25123%2E321%25%25%3D%3D%2D%2D%2D%20valid,custom=valid ---==%%123.321%%==--- valid,custom=valid%20%2d%2d%2d%3D%3D%25%25123%2e321%25%25%3D%3D%2d%2d%2d%20valid)")
     }
     func testSecondUppercasedAnnotationForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.secondAnnotationContainsUppercase
@@ -197,7 +197,7 @@ extension RecordServiceParameterBuilderTests {
     func testSecondSymbolAnnotationForSearchSupportingLegacyTags() throws {
         let tagGroup = TagGroup.secondAnnotationContainsSymbols
         let parameters = try builder.searchParameters(tagGroup: tagGroup)
-        XCTAssertEqual(parameters["tags"] as? String, "tag=value,custom=valid,(custom=%3d,custom==,custom=%3D)")
+        XCTAssertEqual(parameters["tags"] as? String, "tag=value,custom=valid,(custom=%3d,custom=%3D,custom==)")
     }
 
     func testTrimmedAnnotationForSearchSupportingLegacyTags() throws {
