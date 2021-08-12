@@ -273,15 +273,29 @@ extension RecordServiceParameterBuilder {
         let trimmedKey = tagKey.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let trimmedValue = tagValue.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
 
+        let tagEncodedAndPreLowercasedForiOSLegacy = try formatSingleTagWithPercentEncodingAndPreLowercased(tagKey: trimmedKey, tagValue: trimmedValue, separatedBy: separator)
         let tagEncodedAndFullyLowercased = try formatSingleTagWithPercentEncodingAndFullyLowercased(tagKey: trimmedKey, tagValue: trimmedValue, separatedBy: separator)
         let tagNonEncodedAndLowercasedForAndroidLegacy = formatSingleTagWithoutPercentEncoding(tagKey: trimmedKey, tagValue: trimmedValue, separatedBy: separator)
         let tagCustomEncodedForJSLegacy = try formatSingleTagWithCustomJSPercentEncoding(tagKey: trimmedKey, tagValue: trimmedValue, separatedBy: separator)
 
         let orExpressionComponents = [tagEncodedAndFullyLowercased,
+                                      tagEncodedAndPreLowercasedForiOSLegacy,
                                       tagNonEncodedAndLowercasedForAndroidLegacy,
                                       tagCustomEncodedForJSLegacy]
             .removingDuplicates
         return TagsParameter(orExpressionComponents)
+    }
+
+    private func formatSingleTagWithPercentEncodingAndPreLowercased(tagKey: String, tagValue: String, separatedBy separator: Character = "=") throws -> TagsParameter.OrComponent {
+        guard let escapedKey = tagKey.lowercased().addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+              let escapedValue = tagValue.lowercased().addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
+            throw Data4LifeSDKError.invalidCharacterInTag
+        }
+
+        let encodedTagComponent = TagsParameter.OrComponent(key: escapedKey,
+                                                            value: escapedValue,
+                                                            separator: separator)
+        return encodedTagComponent
     }
 
     private func formatSingleTagWithPercentEncodingAndFullyLowercased(tagKey: String, tagValue: String, separatedBy separator: Character = "=") throws -> TagsParameter.OrComponent {
