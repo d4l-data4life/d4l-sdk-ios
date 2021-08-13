@@ -26,8 +26,6 @@ let package = Package(
                  .upToNextMinor(from: "0.21.1")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
-        .package(url: "https://github.com/freshOS/Then",
-                 .upToNextMinor(from: "5.1.2")),
         .package(name: "AppAuth",
                  url: "https://github.com/openid/AppAuth-iOS.git",
                  .upToNextMinor(from: "1.4.0")),
@@ -35,8 +33,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Data4LifeSDK",
-            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.3/Data4LifeSDK-xcframework-1.14.3.zip",
-            checksum: "9e7874b651a748dc914ea17826666ff329567963ff706fc75e37880be534cb80"
+            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.4/Data4LifeSDK-xcframework-1.14.4.zip",
+            checksum: "8a860d0a6fc5dea65eb6d1b8e4989d0696753b7b5efb68b680ac0f8f4e455118"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
@@ -61,9 +59,6 @@ let package = Package(
                 path: "Dummies/Data4LifeDependencies"),
         .target(name: "OtherDependencies",
                 dependencies: [
-                    .product(name: "Then",
-                             package: "Then",
-                             condition: .when(platforms: [.iOS])),
                     .product(name: "Alamofire",
                              package: "Alamofire",
                              condition: .when(platforms: [.iOS])),
