@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.14.4] - 2021-08-13
+### Fixed
+- Fixes retrieval of records added with old iOS app
+
 ## [1.14.3] - 2021-06-09
 ### Changed
 - Replaces Then with Combine
@@ -457,7 +461,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.3...main
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.4...main
+[1.14.4]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.3...1.14.4
 [1.14.3]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.2...1.14.3
 [1.14.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.1...1.14.2
 [1.14.1]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.0...1.14.1
