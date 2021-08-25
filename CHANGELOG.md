@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.15.0] - 2021-08-20
+### Changed
+- Swift packages now resolve to https urls
+
 ## [1.14.4] - 2021-08-13
 ### Fixed
 - Fixes retrieval of records added with old iOS app
@@ -461,7 +465,8 @@ Fixed Cocoapod dependencies
 - Attach binary file to record
 - Basic unit tests
 
-[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.4...main
+[Unreleased]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.15.0...main
+[1.15.0]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.4...1.15.0
 [1.14.4]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.3...1.14.4
 [1.14.3]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.2...1.14.3
 [1.14.2]: https://github.com/d4l-data4life/d4l-sdk-ios/compare/1.14.1...1.14.2

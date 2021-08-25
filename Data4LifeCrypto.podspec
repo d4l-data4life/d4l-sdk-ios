@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'LICENSE', :file => "LICENSE" }
   s.author           = { "D4L data4life gGmbH" => "contact@data4life.care" }
 
-  s.source           = { :http => 'https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.13.1/XCFrameworks-1.13.1.zip' }
+  s.source           = { :http => 'https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.15.0/XCFrameworks-1.15.0.zip' }
   s.swift_version    = '5.3'
   s.platform     = :ios, '13.0'
   s.requires_arc = true
