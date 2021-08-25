@@ -3,6 +3,9 @@
 
 import PackageDescription
 
+let coreVersion = "1.14.4"
+let cryptoVersion = "1.5.1"
+
 let package = Package(
     name: "Data4LifeSDK",
     platforms: [
@@ -19,11 +22,11 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
-                 url: "git@github.com:d4l-data4life/d4l-utils-ios.git",
+                 url: "https://github.com/d4l-data4life/d4l-utils-ios.git",
                  .upToNextMinor(from: "0.6.0")),
         .package(name: "Data4LifeFHIR",
-                 url: "git@github.com:d4l-data4life/d4l-fhir-ios.git",
-                 .upToNextMinor(from: "0.21.1")),
+                 url: "https://github.com/d4l-data4life/d4l-fhir-ios.git",
+                 .upToNextMinor(from: "0.22.0")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(name: "AppAuth",
@@ -33,12 +36,12 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Data4LifeSDK",
-            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.4/Data4LifeSDK-xcframework-1.14.4.zip",
+            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/\(coreVersion)/Data4LifeSDK-xcframework-\(coreVersion).zip",
             checksum: "8a860d0a6fc5dea65eb6d1b8e4989d0696753b7b5efb68b680ac0f8f4e455118"
         ),
         .binaryTarget(
             name: "Data4LifeCrypto",
-            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.0/Data4LifeCrypto-xcframework-1.5.1.zip",
+            url: "https://github.com/d4l-data4life/d4l-sdk-ios/releases/download/1.14.0/Data4LifeCrypto-xcframework-\(cryptoVersion).zip",
             checksum: "e80d530bd7ac65483a87dd6bc13cccfdc800e08c868b0822b0f0cb5e4bed69ce"
         ),
         .target(name: "Data4LifeDependencies",
