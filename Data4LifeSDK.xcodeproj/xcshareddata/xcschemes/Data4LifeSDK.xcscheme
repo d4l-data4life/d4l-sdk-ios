@@ -17,7 +17,7 @@
                BlueprintIdentifier = "837463A51E854E7500AB500F"
                BuildableName = "Data4LifeSDK.framework"
                BlueprintName = "Data4LifeSDK"
-               ReferencedContainer = "container:HCSDK.xcodeproj">
+               ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
             BlueprintIdentifier = "837463A51E854E7500AB500F"
             BuildableName = "Data4LifeSDK.framework"
             BlueprintName = "Data4LifeSDK"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CodeCoverageTargets>
@@ -44,7 +44,7 @@
             BlueprintIdentifier = "837463A51E854E7500AB500F"
             BuildableName = "Data4LifeSDK.framework"
             BlueprintName = "Data4LifeSDK"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
@@ -55,7 +55,7 @@
                BlueprintIdentifier = "837463AE1E854E7500AB500F"
                BuildableName = "Data4LifeSDKTests.xctest"
                BlueprintName = "Data4LifeSDKTests"
-               ReferencedContainer = "container:HCSDK.xcodeproj">
+               ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -76,7 +76,7 @@
             BlueprintIdentifier = "837463A51E854E7500AB500F"
             BuildableName = "Data4LifeSDK.framework"
             BlueprintName = "Data4LifeSDK"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>
@@ -92,7 +92,7 @@
             BlueprintIdentifier = "837463A51E854E7500AB500F"
             BuildableName = "Data4LifeSDK.framework"
             BlueprintName = "Data4LifeSDK"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

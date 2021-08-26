@@ -15,8 +15,6 @@ included: # paths to include during linting. `--path` is ignored if present.
   - Example
   - SDK/Sources
   - SDK/Tests
-  - Crypto/Sources
-  - Crypto/Tests
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage

@@ -9,7 +9,6 @@ vendor
 d4l-example-app-config.json
 generated
 xcbuild
-Data4LifeCrypto-xcframework*
 Data4LifeSDK-xcframework*
 XCFrameworks*
 xcframeworks
