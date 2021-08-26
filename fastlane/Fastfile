@@ -150,8 +150,8 @@ platform :ios do
       configuration = "Release"
       buildPath = "xcbuild"
 
-      archiveAllFrameworksPath = allXcFrameworksArchivePath(options[:sdk_version])
-      archiveSDKPath = sdkFrameworkArchivePath(options[:sdk_version])
+      archiveAllFrameworksPath = allXcFrameworksArchivePath(options[:version])
+      archiveSDKPath = sdkFrameworkArchivePath(options[:version])
 
       if File.exist?(archiveAllFrameworksPath)
         sh "rm #{archiveAllFrameworksPath}"

@@ -76,16 +76,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CD109137225B89D600325389"
-               BuildableName = "Data4LifeCryptoTests.xctest"
-               BlueprintName = "Data4LifeCryptoTests"
-               ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "837463AE1E854E7500AB500F"
                BuildableName = "Data4LifeSDKTests.xctest"
                BlueprintName = "Data4LifeSDKTests"
