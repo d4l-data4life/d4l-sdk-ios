@@ -8,7 +8,7 @@ configurationName = ENV["CONFIGURATION"]
 jsonFile = File.read("#{srcRoot}/d4l-example-app-config.json")
 serverConfigurations = JSON.parse(jsonFile)["configs"]
 
-d4lConfigurationEntry = `xcodebuild -project #{srcRoot}/HCSDK.xcodeproj -showBuildSettings -configuration #{configurationName} | grep D4L_CONFIGURATION`
+d4lConfigurationEntry = `xcodebuild -project #{srcRoot}/Data4LifeSDK.xcodeproj -showBuildSettings -configuration #{configurationName} | grep D4L_CONFIGURATION`
 d4lConfiguration = d4lConfigurationEntry.split.last
 currentServerConfiguration = serverConfigurations[d4lConfiguration]
 identifier = currentServerConfiguration["id"]

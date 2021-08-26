@@ -15,8 +15,6 @@
 		0A4EB42423E97F9E00D0A4AA /* AttachmentSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EB42323E97F9E00D0A4AA /* AttachmentSchema.swift */; };
 		0A4EB42623EA850D00D0A4AA /* HasIdentifiableAttachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EB42523EA850D00D0A4AA /* HasIdentifiableAttachments.swift */; };
 		0A4EB42823EA8C0300D0A4AA /* FhirStu3ServiceTests+Observation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4EB42723EA8C0300D0A4AA /* FhirStu3ServiceTests+Observation.swift */; };
-		0A4EB42A23EA943C00D0A4AA /* ObservationFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A4EB42923EA943C00D0A4AA /* ObservationFixture.json */; };
-		0A4EB42C23EA970B00D0A4AA /* ObservationComponent.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A4EB42B23EA970B00D0A4AA /* ObservationComponent.json */; };
 		0A4FF1E0232FBD550065DDBA /* CommonKeyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FF1DF232FBD550065DDBA /* CommonKeyResponse.swift */; };
 		0A62616B2371CE410091DFB7 /* DownloadTypeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A62616A2371CE410091DFB7 /* DownloadTypeTest.swift */; };
 		0A64853423A0E98100B00E7A /* CommonKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A64853323A0E98100B00E7A /* CommonKeyService.swift */; };
@@ -26,11 +24,9 @@
 		0AA455992417A21B008B788C /* InfoServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA455982417A21B008B788C /* InfoServiceMock.swift */; };
 		0AA4559C2417D027008B788C /* SDKFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4559B2417D027008B788C /* SDKFileManagerTests.swift */; };
 		0ABC455023D9441800682359 /* FhirStu3ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABC454F23D9441800682359 /* FhirStu3ServiceTests+Patient.swift */; };
-		0ABC455423D99CE600682359 /* Patient.json in Resources */ = {isa = PBXBuildFile; fileRef = 0ABC455323D99CE600682359 /* Patient.json */; };
 		0AC728D723A2709500A8E453 /* CommonKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC728D523A2706800A8E453 /* CommonKeyServiceTests.swift */; };
 		0AC728D923A2779500A8E453 /* CommonKeyServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC728D823A2779500A8E453 /* CommonKeyServiceMock.swift */; };
 		0AC79E34235DC0AC007BC681 /* TaskTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC79E33235DC0AC007BC681 /* TaskTest.swift */; };
-		0ACB53FF241B9EF600928401 /* VersionConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A3934B024037EB700DDCE2B /* VersionConfiguration.json */; };
 		0AD36C97240799A100584D9B /* SDKVersionValidatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD36C94240798D200584D9B /* SDKVersionValidatorMock.swift */; };
 		0AE123512408DBA1001B6BA4 /* SDKVersionValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE123502408DBA1001B6BA4 /* SDKVersionValidatorTests.swift */; };
 		0AF4C09322DDD18900C5CD67 /* DefaultImageResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4C09222DDD18900C5CD67 /* DefaultImageResizer.swift */; };
@@ -66,10 +62,7 @@
 		365525E9250BC3FC00DF6DF7 /* AttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365525E7250BC3E300DF6DF7 /* AttachmentType.swift */; };
 		365525EB250F637500DF6DF7 /* STU3+HasAttachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365525EA250F637500DF6DF7 /* STU3+HasAttachments.swift */; };
 		365525EE250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365525ED250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift */; };
-		36553F8924C72A1000699A9B /* questionnaire-expansion.json in Resources */ = {isa = PBXBuildFile; fileRef = 36553F8824C72A1000699A9B /* questionnaire-expansion.json */; };
 		36553F8A24C72AE200699A9B /* FhirStu3ServiceTests+Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367B87EE23F6D78800A6155E /* FhirStu3ServiceTests+Questionnaire.swift */; };
-		36553F8B24C72B2500699A9B /* stu3-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 367B87F023F6D86200A6155E /* stu3-questionnaire.json */; };
-		36553F8C24C72B2900699A9B /* stu3-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 367B87E823F2F09300A6155E /* stu3-questionnaire-response.json */; };
 		3659BC8223D74E0A009970DA /* Attachment+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659BC8123D74E0A009970DA /* Attachment+Validation.swift */; };
 		36635E8E253D83C100DAB5FD /* FhirSingleOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E8D253D83C100DAB5FD /* FhirSingleOperations.swift */; };
 		36635E98253D842300DAB5FD /* FhirBatchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36635E97253D842300DAB5FD /* FhirBatchOperations.swift */; };
@@ -90,9 +83,7 @@
 		3682F78D264024C200C03F55 /* Data4LifeClient+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */; };
 		3685D42D25920C5C00F97F9E /* FhirR4ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */; };
 		3685D44B25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */; };
-		3685D4552592154400F97F9E /* r4-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4542592154400F97F9E /* r4-questionnaire.json */; };
 		3685D45F2592262300F97F9E /* FhirR4ServiceTests+Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */; };
-		3685D4692592297700F97F9E /* r4-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 3685D4682592297700F97F9E /* r4-questionnaire-response.json */; };
 		3685D473259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */; };
 		36882C2425E9190A00BDA715 /* SessionServiceInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */; };
 		36882C2E25E92D7400BDA715 /* RequestInterceptorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */; };
@@ -116,8 +107,6 @@
 		36B5014F241BD9E400042CC2 /* AttachmentTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */; };
 		36B6E9ED260CD22300CA3250 /* Data4LifeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; };
 		36B6E9EE260CD22300CA3250 /* Data4LifeSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 837463A61E854E7500AB500F /* Data4LifeSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */; };
-		36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */; };
 		36D96130256FF759004D69CA /* Data4LifeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D9612F256FF759004D69CA /* Data4LifeConfiguration.swift */; };
 		36DD22A3263C7C3300679F74 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36DD22A2263C7C3300679F74 /* AppAuth */; };
 		36DD7A5B255ED0D600FA6EB7 /* Encodable+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD7A5A255ED0D600FA6EB7 /* Encodable+Data.swift */; };
@@ -129,6 +118,30 @@
 		36F6F08A237C16B80054DE4A /* Data4LifeDITestContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F6F089237C16B80054DE4A /* Data4LifeDITestContainer.swift */; };
 		36F6F08C237C17020054DE4A /* DIContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F6F08B237C17020054DE4A /* DIContainerTests.swift */; };
 		36FA380C26D7D6A700DDCC35 /* Data4LifeCrypto in Frameworks */ = {isa = PBXBuildFile; productRef = 36FA380B26D7D6A700DDCC35 /* Data4LifeCrypto */; };
+		36FA382B26D7E6E300DDCC35 /* r4-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381326D7E6E200DDCC35 /* r4-questionnaire-response.json */; };
+		36FA382C26D7E6E300DDCC35 /* asymDecrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381426D7E6E200DDCC35 /* asymDecrypt.json */; };
+		36FA382D26D7E6E300DDCC35 /* VersionConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381526D7E6E200DDCC35 /* VersionConfiguration.json */; };
+		36FA382E26D7E6E300DDCC35 /* ObservationComponent.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381626D7E6E200DDCC35 /* ObservationComponent.json */; };
+		36FA382F26D7E6E300DDCC35 /* stu3-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381726D7E6E300DDCC35 /* stu3-questionnaire.json */; };
+		36FA383026D7E6E300DDCC35 /* symTagDecrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381826D7E6E300DDCC35 /* symTagDecrypt.json */; };
+		36FA383126D7E6E300DDCC35 /* donorKey.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381926D7E6E300DDCC35 /* donorKey.json */; };
+		36FA383226D7E6E300DDCC35 /* questionnaire-expansion.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381A26D7E6E300DDCC35 /* questionnaire-expansion.json */; };
+		36FA383326D7E6E300DDCC35 /* encryptedCommonTekKeys.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381B26D7E6E300DDCC35 /* encryptedCommonTekKeys.json */; };
+		36FA383426D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS1.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381C26D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS1.json */; };
+		36FA383526D7E6E300DDCC35 /* stu3-questionnaire-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381D26D7E6E300DDCC35 /* stu3-questionnaire-response.json */; };
+		36FA383626D7E6E300DDCC35 /* symCommonDecrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381E26D7E6E300DDCC35 /* symCommonDecrypt.json */; };
+		36FA383726D7E6E300DDCC35 /* ObservationFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA381F26D7E6E300DDCC35 /* ObservationFixture.json */; };
+		36FA383826D7E6E300DDCC35 /* r4-questionnaire.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382026D7E6E300DDCC35 /* r4-questionnaire.json */; };
+		36FA383926D7E6E300DDCC35 /* symCommonExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382126D7E6E300DDCC35 /* symCommonExchangeKey.json */; };
+		36FA383A26D7E6E300DDCC35 /* CarePlan.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382226D7E6E300DDCC35 /* CarePlan.json */; };
+		36FA383B26D7E6E300DDCC35 /* symCommonExchangeKeyInvalid.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382326D7E6E300DDCC35 /* symCommonExchangeKeyInvalid.json */; };
+		36FA383C26D7E6E300DDCC35 /* asymEncrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382426D7E6E300DDCC35 /* asymEncrypt.json */; };
+		36FA383D26D7E6E300DDCC35 /* Patient.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382526D7E6E300DDCC35 /* Patient.json */; };
+		36FA383E26D7E6E300DDCC35 /* symTagEncrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382626D7E6E300DDCC35 /* symTagEncrypt.json */; };
+		36FA383F26D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS8.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382726D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS8.json */; };
+		36FA384026D7E6E300DDCC35 /* symTagExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382826D7E6E300DDCC35 /* symTagExchangeKey.json */; };
+		36FA384126D7E6E300DDCC35 /* authStateTokenResponseSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382926D7E6E300DDCC35 /* authStateTokenResponseSuccess.json */; };
+		36FA384226D7E6E300DDCC35 /* symCommonEncrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = 36FA382A26D7E6E300DDCC35 /* symCommonEncrypt.json */; };
 		36FB754725B87D430001FB19 /* TagGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB754625B87D430001FB19 /* TagGroup.swift */; };
 		36FB755125B881D80001FB19 /* RecordServiceParameterBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */; };
 		36FD13E0266A8392009344CF /* ModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FD13DF266A8392009344CF /* ModelFactory.swift */; };
@@ -210,7 +223,6 @@
 		CD841E25225CBE80002656D5 /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DCB225CBE80002656D5 /* EnvironmentTests.swift */; };
 		CD841E26225CBE80002656D5 /* Data4LifeClient+FhirStu3DocumentReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DCC225CBE80002656D5 /* Data4LifeClient+FhirStu3DocumentReferenceTests.swift */; };
 		CD841E27225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DCD225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift */; };
-		CD841E29225CBE80002656D5 /* CarePlan.json in Resources */ = {isa = PBXBuildFile; fileRef = CD841DD1225CBE80002656D5 /* CarePlan.json */; };
 		CD841E2A225CBE80002656D5 /* Assert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD3225CBE80002656D5 /* Assert.swift */; };
 		CD841E2B225CBE80002656D5 /* StubbedURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */; };
 		CD841E30225CBE80002656D5 /* *.gesundheitscloud.de.cer in Resources */ = {isa = PBXBuildFile; fileRef = CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */; };
@@ -253,11 +265,6 @@
 		CD841E5A225CBE80002656D5 /* KeychainServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841E0C225CBE80002656D5 /* KeychainServiceTests.swift */; };
 		CD841E5B225CBE80002656D5 /* InfoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD841E0D225CBE80002656D5 /* InfoServiceTests.swift */; };
 		CD841E5E225CBF2D002656D5 /* Data4LifeSDK-Version.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD10920C225B901E00325389 /* Data4LifeSDK-Version.plist */; };
-		CD841E66225CC738002656D5 /* asymPrivateExchangeKeyPKCS8.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918A225B8A0A00325389 /* asymPrivateExchangeKeyPKCS8.json */; };
-		CD841E68225CC74D002656D5 /* symTagExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CD10918C225B8A0A00325389 /* symTagExchangeKey.json */; };
-		CD841E69225CC755002656D5 /* encryptedCommonTekKeys.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109196225B8A0A00325389 /* encryptedCommonTekKeys.json */; };
-		CD841E6A225CC792002656D5 /* symCommonExchangeKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109190225B8A0A00325389 /* symCommonExchangeKey.json */; };
-		CD841E6B225CC837002656D5 /* symCommonEncrypt.json in Resources */ = {isa = PBXBuildFile; fileRef = CD109192225B8A0A00325389 /* symCommonEncrypt.json */; };
 		CDA407A622E5E2A100B29A0D /* DocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA407A522E5E2A100B29A0D /* DocumentService.swift */; };
 		CDC18A9E1FC831D1004F235F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDC18A9D1FC831D1004F235F /* Assets.xcassets */; };
 		CDC9D6B7229D8ECA0068E3D5 /* OAuthExternalUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC9D6B6229D8ECA0068E3D5 /* OAuthExternalUserAgent.swift */; };
@@ -332,15 +339,12 @@
 /* Begin PBXFileReference section */
 		0A0A6BC023D00B8A003E35ED /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
 		0A3934AE23FE5D8700DDCE2B /* SDKVersionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKVersionValidator.swift; sourceTree = "<group>"; };
-		0A3934B024037EB700DDCE2B /* VersionConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = VersionConfiguration.json; sourceTree = "<group>"; };
 		0A3934B22403C71E00DDCE2B /* VersionRangesConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionRangesConfig.swift; sourceTree = "<group>"; };
 		0A3934B52404ED2E00DDCE2B /* SDKFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFileManager.swift; sourceTree = "<group>"; };
 		0A4EB42023E92C4500D0A4AA /* AttachmentComparison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentComparison.swift; sourceTree = "<group>"; };
 		0A4EB42323E97F9E00D0A4AA /* AttachmentSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentSchema.swift; sourceTree = "<group>"; };
 		0A4EB42523EA850D00D0A4AA /* HasIdentifiableAttachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasIdentifiableAttachments.swift; sourceTree = "<group>"; };
 		0A4EB42723EA8C0300D0A4AA /* FhirStu3ServiceTests+Observation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Observation.swift"; sourceTree = "<group>"; };
-		0A4EB42923EA943C00D0A4AA /* ObservationFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ObservationFixture.json; sourceTree = "<group>"; };
-		0A4EB42B23EA970B00D0A4AA /* ObservationComponent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ObservationComponent.json; sourceTree = "<group>"; };
 		0A4FF1DF232FBD550065DDBA /* CommonKeyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonKeyResponse.swift; sourceTree = "<group>"; };
 		0A62616A2371CE410091DFB7 /* DownloadTypeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTypeTest.swift; sourceTree = "<group>"; };
 		0A64853323A0E98100B00E7A /* CommonKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonKeyService.swift; sourceTree = "<group>"; };
@@ -350,7 +354,6 @@
 		0AA455982417A21B008B788C /* InfoServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoServiceMock.swift; sourceTree = "<group>"; };
 		0AA4559B2417D027008B788C /* SDKFileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFileManagerTests.swift; sourceTree = "<group>"; };
 		0ABC454F23D9441800682359 /* FhirStu3ServiceTests+Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Patient.swift"; sourceTree = "<group>"; };
-		0ABC455323D99CE600682359 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
 		0AC728D523A2706800A8E453 /* CommonKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonKeyServiceTests.swift; sourceTree = "<group>"; };
 		0AC728D823A2779500A8E453 /* CommonKeyServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonKeyServiceMock.swift; sourceTree = "<group>"; };
 		0AC79E33235DC0AC007BC681 /* TaskTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTest.swift; sourceTree = "<group>"; };
@@ -375,7 +378,6 @@
 		36087E5C2657B5DC0098E8BF /* FutureExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureExecutorTests.swift; sourceTree = "<group>"; };
 		360EC5152636F8AC00D8F8E9 /* libSDKSPMDependencies.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDKSPMDependencies.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		360EC5172636F8AD00D8F8E9 /* SDKSPMDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKSPMDependencies.swift; sourceTree = "<group>"; };
-		36238E7A2530B8E400923F22 /* donorKey.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = donorKey.json; sourceTree = "<group>"; };
 		3634699224ED4B37001EEE66 /* RecordServiceTests+AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordServiceTests+AppData.swift"; sourceTree = "<group>"; };
 		3634699724ED5A26001EEE66 /* AppDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataServiceTests.swift; sourceTree = "<group>"; };
 		3634699924ED5D53001EEE66 /* AppDataServiceTests+SingleOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDataServiceTests+SingleOperations.swift"; sourceTree = "<group>"; };
@@ -385,7 +387,6 @@
 		365525E7250BC3E300DF6DF7 /* AttachmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentType.swift; sourceTree = "<group>"; };
 		365525EA250F637500DF6DF7 /* STU3+HasAttachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STU3+HasAttachments.swift"; sourceTree = "<group>"; };
 		365525ED250F644C00DF6DF7 /* ModelsR4+HasAttachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelsR4+HasAttachments.swift"; sourceTree = "<group>"; };
-		36553F8824C72A1000699A9B /* questionnaire-expansion.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "questionnaire-expansion.json"; sourceTree = "<group>"; };
 		3659BC8123D74E0A009970DA /* Attachment+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+Validation.swift"; sourceTree = "<group>"; };
 		36635E8D253D83C100DAB5FD /* FhirSingleOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirSingleOperations.swift; sourceTree = "<group>"; };
 		36635E97253D842300DAB5FD /* FhirBatchOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirBatchOperations.swift; sourceTree = "<group>"; };
@@ -401,18 +402,14 @@
 		3679AAA625923BF90006494F /* Data4LifeClient+FhirR4Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Tests.swift"; sourceTree = "<group>"; };
 		3679AAB025923D560006494F /* Data4LifeClient+FhirR4AttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4AttachmentTests.swift"; sourceTree = "<group>"; };
 		3679AAB625923DCB0006494F /* Data4LifeClient+FhirR4DocumentReferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4DocumentReferenceTests.swift"; sourceTree = "<group>"; };
-		367B87E823F2F09300A6155E /* stu3-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire-response.json"; sourceTree = "<group>"; };
 		367B87EA23F2F36500A6155E /* FhirStu3ServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
 		367B87EC23F6D6A000A6155E /* AttachmentTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTestHelpers.swift; sourceTree = "<group>"; };
 		367B87EE23F6D78800A6155E /* FhirStu3ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
-		367B87F023F6D86200A6155E /* stu3-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire.json"; sourceTree = "<group>"; };
 		3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+UserServiceModuleTests.swift"; sourceTree = "<group>"; };
 		3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+User.swift"; sourceTree = "<group>"; };
 		3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirR4ServiceTests.swift; sourceTree = "<group>"; };
 		3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
-		3685D4542592154400F97F9E /* r4-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire.json"; sourceTree = "<group>"; };
 		3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Patient.swift"; sourceTree = "<group>"; };
-		3685D4682592297700F97F9E /* r4-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire-response.json"; sourceTree = "<group>"; };
 		3685D472259229C700F97F9E /* FhirR4ServiceTests+QuestionnaireResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+QuestionnaireResponse.swift"; sourceTree = "<group>"; };
 		36882C2325E9190A00BDA715 /* SessionServiceInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionServiceInterceptor.swift; sourceTree = "<group>"; };
 		36882C2D25E92D7400BDA715 /* RequestInterceptorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptorMock.swift; sourceTree = "<group>"; };
@@ -444,6 +441,30 @@
 		36E646E72589044400C6B51C /* FhirR4ServiceTests+DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+DocumentReference.swift"; sourceTree = "<group>"; };
 		36F6F089237C16B80054DE4A /* Data4LifeDITestContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data4LifeDITestContainer.swift; sourceTree = "<group>"; };
 		36F6F08B237C17020054DE4A /* DIContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainerTests.swift; sourceTree = "<group>"; };
+		36FA381326D7E6E200DDCC35 /* r4-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire-response.json"; sourceTree = "<group>"; };
+		36FA381426D7E6E200DDCC35 /* asymDecrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymDecrypt.json; sourceTree = "<group>"; };
+		36FA381526D7E6E200DDCC35 /* VersionConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = VersionConfiguration.json; sourceTree = "<group>"; };
+		36FA381626D7E6E200DDCC35 /* ObservationComponent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ObservationComponent.json; sourceTree = "<group>"; };
+		36FA381726D7E6E300DDCC35 /* stu3-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire.json"; sourceTree = "<group>"; };
+		36FA381826D7E6E300DDCC35 /* symTagDecrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symTagDecrypt.json; sourceTree = "<group>"; };
+		36FA381926D7E6E300DDCC35 /* donorKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donorKey.json; sourceTree = "<group>"; };
+		36FA381A26D7E6E300DDCC35 /* questionnaire-expansion.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "questionnaire-expansion.json"; sourceTree = "<group>"; };
+		36FA381B26D7E6E300DDCC35 /* encryptedCommonTekKeys.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = encryptedCommonTekKeys.json; sourceTree = "<group>"; };
+		36FA381C26D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymPrivateExchangeKeyPKCS1.json; sourceTree = "<group>"; };
+		36FA381D26D7E6E300DDCC35 /* stu3-questionnaire-response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stu3-questionnaire-response.json"; sourceTree = "<group>"; };
+		36FA381E26D7E6E300DDCC35 /* symCommonDecrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonDecrypt.json; sourceTree = "<group>"; };
+		36FA381F26D7E6E300DDCC35 /* ObservationFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ObservationFixture.json; sourceTree = "<group>"; };
+		36FA382026D7E6E300DDCC35 /* r4-questionnaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "r4-questionnaire.json"; sourceTree = "<group>"; };
+		36FA382126D7E6E300DDCC35 /* symCommonExchangeKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonExchangeKey.json; sourceTree = "<group>"; };
+		36FA382226D7E6E300DDCC35 /* CarePlan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CarePlan.json; sourceTree = "<group>"; };
+		36FA382326D7E6E300DDCC35 /* symCommonExchangeKeyInvalid.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonExchangeKeyInvalid.json; sourceTree = "<group>"; };
+		36FA382426D7E6E300DDCC35 /* asymEncrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymEncrypt.json; sourceTree = "<group>"; };
+		36FA382526D7E6E300DDCC35 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
+		36FA382626D7E6E300DDCC35 /* symTagEncrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symTagEncrypt.json; sourceTree = "<group>"; };
+		36FA382726D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymPrivateExchangeKeyPKCS8.json; sourceTree = "<group>"; };
+		36FA382826D7E6E300DDCC35 /* symTagExchangeKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symTagExchangeKey.json; sourceTree = "<group>"; };
+		36FA382926D7E6E300DDCC35 /* authStateTokenResponseSuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authStateTokenResponseSuccess.json; sourceTree = "<group>"; };
+		36FA382A26D7E6E300DDCC35 /* symCommonEncrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonEncrypt.json; sourceTree = "<group>"; };
 		36FB754625B87D430001FB19 /* TagGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagGroup.swift; sourceTree = "<group>"; };
 		36FB755025B881D80001FB19 /* RecordServiceParameterBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordServiceParameterBuilderTests.swift; sourceTree = "<group>"; };
 		36FD13DF266A8392009344CF /* ModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFactory.swift; sourceTree = "<group>"; };
@@ -456,19 +477,6 @@
 		839E81451E86DE5300C42094 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		839E81471E86DE5300C42094 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD1090AF225B893A00325389 /* CryptoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoService.swift; sourceTree = "<group>"; };
-		CD109189225B8A0A00325389 /* symCommonExchangeKeyInvalid.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonExchangeKeyInvalid.json; sourceTree = "<group>"; };
-		CD10918A225B8A0A00325389 /* asymPrivateExchangeKeyPKCS8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymPrivateExchangeKeyPKCS8.json; sourceTree = "<group>"; };
-		CD10918B225B8A0A00325389 /* symTagEncrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symTagEncrypt.json; sourceTree = "<group>"; };
-		CD10918C225B8A0A00325389 /* symTagExchangeKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symTagExchangeKey.json; sourceTree = "<group>"; };
-		CD10918D225B8A0A00325389 /* symCommonDecrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonDecrypt.json; sourceTree = "<group>"; };
-		CD10918E225B8A0A00325389 /* asymDecrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymDecrypt.json; sourceTree = "<group>"; };
-		CD10918F225B8A0A00325389 /* symTagDecrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symTagDecrypt.json; sourceTree = "<group>"; };
-		CD109190225B8A0A00325389 /* symCommonExchangeKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonExchangeKey.json; sourceTree = "<group>"; };
-		CD109191225B8A0A00325389 /* asymEncrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asymEncrypt.json; sourceTree = "<group>"; };
-		CD109192225B8A0A00325389 /* symCommonEncrypt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = symCommonEncrypt.json; sourceTree = "<group>"; };
-		CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = authStateTokenResponseSuccess.json; path = "../../../../Crypto/Tests/JSON Payloads/iOS Related/authStateTokenResponseSuccess.json"; sourceTree = "<group>"; };
-		CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = asymPrivateExchangeKeyPKCS1.json; path = "../../../../Crypto/Tests/JSON Payloads/iOS Related/asymPrivateExchangeKeyPKCS1.json"; sourceTree = "<group>"; };
-		CD109196225B8A0A00325389 /* encryptedCommonTekKeys.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = encryptedCommonTekKeys.json; path = "../../../../Crypto/Tests/JSON Payloads/iOS Related/encryptedCommonTekKeys.json"; sourceTree = "<group>"; };
 		CD10919E225B8A0A00325389 /* CryptoServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoServiceTests.swift; sourceTree = "<group>"; };
 		CD1091B5225B8FBA00325389 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD1091B8225B8FC300325389 /* DocumentListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentListTableViewController.swift; sourceTree = "<group>"; };
@@ -544,7 +552,6 @@
 		CD841DCB225CBE80002656D5 /* EnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentTests.swift; sourceTree = "<group>"; };
 		CD841DCC225CBE80002656D5 /* Data4LifeClient+FhirStu3DocumentReferenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3DocumentReferenceTests.swift"; sourceTree = "<group>"; };
 		CD841DCD225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirStu3Tests.swift"; sourceTree = "<group>"; };
-		CD841DD1225CBE80002656D5 /* CarePlan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CarePlan.json; sourceTree = "<group>"; };
 		CD841DD3225CBE80002656D5 /* Assert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assert.swift; sourceTree = "<group>"; };
 		CD841DD4225CBE80002656D5 /* StubbedURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubbedURLProtocol.swift; sourceTree = "<group>"; };
 		CD841DDB225CBE80002656D5 /* *.gesundheitscloud.de.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "*.gesundheitscloud.de.cer"; sourceTree = "<group>"; };
@@ -1361,30 +1368,30 @@
 		CD841DCE225CBE80002656D5 /* JSON Payloads */ = {
 			isa = PBXGroup;
 			children = (
-				CD841DD1225CBE80002656D5 /* CarePlan.json */,
-				36238E7A2530B8E400923F22 /* donorKey.json */,
-				0A4EB42B23EA970B00D0A4AA /* ObservationComponent.json */,
-				0A4EB42923EA943C00D0A4AA /* ObservationFixture.json */,
-				0ABC455323D99CE600682359 /* Patient.json */,
-				36553F8824C72A1000699A9B /* questionnaire-expansion.json */,
-				3685D4682592297700F97F9E /* r4-questionnaire-response.json */,
-				CD109189225B8A0A00325389 /* symCommonExchangeKeyInvalid.json */,
-				CD10918A225B8A0A00325389 /* asymPrivateExchangeKeyPKCS8.json */,
-				CD10918B225B8A0A00325389 /* symTagEncrypt.json */,
-				CD10918C225B8A0A00325389 /* symTagExchangeKey.json */,
-				CD10918D225B8A0A00325389 /* symCommonDecrypt.json */,
-				CD10918E225B8A0A00325389 /* asymDecrypt.json */,
-				CD10918F225B8A0A00325389 /* symTagDecrypt.json */,
-				CD109190225B8A0A00325389 /* symCommonExchangeKey.json */,
-				CD109191225B8A0A00325389 /* asymEncrypt.json */,
-				CD109194225B8A0A00325389 /* authStateTokenResponseSuccess.json */,
-				CD109195225B8A0A00325389 /* asymPrivateExchangeKeyPKCS1.json */,
-				CD109196225B8A0A00325389 /* encryptedCommonTekKeys.json */,
-				CD109192225B8A0A00325389 /* symCommonEncrypt.json */,
-				3685D4542592154400F97F9E /* r4-questionnaire.json */,
-				367B87E823F2F09300A6155E /* stu3-questionnaire-response.json */,
-				367B87F023F6D86200A6155E /* stu3-questionnaire.json */,
-				0A3934B024037EB700DDCE2B /* VersionConfiguration.json */,
+				36FA381426D7E6E200DDCC35 /* asymDecrypt.json */,
+				36FA382426D7E6E300DDCC35 /* asymEncrypt.json */,
+				36FA381C26D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS1.json */,
+				36FA382726D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS8.json */,
+				36FA382926D7E6E300DDCC35 /* authStateTokenResponseSuccess.json */,
+				36FA382226D7E6E300DDCC35 /* CarePlan.json */,
+				36FA381926D7E6E300DDCC35 /* donorKey.json */,
+				36FA381B26D7E6E300DDCC35 /* encryptedCommonTekKeys.json */,
+				36FA381626D7E6E200DDCC35 /* ObservationComponent.json */,
+				36FA381F26D7E6E300DDCC35 /* ObservationFixture.json */,
+				36FA382526D7E6E300DDCC35 /* Patient.json */,
+				36FA381A26D7E6E300DDCC35 /* questionnaire-expansion.json */,
+				36FA381326D7E6E200DDCC35 /* r4-questionnaire-response.json */,
+				36FA382026D7E6E300DDCC35 /* r4-questionnaire.json */,
+				36FA381D26D7E6E300DDCC35 /* stu3-questionnaire-response.json */,
+				36FA381726D7E6E300DDCC35 /* stu3-questionnaire.json */,
+				36FA381E26D7E6E300DDCC35 /* symCommonDecrypt.json */,
+				36FA382A26D7E6E300DDCC35 /* symCommonEncrypt.json */,
+				36FA382126D7E6E300DDCC35 /* symCommonExchangeKey.json */,
+				36FA382326D7E6E300DDCC35 /* symCommonExchangeKeyInvalid.json */,
+				36FA381826D7E6E300DDCC35 /* symTagDecrypt.json */,
+				36FA382626D7E6E300DDCC35 /* symTagEncrypt.json */,
+				36FA382826D7E6E300DDCC35 /* symTagExchangeKey.json */,
+				36FA381526D7E6E200DDCC35 /* VersionConfiguration.json */,
 			);
 			path = "JSON Payloads";
 			sourceTree = "<group>";
@@ -1741,43 +1748,50 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD841E6B225CC837002656D5 /* symCommonEncrypt.json in Resources */,
+				36FA382E26D7E6E300DDCC35 /* ObservationComponent.json in Resources */,
+				36FA383326D7E6E300DDCC35 /* encryptedCommonTekKeys.json in Resources */,
+				36FA383726D7E6E300DDCC35 /* ObservationFixture.json in Resources */,
 				CD841E23225CBE80002656D5 /* sample.dcm in Resources */,
+				36FA383E26D7E6E300DDCC35 /* symTagEncrypt.json in Resources */,
 				7F20B7162367128100B21680 /* data4life.care.der in Resources */,
+				36FA383C26D7E6E300DDCC35 /* asymEncrypt.json in Resources */,
+				36FA383B26D7E6E300DDCC35 /* symCommonExchangeKeyInvalid.json in Resources */,
+				36FA383826D7E6E300DDCC35 /* r4-questionnaire.json in Resources */,
 				CD841E30225CBE80002656D5 /* *.gesundheitscloud.de.cer in Resources */,
-				36553F8C24C72B2900699A9B /* stu3-questionnaire-response.json in Resources */,
 				CD841E38225CBE80002656D5 /* create-document-reference.json in Resources */,
+				36FA384026D7E6E300DDCC35 /* symTagExchangeKey.json in Resources */,
+				36FA384226D7E6E300DDCC35 /* symCommonEncrypt.json in Resources */,
 				CD841E22225CBE80002656D5 /* sample-jfif.jpg in Resources */,
+				36FA384126D7E6E300DDCC35 /* authStateTokenResponseSuccess.json in Resources */,
 				CD841E21225CBE80002656D5 /* sample.tiff in Resources */,
-				CD841E69225CC755002656D5 /* encryptedCommonTekKeys.json in Resources */,
 				CD841E34225CBE80002656D5 /* doc-ref-fetched.json in Resources */,
-				3685D4552592154400F97F9E /* r4-questionnaire.json in Resources */,
-				0A4EB42A23EA943C00D0A4AA /* ObservationFixture.json in Resources */,
-				CD841E6A225CC792002656D5 /* symCommonExchangeKey.json in Resources */,
-				36D9608F256BECF0004D69CA /* asymPrivateExchangeKeyPKCS1.json in Resources */,
 				CD841E37225CBE80002656D5 /* observation.json in Resources */,
 				CD841E4D225CBE80002656D5 /* Data4LifeSDK-Version.plist in Resources */,
-				36553F8924C72A1000699A9B /* questionnaire-expansion.json in Resources */,
+				36FA383F26D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS8.json in Resources */,
 				CD841E3E225CBE80002656D5 /* create-document-reference-final.json in Resources */,
 				CD841E35225CBE80002656D5 /* create-document-reference-token.json in Resources */,
 				CD841E3D225CBE80002656D5 /* doc-ref-attachment-data in Resources */,
-				36553F8B24C72B2500699A9B /* stu3-questionnaire.json in Resources */,
-				CD841E66225CC738002656D5 /* asymPrivateExchangeKeyPKCS8.json in Resources */,
 				CD841E39225CBE80002656D5 /* diagnostic-report.json in Resources */,
-				0A4EB42C23EA970B00D0A4AA /* ObservationComponent.json in Resources */,
+				36FA382C26D7E6E300DDCC35 /* asymDecrypt.json in Resources */,
 				CD841E3C225CBE80002656D5 /* care-plan.json in Resources */,
 				CD841E3B225CBE80002656D5 /* doc-ref-token.json in Resources */,
+				36FA382F26D7E6E300DDCC35 /* stu3-questionnaire.json in Resources */,
 				CD841E36225CBE80002656D5 /* create-document-reference-updated.json in Resources */,
-				3685D4692592297700F97F9E /* r4-questionnaire-response.json in Resources */,
-				CD841E29225CBE80002656D5 /* CarePlan.json in Resources */,
-				0ABC455423D99CE600682359 /* Patient.json in Resources */,
 				CD841E3A225CBE80002656D5 /* create-document-reference-blob.json in Resources */,
+				36FA383A26D7E6E300DDCC35 /* CarePlan.json in Resources */,
+				36FA382D26D7E6E300DDCC35 /* VersionConfiguration.json in Resources */,
+				36FA383426D7E6E300DDCC35 /* asymPrivateExchangeKeyPKCS1.json in Resources */,
+				36FA383226D7E6E300DDCC35 /* questionnaire-expansion.json in Resources */,
 				CD841E1E225CBE80002656D5 /* sample.pdf in Resources */,
 				CD841E20225CBE80002656D5 /* sample.jpg in Resources */,
-				0ACB53FF241B9EF600928401 /* VersionConfiguration.json in Resources */,
+				36FA383626D7E6E300DDCC35 /* symCommonDecrypt.json in Resources */,
+				36FA383126D7E6E300DDCC35 /* donorKey.json in Resources */,
+				36FA383D26D7E6E300DDCC35 /* Patient.json in Resources */,
+				36FA383926D7E6E300DDCC35 /* symCommonExchangeKey.json in Resources */,
+				36FA383526D7E6E300DDCC35 /* stu3-questionnaire-response.json in Resources */,
+				36FA382B26D7E6E300DDCC35 /* r4-questionnaire-response.json in Resources */,
+				36FA383026D7E6E300DDCC35 /* symTagDecrypt.json in Resources */,
 				CD841E1F225CBE80002656D5 /* sample.png in Resources */,
-				36D96094256BECF4004D69CA /* authStateTokenResponseSuccess.json in Resources */,
-				CD841E68225CC74D002656D5 /* symTagExchangeKey.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
