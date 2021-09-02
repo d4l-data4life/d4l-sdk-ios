@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Removes Crypto library from repo and switched it as a swift package
+- Removes Pods support 
 
 ## [1.15.0] - 2021-08-20
 ### Changed

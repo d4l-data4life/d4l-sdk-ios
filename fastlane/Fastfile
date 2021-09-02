@@ -1,15 +1,9 @@
 default_platform :ios
 
+repository = "d4l-data4life/d4l-sdk-ios"
 project = "Data4LifeSDK"
-
 sdkScheme = "Data4LifeSDK"
 sdkName = "Data4LifeSDK"
-
-repository = "d4l-data4life/d4l-sdk-ios"
-
-sdk_podspec_path = '../Data4LifeSDK.podspec'
-podspecs_repo_name = 'd4l-data4life'
-podspecs_repo_url = 'https://github.com/d4l-data4life/d4l-cocoapods-specs'
 
 device = "iPhone 12"
 
@@ -80,7 +74,6 @@ platform :ios do
 
       # Update version in different places
       update_plist_versions(sdk_version: version)
-      update_sdk_podspec_version(version: version)
       update_readme_versions(version: version)
 
       # Generate new documentation using Asciidoc
@@ -107,7 +100,6 @@ platform :ios do
       push_git_tags(tag: "#{version}")
 
       # Post new release to GitHub
-      archiveAllFrameworksPath = allXcFrameworksArchivePath(version)
       archiveSDKPath = sdkFrameworkArchivePath(version)
 
       # Post new release to GitHub
@@ -116,22 +108,12 @@ platform :ios do
         api_token:options[:api_token],
         changelog: changelog,
         is_prerelease: is_prerelease,
-        all_frameworks: archiveAllFrameworksPath,
-        sdk_framework: archiveSDKPath
+        framework: archiveSDKPath
       )
 
-      # Update CococaPods specs
-      push_sdk_podspec
     else
       Helper.log.info "When finished, commit your changes.".red
     end
-  end
-
-  desc "Test podspec integration"
-  lane :test_podspec do
-        Dir.chdir("..") do
-          sh("pod spec lint --sources='https://github.com/d4l-data4life/d4l-cocoapods-specs,https://github.com/CocoaPods/Specs'")
-        end
   end
 
   desc "Build xcframework for distribution"
@@ -150,17 +132,12 @@ platform :ios do
       configuration = "Release"
       buildPath = "xcbuild"
 
-      archiveAllFrameworksPath = allXcFrameworksArchivePath(options[:version])
       archiveSDKPath = sdkFrameworkArchivePath(options[:version])
 
-      if File.exist?(archiveAllFrameworksPath)
-        sh "rm #{archiveAllFrameworksPath}"
-      end
       if File.exist?(archiveSDKPath)
         sh "rm #{archiveSDKPath}"
       end
 
-        sh "zip -r #{archiveAllFrameworksPath} #{sdkFrameworkPath} LICENSE SDK/Sources/Certificates/*.hpsgc.de.cer SDK/Sources/Certificates/data4life.care.der SDK/Sources/Data4LifeSDK-Version.plist"
         sh "zip -r #{archiveSDKPath} #{sdkFrameworkPath}"
         sh "rm -rf #{sdkFrameworkPath}"
     end
@@ -215,10 +192,6 @@ platform :ios do
         raise "Missing api token".red
     end
 
-    if options[:all_frameworks] == nil
-        raise "Missing asset".red
-    end
-
     if options[:sdk_framework] == nil
         raise "Missing asset".red
     end
@@ -240,7 +213,7 @@ platform :ios do
       tag_name: options[:version],
       description: changelog,
       is_prerelease: isPrerelease,
-      upload_assets: [options[:all_frameworks], options[:sdk_framework]]
+      upload_assets: [options[:sdk_framework]]
     )
   end
 
@@ -320,40 +293,11 @@ platform :ios do
     end
 
     readme_contents = File.read(readme_path)
-    # Update CocoaPods version number (pattern: `v1.0.0-`)
+   
     updated = readme_contents.gsub(/v([0-9]+)\.([0-9]+)\.([0-9]+)-/, "v#{app_store_version}-")
     # Update GitHub pages version number (pattern: `/1.0.0)`)
     updated = updated.gsub(/\/([0-9]+)\.([0-9]+)\.([0-9]+)\)/, "\/#{app_store_version}\)")
     File.write(readme_path, updated)
-  end
-
-  desc "Update Data4LifeSDK podspec version"
-  lane :update_sdk_podspec_version do | options |
-    UI.user_error!("Could not find podspec file at path #{sdk_podspec_path}") unless File.exist?(sdk_podspec_path)
-
-    if !options[:version]
-      raise "No version specified!".red
-    end
-
-    new_version = options[:version]
-
-    podspec_content = File.read(sdk_podspec_path)
-    updated = podspec_content.gsub(/"([0-9]+)\.([0-9]+)\.([0-9]+)\-?([0-9a-zA-Z]*)\.?([0-9a-zA-Z]*)"/, "\"#{new_version}\"")
-    File.write(sdk_podspec_path, updated)
-  end
-
-  desc "Push new Data4LifeSDK podspec files to private spec repo"
-  lane :push_sdk_podspec do
-
-    # Check if local CocoaPods include private podspec, otherwise try to add it
-    repo_list = sh "bundle exec pod repo list"
-    if !repo_list.include? podspecs_repo_name
-     sh "bundle exec pod repo add #{podspecs_repo_name} #{podspecs_repo_url}"
-    end
-
-    # pod_push fastlane action does not support private switch
-    # pod_push(path: "./Data4LifeSDK.podspec", repo: "gesundheitscloud", allow_warnings: true)
-    sh "bundle exec pod repo push #{podspecs_repo_name} ../Data4LifeSDK.podspec --allow-warnings"
   end
 
   desc "Generate docs per version using Asciidoctor"
@@ -372,10 +316,6 @@ platform :ios do
     sh "rm -rf #{output_folder_path}"
     sh "mkdir #{output_folder_path}"
     sh "bundle exec asciidoctor -b html5 -d book -o #{output_final_path} -a #{arguments} #{input_path} "
-  end
-
-  def allXcFrameworksArchivePath(version)
-     return "XCFrameworks-#{version}.zip"
   end
 
   def sdkFrameworkArchivePath(version)

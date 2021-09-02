@@ -1,7 +1,6 @@
 # Data4LifeSDK for iOS
 Pure Swift API client for HealthCloud that automatically handles encryption
 
-[![CocoaPods Compatible](https://img.shields.io/badge/pod-v1.14.4-blue.svg)](https://github.com/CocoaPods/CocoaPods)
 [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](https://github.com/apple/swift-package-manager)
 [![License](https://img.shields.io/badge/license-PRIVATE-blue.svg)](https://github.com/d4l-data4life/d4l-sdk-ios/blob/main/LICENSE)
 
@@ -20,18 +19,6 @@ Pure Swift API client for HealthCloud that automatically handles encryption
 * [Data4LifeCrypto](https://github.com/d4l-data4life/d4l-crypto-ios/)
 
 ## Installation
-
-#### CocoaPods
-
-To install with [CocoaPods](https://cocoapods.org/) add the following line to the podfile.
-
-```ruby
-source 'https://github.com/d4l-data4life/d4l-cocoapods-specs.git'
-
-pod 'Data4LifeSDK', '~> 1.14.0'
-```
-
-**Note**: For more info check [README](https://github.com/d4l-data4life/d4l-cocoapods-specs/blob/master/README.md).
 
 #### Swift Package Manager
 
@@ -116,14 +103,12 @@ Folowing command will release new version of framework while handling couple of 
 * Set new project version
 * Set new SDK version
 * Set new version in the README.md
-* Update CocoaPods `podspec` file
 * Generate new documentation
 * Do sanity checks (proper branch, proper version number in changelog etc.)
 * Commit changes and create version tag
 * Push new commit and tag to GitHub
 * Create GitHub release page with all of the information for [CHANGELOG.md](CHANGELOG.md)
 * Upload prebuilt framework to the release page
-* Push latest `podspec`s to private [CococaPods specs repository](https://github.com/d4l-data4life/d4l-cocoapods-specs)
 
 ```sh
 bundle exec fastlane release_framework version:"1.0.0" api_token:"super-secret-GitHub-API-token"
