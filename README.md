@@ -17,9 +17,7 @@ Pure Swift API client for HealthCloud that automatically handles encryption
 * [Data4LifeFHIR](https://github.com/d4l-data4life/d4l-fhir-ios)
 * [ModelsR4](https://github.com/d4l-data4life/d4l-fhir-ios)
 * [Data4LifeSDKUtils](https://github.com/d4l-data4life/d4l-utils-ios)
-* [Data4LifeCrypto](https://github.com/d4l-data4life/d4l-sdk-ios/tree/master/Crypto)
-
-*Note*: `Data4LifeCrypto` is part of the SDK project as a separate framework
+* [Data4LifeCrypto](https://github.com/d4l-data4life/d4l-crypto-ios/)
 
 ## Installation
 
@@ -47,7 +45,7 @@ OR
 git@github.com:d4l-data4life/d4l-sdk-ios.git
 ```
 
-In the next step, select the latest version, and then import both the `Data4LifeCrypto` and `Data4LifeSDK` libraries in your target.
+In the next step, select the latest version, and then import the `Data4LifeSDK` library in your target.
 
 ## Building
 
@@ -93,7 +91,7 @@ In order for the example app to choose which environment to use, you need to cha
 DEVELOPMENT, SANDBOX, STAGING, PRODUCTION
 
 ### Example application
-Open `HCSDK.xcodeproj` and run the `Example` target.
+Open `Data4LifeSDK.xcodeproj` and run the `Example` target.
 
 ## Management
 SDK is handled by [Fastlane](https://fastlane.tools/) and all of the available functions are available in the [README](fastlane/README.md).
@@ -128,7 +126,7 @@ Folowing command will release new version of framework while handling couple of 
 * Push latest `podspec`s to private [CococaPods specs repository](https://github.com/d4l-data4life/d4l-cocoapods-specs)
 
 ```sh
-bundle exec fastlane release_framework version:"1.0.0" crypto_version:"1.0.0" api_token:"super-secret-GitHub-API-token"
+bundle exec fastlane release_framework version:"1.0.0" api_token:"super-secret-GitHub-API-token"
 ```
 
 ### Generate documentation

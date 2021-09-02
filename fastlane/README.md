@@ -47,9 +47,9 @@ Package and release framework
 fastlane ios test_podspec
 ```
 Test podspec integration
-### ios build_xcframeworks
+### ios build_sdk_xcframework
 ```
-fastlane ios build_xcframeworks
+fastlane ios build_sdk_xcframework
 ```
 Build xcframework for distribution
 ### ios build_project_xcframework
@@ -57,16 +57,6 @@ Build xcframework for distribution
 fastlane ios build_project_xcframework
 ```
 Build any project xcframework
-### ios build_crypto_xcframework
-```
-fastlane ios build_crypto_xcframework
-```
-Build xcframework for distribution
-### ios build_sdk_xcframework
-```
-fastlane ios build_sdk_xcframework
-```
-Build xcframework for distribution
 ### ios gh_release
 ```
 fastlane ios gh_release
@@ -97,21 +87,11 @@ Update version numbers in README.md
 fastlane ios update_sdk_podspec_version
 ```
 Update Data4LifeSDK podspec version
-### ios update_crypto_podspec_version
-```
-fastlane ios update_crypto_podspec_version
-```
-Update Data4LifeCrypto podspec version
 ### ios push_sdk_podspec
 ```
 fastlane ios push_sdk_podspec
 ```
 Push new Data4LifeSDK podspec files to private spec repo
-### ios push_crypto_podspec
-```
-fastlane ios push_crypto_podspec
-```
-Push new Data4LifeCrypto podspec files to private spec repo
 ### ios generate_docs
 ```
 fastlane ios generate_docs

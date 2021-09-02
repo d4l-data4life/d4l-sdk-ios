@@ -17,7 +17,7 @@
                      BlueprintIdentifier = "839E81381E86DE5300C42094"
                      BuildableName = "Example.app"
                      BlueprintName = "Example"
-                     ReferencedContainer = "container:HCSDK.xcodeproj">
+                     ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "839E81381E86DE5300C42094"
                BuildableName = "Example.app"
                BlueprintName = "Example"
-               ReferencedContainer = "container:HCSDK.xcodeproj">
+               ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -52,7 +52,7 @@
             BlueprintIdentifier = "839E81381E86DE5300C42094"
             BuildableName = "Example.app"
             BlueprintName = "Example"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CodeCoverageTargets>
@@ -61,14 +61,14 @@
             BlueprintIdentifier = "837463A51E854E7500AB500F"
             BuildableName = "Data4LifeSDK.framework"
             BlueprintName = "Data4LifeSDK"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CD108FF0225B88BE00325389"
             BuildableName = "Data4LifeCrypto.framework"
             BlueprintName = "Data4LifeCrypto"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
@@ -76,20 +76,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CD109137225B89D600325389"
-               BuildableName = "Data4LifeCryptoTests.xctest"
-               BlueprintName = "Data4LifeCryptoTests"
-               ReferencedContainer = "container:HCSDK.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "837463AE1E854E7500AB500F"
                BuildableName = "Data4LifeSDKTests.xctest"
                BlueprintName = "Data4LifeSDKTests"
-               ReferencedContainer = "container:HCSDK.xcodeproj">
+               ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -111,7 +101,7 @@
             BlueprintIdentifier = "839E81381E86DE5300C42094"
             BuildableName = "Example.app"
             BlueprintName = "Example"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -135,7 +125,7 @@
             BlueprintIdentifier = "839E81381E86DE5300C42094"
             BuildableName = "Example.app"
             BlueprintName = "Example"
-            ReferencedContainer = "container:HCSDK.xcodeproj">
+            ReferencedContainer = "container:Data4LifeSDK.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
