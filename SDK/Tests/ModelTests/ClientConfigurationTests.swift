@@ -26,8 +26,7 @@ class ClientConfigurationTests: XCTestCase {
 
         XCTAssertEqual(try config.partnerId(), id, "It should return the correct partner id")
         XCTAssertEqual(try config.redirectURL(), URL(string: redirectUrlString)!, "It should return the correct redirect Url")
-        XCTAssertEqual(try config.environmentHost(), "api-staging.data4life.care", "It should return the correct host")
-        XCTAssertEqual(config.apiBaseUrlString, "https://api-staging.data4life.care", "It should return the correct base url")
+        XCTAssertEqual(config.environmentHost, "api-staging.data4life.care", "It should return the correct host")
         XCTAssertEqual(try config.keychainName(), "de.gesundheitscloud.keychain.api-staging.data4life.care",
                        "It should return the correct keychain name")
     }
@@ -78,13 +77,17 @@ fileprivate extension ClientConfiguration {
                      redirectUrlString: String = "scheme://host.com",
                      keychainGroup: String? = "keychain.group",
                      appGroup: String? = "app.group",
-                     environment: Environment = .staging) -> ClientConfiguration {
+                     environment: Environment = .staging,
+                     envPlatform: Platform = .d4l) -> ClientConfiguration {
         let clientId = [id, platform]
             .compactMap { $0 }
             .joined(separator: "#")
         let config = ClientConfiguration(clientId: clientId, secret: secret,
-                                         redirectURLString: redirectUrlString, keychainGroupId: keychainGroup, appGroupId: appGroup,
-                                         environment: environment)
+                                         redirectURLString: redirectUrlString,
+                                         keychainGroupId: keychainGroup,
+                                         appGroupId: appGroup,
+                                         environment: environment,
+                                         platform: envPlatform)
         return config
     }
 }

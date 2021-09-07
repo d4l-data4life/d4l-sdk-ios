@@ -116,11 +116,14 @@ class SessionServiceTests: XCTestCase {
     func testRequestURLFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
         let env = Environment.staging
+        let platform = Platform.d4l
+        let baseUrl = URL(string: Router.baseUrlString(from: platform, environment: env))!
+
         self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
         let expectedError = Data4LifeSDKError.unsupportedVersionRunning
 
         do {
-            _ = try sessionService.request(url: env.apiBaseURL, method: .get)
+            _ = try sessionService.request(url: baseUrl, method: .get)
             XCTFail("Should throw an error")
         } catch let error as Data4LifeSDKError {
             XCTAssertEqual(error, expectedError)
@@ -146,12 +149,18 @@ class SessionServiceTests: XCTestCase {
     }
 
     func testRequestSuccessSSLPinning() {
-        let env = Environment.staging
-        let session = SessionService(hostname: env.host, sdkBundle: bundle, versionValidator: versionValidator)
+
+        let configuration = ClientConfiguration.test(environment: .staging)
+        let baseUrlString = Router.baseUrlString(from: configuration.platform,
+                                                 environment: configuration.environment)
+        let baseUrl = URL(string: baseUrlString)!
+        let session = SessionService(versionValidator: versionValidator,
+                                     clientConfiguration: configuration,
+                                     sdkBundle: bundle)
 
         let asyncExpectation = expectation(description: "Should return an error")
         do {
-            try session.request(url: env.apiBaseURL, method: .get)
+            try session.request(url: baseUrl, method: .get)
                 .responseData().then(onError: { error in
                     guard case Data4LifeSDKError.network(let sdkError) = error, let afError = sdkError as? AFError else {
                         XCTFail("Wrong error is returned")
@@ -171,12 +180,17 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestFailsSSLPinning() {
         // development cert is not included in the test bundle so requests will fail
-        let env = Environment.development
-        let session = SessionService(hostname: env.host, sdkBundle: bundle, versionValidator: versionValidator)
+        let configuration = ClientConfiguration.test(environment: .development)
+        let baseUrlString = Router.baseUrlString(from: configuration.platform,
+                                                 environment: configuration.environment)
+        let baseUrl = URL(string: baseUrlString)!
+        let session = SessionService(versionValidator: versionValidator,
+                                     clientConfiguration: configuration,
+                                     sdkBundle: bundle)
 
         let asyncExpectation = expectation(description: "Should return an error")
         do {
-            try session.request(url: env.apiBaseURL, method: .get)
+            try session.request(url: baseUrl, method: .get)
                 .responseData()
                 .then { _ in
                     XCTFail("Should return an error")
@@ -194,5 +208,16 @@ class SessionServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5)
+    }
+}
+
+private extension ClientConfiguration {
+    static func test(platform: Platform = .d4l,
+                     environment: Environment = .staging) -> ClientConfiguration {
+        ClientConfiguration(clientId: "test"
+                            , secret: "test",
+                            redirectURLString: "test",
+                            environment: environment,
+                            platform: platform)
     }
 }

@@ -23,19 +23,21 @@ struct ClientConfiguration {
     let keychainGroupId: String?
     let appGroupId: String?
     let environment: Environment
+    let platform: Platform
     let loggerConfiguration: LoggerConfiguration = LoggerConfiguration.console
 
     private let partnerIdDelimiter: Character = "#"
 
     init(clientId: String, secret: String,
          redirectURLString: String, keychainGroupId: String? = nil, appGroupId: String? = nil,
-         environment: Environment) {
+         environment: Environment, platform: Platform) {
         self.clientId = clientId
         self.secret = secret
         self.redirectURLString = redirectURLString
         self.keychainGroupId = keychainGroupId
         self.appGroupId = appGroupId
         self.environment = environment
+        self.platform = platform
     }
 }
 
@@ -64,25 +66,16 @@ extension ClientConfiguration {
         return url
     }
 
-    func environmentHost() throws -> String {
-        guard let host = environment.apiBaseURL.host else {
-            throw Data4LifeSDKError.ClientConfiguration.couldNotBuildBaseUrl
-        }
-        return host
-    }
-
-    var apiBaseUrlString: String {
-        return environment.apiBaseURL.absoluteString
-    }
-
     func keychainName() throws -> String {
-        let host = try environmentHost()
-        return Keychain.baseName + "." + host
+        return Keychain.baseName + "." + environmentHost
+    }
+
+    var environmentHost: String {
+        return Router.baseUrlHost(from: platform, environment: environment)
     }
 }
 
 extension ClientConfiguration {
-
     func validateKeychainConfiguration() throws {
         if keychainGroupId != nil, appGroupId == nil {
             throw Data4LifeSDKError.ClientConfiguration.appGroupsIdentifierMissingForKeychain

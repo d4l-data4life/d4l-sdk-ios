@@ -100,9 +100,9 @@ public class Data4LifeClient {
     /**
      This should only be used for testing purposes by dependency injection.
      */
-    init(container: DIContainer, environment: Environment) {
+    init(container: DIContainer, environment: Environment, platform: Platform) {
 
-        Router.baseUrl = environment.apiBaseURL.absoluteString
+        Router.baseUrl = Router.baseUrlString(from: platform, environment: environment)
 
         self.container = container
         do {
@@ -160,6 +160,7 @@ extension Data4LifeClient {
                                      clientSecret: String,
                                      redirectURLString: String,
                                      environment: Environment,
+                                     platform: Platform = .d4l,
                                      keychainGroupId: String? = nil,
                                      appGroupId: String? = nil) {
 
@@ -168,7 +169,8 @@ extension Data4LifeClient {
                                                       redirectURLString: redirectURLString,
                                                       keychainGroupId: keychainGroupId,
                                                       appGroupId: appGroupId,
-                                                      environment: environment)
+                                                      environment: environment,
+                                                      platform: platform)
 
         do {
             try clientConfiguration.validateKeychainConfiguration()

@@ -13,13 +13,23 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
+@testable import Data4LifeSDK
 
-public enum Platform: String, CaseIterable, Equatable, Hashable {
-    case d4l
-    case s4h
-}
+final class ClientConfigurationFactory {
 
-public enum Environment: CaseIterable, Equatable, Hashable {
-    case development, staging, production, sandbox
+    static func d4lTest(for environment: Environment) -> ClientConfiguration {
+        ClientConfiguration(clientId: "fake-client-id",
+                            secret: "secret",
+                            redirectURLString: "redirect-url",
+                            environment: environment,
+                            platform: .d4l)
+    }
+
+    static func s4hTest(for environment: Environment) -> ClientConfiguration {
+        ClientConfiguration(clientId: "fake-client-id",
+                            secret: "secret",
+                            redirectURLString: "redirect-url",
+                            environment: environment,
+                            platform: .s4h)
+    }
 }

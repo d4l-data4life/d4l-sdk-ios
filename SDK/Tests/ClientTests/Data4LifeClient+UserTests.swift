@@ -44,7 +44,8 @@ class Data4LifeClientUserTests: XCTestCase {
         let container = Data4LifeDITestContainer()
         container.registerDependencies()
         self.client = Data4LifeClient(container: container,
-                                                           environment: environment)
+                                      environment: environment,
+                                      platform: .d4l)
 
         do {
             self.sessionService = try container.resolve()
