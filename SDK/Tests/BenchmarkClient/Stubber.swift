@@ -27,14 +27,14 @@ public class Stubber {
 
     public init() {
         let environment = Environment.staging
-        let platform = Platform.d4l
+        let platform = Platform.D4L
         Router.baseUrl = Router.baseUrlString(from: platform, environment: environment)
 
         let clientConfig = ClientConfiguration(clientId: "xxxxxx",
                                                secret: "xxxxxxx",
                                                redirectURLString: "http://localhost",
                                                environment: environment,
-                                               platform: .d4l)
+                                               platform: .D4L)
 
         Resource.partnerId = try! clientConfig.partnerId()
 
@@ -57,7 +57,7 @@ public class Stubber {
 
         client = Data4LifeClient(container: container,
                                  environment: environment,
-                                 platform: .d4l)
+                                 platform: .D4L)
     }
 }
 

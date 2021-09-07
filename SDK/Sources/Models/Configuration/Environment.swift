@@ -16,8 +16,8 @@
 import Foundation
 
 public enum Platform: String, CaseIterable, Equatable, Hashable {
-    case d4l
-    case s4h
+    case d4l = "D4L"
+    case s4h = "S4H"
 }
 
 public enum Environment: CaseIterable, Equatable, Hashable {

@@ -45,7 +45,7 @@ class Data4LifeClientFhirStu3Tests: XCTestCase {
         container.registerDependencies()
         self.client = Data4LifeClient(container: container,
                                       environment: environment,
-                                      platform: .d4l)
+                                      platform: .D4L)
 
         do {
             self.sessionService = try container.resolve()

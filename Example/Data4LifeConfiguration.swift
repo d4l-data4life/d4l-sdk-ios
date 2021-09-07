@@ -23,6 +23,7 @@ struct Data4LifeConfiguration {
         static let identifier: String = "D4LIdentifier"
         static let secret: String = "D4LSecret"
         static let redirectScheme: String = "D4LRedirectScheme"
+        static let platform: String = "D4LPlatform"
     }
 
     private enum EnvironmentValue: String, CaseIterable {
@@ -54,6 +55,14 @@ extension Data4LifeConfiguration {
         default:
             fatalError("Environment can only be set to: \(EnvironmentValue.allCases.map { $0.rawValue }.joined(separator: ", "))")
         }
+    }
+
+    var platform: Data4LifeSDK.Platform {
+        let stringPlatform: String = infoPlistValue(for: Key.platform)
+        guard let platform = Platform(rawValue: stringPlatform.uppercased()) else {
+            fatalError("Platform can only be set to: \(Platform.allCases.map { $0.rawValue }.joined(separator: ", "))")
+        }
+        return platform
     }
 
     var clientIdentifier: String {

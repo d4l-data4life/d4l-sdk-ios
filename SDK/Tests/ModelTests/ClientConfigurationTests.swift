@@ -78,7 +78,7 @@ fileprivate extension ClientConfiguration {
                      keychainGroup: String? = "keychain.group",
                      appGroup: String? = "app.group",
                      environment: Environment = .staging,
-                     envPlatform: Platform = .d4l) -> ClientConfiguration {
+                     envPlatform: Platform = .D4L) -> ClientConfiguration {
         let clientId = [id, platform]
             .compactMap { $0 }
             .joined(separator: "#")
