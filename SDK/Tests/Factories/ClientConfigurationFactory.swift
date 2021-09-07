@@ -22,7 +22,7 @@ final class ClientConfigurationFactory {
                             secret: "secret",
                             redirectURLString: "redirect-url",
                             environment: environment,
-                            platform: .D4L)
+                            platform: .d4l)
     }
 
     static func s4hTest(for environment: Environment) -> ClientConfiguration {
@@ -30,6 +30,6 @@ final class ClientConfigurationFactory {
                             secret: "secret",
                             redirectURLString: "redirect-url",
                             environment: environment,
-                            platform: .S4H)
+                            platform: .s4h)
     }
 }

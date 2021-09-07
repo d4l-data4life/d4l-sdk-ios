@@ -116,7 +116,7 @@ class SessionServiceTests: XCTestCase {
     func testRequestURLFailsUnsupportedVersion() {
         networkReachabilityManager.isReachableResult = true
         let env = Environment.staging
-        let platform = Platform.D4L
+        let platform = Platform.d4l
         let baseUrl = URL(string: Router.baseUrlString(from: platform, environment: env))!
 
         self.versionValidator.fetchCurrentVersionStatusResult = Just(.unsupported).asyncFuture()
@@ -212,7 +212,7 @@ class SessionServiceTests: XCTestCase {
 }
 
 private extension ClientConfiguration {
-    static func test(platform: Platform = .D4L,
+    static func test(platform: Platform = .d4l,
                      environment: Environment = .staging) -> ClientConfiguration {
         ClientConfiguration(clientId: "test"
                             , secret: "test",
