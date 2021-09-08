@@ -20,6 +20,9 @@ public enum Platform: String, CaseIterable, Equatable, Hashable {
     case s4h = "S4H"
 }
 
-public enum Environment: CaseIterable, Equatable, Hashable {
-    case development, staging, production, sandbox
+public enum Environment: String, CaseIterable, Equatable, Hashable {
+    case development = "DEVELOPMENT"
+    case staging = "STAGING"
+    case production = "PRODUCTION"
+    case sandbox = "SANDBOX"
 }
