@@ -63,7 +63,18 @@ public class Data4LifeClient {
 
     /// Default oauth scopes
     var defaultScopes: [String] {
-        return ["perm:r", "rec:r", "rec:w", "attachment:r", "attachment:w", "user:r", "user:q"]
+        switch Data4LifeClient.clientConfiguration?.platform {
+        case .d4l, .none:
+            return ["perm:r",
+                    "rec:r", "rec:w",
+                    "attachment:r", "attachment:w",
+                    "user:r", "user:q"]
+        case .s4h:
+            return ["perm:r", "perm:w",
+                    "rec:r", "rec:w",
+                    "attachment:r", "attachment:w",
+                    "user:q"]
+        }
     }
 
     /// Singleton instance of client. `configure` needs to be called before first use
