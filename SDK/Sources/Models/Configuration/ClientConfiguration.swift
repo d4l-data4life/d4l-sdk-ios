@@ -31,9 +31,12 @@ struct ClientConfiguration {
     init(clientId: String, secret: String,
          redirectURLString: String, keychainGroupId: String? = nil, appGroupId: String? = nil,
          environment: Environment, platform: Platform) {
+
+        let formattedRedirectURLString =
+            redirectURLString.hasSuffix("://oauth/") ? redirectURLString : redirectURLString + "://oauth/"
         self.clientId = clientId
         self.secret = secret
-        self.redirectURLString = redirectURLString
+        self.redirectURLString = formattedRedirectURLString
         self.keychainGroupId = keychainGroupId
         self.appGroupId = appGroupId
         self.environment = environment

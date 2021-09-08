@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Data4LifeClient.configureWith(clientId: configuration.clientIdentifier,
                                       clientSecret: configuration.clientSecret,
-                                      redirectURLString: configuration.redirectSchemeUrlString + "://oauth/",
+                                      redirectURLString: configuration.redirectSchemeUrlString,
                                       environment: configuration.environment,
                                       platform: configuration.platform)
         setRootViewController(initialViewController)

@@ -25,7 +25,7 @@ class ClientConfigurationTests: XCTestCase {
         let config = ClientConfiguration.test(id: id, redirectUrlString: redirectUrlString, environment: environment)
 
         XCTAssertEqual(try config.partnerId(), id, "It should return the correct partner id")
-        XCTAssertEqual(try config.redirectURL(), URL(string: redirectUrlString)!, "It should return the correct redirect Url")
+        XCTAssertEqual(try config.redirectURL(), URL(string: redirectUrlString + "://oauth/")!, "It should return the correct redirect Url")
         XCTAssertEqual(config.environmentHost, "api-staging.data4life.care", "It should return the correct host")
         XCTAssertEqual(try config.keychainName(), "de.gesundheitscloud.keychain.api-staging.data4life.care",
                        "It should return the correct keychain name")
