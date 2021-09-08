@@ -28,7 +28,7 @@ let licenseText = """
     //
     """
 
-func makeXcConfig(
+func makeXcconfig(
     clientIdentifier: String,
     clientSecret: String,
     redirectScheme: String,
@@ -39,12 +39,11 @@ func makeXcConfig(
     """
     \(licenseText)
 
-    D4L_PLATFORM = \(platform.uppercased())
+    D4L_PLATFORM = \(platform)
     D4L_ID = \(clientIdentifier)
     D4L_SECRET = \(clientSecret)
     D4L_REDIRECT_SCHEME = \(redirectScheme)
-    D4L_ENVIRONMENT = \(environment.uppercased())
-    REDIRECT_SCHEME = \(redirectScheme)
+    D4L_ENVIRONMENT = \(environment)
     
     """
 }
@@ -90,14 +89,14 @@ enum Environment: String, Codable, CaseIterable {
     case sandbox
     case production
     
-    var name: String { rawValue.uppercased() }
+    var name: String { return rawValue.uppercased() }
 }
 
 enum Platform: String, Codable, CaseIterable {
     case d4l
     case s4h
 
-    var name: String { rawValue.uppercased() }
+    var name: String { return rawValue.uppercased() }
 }
 
 
@@ -144,7 +143,7 @@ func main() {
         exit(EXIT_FAILURE)
     }
 
-    let xcconfig = makeXcConfig(
+    let xcconfig = makeXcconfig(
         clientIdentifier: config.id,
         clientSecret: config.secret,
         redirectScheme: config.redirectScheme,
