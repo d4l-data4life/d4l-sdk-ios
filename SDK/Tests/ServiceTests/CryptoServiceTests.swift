@@ -115,7 +115,7 @@ class CryptoServiceTests: XCTestCase {
 
 struct KeyFactory {
     static func createKey(_ type: KeyType = .common) -> Key {
-        let exchangeFormat = try! KeyExhangeFactory.create(type: type)
+        let exchangeFormat = try! KeyExchangeFactory.create(type: type)
         return try! Key.generate(keySize: exchangeFormat.size, algorithm: exchangeFormat.algorithm, type: type)
     }
 
