@@ -93,13 +93,13 @@ final class CryptoService: CryptoServiceType {
 
     // MARK: Helpers around symmetric crypto operations that handle IV for easier usage
     func encrypt(data: Data, key: Key) throws -> Data {
-        let iv = ivGenerator.randomIVData(of: key.ivSize)
+        let iv = ivGenerator.randomIVData(of: key.defaultIvSize)
         let encryptedData = try Data4LifeCryptor.symEncrypt(key: key, data: data, iv: iv)
         return iv + encryptedData
     }
 
     func decrypt(data: Data, key: Key) throws -> Data {
-        let byteCount = key.ivSize
+        let byteCount = key.defaultIvSize
         guard data.byteCount > byteCount  else {
             throw Data4LifeSDKError.invalidEncryptedDataSize
         }
@@ -121,22 +121,25 @@ final class CryptoService: CryptoServiceType {
 
     // MARK: GCKey related methods
     func generateGCKey(_ type: KeyType) throws -> Key {
-        let keyExchangeFormat = try KeyExhangeFactory.create(type: type)
+        let keyExchangeFormat = try KeyExchangeFactory.create(type: type)
         let options = KeyOptions(size: keyExchangeFormat.size)
-        return try Data4LifeCryptor.generateSymKey(algorithm: keyExchangeFormat.algorithm, options: options, type: type)
+        return try Data4LifeKeyGenerator.generateSymKey(algorithm: keyExchangeFormat.algorithm,
+                                                        options: options,
+                                                        type: type)
     }
 
     // MARK: GCKeyPair related methods
     func fetchOrGenerateKeyPair() throws -> KeyPair {
         let type: KeyType = .appPrivate
-        let keyExchangeFormat = try KeyExhangeFactory.create(type: type)
+        let keyExchangeFormat = try KeyExchangeFactory.create(type: type)
         let algorithm = keyExchangeFormat.algorithm
         let options = KeyOptions(size: keyExchangeFormat.size, tag: keyPairTag)
 
         do {
             return try KeyPair.load(tag: keyPairTag, algorithm: algorithm)
         } catch {
-            return try Data4LifeCryptor.generateAsymKeyPair(algorithm: algorithm, options: options)
+            return try Data4LifeKeyGenerator.generateAsymKeyPair(algorithm: algorithm,
+                                                                 options: options)
         }
     }
 
@@ -149,7 +152,7 @@ final class CryptoService: CryptoServiceType {
         guard let data = Data(base64Encoded: string) else {
             throw Data4LifeSDKError.couldNotReadBase64EncodedData
         }
-        let blankIV = [UInt8](repeating: 0x00, count: key.ivSize).asData
+        let blankIV = [UInt8](repeating: 0x00, count: key.defaultIvSize).asData
         let decryptedData = try Data4LifeCryptor.symDecrypt(key: key, data: data, iv: blankIV)
         guard let decryptedString = String(data: decryptedData, encoding: .utf8) else {
             throw Data4LifeSDKError.invalidDataNotValidUTF8String
@@ -161,7 +164,7 @@ final class CryptoService: CryptoServiceType {
         guard let data = string.data(using: .utf8) else {
             throw Data4LifeSDKError.invalidDataNotValidUTF8String
         }
-        let blankIV = [UInt8](repeating: 0x00, count: key.ivSize).asData
+        let blankIV = [UInt8](repeating: 0x00, count: key.defaultIvSize).asData
         let encryptedData: Data = try Data4LifeCryptor.symEncrypt(key: key, data: data, iv: blankIV)
         let encryptedString = encryptedData.base64EncodedString()
         return encryptedString
