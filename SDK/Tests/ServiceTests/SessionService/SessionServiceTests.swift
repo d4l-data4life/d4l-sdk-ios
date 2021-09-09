@@ -1,4 +1,4 @@
-//  Copyright (c) 2020 D4L data4life gGmbH
+//  Copyright (c) 2021 D4L data4life gGmbH
 //  All rights reserved.
 //  
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
@@ -150,7 +150,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestSuccessSSLPinning() {
 
-        let configuration = ClientConfiguration.test(environment: .staging)
+        let configuration = ClientConfigurationFactory.d4lTest(for: .staging)
         let baseUrlString = Router.baseUrlString(from: configuration.platform,
                                                  environment: configuration.environment)
         let baseUrl = URL(string: baseUrlString)!
@@ -180,7 +180,7 @@ class SessionServiceTests: XCTestCase {
 
     func testRequestFailsSSLPinning() {
         // development cert is not included in the test bundle so requests will fail
-        let configuration = ClientConfiguration.test(environment: .development)
+        let configuration = ClientConfigurationFactory.d4lTest(for: .development)
         let baseUrlString = Router.baseUrlString(from: configuration.platform,
                                                  environment: configuration.environment)
         let baseUrl = URL(string: baseUrlString)!
@@ -208,16 +208,5 @@ class SessionServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5)
-    }
-}
-
-private extension ClientConfiguration {
-    static func test(platform: Platform = .d4l,
-                     environment: Environment = .staging) -> ClientConfiguration {
-        ClientConfiguration(clientId: "test"
-                            , secret: "test",
-                            redirectURLString: "test",
-                            environment: environment,
-                            platform: platform)
     }
 }

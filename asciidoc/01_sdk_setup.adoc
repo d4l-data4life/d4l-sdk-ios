@@ -55,7 +55,7 @@ Data4Life can deprecate or unsupport old SDK versions that aren't anymore secure
 === Software requirements
 The {app-plat} SDK has the following software requirements:
 
-* Xcode 12.4 or later
+* Xcode 12.5 or later
 * iOS 13.0 or later
 * Swift 5.3 or later
 
@@ -67,9 +67,6 @@ Use the following for dependency management for the {app-plat} SDK:
 * *Swift Package Manager* is a dependency manager from Apple included in XCode.
 It builds your dependencies and provides you with binary frameworks while you retain control over your project structure and setup.
 
-* *CocoaPods* is a dependency manager for Swift and Objective-C Cocoa projects.
-The file with the specification that describes the dependencies of the targets of one or more Xcode projects is called `Podfile`.
-
 ==== Swift Package Manager
 
 To install with Swift package manager, select your project’s Swift Packages tab, and add our repository url, either as ssh or https url:
@@ -80,36 +77,17 @@ OR
 git@github.com:d4l-data4life/d4l-sdk-ios.git
 ----
 
-In the next step, select the latest version, and then import both the `Data4LifeCrypto` and `Data4LifeSDK` libraries in your target.
-
-==== CocoaPods
-
-To add a private CocoaPods specs repository to the `Podfile`, use the following:
-
-[source, ruby]
-----
-source 'https://github.com/d4l-data4life/d4l-cocoapods-specs.git'
-----
-
-To add the framework to the `Podfile`, use the following:
-
-[source, ruby]
-----
-pod 'Data4LifeSDK'
-----
-
-For more info, see icon:eye[] the https://github.com/d4l-data4life/d4l-cocoapods-specs/blob/master/README.md[CocoaPods specs repository] readme file.
+In the next step, select the latest version, and then import the `Data4LifeSDK` libraries in your target.
 
 ==== Dependencies of the SDK
 
 The {app-plat} SDK has the following dependencies:
 
 * https://github.com/Alamofire/Alamofire[Alamofire] icon:external-link[] – HTTP networking library written in Swift
-* https://github.com/freshOS/then[then] icon:external-link[] – Promises library for Swift
 * https://github.com/openid/AppAuth-iOS[AppAuth] icon:external-link[] – iOS and macOS SDK for communicating with OAuth 2.0 and OpenID Connect providers
-* https://github.com/SVProgressHUD/SVProgressHUD[SVProgressHUD] icon:external-link[] – progress head-up display (HUD) to display the progress of an ongoing task
 * https://github.com/d4l-data4life/d4l-fhir-ios[Data4LifeFHIR] icon:external-link[] – {compname} minimal FHIR standard models and data types for iOS
 * https://github.com/d4l-data4life/d4l-utils-ios[Data4LifeSDKUtils] icon:external-link[] – {compname} Set of private utils used in data4Life Frameworks
+* https://github.com/d4l-data4life/d4l-crypto-ios[Data4LifeCrypto] icon:external-link[] – {compname} Set of private utils used in data4Life Frameworks
 
 === Setting up the SDK
 
