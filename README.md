@@ -6,7 +6,7 @@ Pure Swift API client for HealthCloud that automatically handles encryption
 
 ## Usage
 ### Requirements
-* Xcode 12
+* Xcode 12.5
 * iOS 13.0+
 * Swift 5.3+
 
@@ -40,7 +40,10 @@ In the next step, select the latest version, and then import the `Data4LifeSDK` 
 
 === Config files
 
-Before you are able to run tests on the SDK or run the example app, you need to create and add a `d4l-example-app-config.json` file in the project root folder with credentials (which can only be obtained by contacting us).
+Before you are able to run tests on the SDK or run the example app, you need to add a `d4l-example-app-config.json` file in the project root folder with credentials (which can only be obtained by contacting us). 
+
+NOTE: For the Smart4Health domain, the file needs to be called `s4h-example-app-config.json` instead.
+
 NOTE: The CI expects this configuration from an environment variable stored in the GitHub secret: `D4L_EXAMPLE_CONFIG_IOS`
 
 The configuration file has the following structure:
@@ -48,12 +51,12 @@ The configuration file has the following structure:
 ```
 // d4l-example-app-config.json
 {
-  "platform": "d4l",
+  "platform": "d4l", // or s4h
   "configs": {
     "DEVELOPMENT": {
       "id": "{CLIENT_ID}",
       "secret": "{CLIENT_SECRET}",
-      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}"
+      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}" //without the "://oauth" part
     },
     "SANDBOX": {
       "id": "{CLIENT_ID}",
@@ -74,8 +77,13 @@ The configuration file has the following structure:
 }
 ```
 
-In order for the example app to choose which environment to use, you need to change the build setting `D4L_CONFIGURATION` on the Example target, and set any of the following values:
-DEVELOPMENT, SANDBOX, STAGING, PRODUCTION
+In order to choose which environment to use, you need to generate one xcconfig file by running the following swift script:
+
+```sh
+./config-generator.swift [d4l|s4h] [development|staging|production|sandbox]
+```
+
+If the config file is in place and the correspondent platform is there, file will be generated.
 
 ### Example application
 Open `Data4LifeSDK.xcodeproj` and run the `Example` target.

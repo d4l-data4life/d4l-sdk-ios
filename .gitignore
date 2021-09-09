@@ -7,6 +7,7 @@ build/
 DerivedData/
 vendor
 d4l-example-app-config.json
+s4h-example-app-config.json
 generated
 xcbuild
 Data4LifeSDK-xcframework*

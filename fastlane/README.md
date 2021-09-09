@@ -42,11 +42,6 @@ Package and release framework
  * **`skip_git_pull`**: Skips pulling the git remote. Defaults to false
 
  * **`is_prerelease`**: Marks GitHub release as Pre-release. Defaults to false
-### ios test_podspec
-```
-fastlane ios test_podspec
-```
-Test podspec integration
 ### ios build_sdk_xcframework
 ```
 fastlane ios build_sdk_xcframework
@@ -82,16 +77,6 @@ Check license headers
 fastlane ios update_readme_versions
 ```
 Update version numbers in README.md
-### ios update_sdk_podspec_version
-```
-fastlane ios update_sdk_podspec_version
-```
-Update Data4LifeSDK podspec version
-### ios push_sdk_podspec
-```
-fastlane ios push_sdk_podspec
-```
-Push new Data4LifeSDK podspec files to private spec repo
 ### ios generate_docs
 ```
 fastlane ios generate_docs

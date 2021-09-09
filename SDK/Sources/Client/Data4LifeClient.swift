@@ -63,7 +63,18 @@ public class Data4LifeClient {
 
     /// Default oauth scopes
     var defaultScopes: [String] {
-        return ["perm:r", "rec:r", "rec:w", "attachment:r", "attachment:w", "user:r", "user:q"]
+        switch Data4LifeClient.clientConfiguration?.platform {
+        case .d4l, .none:
+            return ["perm:r",
+                    "rec:r", "rec:w",
+                    "attachment:r", "attachment:w",
+                    "user:r", "user:q"]
+        case .s4h:
+            return ["perm:r", "perm:w",
+                    "rec:r", "rec:w",
+                    "attachment:r", "attachment:w",
+                    "user:r", "user:q"]
+        }
     }
 
     /// Singleton instance of client. `configure` needs to be called before first use
@@ -100,9 +111,9 @@ public class Data4LifeClient {
     /**
      This should only be used for testing purposes by dependency injection.
      */
-    init(container: DIContainer, environment: Environment) {
+    init(container: DIContainer, environment: Environment, platform: Platform) {
 
-        Router.baseUrl = environment.apiBaseURL.absoluteString
+        Router.baseUrl = Router.baseUrlString(from: platform, environment: environment)
 
         self.container = container
         do {
@@ -160,6 +171,7 @@ extension Data4LifeClient {
                                      clientSecret: String,
                                      redirectURLString: String,
                                      environment: Environment,
+                                     platform: Platform = .d4l,
                                      keychainGroupId: String? = nil,
                                      appGroupId: String? = nil) {
 
@@ -168,7 +180,8 @@ extension Data4LifeClient {
                                                       redirectURLString: redirectURLString,
                                                       keychainGroupId: keychainGroupId,
                                                       appGroupId: appGroupId,
-                                                      environment: environment)
+                                                      environment: environment,
+                                                      platform: platform)
 
         do {
             try clientConfiguration.validateKeychainConfiguration()

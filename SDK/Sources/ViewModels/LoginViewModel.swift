@@ -42,10 +42,10 @@ class LoginViewModel {
 
             return combineAsync {
                 try combineAwait(self.client.oAuthService.presentLogin(with: userAgent,
-                                                                     publicKey: encodedPublicKey,
-                                                                     scopes: scopes,
-                                                                     animated: true,
-                                                                     authStateType: AuthState.self))
+                                                                       publicKey: encodedPublicKey,
+                                                                       scopes: scopes,
+                                                                       animated: true,
+                                                                       authStateType: AuthState.self))
                try combineAwait(self.client.userService.fetchUserInfo())
             }
         } catch {
