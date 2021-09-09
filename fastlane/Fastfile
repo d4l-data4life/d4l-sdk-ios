@@ -2,149 +2,176 @@ default_platform :ios
 
 repository = "d4l-data4life/d4l-sdk-ios"
 project = "Data4LifeSDK"
-sdkScheme = "Data4LifeSDK"
-sdkName = "Data4LifeSDK"
-
+scheme = "Data4LifeSDK"
+name = "Data4LifeSDK"
+buildPath = "build/DerivedData"
+hostAppScheme = "Example"
 device = "iPhone 12"
 
 platform :ios do
   desc "Run unit tests and upload code coverage"
   lane :test do
     scan(
-      scheme: "Example",
-      derived_data_path: "build/DerivedData",
+      scheme: hostAppScheme,
+      derived_data_path: buildPath,
       devices: device,
       code_coverage: true,
       clean: true
     )
   end
 
-  desc "Package and release framework"
+  desc "Lint sources using swiftlint and check the license headers"
+  lane :lint do |options|
+    autocorrect = options[:autocorrect] == true
+
+    swiftlint(
+      mode: autocorrect ? :autocorrect : :lint,
+      config_file: ".swiftlint.yml",
+      strict: !autocorrect
+    )
+    lint_headers(autocorrect)
+  end
+
+  desc "Check license headers"
+  lane :lint_headers do |options|
+    autocorrect = options[:autocorrect] == true
+    files = Dir.chdir("..") do
+      files = Dir.glob('{SDK/Sources,SDK/Tests,Example}/**/*.{swift,h,cpp,m}')
+    end
+    license = "./LICENSE"
+
+    lint_source_for_license_headers(
+      license: license,
+      files: files,
+      autocorrect: autocorrect,
+      strict: !autocorrect
+    )
+  end
+
+  desc "Prepare release"
   desc "#### Options"
   desc " * **`version`** (required): The new version of the framework"
   desc " * **`api_token`** (required): Github API token"
-  desc " * **`allow_dirty_branch`**: Allows the git branch to be dirty before continuing. Defaults to false"
-  desc " * **`remote`**: The name of the git remote. Defaults to `origin`. (`DEPLOY_REMOTE`)"
-  desc " * **`allow_branch`**: The name of the branch to build from. Defaults to `master`. (`DEPLOY_BRANCH`)"
-  desc " * **`skip_git_pull`**: Skips pulling the git remote. Defaults to false"
-  desc " * **`is_prerelease`**: Marks GitHub release as Pre-release. Defaults to false"
-  lane :release_framework do | options |
-    if options[:allow_dirty_branch] != true
-      ensure_git_status_clean
-    end
-
+  lane :prepare_release do | options |
     if !options[:version]
-      raise "No version specified!".red
+      UI.user_error!("Please add required parameter version (eg. version:\"1.0.0\"")
     end
 
     if !options[:api_token]
-      raise "No api_token specified!".red
+      UI.user_error!("Please add required parameter version (eg. api_token:\"xxxxxxxxx\"")
     end
 
     version = options[:version]
-    is_prerelease = options[:is_prerelease] ||= false
+    apiToken = options[:api_token]
+    remote = "origin"
+    changelog = parseAndCheckChangelog("../CHANGELOG.adoc", version)
+    archivePath = sdkFrameworkArchivePath(version)
 
-    remote = options[:remote] ? options[:remote] : (ENV["DEPLOY_REMOTE"] ? ENV["DEPLOY_REMOTE"] : "origin")
-    allowed_branch = options[:allow_branch] ? options[:allow_branch] : (ENV["DEPLOY_BRANCH"] ? ENV["DEPLOY_BRANCH"] : "release/#{version}")
-    ensure_git_branch(branch: allowed_branch)
+    unless changelog 
+      UI.user_error!("Please add all changes of the version to the CHANGELOG.adoc file")
+    end 
 
-    if options[:skip_git_pull] != true
-      sh("git pull #{remote} #{allowed_branch}")
-    end
+    update_plist_versions(version: version)
+    update_readme_versions(version: version)
+    update_badge(version: version)
+    generate_docs(version: version)
+    build_core(version: version)
+    
+    Dir.chdir("..") do
+      upload_archive_to_s3(repository, archivePath)
+      update_swift_package_file(repository, archivePath)
+    end 
 
-    # Parse changelog data
-    changelog_path = options[:changelog_path] ? options[:changelog_path] : "../CHANGELOG.md"
-    changelog_data = File.read(changelog_path)
-    # Try to find all markdown headers and split
-    changelog_sections = changelog_data.split(/\#{2,3}\s/)
-    # Look out for new section of the newest version
-    current_changelog_index = changelog_sections.index { |h| h.start_with?("[#{version}]")}
+    # Ask for confirmation for github
+    if prompt(text: "#{version} has been prepped for release. If you have any additional changes you would like to make to the README or CHANGELOG, please do those before continuing. Would you like to commit, and push #{version} to #{remote}?".green, boolean: true, ci_input:"y")
 
-    unless current_changelog_index
-      UI.error("Please add all changes of the version to the CHANGELOG.md file")
-    end
-
-    # Get all split for this version and combine them again to one text
-    changelog_header_indices = changelog_sections.each_with_index.select {|s, _| s.match(/^\[([0-9]+)\.([0-9]+)\.([0-9]+)\-?([0-9a-zA-Z]*)\.?([0-9a-zA-Z]*)\]/) }.map(&:last)
-    next_changelog_index = changelog_header_indices.index { |h| h == current_changelog_index } + 1
-    changelog = "### " + changelog_sections[current_changelog_index + 1...changelog_header_indices[next_changelog_index]].join("### ")
-
-    # Ask for confirmation
-    if prompt(text: "#{version} has been prepped for release. If you have any additional changes you would like to make to the README or CHANGELOG, please do those before continuing. Would you like to commit, tag, and push #{version} to #{remote}?".green, boolean: true, ci_input:"y")
-
-      # Update version in different places
-      update_plist_versions(sdk_version: version)
-      update_readme_versions(version: version)
-
-      # Generate new documentation using Asciidoc
-      generate_docs(version: version)
-
-      # Add and commit all of the generated files
+      # Push all generated/modified files 
       git_add
       git_commit(
         path: ".",
         message: "Preparing for the #{version} release"
       )
 
-      # Build fat library for GitHub release page
-      build_sdk_xcframework(version: version)
-
-      # Push latest changes
       push_to_git_remote(
         remote: remote,
         tags: false
       )
 
-      # Create and push new version tag
-      add_git_tag(tag: "#{version}")
-      push_git_tags(tag: "#{version}")
-
-      # Post new release to GitHub
-      archiveSDKPath = sdkFrameworkArchivePath(version)
-
-      # Post new release to GitHub
-      gh_release(
+      # Make new draft release to GitHub
+      create_github_draft(
         version: version,
-        api_token:options[:api_token],
+        api_token: apiToken,
         changelog: changelog,
-        is_prerelease: is_prerelease,
-        framework: archiveSDKPath
+        archive_path: archivePath
+      )
+    else
+      UI.message("When finished, commit your changes.")
+    end
+  end
+
+  desc "Prepare snapshot"
+  lane :prepare_snapshot do 
+ 
+    snapshotName = current_git_branch().split("/").last 
+    remote = "origin"
+    changelog = "### #{snapshotName}"
+    archivePath = sdkFrameworkArchivePath(version)
+
+    build_core(version: snapshotName)
+    
+    Dir.chdir("..") do
+      upload_archive_to_s3(repository, archivePath)
+      update_swift_package_file(repository, archivePath)
+    end 
+
+    # Ask for confirmation for github
+    if prompt(text: "#{snapshotName} has been prepped for snapshot-release. Would you like to commit, and push #{snapshotName} to #{remote}?".green, boolean: true, ci_input:"y")
+
+      # Push all generated/modified files 
+      git_add
+      git_commit(
+        path: ".",
+        message: "Preparing for the #{snapshotName} release"
       )
 
+      push_to_git_remote(
+        remote: remote,
+        tags: false
+      )
     else
-      Helper.log.info "When finished, commit your changes.".red
+      UI.message("When finished, commit your changes.")
     end
   end
 
   desc "Build xcframework for distribution"
-  lane :build_sdk_xcframework do |options|
+  lane :build_core do |options|
     if options[:version] == nil
         raise "Missing sdk version".red
     end
 
-    sdkFrameworkPath = "#{sdkName}.xcframework"
-    build_project_xcframework(schemeName: sdkScheme,
-                              frameworkName: sdkName,
-                              outputPath: sdkFrameworkPath)
+    frameworkPath = "#{name}.xcframework"
+    build_xcframework(schemeName: scheme,
+                      frameworkName: name,
+                      outputPath: frameworkPath)
 
     Dir.chdir("..") do
       root = Dir.pwd
       configuration = "Release"
       buildPath = "xcbuild"
 
-      archiveSDKPath = sdkFrameworkArchivePath(options[:version])
+      archivePath = sdkFrameworkArchivePath(options[:version])
 
-      if File.exist?(archiveSDKPath)
-        sh "rm #{archiveSDKPath}"
+      if File.exist?(archivePath)
+        sh "rm #{archivePath}"
       end
 
-        sh "zip -r #{archiveSDKPath} #{sdkFrameworkPath}"
-        sh "rm -rf #{sdkFrameworkPath}"
+        sh "zip -r #{archivePath} #{frameworkPath}"
+        sh "rm -rf #{frameworkPath}"
     end
   end
 
   desc "Build any project xcframework"
-  lane :build_project_xcframework do |options|
+  lane :build_xcframework do |options|
     if options[:schemeName] == nil
         raise "Missing scheme name".red
     end
@@ -181,53 +208,52 @@ platform :ios do
     end
   end
 
-  desc "Upload to a github release"
-  lane :gh_release do |options|
+  desc "Upload to a github release draft"
+  lane :create_github_draft do |options|
 
     if options[:version] == nil
-        raise "Missing release version".red
+      UI.user_error!("Please add required parameter version (eg. version:\"1.0.0\"")
     end
 
     if options[:api_token] == nil
-        raise "Missing api token".red
+      UI.user_error!("Please add required parameter api_token (eg. api_token:\"xxxxxxxxxx\"")
     end
-
-    if options[:sdk_framework] == nil
-        raise "Missing asset".red
-    end
-
-    isPrerelease = options[:is_prerelease]
-    if isPrerelease == nil
-        isPrerelease = true
+    
+    if options[:archive_path] == nil
+      UI.user_error!("Please add required parameter archive_path (eg. archive_path:\"xxxxxxxxxx\"")
     end
 
     changelog = options[:changelog]
     if changelog == nil
-       changelog = "Pre-release"
+       changelog = "### #{version}"
     end
+
+    version = options[:version]
+    apiToken = options[:api_token]
+    archivePath = options[:archive_path]
 
     set_github_release(
       repository_name: repository,
-      api_token: options[:api_token],
-      name: "#{options[:version]}",
-      tag_name: options[:version],
+      api_token: apiToken,
+      name: version,
+      tag_name: version,
       description: changelog,
-      is_prerelease: isPrerelease,
-      upload_assets: [options[:sdk_framework]]
+      is_draft: true,
+      upload_assets: [archivePath]
     )
   end
 
-  desc "Update AppStore and GCSDK version number in project plists"
+  desc "Update version number in project plists"
   lane :update_plist_versions do |options|
-    if options[:sdk_version] == nil
-        raise "Missing SDK version".red
+    if options[:version] == nil
+       UI.user_error!("Please add required parameter version (eg. version:\"1.0.0\"")
     end
 
-    sdk_version = options[:sdk_version]
-    app_store_version = sdk_version.split("-").first
+    version = options[:version]
+    numberOnlyVersion = version.split("-").first.delete_prefix("v")
 
-    if app_store_version.match(/\A\d+(?:\.\d+)*\z/) == nil
-        raise "Could not generate proper AppStore version format".red
+    if numberOnlyVersion.match(/\A\d+(?:\.\d+)*\z/) == nil
+        raise "Could not generate proper version format".red
     end
 
     plists = ["SDK/Sources/Info.plist", "SDK/Tests/Info.plist"]
@@ -236,69 +262,41 @@ platform :ios do
         xcodeproj: "#{project}.xcodeproj",
         plist_path: path,
         block: proc do |plist|
-          plist["CFBundleShortVersionString"] = app_store_version
-        end
-      )
-
-      update_info_plist(
-        xcodeproj: "#{project}.xcodeproj",
-        plist_path: "SDK/Sources/Data4LifeSDK-Version.plist",
-        block: proc do |plist|
-          plist["SDKVersion"] = sdk_version
+          plist["CFBundleShortVersionString"] = numberOnlyVersion
         end
       )
     }
   end
 
-  desc "Lint sources using swiftlint and check the license headers"
-  lane :lint do |options|
-    autocorrect = options[:autocorrect] == true
-
-    swiftlint(
-      mode: autocorrect ? :autocorrect : :lint,
-      config_file: ".swiftlint.yml",
-      strict: !autocorrect
-    )
-    lint_headers(autocorrect)
-  end
-
-  desc "Check license headers"
-  lane :lint_headers do |options|
-    autocorrect = options[:autocorrect] == true
-    files = Dir.chdir("..") do
-      files = Dir.glob('{SDK/Sources,SDK/Tests,Example}/**/*.{swift,h,cpp,m}')
-    end
-    license = "./LICENSE"
-
-    lint_source_for_license_headers(
-      license: license,
-      files: files,
-      autocorrect: autocorrect,
-      strict: !autocorrect
-    )
-  end
-
-  desc "Update version numbers in README.md"
+  desc "Update version numbers in README.adoc"
   lane :update_readme_versions do | options |
     if !options[:version]
       raise "No version specified!".red
     end
 
-    readme_path = "../README.md"
-    sdk_version = options[:version]
-    app_store_version = sdk_version.split("-").first
+    version = options[:version]
+    path = "../README.adoc"
+    numberOnlyVersion = version.split("-").first.delete_prefix("v")
 
-    if app_store_version.match(/\A\d+(?:\.\d+)*\z/) == nil
-        raise "Could not generate proper AppStore version format".red
+    if numberOnlyVersion.match(/\A\d+(?:\.\d+)*\z/) == nil
+        raise "Could not generate proper number only version format".red
     end
 
-    readme_contents = File.read(readme_path)
-   
-    updated = readme_contents.gsub(/v([0-9]+)\.([0-9]+)\.([0-9]+)-/, "v#{app_store_version}-")
-    # Update GitHub pages version number (pattern: `/1.0.0)`)
-    updated = updated.gsub(/\/([0-9]+)\.([0-9]+)\.([0-9]+)\)/, "\/#{app_store_version}\)")
-    File.write(readme_path, updated)
+    readmeData = File.read(path)
+    readmeDataUpdated = readmeData.gsub(/ [0-9]+\.[0-9]+\.[0-9]+/, " #{numberOnlyVersion}")
+    File.write(path, readmeDataUpdated)
   end
+
+  desc "Update readme badge"
+  lane :update_badge do |options|
+    if options[:version] == nil
+      UI.user_error!("Please add required parameter version (eg. version:\"1.0.0\"")
+    end
+    
+    Dir.chdir("..") do
+      sh "curl https://img.shields.io/badge/Release-#{options[:version]}-blueviolet.svg -s -o assets/images/badge-release-latest.svg"
+    end 
+  end 
 
   desc "Generate docs per version using Asciidoctor"
   lane :generate_docs do | options |
@@ -321,4 +319,50 @@ platform :ios do
   def sdkFrameworkArchivePath(version)
      return "Data4LifeSDK-xcframework-#{version}.zip"
   end
+
+  def parseAndCheckChangelog(path, version)
+
+    changelogData = File.read(path)
+
+    changelogVersionsSeparator = "== link:{link-repository}/releases/tag/v"
+    changelogVersion = version.delete_prefix("v")
+    changelogSections = changelogData.split(changelogVersionsSeparator)
+    currentVersionSectionIndex = changelogSections.index { |section| section.include?("[#{changelogVersion}]")}
+
+    unless currentVersionSectionIndex
+      return nil
+    end
+
+    changelog = "## #{version}\n" + changelogSections[currentVersionSectionIndex].lines[1..-1].join
+    return changelog.gsub("=", "#")
+  end
+
+  def update_swift_package_file(repository, path)
+    sh "swift package compute-checksum #{path}" do |status, result| 
+
+      checksum = result.chop
+      url = "https://d4l-ios-artifact-repository.s3.eu-central-1.amazonaws.com/#{s3_key(repository, path)}"
+
+      packageSwiftData = File.read("Package.swift")
+      updatedPackageSwiftData = packageSwiftData.gsub(/url: \"[a-zA-Z0-9:\-\/_.,\\()]+xcframework[a-zA-Z0-9:\-\/_.,\\()]+\"/, "url: \"#{url}\"")
+      updatedPackageSwiftData = updatedPackageSwiftData.gsub(/checksum: \"[a-zA-Z0-9]+\"/, "checksum: \"#{checksum}\"")
+    
+      File.write("Package.swift", updatedPackageSwiftData)
+    end
+  end 
+
+  def upload_archive_to_s3(repository, path)
+    sh "aws s3api put-object --bucket d4l-ios-artifact-repository --key #{s3_key(repository, path)} --body #{path}"
+  end 
+
+  def s3_key(repository, path)
+    return "#{repository}/#{path}"
+  end
+
+  def current_git_branch()
+    sh "git branch --show-current" do |status, result|
+      return result.chop
+    end 
+  end
+  
 end

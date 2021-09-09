@@ -25,7 +25,7 @@ endif::[]
         <h3>Data4Life Crypto iOS</h3>
     </p>
     <p><!-- PROJECT DESCRIPTION -->
-        Swift framework for handling all of the crypto operation for the Data4Life iOS frameworks.
+        Pure Swift API client for PHDP that automatically handles encryption
     </p>
     <p><!-- PROJECT DOCUMENTATION -->
         <a href="README.adoc"><strong>Explore the docs »</strong></a>
@@ -45,6 +45,9 @@ endif::[]
         <a>
             <img src="assets/images/badge-platform-support.svg" alt="Platform"/>
         </a>
+        <a>
+            <img src="assets/images/badge-manager-support.svg" alt="Manager"/>
+        </a>
         <a href="LICENSE">
             <img src="assets/images/badge-license.svg" alt="License"/>
         </a>
@@ -58,7 +61,7 @@ toc::[]
 
 == About The Project
 
-Swift framework for handling all of the crypto operation for the Data4Life iOS frameworks.
+Pure Swift API client for PHDP that automatically handles encryption.
 
 == Installation
 
