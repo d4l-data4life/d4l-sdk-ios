@@ -194,7 +194,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 == Documentation 
 
-Further documentation on how to use it can be found link:docs/1.15.0/index.html[here]
+Further documentation on how to use it can be found link:docs/v1.15.0/index.html[here]
 
 == Changelog
 
