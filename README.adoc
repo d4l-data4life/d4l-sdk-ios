@@ -1,0 +1,220 @@
+= Data4Life Core iOS SDK
+:library_version: 1.15.0
+:doctype: article
+:!showtitle:
+:toc: macro
+:toclevels: 2
+:toc-title:
+:icons: font
+:imagesdir: assets/images
+:link-repository: https://github.com/d4l-data4life/d4l-sdk-ios
+ifdef::env-github[]
+:warning-caption: :warning:
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+endif::[]
+
+++++
+<div align="center">
+    <p><!-- PROJECT LOGO -->
+        <a><img src="assets/images/d4l-logo.svg" width="150"/></a>
+    </p>
+    <p><!-- PROJECT TITLE -->
+        <h3>Data4Life Crypto iOS</h3>
+    </p>
+    <p><!-- PROJECT DESCRIPTION -->
+        Swift framework for handling all of the crypto operation for the Data4Life iOS frameworks.
+    </p>
+    <p><!-- PROJECT DOCUMENTATION -->
+        <a href="README.adoc"><strong>Explore the docs »</strong></a>
+    </p>
+    <p><!-- PROJECT ISSUES/FEATURES -->
+        <a href="https://github.com/d4l-data4life/d4l-sdk-ios/issues">Report Bug</a>
+        ·
+        <a href="https://github.com/d4l-data4life/d4l-sdk-ios/issues">Request Feature</a>
+    </p>
+    <p><!-- PROJECT BADGES see badges.adoc how to change them -->
+        <a href="https://github.com/d4l-data4life/d4l-sdk-ios/releases">
+            <img src="assets/images/badge-release-latest.svg" alt="Latest version"/>
+        </a>
+        <a href="https://github.com/d4l-data4life/d4l-sdk-ios/actions">
+            <img src="https://github.com/d4l-data4life/d4l-sdk-ios/actions/workflows/pr-test.yml/badge.svg" alt="Build Status"/>
+        </a>
+        <a>
+            <img src="assets/images/badge-platform-support.svg" alt="Platform"/>
+        </a>
+        <a href="LICENSE">
+            <img src="assets/images/badge-license.svg" alt="License"/>
+        </a>
+    </p>
+</div>
+++++
+
+[discrete]
+=== Table Of Contents
+toc::[]
+
+== About The Project
+
+Swift framework for handling all of the crypto operation for the Data4Life iOS frameworks.
+
+== Installation
+
+=== Swift Package Manager
+
+To install with Swift package manager, select your project’s Swift Packages tab, and add our repository url, either as ssh or https url:
+
+[source, terminal]
+----
+https://github.com/d4l-data4life/d4l-sdk-ios.git
+----
+
+OR
+
+[source, terminal]
+----
+git@github.com:d4l-data4life/d4l-sdk-ios.git
+----
+
+In the next step, select the latest version, and then import the `Data4LifeSDK` framework in your target.
+
+=== Configuration
+
+To get started with the SDK, follow these steps:
+
+. Configure the client information
+. Handle the OAuth 2.0 redirect URL
+. Display the login screen
+
+This section describes the steps in more detail.
+
+[start=1]
+. Prepare the SDK for use by configuring the client information.
+This must be the first SDK call or the client crashes.
++
+[source,swift]
+----
+import UIKit
+import Data4LifeSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+
+    let clientId = "client-id#ios"
+    let secret = "secret"
+    let redirectURLString = "app-redirect"
+    let environment = .staging
+    let platform = .d4l
+    Data4LifeClient.configureWith(clientId: clientId,
+                                  clientSecret: secret,
+                                  redirectURLString: redirectURLString,
+                                  environment: environment,
+                                  platform: platform)
+
+    return true
+  }
+}
+----
++
+. Handle the OAuth 2.0 redirect URL in the `AppDelegate` class.
++
+[source, swift]
+----
+import UIKit
+import Data4LifeSDK
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+
+    Data4LifeClient.default.handle(url: url)
+
+    return true
+  }
+}
+----
++
+. Display the login screen.
+Afterwards, you can use it throughout the app with the default client by providing a view controller to present.
++
+[source,swift]
+----
+let viewController = UIApplication.shared.keyWindow?.rootViewController
+Data4LifeClient.default.presentLogin(on: viewController, animated: true) { result in
+    switch result {
+    case .success:
+        // Handle success
+    case .failure(let error):
+        // Handle error
+    }
+}
+----
++
+. Optional: To use the SDK inside extensions, provide the `keychainGroupId` identifier when you configure the SDK and enable the `KeychainSharing` capability in the Xcode project.
+The SDK also requires the `AppGroups` capability with the same setup.
++
+[source,swift]
+----
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+
+    let clientId = "client-id#ios"
+    let secret = "secret"
+    let redirectURLString = "app-scheme"
+    let environment = .staging
+    let teamId = "TEAMDID"
+    let groupId = "Group1"
+    let keychainGroupId = "\(teamId).\(groupId)"
+    let appGroupId= "group.unique.id"
+    let platform = .d4l
+
+    Data4LifeClient.configureWith(clientId: clientId,
+                              clientSecret: secret,
+                              redirectURLString: redirectURLString,
+                              environment: .staging,
+                              keychainGroupId: keychainGroupId,
+                              appGroupId: appGroupId,
+                              environment: environment,
+                              platform: platform)
+
+    return true
+  }
+----
+
+== Documentation 
+
+Further documentation on how to use it can be found link:docs/1.15.0/index.html[here]
+
+== Changelog
+
+See link:CHANGELOG.adoc[changelog]
+
+== Versioning
+
+We use http://semver.org/[Semantic Versioning] as a guideline for our versioning.
+
+Releases use this format: `{major}.{minor}.{patch}`
+
+* Breaking changes bump `{major}` and reset `{minor}` & `{patch}`
+* Backward compatible changes bump `{minor}` and reset `{patch}`
+* Bug fixes bump `{patch}`
+
+== Contributing
+
+You want to help or share a proposal? You have a specific problem? Read the following:
+
+* link:CODE-OF-CONDUCT.adoc[Code of conduct] for details on our code of conduct.
+* link:CONTRIBUTING.adoc[Contributing] for details about how to report bugs and propose features.
+* link:DEVELOPING.adoc[Developing] for details about our development process and how to build and test the project.
+
+== Copyright and License
+
+Copyright (c) 2021 D4L data4life gGmbH / All rights reserved. Please refer to our link:LICENSE[License] for further details.

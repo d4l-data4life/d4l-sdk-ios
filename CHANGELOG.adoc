@@ -1,0 +1,196 @@
+= Changelog
+:link-repository: https://github.com/d4l-data4life/d4l-sdk-ios
+:doctype: article
+:toc: macro
+:toclevels: 1
+:toc-title:
+:icons: font
+:imagesdir: assets/images
+ifdef::env-github[]
+:warning-caption: :warning:
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+endif::[]
+
+All notable changes to this project will be documented in this file.
+
+The format is based on http://keepachangelog.com/en/1.0.0/[Keep a Changelog]
+and this project adheres to http://semver.org/spec/v2.0.0.html[Semantic Versioning].
+
+Template could be found here: link:https://github.com/d4l-data4life/hc-readme-template/blob/main/TEMPLATE_CHANGELOG.adoc[CHANGELOG]
+
+[discrete]
+==== Versions
+
+toc::[]
+
+== link:{link-repository}/releases/latest[Unreleased]
+
+See link:{link-repository}/compare/v1.7.0...main[changeset]
+
+=== Added
+
+* Support for smart 4 health domain
+Changed
+
+=== Changed
+
+* Crypto library is switched to a swift package and removed from repo
+
+=== Removed
+
+* Remove Pods support
+
+=== Fixed
+
+=== Security
+
+=== Bumped
+
+=== Deprecated
+
+=== Migration
+
+== link:{link-repository}/releases/tag/1.15.0[1.15.0]
+
+=== Changed
+
+* Swift packages now resolve to https urls
+
+== link:{link-repository}/releases/tag/1.14.4[1.14.4]
+
+=== Fixed
+
+* Fixes retrieval of records added with old iOS app
+
+== link:{link-repository}/releases/tag/1.14.3[1.14.3]
+
+=== Changed
+
+* Replaces Then with Combine
+
+=== Fixed
+
+* Adds work around for data race on retrier
+
+== link:{link-repository}/releases/tag/1.14.2[1.14.2]
+
+=== Fixed
+
+* Refreshing the access token now returns a result
+
+== link:{link-repository}/releases/tag/1.14.1[1.14.1]
+
+=== Fixed
+
+* SDk doesnt automatically logout on update from 1.12.3
+
+== link:{link-repository}/releases/tag/1.14.1[1.14.0]
+
+=== Added
+
+* `fetchFhirStu3Records<R: FhirStu3Resource>(of type: R.Type ...` now supports the possibility to not specify a type to get all Stu3 Resources
+* `fetchFhirR4Records<R: FhirR4Resource>(of type: R.Type ...` now supports the possibility to not specify a type to get all R4 resources
+
+=== Fixed
+
+* Uses new phdp query expression to filter tags for legacy SDKs, improving data usage
+
+== link:{link-repository}/releases/tag/1.13.1[1.13.1]
+
+=== Added
+
+* `getUserId(completion: Result<String>)` method to retrieve User Identifier
+
+=== Fixed
+
+* Fixed LLDB for the SDKs
+
+== link:{link-repository}/releases/tag/1.13.0[1.13.0]
+
+=== Added
+
+* Updated framework packaging to XCFrameworks
+* Added support for Swift Package Manager
+
+=== Removed
+
+* Removed support for iOS 12
+* Removed dependency with CryptoSwift in Crypto Library and SDK
+* Removes Carthage support
+
+== link:{link-repository}/releases/tag/1.12.3[1.12.3]
+
+=== Changed
+
+* Updated crypto dependency to be public
+
+== link:{link-repository}/releases/tag/1.12.2[1.12.2]
+
+=== Fixed
+
+* Fix for unfiltered search/count methods
+
+== link:{link-repository}/releases/tag/1.12.1[1.12.1]
+
+=== Fixed
+
+* Count methods will correctly count all resources when used without a type parameter
+* Search / Count methods will be able to get resources also from legacy SDK versions
+
+== link:{link-repository}/releases/tag/1.12.0[1.12.0]
+
+=== Added
+
+All FHIR Stu3 methods are also available now for FHIR R4 models
+
+=== Fixed
+
+Annotations are now treated like tags, so percent encoded / trimmed / lowercased.
+
+=== Changed
+
+Changed repository to d4l
+
+== link:{link-repository}/releases/tag/1.11.1[1.11.1]
+
+=== Fixed
+
+* String encoding does not add double quotes around in iOS 13+  
+
+== link:{link-repository}/releases/tag/1.11.0[1.11.0]
+
+=== Added
+
+* Add support for annotations using `create`, `update`, `search` and `count` record methods
+
+=== Changed
+
+* All AppData api calls now work with Data directly (or Codable resources)
+* FhirRecord resource property is renamed to fhirResource
+* SDKResource, ModelVersionInformation, FHIRVersionInformation, FHIRIdentifierType protocols are now internal
+
+=== Removed
+
+* Removes AppDataModels library again in favor of using just Foundation Data
+
+== link:{link-repository}/releases/tag/1.10.1[1.10.1]
+
+=== Added 
+
+* Adds support for JsonAppData
+
+=== Changed
+
+* Renames DonorKey to UserKey
+
+== link:{link-repository}/releases/tag/1.10.0[1.10.0]
+
+=== Added
+
+* Adds compatibility with XCode 12
+* Upgrade to latest version of CryptoSwift
+* Adds support for AppDataModels (DonorKey)
+
