@@ -51,7 +51,7 @@ class SessionAdapterTests: XCTestCase {
             let urlRequest = URLRequest(url: url)
             interceptor.adapt(urlRequest, for: sessionService.session, completion: { [weak self] (result) in
                 guard let self = self else { return }
-                XCTAssertEqual(result.value?.allHTTPHeaderFields?["hc-sdk-version"], "ios-\(self.sdkVersion)")
+                XCTAssertEqual(result.value?.allHTTPHeaderFields?["d4l-sdk-version"], "ios-\(self.sdkVersion)")
                 adaptedRequestExpectation.fulfill()
             })
 

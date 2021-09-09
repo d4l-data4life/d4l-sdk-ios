@@ -43,7 +43,7 @@ final class SessionServiceInterceptor: RequestInterceptorType {
         }
 
         var urlRequest = urlRequest
-        urlRequest.setValue("ios-\(sdkVersion)", forHTTPHeaderField: "hc-sdk-version")
+        urlRequest.setValue("ios-\(sdkVersion)", forHTTPHeaderField: "d4l-sdk-version")
 
         guard let accessToken = keychainService[.accessToken],
             urlRequest.allHTTPHeaderFields?["Authorization"]?.isEmpty == true else {
