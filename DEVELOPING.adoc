@@ -1,0 +1,198 @@
+= Developing
+:link-repository: https://github.com/d4l-data4life/d4l-sdk-ios
+:doctype: article
+:toc: macro
+:toclevels: 2
+:toc-title:
+:icons: font
+:imagesdir: assets/images
+ifdef::env-github[]
+:warning-caption: :warning:
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+endif::[]
+
+Guide for our development process, project setup and how to write code.
+
+[discrete]
+==== Table Of Contents
+
+toc::[]
+
+== Prerequisites
+
+* XCode 12.5
+* iOS 13.0
+* Swift 5.4+
+* Bundler
+* AWS cli tool 
+
+=== Dependencies of the SDK
+
+The SDK has the following dependencies:
+
+* https://github.com/Alamofire/Alamofire[Alamofire] icon:external-link[] – HTTP networking library written in Swift
+* https://github.com/openid/AppAuth-iOS[AppAuth] icon:external-link[] – iOS and macOS SDK for communicating with OAuth 2.0 and OpenID Connect providers
+* https://github.com/d4l-data4life/d4l-fhir-ios[Data4LifeFHIR] icon:external-link[] – {compname} minimal FHIR standard models and data types for iOS
+* https://github.com/d4l-data4life/d4l-utils-ios[Data4LifeSDKUtils] icon:external-link[] – {compname} Set of private utils used in data4Life Frameworks
+* https://github.com/d4l-data4life/d4l-crypto-ios[Data4LifeCrypto] icon:external-link[] – {compname} Set of private utils used in data4Life Frameworks
+
+== Install
+
+=== Install Gems using bundler
+
+Install bundler by following instructions at the link:https://bundler.io/[official page].
+When done, run:
+
+[source, bash]
+----
+bundle install
+----
+
+=== Install AWS Cli tool
+
+Install the aws cli tool by following instructions at the link:https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html[official page].
+
+Configure it by entering:
+
+[source, bash]
+----
+aws configure
+----
+
+and entering following data
+
+[source, bash]
+----
+AWS Access Key ID: xxxxx
+AWS Secret Access Key: xxxxx
+Default region name: eu-central-1
+Default output format: json
+----
+
+NOTE: Access key ID and secret are secretly stored and must be asked for.
+
+== Build
+
+=== Config files
+
+Before you are able to run tests on the SDK or run the example app, you need to create and add a `d4l-example-app-config.json` file in the project root folder with credentials (which can only be obtained by contacting us).
+
+NOTE: The CI expects this configuration from an environment variable stored in the GitHub secret: `D4L_EXAMPLE_CONFIG_IOS`
+
+NOTE: For the Smart4Health platform, the file needs to be called `s4h-example-app-config.json` instead.
+
+The configuration file has the following structure:
+
+[source, json]
+----
+// d4l-example-app-config.json
+{
+  "platform": "d4l", // or s4h
+  "configs": {
+    "DEVELOPMENT": {
+      "id": "{CLIENT_ID}",
+      "secret": "{CLIENT_SECRET}",
+      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}" //without the "://oauth" part
+    },
+    "SANDBOX": {
+      "id": "{CLIENT_ID}",
+      "secret": "{CLIENT_SECRET}",
+      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}"
+    },
+    "STAGING": {
+      "id": "{CLIENT_ID}",
+      "secret": "{CLIENT_SECRET}",
+      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}"
+    },
+    "PRODUCTION": {
+      "id": "{CLIENT_ID}",
+      "secret": "{CLIENT_SECRET}",
+      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}"
+    }
+  }
+}
+----
+
+In order to choose which environment to use, you need to generate one xcconfig file by running the following swift script:
+
+[source, bash]
+----
+./config-generator.swift [d4l|s4h] [development|staging|production|sandbox]
+----
+
+If the config file is in place and the correspondent platform is there, file will be generated.
+
+=== Example application
+
+Open `Data4LifeSDK.xcodeproj` and run the `Example` target.
+
+== Release
+
+A release branches of from `main` branch with following pattern:
+
+* `release/{major}.{minor}.{patch})/prepare-{major}.{minor}.{patch}`
+
+=== Steps
+
+* Update link:CHANGELOG.adoc[CHANGELOG]
+* Update documentation if needed
+* Run prepare release script (eg. `bundle exec fastlane ios prepare_release version:"v1.0.0" api_token:"xxxxxxx"`)
+* On github, publish the release manually by setting the new tag (eg. `v1.0.0`)
+
+NOTE: Prepare release script will fail if there is no new version defined in the changelog
+
+=== Prepare release script steps 
+
+The script executes the following commands:
+
+* Update new versions in the README.adoc and project files (including badges)
+* Do sanity checks (Proper version number in changelog etc.)
+* Generate documentation
+* Build framework and upload it to S3
+* Update Package swift info (url and checksum)
+* Commit and push changes
+* Create GitHub release draft with all of the information from link:CHANGELOG.adoc[CHANGELOG]
+
+[source, bash]
+----
+bundle exec fastlane ios prepare_release version:"1.0.0" api_token:"xxxxxxx"
+----
+
+=== Generate documentation
+
+Documentation is generated using Asciidoctor, all of the resoures can be found in link:asciidoc/[asciidoc], and generated HTML documentation can be found in link:docs/(docs).
+
+[source, bash]
+----
+bundle exec fastlane generate_docs version:1.0.0
+----
+
+== Development Process
+
+=== Features
+
+Every change has to branch of from `main` and use this branch naming convention:
+
+* `feature/{type_of_change}-{short_description}` or with ticket id `feature/{ticket_id}/{type_of_change}-{short_description}`
+
+`main` must be always in releasable state.
+
+==== Type Of Change
+
+- *add* for new features or functionality
+- *change* for changes in existing features or functionality
+- *remove* | for removed features or functionality
+- *fix* for any bug fixes
+- *bump* for dependency updates
+- *security* in case of vulnerabilities
+
+Examples:
+
+- `feature/SDK-456/add-awesome-hashing-algorithm`
+- `feature/add-awesome-hashing-algorithm`
+- `feature/remove-not-so-awesome-algorithm`
+- `feature/fix-algorithm-corner-case`
+- `feature/bump-lib-to-1.3.0`
