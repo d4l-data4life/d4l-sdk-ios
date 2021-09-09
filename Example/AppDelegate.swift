@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil)
-        -> Bool {
+    -> Bool {
 
         Data4LifeClient.configureWith(clientId: configuration.clientIdentifier,
                                       clientSecret: configuration.clientSecret,
@@ -53,9 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:])
-        -> Bool {
-
-            Data4LifeClient.default.handle(url: url)
+    -> Bool {
+        
+        Data4LifeClient.default.handle(url: url)
 
         return true
     }

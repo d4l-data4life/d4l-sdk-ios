@@ -6,7 +6,7 @@ Pure Swift API client for HealthCloud that automatically handles encryption
 
 ## Usage
 ### Requirements
-* Xcode 12
+* Xcode 12.5
 * iOS 13.0+
 * Swift 5.3+
 
@@ -51,12 +51,12 @@ The configuration file has the following structure:
 ```
 // d4l-example-app-config.json
 {
-  "platform": "d4l", //s4h
+  "platform": "d4l", // or s4h
   "configs": {
     "DEVELOPMENT": {
       "id": "{CLIENT_ID}",
       "secret": "{CLIENT_SECRET}",
-      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}"
+      "redirectScheme": "{CLIENT_REDIRECT_SCHEME}" //without the "://oauth" part
     },
     "SANDBOX": {
       "id": "{CLIENT_ID}",
@@ -77,11 +77,13 @@ The configuration file has the following structure:
 }
 ```
 
-In order to choose which environment to use, you need to generate an xcconfig file by running the following swift script:
+In order to choose which environment to use, you need to generate one xcconfig file by running the following swift script:
 
 ```sh
 ./config-generator.swift [d4l|s4h] [development|staging|production|sandbox]
 ```
+
+If the config file is in place and the correspondent platform is there, file will be generated.
 
 ### Example application
 Open `Data4LifeSDK.xcodeproj` and run the `Example` target.
