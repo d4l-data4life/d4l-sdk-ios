@@ -106,7 +106,7 @@ final class OAuthService: OAuthServiceType {
                 return
             }
 
-            if (error as NSError).code == NSURLErrorTimedOut || response.statusCode == 408 {
+            if (error as NSError).code == NSURLErrorTimedOut || response.statusCode == 408 || response.statusCode == 401 {
                 if self.currentRetryCount < self.numberOfRetriesOnTimeout {
                     self.currentRetryCount += 1
                     completion(.retry)

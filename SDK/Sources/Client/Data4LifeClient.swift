@@ -73,7 +73,7 @@ public class Data4LifeClient {
             return ["perm:r", "perm:w",
                     "rec:r", "rec:w",
                     "attachment:r", "attachment:w",
-                    "user:q"]
+                    "user:r", "user:q"]
         }
     }
 
