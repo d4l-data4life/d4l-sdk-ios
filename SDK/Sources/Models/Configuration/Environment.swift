@@ -15,31 +15,14 @@
 
 import Foundation
 
-public enum Environment: CaseIterable, Equatable, Hashable {
-    case development, staging, production, sandbox
+public enum Platform: String, CaseIterable, Equatable, Hashable {
+    case d4l = "D4L"
+    case s4h = "S4H"
+}
 
-    public var apiBaseString: String {
-        switch self {
-        case .production:
-            return "https://api.data4life.care"
-        case .staging:
-            return "https://api-staging.data4life.care"
-        case .development:
-            return "https://api-phdp-dev.hpsgc.de"
-        case .sandbox:
-            return "https://api-phdp-sandbox.hpsgc.de"
-        }
-    }
-    public var host: String {
-        guard let host = apiBaseURL.host else {
-            fatalError("API base does no containt proper hostname")
-        }
-        return host
-    }
-    public var apiBaseURL: URL {
-        guard let url = URL(string: apiBaseString) else {
-            fatalError("API base URL is not valid")
-        }
-        return url
-    }
+public enum Environment: String, CaseIterable, Equatable, Hashable {
+    case development = "DEVELOPMENT"
+    case staging = "STAGING"
+    case production = "PRODUCTION"
+    case sandbox = "SANDBOX"
 }

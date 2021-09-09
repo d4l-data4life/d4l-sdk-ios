@@ -50,7 +50,8 @@ class Data4LifeClientUserServiceModuleTests: XCTestCase {
         }
 
         self.client = Data4LifeClient(container: container,
-                                      environment: environment)
+                                      environment: environment,
+                                      platform: .d4l)
 
         do {
             self.sessionService = try container.resolve()

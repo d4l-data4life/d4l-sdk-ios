@@ -43,6 +43,8 @@ jobs:
       run: xcrun simctl erase all
     - name: Generate iOS Config JSON
       run: printf '%s\n' "$D4L_EXAMPLE_CONFIG" > d4l-example-app-config.json
+    - name: Generate xcconfig file
+      run: ./config-generator.swift d4l staging 
     - name: lint
       run: bundle exec fastlane lint
     - name: test

@@ -45,10 +45,10 @@ extension Data4LifeDIContainer {
             }.register(scope: .containerInstance) { (container) -> SDKVersionValidatorType in
                 SDKVersionValidator(container: container)
             }.register(scope: .containerInstance) { (container) -> SessionService in
-                SessionService(hostname: try clientConfiguration.environmentHost(),
-                               sdkBundle: try container.resolve(),
-                               versionValidator: try container.resolve(),
-                               interceptor: try container.resolve())
+                SessionService(versionValidator: try container.resolve(),
+                               clientConfiguration: clientConfiguration,
+                               interceptor: try container.resolve(),
+                               sdkBundle: try container.resolve())
             }.register(scope: .containerInstance) { (container) -> OAuthServiceType in
                 let authURL = try Router.authorizeUrl()
                 let tokenURL = try Router.fetchTokenUrl()

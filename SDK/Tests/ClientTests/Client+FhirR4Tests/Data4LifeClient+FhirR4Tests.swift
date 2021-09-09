@@ -50,7 +50,8 @@ class Data4LifeClientFhirR4Tests: XCTestCase {
             RecordServiceMock<ModelsR4.DocumentReference, DecryptedFhirR4Record<ModelsR4.DocumentReference>>()
         }
         self.client = Data4LifeClient(container: container,
-                                      environment: environment)
+                                      environment: environment,
+                                      platform: .d4l)
 
         do {
             self.sessionService = try container.resolve()

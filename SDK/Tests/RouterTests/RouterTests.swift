@@ -65,4 +65,52 @@ class RouterTests: XCTestCase {
         let deleteRecordRoute = Router.deleteRecord(userId: id, recordId: id)
         XCTAssertTrue(deleteRecordRoute.needsVersionValidation, "The version Info route needs validation")
     }
+
+    func testRouteBaseUrlBuildingD4lStaging() throws {
+        let configuration = ClientConfigurationFactory.d4lTest(for: .staging)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api-staging.data4life.care")
+    }
+
+    func testRouteBaseUrlBuildingD4lDevelopment() throws {
+        let configuration = ClientConfigurationFactory.d4lTest(for: .development)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api-phdp-dev.hpsgc.de")
+    }
+
+    func testRouteBaseUrlBuildingD4lProduction() throws {
+        let configuration = ClientConfigurationFactory.d4lTest(for: .production)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api.data4life.care")
+    }
+
+    func testRouteBaseUrlBuildingD4lSandbox() throws {
+        let configuration = ClientConfigurationFactory.d4lTest(for: .sandbox)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api-phdp-sandbox.hpsgc.de")
+    }
+
+    func testRouteBaseUrlBuildingS4hStaging() throws {
+        let configuration = ClientConfigurationFactory.s4hTest(for: .staging)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api-staging.smart4health.eu")
+    }
+
+    func testRouteBaseUrlBuildingS4hDevelopment() throws {
+        let configuration = ClientConfigurationFactory.s4hTest(for: .development)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api-dev.smart4health.eu")
+    }
+
+    func testRouteBaseUrlBuildingS4hProduction() throws {
+        let configuration = ClientConfigurationFactory.s4hTest(for: .production)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api.smart4health.eu")
+    }
+
+    func testRouteBaseUrlBuildingS4hSandbox() throws {
+        let configuration = ClientConfigurationFactory.s4hTest(for: .sandbox)
+        Router.configure(with: configuration)
+        XCTAssertEqual(Router.baseUrl, "https://api-sandbox.smart4health.eu")
+    }
 }

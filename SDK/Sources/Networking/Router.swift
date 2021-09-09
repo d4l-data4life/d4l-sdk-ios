@@ -175,7 +175,7 @@ enum Router: URLRequestConvertible {
 extension Router {
 
     static func configure(with configuration: ClientConfiguration) {
-        baseUrl = configuration.apiBaseUrlString
+        baseUrl = baseUrlString(from: configuration)
     }
 
     static func authorizeUrl() throws -> URL {
@@ -192,5 +192,43 @@ extension Router {
         } catch {
             throw Data4LifeSDKError.ClientConfiguration.couldNotBuildOauthUrls
         }
+    }
+}
+
+extension Router {
+    static func baseUrlString(from platform: Platform, environment: Environment) -> String {
+        switch (platform, environment) {
+        case (.d4l, .development):
+            return "https://api-phdp-dev.hpsgc.de"
+        case (.d4l, .staging):
+            return "https://api-staging.data4life.care"
+        case (.d4l, .production):
+            return "https://api.data4life.care"
+        case (.d4l, .sandbox):
+            return "https://api-phdp-sandbox.hpsgc.de"
+        case (.s4h, .development):
+            return "https://api-dev.smart4health.eu"
+        case (.s4h, .staging):
+            return "https://api-staging.smart4health.eu"
+        case (.s4h, .production):
+            return "https://api.smart4health.eu"
+        case (.s4h, .sandbox):
+            return "https://api-sandbox.smart4health.eu"
+        }
+    }
+
+    static func baseUrlHost(from platform: Platform, environment: Environment) -> String {
+        guard let host = URL(string: baseUrlString(from: platform, environment: environment))?.host else {
+            fatalError("Could not find host")
+        }
+
+        return host
+    }
+}
+
+extension Router {
+    private static func baseUrlString(from configuration: ClientConfiguration) -> String {
+        baseUrlString(from: configuration.platform,
+                      environment: configuration.environment)
     }
 }

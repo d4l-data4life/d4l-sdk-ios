@@ -34,12 +34,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil)
-        -> Bool {
+    -> Bool {
 
         Data4LifeClient.configureWith(clientId: configuration.clientIdentifier,
                                       clientSecret: configuration.clientSecret,
-                                      redirectURLString: configuration.redirectSchemeUrlString + "://oauth/",
-                                      environment: configuration.environment)
+                                      redirectURLString: configuration.redirectSchemeUrlString,
+                                      environment: configuration.environment,
+                                      platform: configuration.platform)
         setRootViewController(initialViewController)
         return true
     }
@@ -52,9 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:])
-        -> Bool {
+    -> Bool {
 
-            Data4LifeClient.default.handle(url: url)
+        Data4LifeClient.default.handle(url: url)
 
         return true
     }

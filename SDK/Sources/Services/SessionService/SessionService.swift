@@ -39,16 +39,24 @@ final class SessionService {
         self.interceptor = interceptor
         self.session = Session(configuration: configuration, interceptor: interceptor, serverTrustManager: serverTrustManager)
     }
+}
 
-    convenience init(hostname: String,
-                     sdkBundle: Foundation.Bundle,
-                     versionValidator: SDKVersionValidatorType,
+extension SessionService {
+    convenience init(versionValidator: SDKVersionValidatorType,
                      networkManager: ReachabilityType = Reachability(),
-                     interceptor: RequestInterceptorType? = nil) {
+                     clientConfiguration: ClientConfiguration,
+                     interceptor: RequestInterceptorType? = nil,
+                     sdkBundle: Foundation.Bundle? = nil) {
 
-        let publicKeys = sdkBundle.af.publicKeys
-        let serverTrustPolicy = PublicKeysTrustEvaluator(keys: publicKeys, performDefaultValidation: true, validateHost: true)
-        let serverTrustManager = ServerTrustManager(evaluators: [hostname: serverTrustPolicy])
+        var serverTrustManager: ServerTrustManager?
+
+        if clientConfiguration.platform == .d4l, let bundle = sdkBundle {
+            let publicKeys = bundle.af.publicKeys
+            let host = clientConfiguration.environmentHost
+            let serverTrustPolicy = PublicKeysTrustEvaluator(keys: publicKeys, performDefaultValidation: true, validateHost: true)
+            serverTrustManager = ServerTrustManager(evaluators: [host: serverTrustPolicy])
+        }
+
         self.init(configuration: URLSessionConfiguration.af.default,
                   versionValidator: versionValidator,
                   serverTrustManager: serverTrustManager,

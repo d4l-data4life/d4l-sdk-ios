@@ -1,4 +1,4 @@
-//  Copyright (c) 2021 D4L data4life gGmbH
+//  Copyright (c) 2020 D4L data4life gGmbH
 //  All rights reserved.
 //  
 //  D4L owns all legal rights, title and interest in and to the Software Development Kit ("SDK"),
@@ -13,29 +13,23 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
 @testable import Data4LifeSDK
-import Combine
-import Data4LifeCrypto
 
-enum CommonKeyServiceMockError: Error {
-    case noResultSet
-}
+final class ClientConfigurationFactory {
 
-class CommonKeyServiceMock: CommonKeyServiceType {
-    static let initialId = "00000000-0000-0000-0000-000000000000"
-    var currentId: String?
-    var currentKey: Key?
-
-    var fetchKeyCalledWith: String?
-    var fetchKeyResult: SDKFuture<Key>?
-    func fetchKey(with commonKeyId: String) -> SDKFuture<Key> {
-        fetchKeyCalledWith = commonKeyId
-        return fetchKeyResult ?? Fail(error: CommonKeyServiceMockError.noResultSet).asyncFuture()
+    static func d4lTest(for environment: Environment) -> ClientConfiguration {
+        ClientConfiguration(clientId: "fake-client-id",
+                            secret: "secret",
+                            redirectURLString: "redirect-url",
+                            environment: environment,
+                            platform: .d4l)
     }
 
-    var storeKeyCalledWith: (Key, String, Bool)?
-    func storeKey(_ key: Key, id: String, isCurrent: Bool) {
-        storeKeyCalledWith = (key, id, isCurrent)
+    static func s4hTest(for environment: Environment) -> ClientConfiguration {
+        ClientConfiguration(clientId: "fake-client-id",
+                            secret: "secret",
+                            redirectURLString: "redirect-url",
+                            environment: environment,
+                            platform: .s4h)
     }
 }
