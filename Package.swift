@@ -25,7 +25,7 @@ let package = Package(
                  .upToNextMinor(from: "0.22.0")),
         .package(name: "Data4LifeCrypto",
                  url: "https://github.com/d4l-data4life/d4l-crypto-ios.git",
-                 .upToNextMinor(from: "1.6.0")),
+                 .upToNextMinor(from: "1.7.0")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(name: "AppAuth",
