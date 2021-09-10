@@ -54,7 +54,7 @@ See link:{link-repository}/compare/v1.16.0...main[changeset]
 
 === Changed
 
-* Crypto library is added as a dependnecy from a swift package and removed from repo
+* Crypto library is added as a dependency from a swift package and removed from repo
 
 === Removed
 
