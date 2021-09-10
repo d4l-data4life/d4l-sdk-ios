@@ -28,26 +28,47 @@ toc::[]
 
 == link:{link-repository}/releases/latest[Unreleased]
 
-See link:{link-repository}/compare/v1.15.0...main[changeset]
+See link:{link-repository}/compare/v1.16.0...main[changeset]
 
 === Added
 
-* Support for smart 4 health domain
-Changed
-
 === Changed
 
-* Crypto library is switched to a swift package and removed from repo
-
 === Removed
-
-* Remove Pods support
 
 === Fixed
 
 === Security
 
 === Bumped
+
+=== Deprecated
+
+=== Migration
+
+== link:{link-repository}/releases/tag/v1.16.0[1.16.0]
+
+=== Added
+
+* Support for smart 4 health domain
+
+=== Changed
+
+* Crypto library is added as a dependnecy from a swift package and removed from repo
+
+=== Removed
+
+* Removed Pods support
+
+=== Fixed
+
+* LLDB Support 
+
+=== Security
+
+=== Bumped
+
+* FHIR iOS to 0.22.1
 
 === Deprecated
 
