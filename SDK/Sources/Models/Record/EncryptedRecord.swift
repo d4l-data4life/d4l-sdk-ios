@@ -26,6 +26,7 @@ struct EncryptedRecord: Decodable {
     var encryptedAttachmentKey: String?
     var modelVersion: Int
     var commonKeyId: String?
+    var status: Metadata.Status
 
     enum CodingKeys: String, CodingKey {
         case id = "record_id"
@@ -37,6 +38,7 @@ struct EncryptedRecord: Decodable {
         case encryptedAttachmentKey = "attachment_key"
         case modelVersion = "model_version"
         case commonKeyId = "common_key_id"
+        case status = "status"
     }
 }
 
@@ -51,6 +53,7 @@ extension EncryptedRecord {
         try encryptedAttachmentKey = container.decodeIfPresent(String.self, forKey: .encryptedAttachmentKey)
         try modelVersion = container.decode(Int.self, forKey: .modelVersion)
         try commonKeyId = container.decodeIfPresent(String.self, forKey: .commonKeyId)
+        try status = container.decode(Metadata.Status.self, forKey: .status)
 
         let dateString = try container.decode(String.self, forKey: .date)
         let formatter = DateFormatter.with(format: .iso8601Date)

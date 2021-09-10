@@ -32,9 +32,9 @@
         "package": "Data4LifeFHIR",
         "repositoryURL": "https://github.com/d4l-data4life/d4l-fhir-ios.git",
         "state": {
-          "branch": null,
-          "revision": "297830d179a91315cdf288c9a8ee37ba76d46b34",
-          "version": "0.22.0"
+          "branch": "feature/update-release-script",
+          "revision": "5613bb49a29eb6de71eb054ac2474aeb5d9c4939",
+          "version": null
         }
       },
       {

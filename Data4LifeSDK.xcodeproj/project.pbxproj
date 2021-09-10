@@ -2548,8 +2548,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/d4l-data4life/d4l-fhir-ios.git";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.22.0;
+				branch = "feature/update-release-script";
+				kind = branch;
 			};
 		};
 		36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */ = {

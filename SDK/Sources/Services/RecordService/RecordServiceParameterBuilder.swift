@@ -25,17 +25,14 @@ protocol RecordServiceParameterBuilderProtocol {
                                           dataKey: Key,
                                           attachmentKey: Key?,
                                           tagGroup: TagGroup)  throws -> Parameters
-    func searchParameters(from startDate: Date?,
-                          to endDate: Date?,
-                          offset: Int?,
-                          pageSize: Int?,
-                          tagGroup: TagGroup,
+    func searchParameters(query: RecordServiceParameterBuilder.SearchQuery,
                           supportingLegacyTags: Bool) throws -> Parameters
 }
 
 extension RecordServiceParameterBuilderProtocol {
     func searchParameters(tagGroup: TagGroup, supportingLegacyTags: Bool = true) throws -> Parameters {
-        try searchParameters(from: nil, to: nil, offset: nil, pageSize: nil, tagGroup: tagGroup, supportingLegacyTags: supportingLegacyTags)
+        try searchParameters(query: RecordServiceParameterBuilder.SearchQuery.default.with(tagGroup),
+                             supportingLegacyTags: supportingLegacyTags)
     }
 }
 
@@ -54,6 +51,9 @@ struct RecordServiceParameterBuilder: RecordServiceParameterBuilderProtocol {
         enum Search: String {
             case startDate = "start_date"
             case endDate = "end_date"
+            case startUpdatedDate = "start_updated_date"
+            case endUpdatedDate = "end_updated_date"
+            case includingDeleted = "include_deleted"
             case limit = "limit"
             case offset = "offset"
             case tags = "tags"
@@ -63,6 +63,34 @@ struct RecordServiceParameterBuilder: RecordServiceParameterBuilderProtocol {
     enum OperationType {
         case search(supportingLegacyTags: Bool = true)
         case upload
+    }
+
+    struct SearchQuery {
+        let limit: Int?
+        let offset: Int?
+        let startDate: Date?
+        let endDate: Date?
+        let startUpdatedDate: Date?
+        let endUpdatedDate: Date?
+        let includingDeleted: Bool
+        private(set) var tagGroup: TagGroup
+
+        static var `default`: SearchQuery {
+            SearchQuery(limit: nil, offset: nil,
+                        startDate: nil, endDate: nil, startUpdatedDate: nil, endUpdatedDate: nil,
+                        includingDeleted: false, tagGroup: TagGroup(tags: [:], annotations: []))
+        }
+
+        func with(_ newTagGroup: TagGroup) -> SearchQuery {
+            SearchQuery(limit: limit,
+                        offset: offset,
+                        startDate: startDate,
+                        endDate: endDate,
+                        startUpdatedDate: startUpdatedDate,
+                        endUpdatedDate: endUpdatedDate,
+                        includingDeleted: includingDeleted,
+                        tagGroup: newTagGroup)
+        }
     }
 
     struct TagsParameter: Hashable {
@@ -171,30 +199,30 @@ extension RecordServiceParameterBuilder {
 // MARK: - Search/Count
 extension RecordServiceParameterBuilder {
 
-    func searchParameters(from startDate: Date? = nil,
-                          to endDate: Date? = nil,
-                          offset: Int? = nil,
-                          pageSize: Int? = nil,
-                          tagGroup: TagGroup,
+    func searchParameters(query: SearchQuery,
                           supportingLegacyTags: Bool = true) throws -> Parameters {
 
         var parameters = Parameters()
 
-        if let startDate = startDate {
+        if let startDate = query.startDate {
             parameters[ParameterKey.Search.startDate.rawValue] = startDate.yyyyMmDdFormattedString()
         }
-        if let endDate = endDate {
+        if let endDate = query.endDate {
             parameters[ParameterKey.Search.endDate.rawValue] = endDate.yyyyMmDdFormattedString()
         }
-        if let pageSize = pageSize {
-            parameters[ParameterKey.Search.limit.rawValue] = pageSize
+        if let startUpdatedDate = query.startUpdatedDate {
+            parameters[ParameterKey.Search.startUpdatedDate.rawValue] = startUpdatedDate.ISO8601WithTimeZoneFormattedString()
         }
-        if let offset = offset {
-            parameters[ParameterKey.Search.offset.rawValue] = offset
+        if let endUpdatedDate = query.endUpdatedDate {
+            parameters[ParameterKey.Search.endUpdatedDate.rawValue] = endUpdatedDate.ISO8601WithTimeZoneFormattedString()
         }
 
-        if tagGroup.hasTags {
-            parameters[ParameterKey.Search.tags.rawValue] = try tagsValueForSearch(tagGroup: tagGroup,
+        parameters[ParameterKey.Search.includingDeleted.rawValue] = query.includingDeleted
+        parameters[ParameterKey.Search.limit.rawValue] = query.limit
+        parameters[ParameterKey.Search.offset.rawValue] = query.offset
+
+        if query.tagGroup.hasTags {
+            parameters[ParameterKey.Search.tags.rawValue] = try tagsValueForSearch(tagGroup: query.tagGroup,
                                                                                    supportingLegacyTags: supportingLegacyTags,
                                                                                    encryptedWith: try tagEncryptionKey())
         }

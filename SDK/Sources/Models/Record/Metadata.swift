@@ -16,11 +16,20 @@
 import Foundation
 
 public struct Metadata {
-    public var updatedDate: Date
-    public var createdDate: Date
 
-    init(updatedDate: Date, createdDate: Date) {
+    public enum Status: String, Codable {
+        case active = "Active"
+        case pending = "Pending"
+        case deleted = "Deleted"
+    }
+
+    public let updatedDate: Date
+    public let createdDate: Date
+    public let status: Status
+
+    init(updatedDate: Date, createdDate: Date, status: Status) {
         self.updatedDate = updatedDate
         self.createdDate = createdDate
+        self.status = status 
     }
 }

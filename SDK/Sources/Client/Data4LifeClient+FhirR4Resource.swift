@@ -175,15 +175,22 @@ extension Data4LifeClient {
                                                       page: Int = 1,
                                                       from: Date? = nil,
                                                       to: Date? = nil,
+                                                      updatedFrom: Date? = nil,
+                                                      updatedTo: Date? = nil,
+                                                      includingDeleted: Bool = false,
                                                       annotations: [String] = [],
                                                       queue: DispatchQueue = responseQueue,
                                                       completion: @escaping ResultBlock<[FhirRecord<R>]>) {
         let offset = (page - 1) * size
-        fhirService.fetchFhirRecords(from: from,
-                                     to: to,
-                                     pageSize: size,
-                                     offset: offset,
-                                     annotations: annotations,
+        let searchQuery = RecordServiceParameterBuilder.SearchQuery(limit: size,
+                                                                    offset: offset,
+                                                                    startDate: from,
+                                                                    endDate: to,
+                                                                    startUpdatedDate: updatedFrom,
+                                                                    endUpdatedDate: updatedTo,
+                                                                    includingDeleted: includingDeleted,
+                                                                    tagGroup: TagGroup(tags: [:], annotations: annotations))
+        fhirService.fetchFhirRecords(query: searchQuery,
                                      decryptedRecordType: DecryptedFhirR4Record<R>.self)
             .complete(queue: queue, completion)
     }

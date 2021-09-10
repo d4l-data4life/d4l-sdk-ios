@@ -20,7 +20,7 @@ protocol AppDataServiceSingleOperations {
     func createAppDataRecord(_ data: Data, annotations: [String]) -> SDKFuture<AppDataRecord>
     func updateAppDataRecord(_ data: Data, recordId: String, annotations: [String]?) -> SDKFuture<AppDataRecord>
     func fetchAppDataRecord(withId identifier: String) -> SDKFuture<AppDataRecord>
-    func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String]) -> SDKFuture<[AppDataRecord]>
+    func fetchAppDataRecords(query: RecordServiceParameterBuilder.SearchQuery) -> SDKFuture<[AppDataRecord]>
     func deleteAppDataRecord(withId identifier: String) -> SDKFuture<Void>
     func countAppDataRecords(annotations: [String]) -> SDKFuture<Int>
 }
@@ -38,14 +38,10 @@ extension AppDataServiceSingleOperations where Self: HasMainRecordOperations {
         return countRecords(of: Data.self, annotations: annotations)
     }
 
-    func fetchAppDataRecords(from: Date?, to: Date?, pageSize: Int?, offset: Int?, annotations: [String] = []) -> SDKFuture<[AppDataRecord]> {
+    func fetchAppDataRecords(query: RecordServiceParameterBuilder.SearchQuery) -> SDKFuture<[AppDataRecord]> {
         return fetchRecords(decryptedRecordType: DecryptedAppDataRecord.self,
                             recordType: AppDataRecord.self,
-                            annotations: annotations,
-                            from: from,
-                            to: to,
-                            pageSize: pageSize,
-                            offset: offset)
+                            query: query)
     }
 }
 

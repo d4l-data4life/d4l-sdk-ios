@@ -29,11 +29,7 @@ protocol HasMainRecordOperations {
                                                              decryptedRecordType: DR.Type) -> SDKFuture<Record> where Record.Resource == DR.Resource
     func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
                                                               recordType: Record.Type,
-                                                              annotations: [String],
-                                                              from startDate: Date?,
-                                                              to endDate: Date?,
-                                                              pageSize: Int?,
-                                                              offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource
+                                                              query: RecordServiceParameterBuilder.SearchQuery) -> SDKFuture<[Record]> where Record.Resource == DR.Resource
 }
 
 extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
@@ -62,20 +58,12 @@ extension HasMainRecordOperations where Self: HasRecordOperationsDependencies {
 
     func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
                                                               recordType: Record.Type,
-                                                              annotations: [String],
-                                                              from startDate: Date?,
-                                                              to endDate: Date?,
-                                                              pageSize: Int?,
-                                                              offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
+                                                              query: RecordServiceParameterBuilder.SearchQuery) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
         return combineAsync {
             let userId = try self.keychainService.get(.userId)
             let decryptedRecords: [DR] = try combineAwait(self.recordService.searchRecords(for: userId,
-                                                                                    from: startDate,
-                                                                                    to: endDate,
-                                                                                    pageSize: pageSize,
-                                                                                    offset: offset,
-                                                                                    annotations: annotations,
-                                                                                    decryptedRecordType: decryptedRecordType))
+                                                                                           query: query,
+                                                                                           decryptedRecordType: decryptedRecordType))
             return decryptedRecords.compactMap { Record.init(decryptedRecord: $0)}
         }
     }

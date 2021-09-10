@@ -61,7 +61,8 @@ extension DecryptedRecord {
     }
     static func metaData(from encryptedRecord: EncryptedRecord) -> Metadata {
         let metadata = Metadata(updatedDate: encryptedRecord.createdAt,
-                                createdDate: encryptedRecord.date)
+                                createdDate: encryptedRecord.date,
+                                status: encryptedRecord.status)
         return metadata
     }
 }
