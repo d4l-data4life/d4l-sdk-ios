@@ -364,12 +364,12 @@ extension RecordServiceTests {
     }
 
     func testSearchFhirR4RecordsWithNonPercentEncodableTags() {
+
         let annotations = ["exampleannotation1"]
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         let document = FhirFactory.createR4DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, annotations: annotations)
+        let query = SearchQueryFactory.create(tagGroup: TagGroup(tags: [:], annotations: annotations))
         var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
 
@@ -396,11 +396,7 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should return a list of records")
         recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
-                                    annotations: annotations,
+                                    query: query,
                                     decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -417,13 +413,12 @@ extension RecordServiceTests {
     func testSearchFhirR4RecordsWithPercentEncodableTags() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         let document = FhirFactory.createR4DocumentReferenceResource()
         var record = DecryptedRecordFactory.create(document, annotations: annotations)
         record.annotations = annotations
         var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
+        let query = SearchQueryFactory.create(tagGroup: TagGroup(tags: [:], annotations: annotations))
 
         taggingService.tagTypeResult = TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations)
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -448,12 +443,8 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should return a list of records")
         recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
-                                    annotations: annotations,
-                                    decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
+                                       query: query,
+                                       decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1)
@@ -468,8 +459,6 @@ extension RecordServiceTests {
 
     func testSearchFhirR4NoResults() {
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         stub("GET", "/users/\(userId)/records", with: [])
 
         taggingService.tagTypeResult = TagGroup(tags: [:])
@@ -477,11 +466,7 @@ extension RecordServiceTests {
         cryptoService.decryptValuesResult = []
 
         let asyncExpectation = expectation(description: "should return an empty list of records")
-        recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
+        recordService.searchRecords(for: userId, query: SearchQueryFactory.create(),
                                     decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -584,10 +569,7 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should fail building params")
         recordService.searchRecords(for: userId,
-                                    from: Date(),
-                                    to: Date(),
-                                    pageSize: 10,
-                                    offset: 0,
+                                    query: SearchQueryFactory.create(),
                                     decryptedRecordType: DecryptedFhirR4Record<ModelsR4.DocumentReference>.self)
             .then { _ in
                 XCTFail("Should return an error")

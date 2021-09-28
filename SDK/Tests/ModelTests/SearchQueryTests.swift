@@ -13,23 +13,18 @@
 //  applications and/or if you’d like to contribute to the development of the SDK, please
 //  contact D4L by email to help@data4life.care.
 
-import Foundation
+import XCTest
+@testable import Data4LifeSDK
 
-public struct Metadata {
-
-    public enum Status: String, Codable {
-        case active = "Active"
-        case pending = "Pending"
-        case deleted = "Deleted"
-    }
-
-    public let updatedDate: Date
-    public let createdDate: Date
-    public let status: Status
-
-    init(updatedDate: Date, createdDate: Date, status: Status) {
-        self.updatedDate = updatedDate
-        self.createdDate = createdDate
-        self.status = status
+extension RecordServiceParameterBuilder.SearchQuery: Equatable {
+    public static func == (lhs: RecordServiceParameterBuilder.SearchQuery, rhs: RecordServiceParameterBuilder.SearchQuery) -> Bool {
+        return lhs.includingDeleted == rhs.includingDeleted &&
+        lhs.tagGroup == rhs.tagGroup &&
+        lhs.endUpdatedDate == rhs.endUpdatedDate &&
+        lhs.startUpdatedDate == rhs.startUpdatedDate &&
+        lhs.startDate == rhs.startDate &&
+        lhs.endDate == rhs.endDate &&
+        lhs.limit == rhs.limit &&
+        lhs.offset == rhs.offset
     }
 }

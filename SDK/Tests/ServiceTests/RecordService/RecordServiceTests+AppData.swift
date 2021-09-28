@@ -196,8 +196,6 @@ extension RecordServiceTests {
     func testSearchAppDataRecordsWithNonPercentEncodableTags() {
         let annotations = ["example"]
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         let appData = FhirFactory.createAppDataResourceData()
 
         let record = DecryptedRecordFactory.create(appData, annotations: annotations)
@@ -228,10 +226,7 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should return a list of records")
         let searchRecords: SDKFuture<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
-                                                                                         from: startDate,
-                                                                                         to: endDate,
-                                                                                         pageSize: 10,
-                                                                                         offset: 0)
+                                                                                                query: SearchQueryFactory.create())
          searchRecords.then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1)
@@ -243,8 +238,6 @@ extension RecordServiceTests {
 
     func testSearchAppDataRecordsWithPercentEncodableTags() {
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         let appData = FhirFactory.createAppDataResourceData()
         let annotations = ["hello-hello"]
         let record = DecryptedRecordFactory.create(appData, annotations: annotations)
@@ -275,10 +268,7 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should return a list of records")
         let searchRecords: SDKFuture<[DecryptedAppDataRecord]> = recordService.searchRecords(for: userId,
-                                                                                         from: startDate,
-                                                                                         to: endDate,
-                                                                                         pageSize: 10,
-                                                                                         offset: 0)
+                                                                                                query: SearchQueryFactory.create())
         searchRecords.then { records in
             defer { asyncExpectation.fulfill() }
             XCTAssertEqual(records.count, 1)
@@ -290,8 +280,6 @@ extension RecordServiceTests {
 
     func testSearchNoAppDataResults() {
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         stub("GET", "/users/\(userId)/records", with: [])
 
         taggingService.tagTypeResult = TagGroup(tags: [:])
@@ -300,10 +288,7 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should return an empty list of records")
         recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
+                                       query: SearchQueryFactory.create(),
                                     decryptedRecordType: DecryptedAppDataRecord.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -389,10 +374,7 @@ extension RecordServiceTests {
 
         let asyncExpectation = expectation(description: "should fail building params")
         recordService.searchRecords(for: userId,
-                                    from: Date(),
-                                    to: Date(),
-                                    pageSize: 10,
-                                    offset: 0,
+                                       query: SearchQueryFactory.create(),
                                     decryptedRecordType: DecryptedAppDataRecord.self)
             .then { _ in
                 XCTFail("Should return an error")

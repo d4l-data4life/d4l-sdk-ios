@@ -74,16 +74,12 @@ class RecordServiceMock<MockR, MockDR: DecryptedRecord>: RecordServiceType where
     }
 
     // MARK: Shared operations
-    var searchRecordsCalledWith: (Date?, Date?, Int?, Int?, [String]?)?
+    var searchRecordsCalledWith: (String?, RecordServiceParameterBuilder.SearchQuery?)?
     var searchRecordsResult: SDKFuture<[MockDR]>?
     func searchRecords<DR>(for userId: String,
-                           from startDate: Date?,
-                           to endDate: Date?,
-                           pageSize: Int?,
-                           offset: Int?,
-                           annotations: [String],
+                           query: RecordServiceParameterBuilder.SearchQuery,
                            decryptedRecordType: DR.Type) -> SDKFuture<[DR]> where DR : DecryptedRecord {
-        searchRecordsCalledWith = (startDate, endDate, pageSize, offset, annotations)
+        searchRecordsCalledWith = (userId, query)
         return searchRecordsResult as? SDKFuture<[DR]> ?? Fail(error: RecordServiceMockError.noResultSet).asyncFuture()
     }
 

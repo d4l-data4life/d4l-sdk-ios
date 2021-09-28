@@ -25,7 +25,7 @@ struct DecryptedRecordFactory {
                                           dataKey: Key = KeyFactory.createKey(),
                                           attachmentKey: Key? = KeyFactory.createKey()) -> DecryptedFhirR4Record<R> {
         let tags = ["resourcetype": Swift.type(of: fhirResource).resourceType.rawValue.lowercased()]
-        let metadata = Metadata(updatedDate: Date(), createdDate: Date())
+        let metadata = Metadata(updatedDate: Date(), createdDate: Date(), status: .active)
         let id = fhirResource.id ?? UUID().uuidString.asFHIRStringPrimitive()
         fhirResource.id = id
         return DecryptedFhirR4Record(id: id.value!.string,
@@ -42,7 +42,7 @@ struct DecryptedRecordFactory {
                                             dataKey: Key = KeyFactory.createKey(),
                                             attachmentKey: Key? = KeyFactory.createKey()) -> DecryptedFhirStu3Record<R> {
         let tags = ["resourcetype": Swift.type(of: fhirResource).resourceType.lowercased()]
-        let metadata = Metadata(updatedDate: Date(), createdDate: Date())
+        let metadata = Metadata(updatedDate: Date(), createdDate: Date(), status: .active)
         let id = fhirResource.id ?? UUID().uuidString
         fhirResource.id = id
         return DecryptedFhirStu3Record(id: id,
@@ -59,7 +59,7 @@ struct DecryptedRecordFactory {
                        annotations: [String] = [],
                        dataKey: Key = KeyFactory.createKey()) -> DecryptedAppDataRecord {
         let tags = ["flag":"appdata"]
-        let metadata = Metadata(updatedDate: Date(), createdDate: Date())
+        let metadata = Metadata(updatedDate: Date(), createdDate: Date(), status: .active)
         return DecryptedAppDataRecord(id: UUID().uuidString,
                                       metadata: metadata,
                                       resource: appData,

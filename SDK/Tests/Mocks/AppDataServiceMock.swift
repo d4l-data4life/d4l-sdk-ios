@@ -30,7 +30,7 @@ class AppDataServiceMock: HasRecordOperationsDependencies, HasMainRecordOperatio
     var cryptoService: CryptoServiceType = CryptoServiceMock()
 
     // MARK: Main Operations Properties
-    var fetchRecordsCalledWith: (DecryptedAppDataRecord.Type, Date?, Date?, [String]?, Int?, Int?)?
+    var fetchRecordsCalledWith: (DecryptedAppDataRecord.Type, RecordServiceParameterBuilder.SearchQuery?)?
     var fetchRecordsResult: SDKFuture<[AppDataRecord]>?
     var countRecordsCalledWith: (Data.Type?, [String]?)?
     var countRecordsResult: SDKFuture<Int>?
@@ -53,14 +53,11 @@ extension AppDataServiceMock {
         return countRecordsResult ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 
-    func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
-                                                              recordType: Record.Type,
-                                                              annotations: [String],
-                                                              from startDate: Date?,
-                                                              to endDate: Date?,
-                                                              pageSize: Int?,
-                                                              offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
-        fetchRecordsCalledWith = (decryptedRecordType as! DecryptedAppDataRecord.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
+    func fetchRecords<DR, Record>(decryptedRecordType: DR.Type,
+                                  recordType: Record.Type,
+                                  query: RecordServiceParameterBuilder.SearchQuery)
+    -> SDKFuture<[Record]> where DR : DecryptedRecord, Record : SDKRecord, DR.Resource == Record.Resource {
+        fetchRecordsCalledWith = (decryptedRecordType as! DecryptedAppDataRecord.Type, query) // swiftlint:disable:this force_cast
         return fetchRecordsResult as? SDKFuture<[Record]> ?? Fail(error: AppDataServiceMockError.noResultSet).asyncFuture()
     }
 

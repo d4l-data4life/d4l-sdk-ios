@@ -145,10 +145,7 @@ extension FhirR4ServiceTests {
         let fhirResource = FhirFactory.createR4CarePlanResource()
         fhirResource.id = recordId.asFHIRStringPrimitive()
         let record = DecryptedRecordFactory.create(fhirResource)
-        let offset = 1
-        let pageSize = 2
-        let from = Date()
-        let to = Date()
+        let query = SearchQueryFactory.create()
 
         keychainService[.userId] = userId
         recordService.searchRecordsResult = Just([record]).asyncFuture()
@@ -156,19 +153,13 @@ extension FhirR4ServiceTests {
         let asyncExpectation = expectation(description: "should return resources")
         fhirService.fetchRecords(decryptedRecordType: DecryptedFhirR4Record<ModelsR4.CarePlan>.self,
                                  recordType: FhirRecord<ModelsR4.CarePlan>.self,
-                                 annotations: [],
-                                 from: from,
-                                 to: to,
-                                 pageSize: pageSize,
-                                 offset: offset)
+                                 query: query)
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(result.count, 1)
                 XCTAssertEqual(result.first?.id, fhirResource.id?.value?.string)
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.0)
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.1)
-                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.2)
-                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.3)
             } onError: { error in
                 XCTFail(error.localizedDescription)
             } finally: {

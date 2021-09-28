@@ -414,12 +414,11 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     func testSearchFhirStu3RecordsWithNonPercentEncodableTags() {
         let annotations = ["exampleannotation1"]
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, annotations: annotations)
         var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
+        let query = SearchQueryFactory.create(tagGroup: TagGroup(tags: [:], annotations: annotations))
 
         taggingService.tagTypeResult = TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations)
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -445,12 +444,8 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         let asyncExpectation = expectation(description: "should return a list of records")
         recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
-                                    annotations: annotations,
-                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
+                                       query: query,
+                                       decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1)
@@ -466,12 +461,11 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
     func testSearchFhirStu3RecordsWithPercentEncodableTags() {
         let annotations = ["example-annotation1"]
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         let document = FhirFactory.createStu3DocumentReferenceResource()
         let record = DecryptedRecordFactory.create(document, annotations: annotations)
         var encryptedRecord = encryptedRecordFactory.create(for: record, resource: document, commonKeyId: commonKeyId)
         encryptedRecord.encryptedAttachmentKey = nil
+        let query = SearchQueryFactory.create(tagGroup: TagGroup(tags: [:], annotations: annotations))
 
         taggingService.tagTypeResult = TagGroup(tags: ["resourcetype": "documentreference"], annotations: annotations)
         taggingService.tagResourceResult = TagGroup(tags: record.tags, annotations: record.annotations)
@@ -497,12 +491,8 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         let asyncExpectation = expectation(description: "should return a list of records")
         recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
-                                    annotations: annotations,
-                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
+                                       query: query,
+                                       decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
                 XCTAssertEqual(records.count, 1)
@@ -517,8 +507,6 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
     func testSearchFhirStu3NoResults() {
         let userId = UUID().uuidString
-        let startDate = Date()
-        let endDate = Date()
         stub("GET", "/users/\(userId)/records", with: [])
 
         taggingService.tagTypeResult = TagGroup(tags: [:])
@@ -527,10 +515,7 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         let asyncExpectation = expectation(description: "should return an empty list of records")
         recordService.searchRecords(for: userId,
-                                    from: startDate,
-                                    to: endDate,
-                                    pageSize: 10,
-                                    offset: 0,
+                                       query: SearchQueryFactory.create(),
                                     decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { records in
                 defer { asyncExpectation.fulfill() }
@@ -633,11 +618,8 @@ final class RecordServiceTests: XCTestCase { // swiftlint:disable:this type_body
 
         let asyncExpectation = expectation(description: "should fail building params")
         recordService.searchRecords(for: userId,
-                                    from: Date(),
-                                    to: Date(),
-                                    pageSize: 10,
-                                    offset: 0,
-                                    decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
+                                       query: SearchQueryFactory.create(),
+                                       decryptedRecordType: DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>.self)
             .then { _ in
                 XCTFail("Should return an error")
             } onError: { error in

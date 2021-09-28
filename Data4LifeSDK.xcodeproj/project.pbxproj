@@ -99,6 +99,7 @@
 		368AFB0C23744D56004AE88F /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0B23744D56004AE88F /* LoggerService.swift */; };
 		368AFB0E23744DF5004AE88F /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */; };
 		368AFB1023747853004AE88F /* LoggerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368AFB0F23747853004AE88F /* LoggerServiceTests.swift */; };
+		369E89B227036D280082309A /* SearchQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369E89B127036D280082309A /* SearchQueryTests.swift */; };
 		36AE9503257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */; };
 		36AE9514257E3F7400B1A2D7 /* DocumentSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9513257E3F7400B1A2D7 /* DocumentSectionHeader.swift */; };
 		36AE9526257F8CE000B1A2D7 /* DocumentListSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */; };
@@ -426,6 +427,7 @@
 		368AFB0D23744DF5004AE88F /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		368AFB0F23747853004AE88F /* LoggerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerServiceTests.swift; sourceTree = "<group>"; };
 		369583B5255EC4E800F9C80C /* Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		369E89B127036D280082309A /* SearchQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQueryTests.swift; sourceTree = "<group>"; };
 		36AE9502257A2E3A00B1A2D7 /* Data4LifeClient+FhirR4Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+FhirR4Resource.swift"; sourceTree = "<group>"; };
 		36AE9513257E3F7400B1A2D7 /* DocumentSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentSectionHeader.swift; sourceTree = "<group>"; };
 		36AE9525257F8CE000B1A2D7 /* DocumentListSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListSchema.swift; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 				0AC79E33235DC0AC007BC681 /* TaskTest.swift */,
 				0A8D847723C5D6E300D7DDD3 /* HasAttachmentsProtocolTests.swift */,
 				366BC2BD2645699C00C33C37 /* TagsParameterTests.swift */,
+				369E89B127036D280082309A /* SearchQueryTests.swift */,
 			);
 			path = ModelTests;
 			sourceTree = "<group>";
@@ -1949,6 +1952,7 @@
 				CD841E2A225CBE80002656D5 /* Assert.swift in Sources */,
 				36553F8A24C72AE200699A9B /* FhirStu3ServiceTests+Questionnaire.swift in Sources */,
 				0AC728D923A2779500A8E453 /* CommonKeyServiceMock.swift in Sources */,
+				369E89B227036D280082309A /* SearchQueryTests.swift in Sources */,
 				0AA4559724167197008B788C /* SDKFileManagerMock.swift in Sources */,
 				CD841E27225CBE80002656D5 /* Data4LifeClient+FhirStu3Tests.swift in Sources */,
 				36FD13E0266A8392009344CF /* ModelFactory.swift in Sources */,
@@ -2438,7 +2442,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2469,7 +2473,7 @@
 				DEVELOPMENT_TEAM = D2QJWMP9SU;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2548,8 +2552,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/d4l-data4life/d4l-fhir-ios.git";
 			requirement = {
-				branch = "feature/update-release-script";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.22.0;
 			};
 		};
 		36B6E9D4260CD10300CA3250 /* XCRemoteSwiftPackageReference "Alamofire" */ = {

@@ -21,7 +21,7 @@ class RecordServiceParameterBuilderMock: RecordServiceParameterBuilderProtocol {
 
     var searchParametersResult: Parameters?
     var searchParametersError: Data4LifeSDKError?
-    func searchParameters(from startDate: Date?, to endDate: Date?, offset: Int?, pageSize: Int?, tagGroup: TagGroup, supportingLegacyTags: Bool) throws -> Parameters {
+    func searchParameters(query: RecordServiceParameterBuilder.SearchQuery, supportingLegacyTags: Bool) throws -> Parameters {
         if let error = searchParametersError {
             throw error
         } else {
