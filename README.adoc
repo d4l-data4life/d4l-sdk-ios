@@ -22,7 +22,7 @@ endif::[]
         <a><img src="assets/images/d4l-logo.svg" width="150"/></a>
     </p>
     <p><!-- PROJECT TITLE -->
-        <h3>Data4Life Crypto iOS</h3>
+        <h3>Data4Life Core iOS SDK</h3>
     </p>
     <p><!-- PROJECT DESCRIPTION -->
         Pure Swift API client for PHDP that automatically handles encryption
