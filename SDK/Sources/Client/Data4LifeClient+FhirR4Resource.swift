@@ -181,14 +181,15 @@ extension Data4LifeClient {
                                                       annotations: [String] = [],
                                                       queue: DispatchQueue = responseQueue,
                                                       completion: @escaping ResultBlock<[FhirRecord<R>]>) {
-        let searchQuery = makeSearchQuery(size: size,
-                                          page: page,
-                                          from: from,
-                                          to: to,
-                                          updatedFrom: updatedFrom,
-                                          updatedTo: updatedTo,
-                                          includingDeleted: includingDeleted,
-                                          annotations: annotations)
+        let offset = (page - 1) * size
+        let searchQuery = RecordServiceParameterBuilder.SearchQuery(limit: size,
+                                                                    offset: offset,
+                                                                    startDate: from,
+                                                                    endDate: to,
+                                                                    startUpdatedDate: updatedFrom,
+                                                                    endUpdatedDate: updatedTo,
+                                                                    includingDeleted: includingDeleted,
+                                                                    tagGroup: TagGroup(tags: [:], annotations: annotations))
         fhirService.fetchFhirRecords(query: searchQuery,
                                      decryptedRecordType: DecryptedFhirR4Record<R>.self)
             .complete(queue: queue, completion)
