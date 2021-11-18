@@ -181,15 +181,15 @@ extension Data4LifeClient {
                                                           annotations: [String] = [],
                                                           queue: DispatchQueue = responseQueue,
                                                           completion: @escaping ResultBlock<[FhirRecord<R>]>) {
-        let offset = (page - 1) * size
-        let searchQuery = RecordServiceParameterBuilder.SearchQuery(limit: size,
-                                                                    offset: offset,
-                                                                    startDate: from,
-                                                                    endDate: to,
-                                                                    startUpdatedDate: updatedFrom,
-                                                                    endUpdatedDate: updatedTo,
-                                                                    includingDeleted: includingDeleted,
-                                                                    tagGroup: TagGroup(tags: [:], annotations: annotations))
+
+        let searchQuery = makeSearchQuery(size: size,
+                                          page: page,
+                                          from: from,
+                                          to: to,
+                                          updatedFrom: updatedFrom,
+                                          updatedTo: updatedTo,
+                                          includingDeleted: includingDeleted,
+                                          annotations: annotations)
         fhirService.fetchFhirRecords(query: searchQuery,
                                      decryptedRecordType: DecryptedFhirStu3Record<R>.self)
             .complete(queue: queue, completion)
@@ -210,6 +210,28 @@ extension Data4LifeClient {
         fhirService
             .countFhirRecords(of: type, annotations: annotations)
             .complete(queue: queue, completion)
+    }
+}
+
+extension Data4LifeClient {
+    func makeSearchQuery(size: Int = 10,
+                         page: Int = 1,
+                         from: Date? = nil,
+                         to: Date? = nil,
+                         updatedFrom: Date? = nil,
+                         updatedTo: Date? = nil,
+                         includingDeleted: Bool = false,
+                         annotations: [String] = []) -> RecordServiceParameterBuilder.SearchQuery {
+        let offset = (page - 1) * size
+        return RecordServiceParameterBuilder.SearchQuery(limit: size,
+                                                         offset: offset,
+                                                         startDate: from,
+                                                         endDate: to,
+                                                         startUpdatedDate: updatedFrom,
+                                                         endUpdatedDate: updatedTo,
+                                                         includingDeleted: includingDeleted,
+                                                         tagGroup: TagGroup(tags: [:], annotations: annotations))
+
     }
 }
 
