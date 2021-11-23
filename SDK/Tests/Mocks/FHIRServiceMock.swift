@@ -31,7 +31,7 @@ class FhirServiceMock<MDR: DecryptedRecord, MA: AttachmentType>: HasRecordOperat
     var cryptoService: CryptoServiceType = CryptoServiceMock()
 
     // MARK: Main Operations Properties
-    var fetchRecordsCalledWith: (MDR.Type, Date?, Date?, [String]?, Int?, Int?)?
+    var fetchRecordsCalledWith: (MDR.Type, RecordServiceParameterBuilder.SearchQuery?)?
     var fetchRecordsResult: SDKFuture<[FhirRecord<MDR.Resource>]>?
     var countRecordsCalledWith: (MDR.Resource.Type, [String]?)?
     var countRecordsResult: SDKFuture<Int>?
@@ -79,14 +79,11 @@ extension FhirServiceMock {
         return countRecordsResult ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 
-    func fetchRecords<DR: DecryptedRecord, Record: SDKRecord>(decryptedRecordType: DR.Type,
-                                                              recordType: Record.Type,
-                                                              annotations: [String] = [],
-                                                              from startDate: Date?,
-                                                              to endDate: Date?,
-                                                              pageSize: Int?,
-                                                              offset: Int?) -> SDKFuture<[Record]> where Record.Resource == DR.Resource {
-        fetchRecordsCalledWith = (decryptedRecordType as! MDR.Type, startDate, endDate, annotations, pageSize, offset) // swiftlint:disable:this force_cast
+    func fetchRecords<DR, Record>(decryptedRecordType: DR.Type,
+                                  recordType: Record.Type,
+                                  query: RecordServiceParameterBuilder.SearchQuery)
+    -> SDKFuture<[Record]> where DR : DecryptedRecord, Record : SDKRecord, DR.Resource == Record.Resource {
+        fetchRecordsCalledWith = (decryptedRecordType as! MDR.Type, query) // swiftlint:disable:this force_cast
         return fetchRecordsResult as? SDKFuture<[Record]> ?? Fail(error: FhirServiceMockError.noResultSet).asyncFuture()
     }
 

@@ -48,8 +48,8 @@ struct EncryptedRecordFactory {
                                encryptedDataKey: dataKeyData.base64EncodedString(),
                                encryptedAttachmentKey: attachmentKeyData?.base64EncodedString() ?? nil,
                                modelVersion: decryptedRecord.modelVersion,
-                               commonKeyId: commonKeyId
-        )
+                               commonKeyId: commonKeyId,
+                               status: decryptedRecord.metadata.status)
     }
 
     func create<T, DR: DecryptedRecord>(for decryptedRecord: DR, commonKeyId: String? = nil) -> EncryptedRecord where DR.Resource == T {
@@ -71,7 +71,8 @@ extension EncryptedRecord {
             "createdAt": self.createdAt.ISO8601FormattedString(),
             "date": self.date.yyyyMmDdFormattedString(),
             "encrypted_key": self.encryptedDataKey,
-            "model_version": self.modelVersion
+            "model_version": self.modelVersion,
+            "status": self.status.rawValue
         ]
 
         guard  let attachmentKey = encryptedAttachmentKey else {

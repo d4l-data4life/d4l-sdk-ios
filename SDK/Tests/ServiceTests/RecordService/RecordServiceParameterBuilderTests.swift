@@ -74,12 +74,11 @@ final class RecordServiceParameterBuilderTests: XCTestCase {
 extension RecordServiceParameterBuilderTests {
     func testAllSearchParameters() throws {
         let toDate = Calendar.current.date(from: DateComponents(year: 1983, month: 1, day: 11))!
-        let fromDate = Calendar.current.date(byAdding: DateComponents(day: -1), to: toDate)
-        let offset = 1
-        let pageSize = 20
+        let fromDate = Calendar.current.date(byAdding: DateComponents(day: -1), to: toDate)!
         let tagGroup = TagGroup.annotationLowercased
-
-        let parameters = try builder.searchParameters(from: fromDate, to: toDate, offset: offset, pageSize: pageSize, tagGroup: tagGroup, supportingLegacyTags: false)
+        let query = SearchQueryFactory.create(limit: 20, offset: 1, startDate: fromDate, endDate: toDate, tagGroup: tagGroup)
+        let parameters = try builder.searchParameters(query: query,
+                                                      supportingLegacyTags: false)
         XCTAssertEqual(parameters["tags"] as? String, "tag=value,custom=valid")
         XCTAssertEqual(parameters["start_date"] as? String, "1983-01-10")
         XCTAssertEqual(parameters["end_date"] as? String, "1983-01-11")

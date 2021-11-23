@@ -53,22 +53,30 @@ final class AppDataServiceTests: XCTestCase {
         let appDataResource = "test".data(using: .utf8)!
         let record = DecryptedRecordFactory.create(appDataResource)
         let offset = 1
-        let pageSize = 2
+        let limit = 2
         let from = Date()
         let to = Date()
-
+        let updatedFrom = Date()
+        let updatedTo = Date()
+        let includingDeleted = false
+        let tagGroup = TagGroup(tags: [:], annotations: ["annotation"])
         keychainService[.userId] = userId
         recordService.searchRecordsResult = Just([record]).asyncFuture()
 
         let asyncExpectation = expectation(description: "should return resources")
-        appDataService.fetchAppDataRecords(from: from, to: to, pageSize: pageSize, offset: offset)
+        appDataService.fetchAppDataRecords(query: RecordServiceParameterBuilder.SearchQuery(limit: limit,
+                                                                                            offset: offset,
+                                                                                            startDate: from,
+                                                                                            endDate: to,
+                                                                                            startUpdatedDate: updatedFrom,
+                                                                                            endUpdatedDate: updatedTo,
+                                                                                            includingDeleted: includingDeleted,
+                                                                                            tagGroup: tagGroup))
             .then { result in
                 XCTAssertNotNil(result)
                 XCTAssertEqual(result.count, 1)
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.0)
                 XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.1)
-                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.2)
-                XCTAssertNotNil(self.recordService.searchRecordsCalledWith?.3)
         } onError: { error in
             XCTFail(error.localizedDescription)
         } finally: {

@@ -34,7 +34,10 @@ extension Date {
         let dateFormatter = DateFormatter.with(format: .iso8601DateTime)
         return dateFormatter.string(from: self)
     }
-
+    func ISO8601WithTimeZoneFormattedString() -> String {
+        let dateFormatter = DateFormatter.with(format: .iso8601TimeZone)
+        return dateFormatter.string(from: self)
+    }
     func yyyyMmDdFormattedString() -> String {
         let dateFormatter = DateFormatter.with(format: .iso8601Date)
         return dateFormatter.string(from: self)

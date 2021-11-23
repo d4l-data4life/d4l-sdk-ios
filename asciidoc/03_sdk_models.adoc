@@ -84,5 +84,6 @@ The `Metadata` data model holds read-only information about records.
 struct Metadata {
     var updatedDate: Date
     var createdDate: Date
+    var status: Status // can be active, pending, or deleted
 }
 ----

@@ -133,7 +133,7 @@ class EncryptedRecordTests: XCTestCase {
         } catch let error as Data4LifeSDKError {
             XCTAssertEqual(error, Data4LifeSDKError.invalidRecordDateFormat)
         } catch {
-            XCTFail("Should be an SDK error type")
+            XCTFail("Should be an SDK error type, instead it is \(error)")
         }
     }
 

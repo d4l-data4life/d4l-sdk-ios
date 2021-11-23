@@ -32,6 +32,9 @@ See link:{link-repository}/compare/v1.16.0...main[changeset]
 
 === Added
 
+* Support for new search query parameters: updatedFrom, updatedTo and includingDeleted
+* Support for record status in metadata
+
 === Changed
 
 === Removed

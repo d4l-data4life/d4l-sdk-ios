@@ -18,7 +18,63 @@ import Combine
 @testable import Data4LifeSDK
 import Data4LifeFHIR
 
-extension Data4LifeClientUserTests {
+class Data4LifeClientAppDataTests: XCTestCase {
+    var client: Data4LifeClient!
+
+    var sessionService: SessionService!
+    var oAuthService: OAuthServiceMock!
+    var userService: UserServiceMock!
+    var cryptoService: CryptoServiceMock!
+    var commonKeyService: CommonKeyServiceMock!
+    var fhirService: FhirServiceMock<DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>, Attachment>!
+    var appDataService: AppDataServiceMock!
+    var keychainService: KeychainServiceMock!
+    var recordService: RecordServiceMock<Data4LifeFHIR.DocumentReference,DecryptedFhirStu3Record<Data4LifeFHIR.DocumentReference>>!
+    var environment: Environment!
+    var versionValidator: SDKVersionValidatorMock!
+
+    override func setUp() {
+        super.setUp()
+
+        environment = .development
+
+        let container = Data4LifeDITestContainer()
+        container.registerDependencies()
+        self.client = Data4LifeClient(container: container,
+                                      environment: environment,
+                                      platform: .d4l)
+
+        do {
+            self.sessionService = try container.resolve()
+            self.oAuthService = try container.resolve(as: OAuthServiceType.self)
+            self.userService = try container.resolve(as: UserServiceType.self)
+            self.cryptoService = try container.resolve(as: CryptoServiceType.self)
+            self.commonKeyService = try container.resolve(as: CommonKeyServiceType.self)
+            self.fhirService = try container.resolve(as: FhirServiceType.self)
+            self.recordService = try container.resolve(as: RecordServiceType.self)
+            self.keychainService = try container.resolve(as: KeychainServiceType.self)
+            self.versionValidator = try container.resolve(as: SDKVersionValidatorType.self)
+            self.appDataService = try container.resolve(as: AppDataServiceType.self)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+
+        self.keychainService[.userId] = UUID().uuidString
+        fhirService.keychainService = keychainService
+        fhirService.recordService = recordService
+        fhirService.cryptoService = cryptoService
+        appDataService.keychainService = keychainService
+        appDataService.recordService = recordService
+        appDataService.cryptoService = cryptoService
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        clearStubs()
+    }
+}
+
+extension Data4LifeClientAppDataTests {
 
     func testCreateAppDataResource() {
         let resource = "test".data(using: .utf8)!

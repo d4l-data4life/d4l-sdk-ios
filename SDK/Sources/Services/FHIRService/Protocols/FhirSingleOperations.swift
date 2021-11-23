@@ -18,11 +18,7 @@ import Combine
 
 protocol FhirSingleOperations {
     func fetchFhirRecord<DR: DecryptedRecord>(withId identifier: String, decryptedRecordType: DR.Type) -> SDKFuture<FhirRecord<DR.Resource>> where DR.Resource: FhirSDKResource
-    func fetchFhirRecords<DR: DecryptedRecord>(from: Date?,
-                                               to: Date?,
-                                               pageSize: Int?,
-                                               offset: Int?,
-                                               annotations: [String],
+    func fetchFhirRecords<DR: DecryptedRecord>(query: RecordServiceParameterBuilder.SearchQuery,
                                                decryptedRecordType: DR.Type) -> SDKFuture<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource
     func deleteFhirRecord(withId identifier: String) -> SDKFuture<Void>
     func countFhirRecords<R: FhirSDKResource>(of type: R.Type, annotations: [String]) -> SDKFuture<Int>
@@ -36,19 +32,11 @@ extension FhirSingleOperations where Self: HasMainRecordOperations {
         return fetchRecord(withId: identifier, decryptedRecordType: decryptedRecordType)
     }
 
-    func fetchFhirRecords<DR: DecryptedRecord>(from: Date?,
-                                               to: Date?,
-                                               pageSize: Int?,
-                                               offset: Int?,
-                                               annotations: [String],
+    func fetchFhirRecords<DR: DecryptedRecord>(query: RecordServiceParameterBuilder.SearchQuery,
                                                decryptedRecordType: DR.Type) -> SDKFuture<[FhirRecord<DR.Resource>]> where DR.Resource: FhirSDKResource {
         fetchRecords(decryptedRecordType: decryptedRecordType,
                      recordType: FhirRecord<DR.Resource>.self,
-                     annotations: annotations,
-                     from: from,
-                     to: to,
-                     pageSize: pageSize,
-                     offset: offset)
+                     query: query)
     }
 
     func deleteFhirRecord(withId identifier: String) -> SDKFuture<Void> {

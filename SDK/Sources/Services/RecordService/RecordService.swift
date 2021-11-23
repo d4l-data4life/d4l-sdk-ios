@@ -36,11 +36,7 @@ protocol RecordServiceType {
                                       resourceType: R.Type,
                                       annotations: [String]) -> SDKFuture<Int>
     func searchRecords<DR: DecryptedRecord>(for userId: String,
-                                            from startDate: Date?,
-                                            to endDate: Date?,
-                                            pageSize: Int?,
-                                            offset: Int?,
-                                            annotations: [String],
+                                            query: RecordServiceParameterBuilder.SearchQuery,
                                             decryptedRecordType: DR.Type) -> SDKFuture<[DR]>
 }
 
@@ -140,19 +136,12 @@ struct RecordService: RecordServiceType {
     }
 
     func searchRecords<DR: DecryptedRecord>(for userId: String,
-                                            from startDate: Date?,
-                                            to endDate: Date?,
-                                            pageSize: Int?,
-                                            offset: Int?,
-                                            annotations: [String] = [],
+                                            query: RecordServiceParameterBuilder.SearchQuery,
                                             decryptedRecordType: DR.Type = DR.self) -> SDKFuture<[DR]> {
         return combineAsync {
-            let tagGroup = self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: annotations)
-            let parameters = try parameterBuilder.searchParameters(from: startDate,
-                                                                   to: endDate,
-                                                                   offset: offset,
-                                                                   pageSize: pageSize,
-                                                                   tagGroup: tagGroup,
+            let tagGroup = self.taggingService.makeTagGroup(for: DR.Resource.self, annotations: query.tagGroup.annotations)
+            let updatedQuery = query.with(tagGroup)
+            let parameters = try parameterBuilder.searchParameters(query: updatedQuery,
                                                                    supportingLegacyTags: true)
 
             let route = Router.searchRecords(userId: userId, parameters: parameters)

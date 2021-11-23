@@ -170,6 +170,7 @@ extension Data4LifeClientFhirR4Tests {
         let resources = [FhirFactory.createR4DocumentReferenceResource(), FhirFactory.createR4DocumentReferenceResource()]
         let records = resources.map { RecordFactory.create($0, annotations: annotations) }
         fhirService.fetchRecordsResult = Just(records).asyncFuture()
+        let query = SearchQueryFactory.create(tagGroup: TagGroup(tags: [:], annotations: annotations))
 
         let asyncExpectation = expectation(description: "Should return success result")
         client.fetchFhirR4Records(of: ModelsR4.DocumentReference.self, annotations: annotations) { result in
@@ -181,7 +182,7 @@ extension Data4LifeClientFhirR4Tests {
             XCTAssertEqual(result.value?.last?.fhirResource, records.last?.fhirResource)
             XCTAssertEqual(result.value?.first?.annotations, annotations)
             XCTAssertEqual(result.value?.last?.annotations, annotations)
-            XCTAssertEqual(self.fhirService.fetchRecordsCalledWith?.3, annotations)
+            XCTAssertEqual(self.fhirService.fetchRecordsCalledWith?.1, query)
         }
 
         waitForExpectations(timeout: 5)
