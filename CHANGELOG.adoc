@@ -49,6 +49,17 @@ See link:{link-repository}/compare/v1.16.0...main[changeset]
 
 === Migration
 
+== link:{link-repository}/releases/tag/v1.17.0[1.17.0]
+
+=== Added
+
+* Support for new search query parameters: updatedFrom, updatedTo and includingDeleted
+* Support for record status in metadata
+
+=== Bumped
+
+* Compiled with XCode 13.1
+
 == link:{link-repository}/releases/tag/v1.16.0[1.16.0]
 
 === Added

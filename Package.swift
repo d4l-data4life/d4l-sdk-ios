@@ -3,8 +3,6 @@
 
 import PackageDescription
 
-let coreVersion = "1.15.0"
-
 let package = Package(
     name: "Data4LifeSDK",
     platforms: [
@@ -19,13 +17,13 @@ let package = Package(
     dependencies: [
         .package(name: "Data4LifeSDKUtils",
                  url: "https://github.com/d4l-data4life/d4l-utils-ios.git",
-                 .upToNextMinor(from: "0.6.0")),
+                 .upToNextMinor(from: "0.7.0")),
         .package(name: "Data4LifeFHIR",
                  url: "https://github.com/d4l-data4life/d4l-fhir-ios.git",
-                 .upToNextMinor(from: "0.22.0")),
+                 .upToNextMinor(from: "0.23.2")),
         .package(name: "Data4LifeCrypto",
                  url: "https://github.com/d4l-data4life/d4l-crypto-ios.git",
-                 .upToNextMinor(from: "1.7.0")),
+                 .upToNextMinor(from: "1.8.0")),
         .package(url: "https://github.com/Alamofire/Alamofire.git",
                  .upToNextMinor(from: "5.4.1")),
         .package(name: "AppAuth",
@@ -35,8 +33,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Data4LifeSDK",
-            url: "https://d4l-ios-artifact-repository.s3.eu-central-1.amazonaws.com/d4l-data4life/d4l-sdk-ios/Data4LifeSDK-xcframework-v1.16.0.zip",
-            checksum: "988ea5a1402197e2243d28ce4ee881ca38034d97483ea57601be47f2edd1e18e"
+            url: "https://d4l-ios-artifact-repository.s3.eu-central-1.amazonaws.com/d4l-data4life/d4l-sdk-ios/Data4LifeSDK-xcframework-v1.17.0.zip",
+            checksum: "e0ce3f8007ffd2d2151ab4048b33aca1aa2570e9f47731a332c71e1420142c70"
         ),
         .target(name: "Data4LifeDependencies",
                 dependencies: [
