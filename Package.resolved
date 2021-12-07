@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/d4l-data4life/d4l-crypto-ios.git",
         "state": {
           "branch": null,
-          "revision": "94330b0803b7da45b55bd898b333ce4bbaac089f",
-          "version": "1.7.0"
+          "revision": "70783f58d51357cde014e94c22368803f9f877a6",
+          "version": "1.8.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/d4l-data4life/d4l-fhir-ios.git",
         "state": {
           "branch": null,
-          "revision": "297830d179a91315cdf288c9a8ee37ba76d46b34",
-          "version": "0.22.0"
+          "revision": "63ac86bada99f3a57c667aa8bc50ad6e62d6d3b9",
+          "version": "0.23.2"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/d4l-data4life/d4l-utils-ios.git",
         "state": {
           "branch": null,
-          "revision": "4cc48b98b1112ce680b91ee81bb4c38559b3116f",
-          "version": "0.6.0"
+          "revision": "63a3036639bc715b0d7e0bb1753d3d478ddf6480",
+          "version": "0.7.0"
         }
       }
     ]
