@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "Data4LifeCrypto",
+        "repositoryURL": "https://github.com/d4l-data4life/d4l-crypto-ios.git",
+        "state": {
+          "branch": null,
+          "revision": "94330b0803b7da45b55bd898b333ce4bbaac089f",
+          "version": "1.7.0"
+        }
+      },
+      {
         "package": "Data4LifeFHIR",
         "repositoryURL": "https://github.com/d4l-data4life/d4l-fhir-ios.git",
         "state": {
