@@ -14,6 +14,7 @@ ifdef::env-github[]
 :important-caption: :exclamation:
 :note-caption: :paperclip:
 :tip-caption: :bulb:
+:imagesdir: https://github.com/d4l-data4life/d4l-sdk-ios/blob/feature/update-readme-details/assets/images/
 endif::[]
 
 ++++
@@ -171,7 +172,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 Last step for handling the login url is to enter the redirect url scheme in the Info tab of the app target setting: 
 
-image::assets/images/url-scheme.png[URL scheme settings]
+image::url-scheme.png[URL scheme settings]
 
 ==== Display the login screen.
 
@@ -190,7 +191,7 @@ Data4LifeClient.default.presentLogin(on: viewController, animated: true) { resul
 }
 ----
 
-Optional: To use the SDK inside extensions, provide the `keychainGroupId` identifier when you configure the SDK and enable the `KeychainSharing` capability in the Xcode project.
+TIP: (Optional) To use the SDK inside extensions, provide the `keychainGroupId` identifier when you configure the SDK and enable the `KeychainSharing` capability in the Xcode project.
 The SDK also requires the `AppGroups` capability with the same setup.
 
 [source,swift]
