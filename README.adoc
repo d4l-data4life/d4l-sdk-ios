@@ -14,7 +14,7 @@ ifdef::env-github[]
 :important-caption: :exclamation:
 :note-caption: :paperclip:
 :tip-caption: :bulb:
-:imagesdir: https://github.com/d4l-data4life/d4l-sdk-ios/blob/feature/update-readme-details/assets/images/
+:imagesdir: https://github.com/d4l-data4life/d4l-sdk-ios/blob/main/assets/images/
 endif::[]
 
 ++++
@@ -96,7 +96,7 @@ This section describes the steps in more detail.
 
 ==== Configure the client information
 
-This step is achieved by calling the configureWith methods on didFinishLaunchWithOptions. This must be the first SDK call or the client crashes.
+This step is achieved by calling the `configureWith` method on `didFinishLaunchWithOptions`. This must be the first SDK call or the client crashes.
 
 NOTE: Client Id needs the `#ios` at the end in case it's missing, and the redirect URL string looks like `domain.com.client-id` without the need to have the `oauth://` suffix. For the complete settings for your client, refer to your json configuration file provided by us upon request. 
 
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ----
 
-==== Handle the OAuth 2.0 redirect URL in the `AppDelegate` or `SceneDelegate` class and in the info tab.
+==== Handle the OAuth 2.0 redirect URL
 
 This step is achieved by calling the `handle(url:)` method on the main delegate. In case the app has no `SceneDelegate` set up, it must be added in the `open url:` method of the `AppDelegate`. 
 
@@ -174,9 +174,9 @@ Last step for handling the login url is to enter the redirect url scheme in the 
 
 image::url-scheme.png[URL scheme settings]
 
-==== Display the login screen.
+==== Display the login screen
 
-Afterwards, you can use it throughout the app with the default client by providing a view controller to present.
+Login screen can be displayed throughout the app with the default client by providing a view controller to present.
 
 [source,swift]
 ----
@@ -223,7 +223,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 == Documentation 
 
-Further documentation on how to use it can be found link:docs/v1.15.0/index.html[here]
+Further documentation on how to use it can be found link:docs/v1.17.0/index.html[here]
 
 == Changelog
 
