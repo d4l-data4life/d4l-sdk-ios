@@ -93,10 +93,12 @@ To get started with the SDK, follow these steps:
 
 This section describes the steps in more detail.
 
-[start=1]
-. Prepare the SDK for use by configuring the client information.
-This must be the first SDK call or the client crashes.
-+
+==== Configure the client information
+
+This step is achieved by calling the configureWith methods on didFinishLaunchWithOptions. This must be the first SDK call or the client crashes.
+
+NOTE: Client Id needs the `#ios` at the end in case it's missing, and the redirect URL string looks like `domain.com.client-id` without the need to have the `oauth://` suffix. For the complete settings for your client, refer to your json configuration file provided by us upon request. 
+
 [source,swift]
 ----
 import UIKit
@@ -111,9 +113,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let clientId = "client-id#ios"
     let secret = "secret"
-    let redirectURLString = "app-redirect"
-    let environment = .staging
-    let platform = .d4l
+    let redirectURLString = "app-redirect" // Must look like "domain.com.client-id"
+    let environment = .staging // .development / .production
+    let platform = .d4l //.s4h
     Data4LifeClient.configureWith(clientId: clientId,
                                   clientSecret: secret,
                                   redirectURLString: redirectURLString,
@@ -124,9 +126,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 ----
-+
-. Handle the OAuth 2.0 redirect URL in the `AppDelegate` class.
-+
+
+==== Handle the OAuth 2.0 redirect URL in the `AppDelegate` or `SceneDelegate` class and in the info tab.
+
+This step is achieved by calling the `handle(url:)` method on the main delegate. In case the app has no `SceneDelegate` set up, it must be added in the `open url:` method of the `AppDelegate`. 
+
 [source, swift]
 ----
 import UIKit
@@ -145,10 +149,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 ----
-+
-. Display the login screen.
+
+If instead of the `AppDelegate` only, a `SceneDelegate` is present, the code needs to be handled at the `SceneDelegate` level, in the `openURLContexts` method: 
+
+[source, swift]
+----
+import UIKit
+import Data4LifeSDK
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else {
+            return
+        }
+
+        Data4LifeClient.default.handle(url: url)
+    }
+}
+----
+
+Last step for handling the login url is to enter the redirect url scheme in the Info tab of the app target setting: 
+
+image::assets/images/url-scheme.png[URL scheme settings]
+
+==== Display the login screen.
+
 Afterwards, you can use it throughout the app with the default client by providing a view controller to present.
-+
+
 [source,swift]
 ----
 let viewController = UIApplication.shared.keyWindow?.rootViewController
@@ -161,10 +189,10 @@ Data4LifeClient.default.presentLogin(on: viewController, animated: true) { resul
     }
 }
 ----
-+
-. Optional: To use the SDK inside extensions, provide the `keychainGroupId` identifier when you configure the SDK and enable the `KeychainSharing` capability in the Xcode project.
+
+Optional: To use the SDK inside extensions, provide the `keychainGroupId` identifier when you configure the SDK and enable the `KeychainSharing` capability in the Xcode project.
 The SDK also requires the `AppGroups` capability with the same setup.
-+
+
 [source,swift]
 ----
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
