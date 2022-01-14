@@ -408,6 +408,7 @@
 		367B87EE23F6D78800A6155E /* FhirStu3ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirStu3ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		3682F78A26400C9D00C03F55 /* Data4LifeClient+UserServiceModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+UserServiceModuleTests.swift"; sourceTree = "<group>"; };
 		3682F78C264024C200C03F55 /* Data4LifeClient+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data4LifeClient+User.swift"; sourceTree = "<group>"; };
+		36831B572791B0B1008E65F2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		3685D42C25920C5C00F97F9E /* FhirR4ServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FhirR4ServiceTests.swift; sourceTree = "<group>"; };
 		3685D44A25920D0700F97F9E /* FhirR4ServiceTests+Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Questionnaire.swift"; sourceTree = "<group>"; };
 		3685D45E2592262300F97F9E /* FhirR4ServiceTests+Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FhirR4ServiceTests+Patient.swift"; sourceTree = "<group>"; };
@@ -857,6 +858,14 @@
 			path = ModuleTests;
 			sourceTree = "<group>";
 		};
+		36831B562791B07E008E65F2 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				36831B572791B0B1008E65F2 /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		3685D42B25920C0E00F97F9E /* RecordService */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,6 +974,7 @@
 			children = (
 				839E813A1E86DE5300C42094 /* Example */,
 				CD87351B225384C300DA8E5F /* SDK */,
+				36831B562791B07E008E65F2 /* ci_scripts */,
 				360EC5162636F8AC00D8F8E9 /* SDKSPMDependencies */,
 				837463D11E85663300AB500F /* Frameworks */,
 				837463A71E854E7500AB500F /* Products */,
@@ -2439,7 +2449,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				D4L_CONFIGURATION = STAGING;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = D2QJWMP9SU;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -2447,9 +2457,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.example;
+				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDKIntegration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "sdk-integration-development";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2480,7 +2490,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.gesundheitscloud.HCSDKIntegration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = WildcardDevelopment;
+				PROVISIONING_PROFILE_SPECIFIER = "sdk-integration-development";
 				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

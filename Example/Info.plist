@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>D4LPlatform</key>
-	<string>$(D4L_PLATFORM)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -37,6 +35,8 @@
 	<string>$(D4L_ENVIRONMENT)</string>
 	<key>D4LIdentifier</key>
 	<string>$(D4L_ID)</string>
+	<key>D4LPlatform</key>
+	<string>$(D4L_PLATFORM)</string>
 	<key>D4LRedirectScheme</key>
 	<string>$(D4L_REDIRECT_SCHEME)</string>
 	<key>D4LSecret</key>

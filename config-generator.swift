@@ -133,7 +133,7 @@ func main() {
         error("supported envs: \(Environment.allCases.map(\.rawValue).joined(separator: ", "))")
         exit(EXIT_FAILURE)
     }
-    
+
     let fileManager = FileManager.default
     let configurationJsonFilePath = fileManager.currentDirectoryPath.appending("/\(targetPlatform.rawValue)-example-app-config.json")
     let environments = parseEnvConfiguration(atPath: configurationJsonFilePath)
