@@ -7,17 +7,11 @@ then
 
     cd $CI_WORKSPACE
 
-    echo "derived data ls"
-    ls -altri $CI_DERIVED_DATA_PATH
-    echo "derived data/build ls"
-    ls -altri $CI_DERIVED_DATA_PATH/Build
     echo "derived data/build/products ls"
-    ls -altri $CI_DERIVED_DATA_PATH/Build/Products/
-    echo "derived data/build/profiledata ls"
-    ls -altri $CI_DERIVED_DATA_PATH/Build/ProfileData/
+    ls -altri $CI_TEST_PRODUCTS_PATH
     
     xcrun llvm-profdata merge $CI_DERIVED_DATA_PATH/Build/ProfileData/*/*.profdata -output merged.profdata
-    xcrun --run llvm-cov show $CI_DERIVED_DATA_PATH/Build/Products/Debug-iphonesimulator/Data4LifeSDK.framework/Data4LifeSDK --instr-profile merged.profdata >> sonarqube-swift-coverage
+    xcrun --run llvm-cov show $CI_TEST_PRODUCTS_PATH/Debug-iphonesimulator/Data4LifeSDK.framework/Data4LifeSDK --instr-profile merged.profdata >> sonarqube-swift-coverage
     
     if [[ -n $CI_PULL_REQUEST_NUMBER ]];
     then
