@@ -1,52 +1,50 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Alamofire",
-        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
-        "state": {
-          "branch": null,
-          "revision": "d120af1e8638c7da36c8481fd61a66c0c08dc4fc",
-          "version": "5.4.4"
-        }
-      },
-      {
-        "package": "AppAuth",
-        "repositoryURL": "https://github.com/openid/AppAuth-iOS.git",
-        "state": {
-          "branch": null,
-          "revision": "01131d68346c8ae552961c768d583c715fbe1410",
-          "version": "1.4.0"
-        }
-      },
-      {
-        "package": "Data4LifeCrypto",
-        "repositoryURL": "https://github.com/d4l-data4life/d4l-crypto-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "70783f58d51357cde014e94c22368803f9f877a6",
-          "version": "1.8.0"
-        }
-      },
-      {
-        "package": "Data4LifeFHIR",
-        "repositoryURL": "https://github.com/d4l-data4life/d4l-fhir-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "63ac86bada99f3a57c667aa8bc50ad6e62d6d3b9",
-          "version": "0.23.2"
-        }
-      },
-      {
-        "package": "Data4LifeSDKUtils",
-        "repositoryURL": "https://github.com/d4l-data4life/d4l-utils-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "63a3036639bc715b0d7e0bb1753d3d478ddf6480",
-          "version": "0.7.0"
-        }
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "d120af1e8638c7da36c8481fd61a66c0c08dc4fc",
+        "version" : "5.4.4"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "appauth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openid/AppAuth-iOS.git",
+      "state" : {
+        "revision" : "01131d68346c8ae552961c768d583c715fbe1410",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "d4l-crypto-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/d4l-data4life/d4l-crypto-ios.git",
+      "state" : {
+        "revision" : "70783f58d51357cde014e94c22368803f9f877a6",
+        "version" : "1.8.0"
+      }
+    },
+    {
+      "identity" : "d4l-fhir-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/d4l-data4life/d4l-fhir-ios.git",
+      "state" : {
+        "revision" : "63ac86bada99f3a57c667aa8bc50ad6e62d6d3b9",
+        "version" : "0.23.2"
+      }
+    },
+    {
+      "identity" : "d4l-utils-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/d4l-data4life/d4l-utils-ios.git",
+      "state" : {
+        "revision" : "63a3036639bc715b0d7e0bb1753d3d478ddf6480",
+        "version" : "0.7.0"
+      }
+    }
+  ],
+  "version" : 2
 }
