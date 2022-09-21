@@ -86,10 +86,8 @@ class SDKVersionValidator: SDKVersionValidatorType {
     private func fetchStatus(currentVersion: String, versionConfiguration: SDKVersionConfiguration?) -> VersionStatus {
         guard let versionConfiguration = versionConfiguration else { return .unknown }
 
-        for versionRange in versionConfiguration.versionRanges {
-            if version(currentVersion, isWithin: versionRange) {
+        for versionRange in versionConfiguration.versionRanges where version(currentVersion, isWithin: versionRange) {
                 return versionRange.status
-            }
         }
 
         return .supported
